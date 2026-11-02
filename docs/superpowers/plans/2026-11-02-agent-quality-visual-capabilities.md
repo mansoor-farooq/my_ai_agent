@@ -58,4 +58,4 @@
 
 **Files:** Modify `README.md`; update any capability manifest only if its schema requires new entries (no permission expansion planned).
 
-**Check:** Run existing skill/capability validation and relevant routing checks; review `git diff --check`; ensure four branches point at the same commit; push each branch only after clean verification. **Status:** verification complete; branch publication pending.
+**Check:** Run existing skill/capability validation and relevant routing checks; review `git diff --check`; ensure four branches point at the same commit; push each branch only after clean verification. **Status:** complete; all four requested branches were verified at the same pushed commit.
