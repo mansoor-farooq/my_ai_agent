@@ -1,8 +1,8 @@
 # Antigravity Super-Agent Hub & Autonomous Skills Platform
 
-> **100% Tested Production-Ready Super-Agent System** with Autonomous Deep Research, Secondary Multi-Option Verification, Enterprise ERP Reverse Engineering (SAP & ERPNext), Multi-Agent Consensus, and Portable DeepSeek Hermès Subagent Bridge.
+> **Production Super-Agent System** with Autonomous Deep Research, Secondary Multi-Option Verification, Enterprise ERP Reverse Engineering (SAP & ERPNext), Multi-Agent Consensus, and an optional portable DeepSeek Hermès Subagent Bridge.
 
-[![Skills Count](https://img.shields.io/badge/Verified%20Skills-50%20Tested-success)](skills/)
+[![Skills Count](https://img.shields.io/badge/Core%20Skills-49%20%2B%20Repair%20Utility-success)](skills/)
 [![Custom Agents](https://img.shields.io/badge/Custom%20Agents-6%20Specialized-blue)](agents/Antigravity/custom-agents/)
 [![DeepSeek Hermes](https://img.shields.io/badge/DeepSeek%20Hermes-Portable%20Bridge%20Active-brightgreen)](subagents/deepseek-hermes/)
 [![Security](https://img.shields.io/badge/Architecture-Zero--Code%20Gate%20Enforced-orange)](shared/SUPER_AGENT_PROTOCOL.md)
@@ -18,18 +18,18 @@ git clone https://github.com/mansoor-farooq/my_ai_agent.git
 cd my_ai_agent
 ```
 
-Sirf PowerShell mein ek command run karein:
+Antigravity close karke PowerShell mein complete migration ke liye ek command run karein:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity
+powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity -RestoreNativeHistory
 ```
 
-### Ye Command Kya Karti Hai (100% Automated):
-1. **50 Tested Global Skills** ko `%USERPROFILE%\.gemini\config\skills` mein install karti hai.
+### Ye Command Kya Karti Hai:
+1. **49 core skills + 1 repair utility** ko `%USERPROFILE%\.gemini\config\skills` mein install karti hai.
 2. **6 Specialized Custom Subagents** ko `%USERPROFILE%\.gemini\config\agents` mein register karti hai.
 3. **DeepSeek Hermès Bridge** ko portable setup karti hai:
    - `subagents/deepseek-hermes/dsh-profile/` se aapke pre-configured login credentials (`.credentials.yaml`), free-tier device tokens, aur gateway settings ko `%USERPROFILE%\.dsh\` par restore kar deti hai.
-   - Aapko doosre PC par ja kar dubara free-tier key mangne ya login karne ki zaroorat nahi padti!
+   - Provider/device binding ki wajah se destination par login ya authorization dobara maangi ja sakti hai; installer profile ko restore karta hai, account policy ko bypass nahi karta.
 4. **4-Key Gemini Fallback Pool** (`gemini-pool.json`) aur `.env` keys ko configure kar deti hai.
 5. Workstyle preferences aur project flow datasets ko `%USERPROFILE%\.gemini\agent-context\datasets` mein link kar deti hai.
 
@@ -196,3 +196,73 @@ node tools/sync-knowledge-bank.mjs --project "project-slug" --dir "C:\Projects\C
 ```
 
 Automatically scrubs all secrets, API keys, and connection strings before staging and pushing.
+
+---
+
+## 8. Current production manifest and count clarification
+
+The current hub contains **50 skill folders**: **49 core capability skills plus `skill-repair` as the self-healing utility**. It contains **6 custom agents**, including `enterprise-schema-architect`, `production-orchestrator`, `saas-architect`, `mansoor-ui-specialist`, `live-web-auditor`, and `omniroute-gateway-operator`.
+
+The count is verified from the folders currently present in `skills/` and `agents/Antigravity/custom-agents/`. It is safer to describe this as an inventory verification than to claim that every production behavior has been exhaustively tested on every destination PC.
+
+## 9. DeepSeek Hermès is an optional provider bridge
+
+The hub already contains the current Hermes bridge under `subagents/deepseek-hermes/`:
+
+- `run-subagent.mjs`: DeepSeek-first execution with Gemini pool fallback.
+- `dsh-profile/`: local Hermes profile, gateway settings and device credentials.
+- `.env` and `gemini-pool.json`: provider configuration and fallback pool.
+- `install-hermes-bridge.ps1`: copies the profile to `%USERPROFILE%\.dsh`.
+
+The runner resolves the DeepSeek source from `DEEPSEEK_HERMES_ROOT`, then from `%USERPROFILE%\deepseek harmees`, then from `E:\deepseek harmees`. If the source is stored elsewhere on a destination PC, set it once before launching:
+
+```powershell
+$env:DEEPSEEK_HERMES_ROOT = 'E:\deepseek harmees'
+node E:\Agents\subagents\deepseek-hermes\run-subagent.mjs "run the scoped task"
+```
+
+This root is a code dependency, while `.dsh` is the provider profile. The bridge does not pretend that credentials alone contain the DeepSeek application source.
+
+The current hub copies the existing provider files from the local Hermes setup. Secret values are intentionally absent from this README and should never be pasted into chat, committed to a public repository, or placed in a normal project dossier. The installer uses them only on the destination machine. Because free-tier credentials and device tokens can be account- or device-bound, a destination may still ask for provider login or authorization even when the profile files are restored.
+
+The default installation enables the Hermes bridge. To install skills and agents without copying the provider profile, use:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity -SkipHermes
+```
+
+For the complete private setup, close Antigravity and run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity -RestoreNativeHistory
+```
+
+The command installs skills, custom agents, datasets, Hermes configuration and native sidebar history. The native restore creates a timestamped backup before replacing local conversation stores. Start Antigravity only after the command finishes.
+
+## 10. Production operating protocol
+
+Every requested build follows this sequence:
+
+1. **Lead gate:** understand the request, ask only high-value Socratic questions, identify permissions, data boundaries and success evidence.
+2. **Architecture review:** inspect the repository and produce an `[ARCH-PROPOSAL]` with folder structure, stack choices, contracts and risks.
+3. **Schema review:** produce `[SCHEMA-SYNC]` for entities, foreign keys, tenant isolation, lifecycle transitions, idempotency and numerical precision.
+4. **UI research:** perform autonomous reference search, compare at least two suitable directions, then produce `[UI-BLUEPRINT]` with tokens and a wireframe before implementation.
+5. **Zero-code gate:** no builder edits until architecture, schema and UI constraints are recorded and the scope is approved by the lead.
+6. **Scoped build:** use the smallest diff and preserve existing APIs, state flows, permissions and project conventions. DeepSeek Hermès may execute the scoped task; Gemini remains the lead and gatekeeper.
+7. **Secondary verification:** independently check the result with focused tests, runtime evidence, browser smoke tests where applicable, and a diff review. Report observed facts separately from assumptions.
+
+“Minimal UI”, “glass effect”, “polymorphism”, or similar requests trigger the research and option-comparison path automatically. The user does not need to provide CSS examples first.
+
+## 11. Knowledge and project-flow datasets
+
+Reusable context is stored in `shared/knowledge/datasets/` and is installed to `%USERPROFILE%\.gemini\agent-context\datasets`. Read `WORKSTYLE.md`, then `PROJECT_FLOWS.md`, then the relevant project dossier and conversation index before changing an existing project. These files describe approaches and invariants; the agent must still inspect the current repository because archived context can become stale.
+
+## 12. Verification performed for this hub
+
+- 50 skill folders and 6 custom agent definitions were counted from the current E: hub.
+- DeepSeek Hermes provider files in the hub match the current local Hermes setup by size and SHA-256; secret values were not printed.
+- Native Antigravity snapshot contains 56 app conversations, 4 IDE stores, 56 sidebar summary rows and 18 project definitions.
+- Native sidebar SQLite summary passes `integrity_check` and contains 56 conversation rows.
+- PowerShell installer and native restore scripts parse successfully.
+
+The hub is ready for production migration, with provider setup and native chat restore kept as explicit, reversible steps.

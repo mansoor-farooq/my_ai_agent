@@ -1,13 +1,13 @@
 [
   {
     "Path": "Agents/README.md",
-    "SHA256": "E09C771EB868564207301C40CE545F851088C20C0C5FFA4DC96897A814125F5B",
-    "Bytes": 2534
+    "SHA256": "332EF0A5117C647A92DA05B41566E173BF88BFB629D85F09793F695A8B57A659",
+    "Bytes": 18861
   },
   {
     "Path": "Agents/install.ps1",
-    "SHA256": "3BB9906011E41DD0263F1492D30B8FD2209BF64FB147CD3E1BCEB86C5234487F",
-    "Bytes": 5456
+    "SHA256": "0CB03B19F54803596135C4D34D5FB5C619A97F9ED1DCF00012CE0A2F44ABC492",
+    "Bytes": 6522
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -15,9 +15,14 @@
     "Bytes": 2372
   },
   {
-    "Path": "Agents/tools/snapshot-native-history.mjs",
-    "SHA256": "F9CA0CCDA6E9FADE7DCEEF59AE21A43D646462452F2083FA44514242EB760672",
-    "Bytes": 3608
+    "Path": "Agents/subagents/deepseek-hermes/run-subagent.mjs",
+    "SHA256": "757DEBB9F53ABBF11DC2BEEFC2C5BBFF894622F231050D3AC26DF8C921D48C4B",
+    "Bytes": 3057
+  },
+  {
+    "Path": "Agents/subagents/deepseek-hermes/install-hermes-bridge.ps1",
+    "SHA256": "66B6AC786B2DB6AF87A24B9CBCD86FF658C7FBFE3029C659848148E5FBA3D3C7",
+    "Bytes": 860
   },
   {
     "Path": "Agents/shared/native-profile/manifest.json",
@@ -38,5 +43,10 @@
     "Path": "Agents/shared/knowledge/datasets/WORKSTYLE.md",
     "SHA256": "A07F7CC681C604FF9035353642FED92281FDCF86E932209880C6CCE68E9EE0C9",
     "Bytes": 1377
+  },
+  {
+    "Path": "Agents/shared/knowledge/datasets/DEEPSEEK_HERMES_HANDOFF.md",
+    "SHA256": "A93890A10DD741ED0FE4B22F77E1F43BBD36BB69F1272AB4D720447AADCE0019",
+    "Bytes": 2907
   }
 ]

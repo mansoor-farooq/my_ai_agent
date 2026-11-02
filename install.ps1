@@ -2,7 +2,8 @@ param(
   [ValidateSet('Antigravity', 'Folder')]
   [string]$Agent = 'Antigravity',
   [string]$TargetDir,
-  [switch]$RestoreNativeHistory
+  [switch]$RestoreNativeHistory,
+  [switch]$SkipHermes
 )
 
 $ErrorActionPreference = 'Stop'
@@ -64,8 +65,10 @@ try {
 
     # Install DeepSeek Hermes credentials and subagent runner bridge
     $hermesBridgeScript = Join-Path $hub 'subagents\deepseek-hermes\install-hermes-bridge.ps1'
-    if (Test-Path -LiteralPath $hermesBridgeScript) {
+    if (-not $SkipHermes -and (Test-Path -LiteralPath $hermesBridgeScript)) {
       & $hermesBridgeScript
+    } elseif ($SkipHermes) {
+      Write-Output 'DeepSeek Hermes setup skipped by -SkipHermes.'
     }
 
     if ($RestoreNativeHistory) { & (Join-Path $hub 'restore-native-history.ps1') }
@@ -75,7 +78,7 @@ try {
     $contextNote = @"
 
 $marker
-For existing projects, read %USERPROFILE%\.gemini\agent-context\datasets\WORKSTYLE.md and PROJECT_FLOWS.md, then the relevant summary in codex-memory. Search codex-conversation-index.json and conversation-index.json in that context folder for matching chats. Read their transcripts when needed. Treat old chats as history and verify current files before editing.
+For existing projects, read %USERPROFILE%\.gemini\agent-context\datasets\WORKSTYLE.md and PROJECT_FLOWS.md, then read DEEPSEEK_HERMES_HANDOFF.md when delegating to Hermes. Read the relevant summary in codex-memory. Search codex-conversation-index.json and conversation-index.json in that context folder for matching chats. Read their transcripts when needed. Treat old chats as history and verify current files before editing.
 "@
     if (Test-Path -LiteralPath $instructions) {
       $current = Get-Content -LiteralPath $instructions -Raw

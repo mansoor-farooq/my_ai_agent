@@ -1,9 +1,27 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { spawn } from 'node:child_process';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const poolFile = join(process.cwd(), 'gemini-pool.json');
+const bridgeDir = dirname(fileURLToPath(import.meta.url));
+const poolFile = join(bridgeDir, 'gemini-pool.json');
 const pool = JSON.parse(readFileSync(poolFile, 'utf8'));
+
+const rootCandidates = [
+  process.env.DEEPSEEK_HERMES_ROOT,
+  join(process.env.USERPROFILE || '', 'deepseek harmees'),
+  'E:\\deepseek harmees',
+].filter(Boolean);
+const harnessRoot = rootCandidates.find((candidate) =>
+  existsSync(join(candidate, 'apps', 'cli', 'src', 'bin.ts')),
+);
+if (!harnessRoot) {
+  throw new Error(
+    'DeepSeek Hermes source was not found. Set DEEPSEEK_HERMES_ROOT to the DeepSeek Harness project folder.',
+  );
+}
+const cliEntry = join(harnessRoot, 'apps', 'cli', 'src', 'bin.ts');
+const cliArgs = ['--import', 'tsx/esm', cliEntry, 'headless', '--permission-mode', 'workspace-write'];
 
 const task = process.argv.slice(2).join(' ') || 'test task';
 
@@ -17,10 +35,11 @@ async function runWithKey(account) {
       DSH_CLIENT_TITLE: 'Mansoor'
     };
 
-    const child = spawn('node', ['--import', 'tsx/esm', 'apps/cli/src/bin.ts', 'headless', '--permission-mode', 'workspace-write', task], {
+    const child = spawn('node', [...cliArgs, task], {
       env,
       stdio: 'inherit',
-      shell: true
+      shell: true,
+      cwd: harnessRoot,
     });
 
     child.on('close', (code) => {
@@ -41,10 +60,11 @@ async function runWithDeepSeekAccount() {
       DSH_CLIENT_TITLE: 'Mansoor'
     };
 
-    const child = spawn('node', ['--import', 'tsx/esm', 'apps/cli/src/bin.ts', 'headless', '--permission-mode', 'workspace-write', task], {
+    const child = spawn('node', [...cliArgs, task], {
       env,
       stdio: 'inherit',
-      shell: true
+      shell: true,
+      cwd: harnessRoot,
     });
 
     child.on('close', (code) => {
