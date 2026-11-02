@@ -77,14 +77,32 @@ try {
 
     $sourceSkills = Join-Path $hub 'skills'
     $skillDestination = Join-Path $env:USERPROFILE '.gemini\config\skills'
+    $managedSkillDocs = @('autonomous-deep-researcher', 'backend-ml-skill-router')
     New-Item -ItemType Directory -Path $skillDestination -Force | Out-Null
     $installedSkills = 0
+    $updatedSkills = 0
     if (Test-Path -LiteralPath $sourceSkills) {
       foreach ($skill in Get-ChildItem -LiteralPath $sourceSkills -Directory) {
         $targetSkill = Join-Path $skillDestination $skill.Name
         if (-not (Test-Path -LiteralPath $targetSkill)) {
           Copy-Item -LiteralPath $skill.FullName -Destination $targetSkill -Recurse
           $installedSkills++
+        } elseif ($managedSkillDocs -contains $skill.Name) {
+          $sourceSkillDoc = Join-Path $skill.FullName 'SKILL.md'
+          $targetSkillDoc = Join-Path $targetSkill 'SKILL.md'
+          if ((Test-Path -LiteralPath $sourceSkillDoc) -and (Test-Path -LiteralPath $targetSkillDoc)) {
+            $sourceHash = (Get-FileHash -LiteralPath $sourceSkillDoc -Algorithm SHA256).Hash
+            $targetHash = (Get-FileHash -LiteralPath $targetSkillDoc -Algorithm SHA256).Hash
+            if ($sourceHash -ne $targetHash) {
+              $backupStamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+              $backupDir = Join-Path $env:USERPROFILE ".gemini\agent-context\agent-hub-backups\skills\$($skill.Name)\$backupStamp"
+              New-Item -ItemType Directory -Path $backupDir -Force | Out-Null
+              Copy-Item -LiteralPath $targetSkillDoc -Destination (Join-Path $backupDir 'SKILL.md')
+              Copy-Item -LiteralPath $sourceSkillDoc -Destination $targetSkillDoc -Force
+              $updatedSkills++
+              Write-Output "Updated hub-managed skill document: $($skill.Name) (backup: $backupDir)"
+            }
+          }
         }
       }
     }
@@ -141,7 +159,7 @@ $routingEndMarker
       New-Item -ItemType Directory -Path (Split-Path -Parent $instructions) -Force | Out-Null
       Set-Content -LiteralPath $instructions -Value ($contextNote.TrimStart() + "`r`n" + $routingNote.Trim()) -Encoding utf8
     }
-    Write-Output "Antigravity skills, chat context, and $installedAgents new custom agents installed. Restart Antigravity."
+    Write-Output "Antigravity skills installed ($installedSkills new, $updatedSkills hub-managed docs updated), chat context refreshed, and $installedAgents new custom agents installed. Restart Antigravity."
   } else {
     if ([string]::IsNullOrWhiteSpace($TargetDir)) { throw '-TargetDir is required for -Agent Folder.' }
     $target = [IO.Path]::GetFullPath($TargetDir)

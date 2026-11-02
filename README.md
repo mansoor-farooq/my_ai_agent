@@ -79,6 +79,7 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity -Resto
 
 ### Ye Command Kya Karti Hai:
 1. **124 capability skills + 1 repair utility** ko `%USERPROFILE%\.gemini\config\skills` mein install karti hai.
+   - Naye hub skills add hote hain; hub ke `autonomous-deep-researcher` aur `backend-ml-skill-router` documents update hon to purani copies timestamped backup ke baad replace hoti hain. Doosre existing skill folders preserve rehte hain.
 2. **6 persistent custom-agent profiles** ko `%USERPROFILE%\.gemini\config\agents` mein register/update karti hai. Backend/ML worker roles are task-scoped manager invocations, not extra installed profiles.
 3. **DeepSeek Hermès Bridge** ko portable setup karti hai:
    - `subagents/deepseek-hermes/dsh-profile/` se aapke pre-configured login credentials (`.credentials.yaml`), free-tier device tokens, aur gateway settings ko `%USERPROFILE%\.dsh\` par restore kar deti hai.
