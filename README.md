@@ -14,8 +14,8 @@
 > A private, multi-agent engineering workspace for turning a clear brief into researched plans, careful implementation, and verifiable outcomes.
 
 <p align="center">
-<a href="skills/"><img src="https://img.shields.io/badge/CAPABILITIES-79%20%2B%20REPAIR-146C94?style=for-the-badge&labelColor=101820" alt="79 capabilities plus repair utility"></a>
-  <a href="agents/Antigravity/custom-agents/"><img src="https://img.shields.io/badge/SPECIALISTS-6-3D7A78?style=for-the-badge&labelColor=101820" alt="6 specialized agents"></a>
+<a href="skills/"><img src="https://img.shields.io/badge/CAPABILITIES-119%20%2B%20REPAIR-146C94?style=for-the-badge&labelColor=101820" alt="119 capabilities plus repair utility"></a>
+  <a href="agents/Antigravity/custom-agents/"><img src="https://img.shields.io/badge/SPECIALISTS-9-3D7A78?style=for-the-badge&labelColor=101820" alt="9 specialized agents"></a>
   <a href="shared/control-plane/"><img src="https://img.shields.io/badge/CONTROL-LEAST%20PRIVILEGE-C59B57?style=for-the-badge&labelColor=101820" alt="Least privilege control plane"></a>
 </p>
 
@@ -31,6 +31,8 @@
   | **Agent orchestration** | Routes work through architecture, schema, UI, builder and verifier roles. |
 | **Research & reconstruction** | Finds authoritative references and maps existing code before proposing changes. |
 | **.NET engineering** | 30 focused skills for architecture, ASP.NET Core, data, security, testing, operations and releases. |
+| **Backend & ML engineering** | 39 specialist skills for Node.js, Python APIs, PyTorch, datasets, training, evaluation, model serving and MLOps. |
+| **Automatic team routing** | Manifest/task router selects focused skills and Node/Python/ML specialists, with contract handoffs and independent verification. |
   | **Project continuity** | Keeps plans, decisions, evidence and rounds in contributor-scoped knowledge branches. |
   | **Portable setup** | Installs the skills, specialist agents and approved context on Windows devices. |
   | **Provider bridge** | Supports optional DeepSeek Hermès execution with Gemini fallback. |
@@ -46,6 +48,7 @@
   4. [Agent architecture](#4-agent-architecture)
   5. [Skills inventory](#5-skills-inventory)
   5a. [.NET engineering pack](#5a-net-engineering-pack)
+  5b. [Backend & ML engineering pack](#5b-backend--ml-engineering-pack)
   6. [Specialist agents](#6-specialist-agents)
   7. [Project knowledge](#7-project-knowledge)
   8. [Control plane](#8-control-plane)
@@ -74,8 +77,8 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity -Resto
 ```
 
 ### Ye Command Kya Karti Hai:
-1. **49 core skills + 1 repair utility** ko `%USERPROFILE%\.gemini\config\skills` mein install karti hai.
-2. **6 Specialized Custom Subagents** ko `%USERPROFILE%\.gemini\config\agents` mein register karti hai.
+1. **119 capability skills + 1 repair utility** ko `%USERPROFILE%\.gemini\config\skills` mein install karti hai.
+2. **9 Specialized Custom Subagents** ko `%USERPROFILE%\.gemini\config\agents` mein register karti hai.
 3. **DeepSeek Hermès Bridge** ko portable setup karti hai:
    - `subagents/deepseek-hermes/dsh-profile/` se aapke pre-configured login credentials (`.credentials.yaml`), free-tier device tokens, aur gateway settings ko `%USERPROFILE%\.dsh\` par restore kar deti hai.
    - Provider/device binding ki wajah se destination par login ya authorization dobara maangi ja sakti hai; installer profile ko restore karta hai, account policy ko bypass nahi karta.
@@ -240,6 +243,23 @@ For every .NET task, load `dotnet-solution-architect` plus only the skills match
 
 ---
 
+## 5b. Backend & ML engineering pack — 39 specialist skills
+
+This pack covers Node.js/TypeScript services, Python APIs and production ML from data framing through training, evaluation, deployment and monitoring. The router uses both manifest clues and task language, returns a focused subset, and selects the corresponding specialist profiles. It does not start every specialist on every request.
+
+| Focus | Skills |
+| :--- | :--- |
+| **Node architecture & APIs** | `node-backend-architecture`, `node-api-design`, `node-typescript-services`, `node-framework-nestjs`, `node-framework-express-fastify` |
+| **Node security, data & operations** | `node-auth-security`, `node-data-access`, `node-postgres-data`, `node-queues-workers`, `node-testing-quality`, `node-performance-runtime`, `node-observability-resilience`, `node-deployment-delivery` |
+| **Python services** | `python-backend-architecture`, `python-fastapi-services`, `python-django-api`, `python-typing-contracts`, `python-async-concurrency`, `python-data-persistence`, `python-security`, `python-testing-quality`, `python-packaging-deployment` |
+| **ML & PyTorch lifecycle** | `ml-problem-framing`, `ml-data-quality`, `ml-feature-engineering`, `ml-experiment-reproducibility`, `ml-pytorch-model-design`, `pytorch-training-systems`, `pytorch-distributed-training`, `ml-evaluation-validation`, `ml-hyperparameter-optimization`, `ml-transformers-finetuning`, `ml-model-serving`, `mlops-pipelines-registry`, `ml-monitoring-drift`, `ml-gpu-performance`, `ml-inference-optimization`, `ml-privacy-supply-chain`, `backend-ml-integration` |
+
+Start with `backend-ml-skill-router`; it uses repository reverse engineering, selective research, structured specialist handoffs, non-overlapping file ownership and independent verification. Run the local router with `node tools/route-backend-ml-task.mjs --task "Train and serve a PyTorch model" --files pyproject.toml train.py`. The router is an aid: verify its selection against actual project files and current official documentation.
+
+The skills' operating checks are grounded in primary documentation: [Node.js learning and operations](https://nodejs.org/learn), [FastAPI deployment concepts](https://fastapi.tiangolo.com/deployment/concepts/), [PyTorch training tutorials](https://docs.pytorch.org/tutorials/beginner/introyt/trainingyt), and [scikit-learn leakage and validation pitfalls](https://scikit-learn.org/stable/common_pitfalls).
+
+---
+
 ## 6. Specialist agents (`agents/Antigravity/custom-agents/`)
 
 1. **`production-orchestrator`** *(Lead Super-Agent)*: Governs multi-agent consensus, Socratic grilling, and the Zero-Code Gate.
@@ -248,6 +268,9 @@ For every .NET task, load `dotnet-solution-architect` plus only the skills match
 4. **`mansoor-ui-specialist`**: Autonomous deep design research, minimalism/glassmorphism tokens, and visual wireframes.
 5. **`live-web-auditor`**: Chrome DevTools live QA, network inspection, and responsive smoke tests.
 6. **`omniroute-gateway-operator`**: Local LLM gateway configuration and multi-model failover.
+7. **`node-backend-specialist`**: Node.js/TypeScript backend architecture, APIs, security, data and delivery.
+8. **`python-backend-specialist`**: Python APIs, typed contracts, async execution, persistence and deployment.
+9. **`ml-pytorch-specialist`**: Data quality, PyTorch training, model evaluation, serving and MLOps.
 
 ---
 
@@ -300,7 +323,7 @@ GitHub rulesets should protect `main`, block force-push, and target `knowledge/*
 
 ## 8.1 Inventory note
 
-The current hub inventory now contains **80 skill folders**: **79 capability skills plus `skill-repair` as the self-healing utility**. This includes the new 30-skill .NET engineering pack. It contains **6 custom agents**, including `enterprise-schema-architect`, `production-orchestrator`, `saas-architect`, `mansoor-ui-specialist`, `live-web-auditor`, and `omniroute-gateway-operator`.
+The current hub inventory now contains **120 skill folders**: **119 capability skills plus `skill-repair` as the self-healing utility**. This includes the 30-skill .NET pack and 39-skill backend/ML pack, plus the routing skill. It contains **9 custom agents**, including the Node, Python and ML/PyTorch specialists.
 
 The count is verified from the folders currently present in `skills/` and `agents/Antigravity/custom-agents/`. It is safer to describe this as an inventory verification than to claim that every production behavior has been exhaustively tested on every destination PC.
 
@@ -358,7 +381,8 @@ Reusable context is stored in `shared/knowledge/datasets/` and is installed to `
 
 ## 12. Verification record
 
-- 80 skill folders and 6 custom agent definitions are the documented inventory after adding the .NET pack.
+- 120 skill folders (119 capability skills plus repair utility) and 9 custom agent definitions are present after adding the backend/ML pack.
+- Backend/ML routing tests cover Node API selection, PyTorch training gates, mixed Node+ML coordination and manifest-only Python detection.
 - DeepSeek Hermes provider files in the hub match the current local Hermes setup by size and SHA-256; secret values were not printed.
 - Native Antigravity snapshot contains 56 app conversations, 4 IDE stores, 56 sidebar summary rows and 18 project definitions.
 - Native sidebar SQLite summary passes `integrity_check` and contains 56 conversation rows.

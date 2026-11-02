@@ -67,6 +67,7 @@ try {
     New-Item -ItemType Directory -Path $runtimeDestination -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $hub 'tools\sync-knowledge-bank.mjs') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'tools\validate-capability-manifest.mjs') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'tools\route-backend-ml-task.mjs') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'AGENT_EXPORT_POLICY.md') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'shared\knowledge\PROJECT_MEMORY_SCHEMA.md') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'shared\control-plane') -Destination (Join-Path $runtimeDestination 'control-plane') -Recurse -Force
@@ -86,7 +87,7 @@ try {
     $contextNote = @"
 
 $marker
-For existing projects, read %USERPROFILE%\.gemini\agent-context\datasets\WORKSTYLE.md and PROJECT_FLOWS.md, then read DEEPSEEK_HERMES_HANDOFF.md when delegating to Hermes. Read the relevant summary in codex-memory. Search codex-conversation-index.json and conversation-index.json in that context folder for matching chats. Read their transcripts when needed. Treat old chats as history and verify current files before editing. The project-memory sync tool is installed under %USERPROFILE%\.gemini\agent-context\agent-hub-tools and must follow AGENT_EXPORT_POLICY.md.
+For existing projects, read %USERPROFILE%\.gemini\agent-context\datasets\WORKSTYLE.md and PROJECT_FLOWS.md, then read DEEPSEEK_HERMES_HANDOFF.md when delegating to Hermes. Read the relevant summary in codex-memory. Search codex-conversation-index.json and conversation-index.json in that context folder for matching chats. Read their transcripts when needed. Treat old chats as history and verify current files before editing. The project-memory sync tool is installed under %USERPROFILE%\.gemini\agent-context\agent-hub-tools and must follow AGENT_EXPORT_POLICY.md. For backend/ML work, run route-backend-ml-task.mjs from agent-hub-tools with --root %USERPROFILE%\.gemini\config to select installed skills and specialist agents.
 "@
     if (Test-Path -LiteralPath $instructions) {
       $current = Get-Content -LiteralPath $instructions -Raw
@@ -114,6 +115,7 @@ For existing projects, read %USERPROFILE%\.gemini\agent-context\datasets\WORKSTY
     New-Item -ItemType Directory -Path $runtimeDestination -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $hub 'tools\sync-knowledge-bank.mjs') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'tools\validate-capability-manifest.mjs') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'tools\route-backend-ml-task.mjs') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'AGENT_EXPORT_POLICY.md') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'shared\knowledge\PROJECT_MEMORY_SCHEMA.md') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'shared\control-plane') -Destination (Join-Path $runtimeDestination 'control-plane') -Recurse -Force
