@@ -187,15 +187,34 @@ Agents virtual parallel loop mein communicate karte hain:
 
 ---
 
-## 7. Knowledge Bank Auto-Sync Tool (`tools/sync-knowledge-bank.mjs`)
+## 7. Knowledge Bank Auto-Sync: project branches and rounds
 
-Kisi bhi client project ke end par uski sanitized planning aur schemas ko private repo par push karne ke liye:
+Knowledge sync ab `main` par direct push nahin karta. Har project/product ke liye private branch `knowledge/<project-slug>` banti hai. Planning, implementation aur final rounds usi branch par timestamped files ke taur par append hote hain:
 
-```bash
-node tools/sync-knowledge-bank.mjs --project "project-slug" --dir "C:\Projects\ClientApp" --push
+```text
+knowledge/cartivo/
+  PROJECT_DOSSIER.md       # latest consolidated context
+  manifest.json            # phase, round aur scrubbed inventory metadata
+  rounds/
+    01-planning.md
+    02-implementation.md
+    03-final.md
 ```
 
-Automatically scrubs all secrets, API keys, and connection strings before staging and pushing.
+Lead agent is command ko planning round, implementation round aur final handoff par automatically invoke karta hai:
+
+```powershell
+node tools/sync-knowledge-bank.mjs `
+  --project "Cartivo" `
+  --dir "D:\Work\my_cafa" `
+  --phase planning `
+  --round 01 `
+  --push
+```
+
+Final handoff ke liye `--phase final` use hota hai. Tool isolated temporary clone mein kaam karta hai, current hub checkout ko switch ya modify nahin karta, secret files exclude karta hai, metadata/content scrub karta hai, aur branch ko `origin` par push karta hai. `--dry-run` se branch name aur inventory pehle verify ki ja sakti hai.
+
+This makes the knowledge bank reusable across your five devices: every agent can fetch the project branch, read the latest dossier, and continue from recorded decisions and rounds without starting from a fresh approach.
 
 ---
 

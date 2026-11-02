@@ -1,8 +1,28 @@
 [
   {
     "Path": "Agents/README.md",
-    "SHA256": "332EF0A5117C647A92DA05B41566E173BF88BFB629D85F09793F695A8B57A659",
-    "Bytes": 18861
+    "SHA256": "D7B86C3776F29533363EBBD4430F0EDCC03BC3B93330B1079FB8AD7E233F28F2",
+    "Bytes": 19836
+  },
+  {
+    "Path": "Agents/shared/SUPER_AGENT_PROTOCOL.md",
+    "SHA256": "135E200C3DAA91D121AB680C184442F5600A8EEC6234965A6E67DBD6D6BE218C",
+    "Bytes": 8331
+  },
+  {
+    "Path": "Agents/tools/sync-knowledge-bank.mjs",
+    "SHA256": "97B6E4FB450C2639686779563E07FDB386C7C90DB675233F7B189B60AA681371",
+    "Bytes": 6375
+  },
+  {
+    "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
+    "SHA256": "6CEDBA3C55C019A6F9837F561497D0A3AE92275B6D153EB43D085F7E83D68D92",
+    "Bytes": 2695
+  },
+  {
+    "Path": "Agents/skills/project-knowledge-sync/SKILL.md",
+    "SHA256": "F3FDC23E7641027DF05B367EBAC73CF75D6DDAE152CB33E6D3923E2331B677D3",
+    "Bytes": 3134
   },
   {
     "Path": "Agents/install.ps1",

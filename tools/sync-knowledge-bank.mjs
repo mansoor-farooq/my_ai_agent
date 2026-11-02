@@ -1,102 +1,67 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
-import { execSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 
 const args = process.argv.slice(2);
-const projectIdx = args.indexOf('--project');
-const dirIdx = args.indexOf('--dir');
-const pushFlag = args.includes('--push');
-
-const projectName = projectIdx !== -1 ? args[projectIdx + 1] : 'sample-project';
-const projectDir = dirIdx !== -1 ? path.resolve(args[dirIdx + 1]) : process.cwd();
+const value = (flag, fallback = '') => { const i = args.indexOf(flag); return i >= 0 && args[i + 1] ? args[i + 1] : fallback; };
+const projectDir = path.resolve(value('--dir', process.cwd()));
+const projectName = value('--project', path.basename(projectDir));
+const phase = value('--phase', 'planning');
+const safePhase = phase.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '').slice(0, 32) || 'planning';
+const round = value('--round', new Date().toISOString().replace(/[:.]/g, '-'));
+const shouldPush = args.includes('--push');
+const dryRun = args.includes('--dry-run');
+if (!fs.existsSync(projectDir)) throw new Error(`Project directory does not exist: ${projectDir}`);
 
 const hubDir = path.resolve(import.meta.dirname, '..');
-const dossiersDir = path.join(hubDir, 'shared', 'knowledge', 'datasets', 'project-dossiers');
+const slug = projectName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48) || 'project';
+const branch = `knowledge/${slug}`;
+const safeRound = round.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '').slice(0, 80) || 'round';
+function git(gitArgs, cwd, allowFailure = false) { const result = spawnSync('git', gitArgs, { cwd, encoding: 'utf8', windowsHide: true }); if (result.status !== 0 && !allowFailure) throw new Error((result.stderr || result.stdout || 'git failed').trim()); return result; }
+function hasGitRef(ref, cwd = hubDir) { return git(['rev-parse', '--verify', ref], cwd, true).status === 0; }
 
-fs.mkdirSync(dossiersDir, { recursive: true });
-
-// Secret and token scrubbers
+const SECRET_FILES = /(^|[\\/])(\.env(?:\..*)?|.*\.(pem|key|p12|pfx|secret|credentials?|token))$/i;
 const SECRET_PATTERNS = [
-  /AIza[0-9A-Za-z-_]{35}/g,
-  /sk-[a-zA-Z0-9]{20,}/g,
-  /ghp_[a-zA-Z0-9]{30,}/g,
-  /(?:password|passwd|pwd|secret|apiKey|api_key|token)\s*[:=]\s*["']?([^\s"';]+)["']?/gi,
-  /postgres:\/\/[^@]+@/g,
-  /mysql:\/\/[^@]+@/g,
-  /mongodb(?:\+srv)?:\/\/[^@]+@/g
+  /AIza[0-9A-Za-z_-]{35}/g,
+  /(?:sk|ghp|github_pat)_[A-Za-z0-9_-]{16,}/g,
+  /Bearer\s+[A-Za-z0-9._~+/=-]+/gi,
+  /((?:password|passwd|pwd|secret|apiKey|api_key|access[_-]?token|refresh[_-]?token|authorization)\s*[:=]\s*["']?)([^\s"';,}]+)/gi,
+  /(postgres|mysql|mongodb(?:\+srv)?:\/\/)[^\s"']+/gi,
 ];
+function sanitize(raw) { let result = raw; for (const pattern of SECRET_PATTERNS) result = result.replace(pattern, (...m) => (m.length > 2 && typeof m[1] === 'string') ? `${m[1]}[REDACTED_SECRET]` : '[REDACTED_SECRET]'); return result; }
+function shouldSkip(relative) { return SECRET_FILES.test(relative) || /(^|[\\/])(node_modules|\.git|build|dist|coverage|\.next|\.dart_tool)([\\/]|$)/i.test(relative); }
+function walk(dir, relative = '') { const output = []; for (const entry of fs.readdirSync(dir, { withFileTypes: true })) { const child = path.join(relative, entry.name); if (shouldSkip(child)) continue; const absolute = path.join(dir, entry.name); if (entry.isDirectory()) output.push(...walk(absolute, child)); else output.push(child.replaceAll(path.sep, '/')); if (output.length >= 20000) break; } return output; }
+function readSafe(relative) { if (shouldSkip(relative)) return ''; try { const full = path.join(projectDir, relative); const stat = fs.statSync(full); if (!stat.isFile() || stat.size > 200_000) return ''; return sanitize(fs.readFileSync(full, 'utf8').slice(0, 20_000)); } catch { return ''; } }
 
-function sanitizeContent(raw) {
-  let cleaned = raw;
-  for (const pattern of SECRET_PATTERNS) {
-    cleaned = cleaned.replace(pattern, (match, p1) => {
-      if (p1) return match.replace(p1, '[REDACTED_SECRET]');
-      return '[REDACTED_SECRET]';
-    });
-  }
-  return cleaned;
-}
+const files = walk(projectDir);
+const preferred = files.filter((file) => /(^|\/)(AGENTS?\.md|GEMINI.*\.md|README.*\.md|PROJECT_.*\.md|WORKSTYLE\.md|SCHEMA.*\.md|ARCHITECTURE.*\.md|package\.json|pubspec\.yaml|pyproject\.toml|Cargo\.toml|go\.mod|tsconfig.*\.json)$/i.test(file));
+const sourceFiles = [...new Set(preferred)].slice(0, 80);
+const sections = sourceFiles.map((relative) => { const content = readSafe(relative); return content ? `### Source: ${relative}\n\n\`\`\`text\n${content}\n\`\`\`\n` : ''; }).filter(Boolean);
+const tree = files.slice(0, 20000).map((file) => `- ${file}`).join('\n');
+const capturedAt = new Date().toISOString();
+const dossier = `# Project Knowledge Dossier: ${projectName}\n\n- Captured: ${capturedAt}\n- Phase: ${safePhase}\n- Round: ${round}\n- Sanitized: yes\n- Source path: omitted from stored dossier\n\n## Source inventory\n\n${tree || '- No readable files found.'}\n\n## Verified project instructions and entry metadata\n\n${sections.join('\n') || '- No approved metadata files found.'}\n\n## Agent contract\n\nThis dossier is historical project context. Read the current repository and project instructions before changing code. Preserve existing routes, APIs, data contracts, permissions, state transitions and tests unless the owner explicitly changes them.\n`;
+const metadata = JSON.stringify({ project: projectName, branch, phase: safePhase, round, capturedAt, fileCount: files.length, sourceFiles: sourceFiles.length, secrets: 'scrubbed-or-excluded' }, null, 2) + '\n';
+if (dryRun) { console.log(JSON.stringify({ project: projectName, branch, phase, round, fileCount: files.length, sourceFiles: sourceFiles.length, pushed: false, dryRun: true })); process.exit(0); }
 
-console.log(`[Knowledge Sync] Harvesting project '${projectName}' from '${projectDir}'...`);
-
-const candidateFiles = [
-  'PROJECT_FLOWS.md',
-  'WORKSTYLE.md',
-  'SCHEMA.md',
-  'ARCHITECTURE.md',
-  'README.md',
-  'package.json'
-];
-
-let collectedSections = [];
-
-if (fs.existsSync(projectDir)) {
-  for (const file of candidateFiles) {
-    const fullPath = path.join(projectDir, file);
-    if (fs.existsSync(fullPath)) {
-      try {
-        const content = fs.readFileSync(fullPath, 'utf8');
-        const sanitized = sanitizeContent(content.slice(0, 5000));
-        collectedSections.push(`### Source: ${file}\n\n\`\`\`markdown\n${sanitized}\n\`\`\`\n`);
-      } catch (err) {
-        console.warn(`[Knowledge Sync] Could not read ${file}: ${err.message}`);
-      }
-    }
-  }
-}
-
-const dossierPath = path.join(dossiersDir, `${projectName}.md`);
-const dossierContent = `# Project Knowledge Dossier: ${projectName}
-
-- **Captured Date**: ${new Date().toISOString()}
-- **Origin**: ${projectName}
-- **Sanitized Status**: SECRETS_SCRUBBED (Production Safe)
-
----
-
-## 1. Architectural Summary & Patterns
-
-${collectedSections.length > 0 ? collectedSections.join('\n\n') : '*No matching project instruction files found.*'}
-
----
-
-## 2. Invariants & Lessons Learned
-- Auto-harvested from Antigravity session.
-- Safe for cross-agent consumption and multi-agent training.
-`;
-
-fs.writeFileSync(dossierPath, dossierContent, 'utf8');
-console.log(`[Knowledge Sync] Saved sanitized dossier to ${dossierPath}`);
-
-// If --push requested and git is initialized
-if (pushFlag) {
-  try {
-    console.log('[Knowledge Sync] Staging and pushing to private Git origin...');
-    execSync('git add shared/knowledge/datasets/project-dossiers', { cwd: hubDir, stdio: 'inherit' });
-    execSync(`git commit -m "chore(knowledge): harvest sanitized dossier for ${projectName}"`, { cwd: hubDir, stdio: 'inherit' });
-    execSync('git push origin main', { cwd: hubDir, stdio: 'inherit' });
-    console.log('[Knowledge Sync] Git push complete.');
-  } catch (err) {
-    console.warn(`[Knowledge Sync] Git push skipped or failed: ${err.message}`);
-  }
+const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'agent-knowledge-'));
+const worktree = path.join(tempRoot, 'repo');
+try {
+  git(['clone', '--no-hardlinks', hubDir, worktree], tempRoot);
+  git(['fetch', 'origin', 'main', branch], worktree, true);
+  const base = hasGitRef(`origin/${branch}`, worktree) ? `origin/${branch}` : (hasGitRef('origin/main', worktree) ? 'origin/main' : 'HEAD');
+  git(['checkout', '--detach', base], worktree);
+  const destination = path.join(worktree, 'shared', 'knowledge', 'project-branches', slug);
+  const roundsDir = path.join(destination, 'rounds');
+  fs.mkdirSync(roundsDir, { recursive: true });
+  fs.writeFileSync(path.join(destination, 'PROJECT_DOSSIER.md'), dossier, 'utf8');
+  fs.writeFileSync(path.join(destination, 'manifest.json'), metadata, 'utf8');
+  fs.writeFileSync(path.join(roundsDir, `${safeRound}-${safePhase}.md`), dossier, 'utf8');
+  git(['add', path.relative(worktree, destination)], worktree);
+  if (!git(['status', '--short'], worktree).stdout.trim()) { console.log(JSON.stringify({ project: projectName, branch, phase, round, changed: false, pushed: false })); process.exit(0); }
+  git(['commit', '-m', `knowledge: ${slug} ${phase} ${safeRound}`], worktree);
+  if (shouldPush) git(['push', 'origin', `HEAD:refs/heads/${branch}`], worktree);
+  console.log(JSON.stringify({ project: projectName, branch, phase, round, changed: true, pushed: shouldPush, fileCount: files.length, sourceFiles: sourceFiles.length }));
+} finally {
+  fs.rmSync(tempRoot, { recursive: true, force: true });
 }

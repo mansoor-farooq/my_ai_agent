@@ -38,7 +38,7 @@ When harvesting knowledge from a project:
    - Architecture Stack & Justification
    - Core Schemas & Entity Relationships
    - Key Bugs Solved & Lessons Learned
-4. SYNC: Run `node tools/sync-knowledge-bank.mjs --export` to commit and push to your private knowledge repo.
+4. SYNC: Run `node tools/sync-knowledge-bank.mjs --project ... --dir ... --phase ... --round ... --push` to commit and push only the product knowledge branch in your private knowledge repo.
 ```
 
 ---
@@ -48,7 +48,7 @@ When harvesting knowledge from a project:
 Run the bundled sync tool from your agents hub:
 
 ```bash
-node tools/sync-knowledge-bank.mjs --project "project-slug" --dir "C:\Path\To\ClientProject"
+node tools/sync-knowledge-bank.mjs --project "project-slug" --dir "C:\Path\To\ClientProject" --phase planning --round 01 --push
 ```
 
-The script automatically validates against secrets, creates a clean dossier under `shared/knowledge/datasets/project-dossiers/`, and updates the global conversation and dossier indexes.
+The script excludes credential files, scrubs secrets, creates a consolidated dossier plus a round snapshot under `shared/knowledge/project-branches/<project-slug>/`, and pushes only `knowledge/<project-slug>`. Use `--phase implementation` and `--phase final` for later rounds; use `--dry-run` before a push when needed.

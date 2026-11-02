@@ -125,9 +125,12 @@ Output a high-fidelity visual layout wireframe before writing any frontend code:
 
 ## 6. Project Knowledge Bank & Auto-Sync (`my_ai_agent`)
 
-1. **Context Memory vs Raw RAG**: Hierarchical structured dossiers (`PROJECT_FLOWS.md`, `WORKSTYLE.md`) provide 100% accurate recall without token shredding or hallucinated vector snippets.
-2. **Automatic Secret-Scrubbed Sync**:
-   ```bash
-   node tools/sync-knowledge-bank.mjs --project "project-name" --dir "C:\Path\To\Project" --push
+1. **Context Memory vs Raw RAG**: Hierarchical structured dossiers (`PROJECT_FLOWS.md`, `WORKSTYLE.md`) provide stable recall without token shredding or hallucinated vector snippets.
+2. **Per-project branch**: Every product gets `knowledge/<project-slug>`. The hub `main` branch is not used as a scratchpad.
+3. **Round history**: The Lead agent syncs `planning`, `implementation` and `final` rounds to the same project branch. `PROJECT_DOSSIER.md` stays current and `rounds/` keeps the historical trail.
+4. **Automatic secret-scrubbed sync**:
+   ```powershell
+   node tools/sync-knowledge-bank.mjs --project "project-name" --dir "C:\Path\To\Project" --phase planning --round 01 --push
    ```
-   Scorches API keys, passwords, and tokens, formatting clean architectural learnings and syncing them to `https://github.com/mansoor-farooq/my_ai_agent.git`.
+   The tool excludes credential files, scrubs keys/tokens/connection strings, creates an isolated temporary clone, commits the sanitized dossier, and pushes only `knowledge/<project-slug>`.
+5. **Zero manual branch work**: Agents choose the project slug, phase and round from the active task. Humans do not need to create, checkout or merge the knowledge branch. `--dry-run` is available for a non-mutating inventory check.
