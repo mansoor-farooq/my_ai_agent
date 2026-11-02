@@ -1,0 +1,133 @@
+# Super-Agent Autonomous Collaboration & Enterprise Protocol
+
+> Standard Operating Procedure (SOP) for Mansoor's Autonomous Lead + Specialized Sub-Agents System.
+
+---
+
+## 1. Super-Agent Topology & Hierarchy
+
+Normal agents work as a single prompt-and-code loop. A **Super-Agent** coordinates a virtual team of specialized autonomous subagents operating in parallel consensus:
+
+```
+                      +-----------------------------+
+                      |   Lead Super-Agent (Gemini) |
+                      |    - User Interaction       |
+                      |    - Socratic Interrogation |
+                      |    - Safety & Gate Enforcer |
+                      +--------------+--------------+
+                                     |
+               +---------------------+---------------------+
+               |                     |                     |
+     +---------v---------+ +---------v---------+ +---------v---------+
+     | Architecture Lead | | Enterprise Schema | |   UI Specialist   |
+     | (saas-architect)  | | (ERP / DB Expert) | | (Mansoor UI Spec) |
+     | - Folder Struct   | | - SAP/ERP Tables  | | - Two-Step Search |
+     | - Library Stack   | | - Foreign Keys    | | - Visual Wireframe|
+     | - ADR Contracts   | | - Ledger Balance  | | - Responsive Grid |
+     +---------+---------+ +---------+---------+ +---------+---------+
+               |                     |                     |
+               +---------------------+---------------------+
+                                     |
+                         [ ZERO-CODE GATE: LOCKED ]
+                                     |
+                       +-------------v-------------+
+                       |    Scoped Builder Agent   |
+                       | (DeepSeek/Gemini Subagent)|
+                       | - Minimal Diff Edits      |
+                       +-------------+-------------+
+                                     |
+                       +-------------v-------------+
+                       |      Verifier Agent       |
+                       | (live-web-auditor/Tests)  |
+                       | - Empirical Proof         |
+                       +---------------------------+
+```
+
+---
+
+## 2. Virtual Parallel Loop & Cross-Agent Consensus
+
+Subagents communicate using structured virtual envelopes before code execution:
+
+1. **`[ARCH-PROPOSAL]` (Architecture Lead)**:
+   - Proposes folder structure, approved libraries (verified via Google/`ctx7`), and bounded contexts.
+   - *Message to Peers*: *"Bhai log, ye proposed architecture aur folder structure hai. Schema Engineer aur UI specialist, review karo aur apne constraints batao."*
+2. **`[SCHEMA-SYNC]` (Enterprise Schema Architect)**:
+   - Reconstructs relational tables, primary/foreign keys, and double-entry invariants.
+   - *Message to UI Specialist*: *"Main ne `sales_order` aur `gl_entry` ka schema finalize kar diya hai. UI specialist, tum table headers aur action buttons is contract ke mutabiq arrange karo."*
+3. **`[UI-BLUEPRINT]` (UI Specialist)**:
+   - Generates the Two-Step Visual Wireframe Blueprint directly in chat for user confirmation.
+   - *Message to Architect & User*: *"Maine schema ke mutabiq UI wireframe bana diya hai. Lead aur User, visual check karo taake layout lock ho sake."*
+4. **`[ZERO-CODE GATE]`**:
+   - Implementation code generation is strictly forbidden until user and agents give formal sign-off.
+
+---
+
+## 3. Socratic Grilling & Plan Correction (Claude Style)
+
+Before agreeing to an implementation plan, the Lead Agent probes across 4 critical pillars:
+
+1. **Boundary & Authorization**: Who can touch this entity? What are they strictly forbidden from seeing? Multi-tenant isolation (`organization_id`).
+2. **State Transitions**: What is the complete lifecycle (Draft -> Pending Review -> Approved -> Posted -> Cancelled)? Can it transition backwards?
+3. **Concurrency & Failure**: What happens on duplicate submissions? Idempotency tokens (`idempotency_key`) and optimistic locking (`row_version`).
+4. **Financial & Numerical Precision**: Monetary values must use `DECIMAL(19, 4)` (never float). Stock movements must be immutable ledger journals.
+
+### Constructive Plan Correction
+When a user suggests an anti-pattern (e.g. updating balance columns directly or omitting tenant filters):
+- The agent actively pushes back: *"Aapka approach initial testing ke liye theek lagta hai, lekin production mein ye problem create karega. Industry standard approach ye hai..."*
+- Offers Option A (Recommended) vs Option B with trade-offs.
+
+---
+
+## 4. Enterprise ERP Reverse Engineering Standards
+
+When designing enterprise systems, never invent schemas from scratch. Benchmark against industry standards:
+
+### A. SAP S/4HANA Reference Tables
+- **Financials (FI/CO)**: `BKPF` (Accounting Document Header), `BSEG` (Document Line Items). Invariant: $\sum \text{Debit} = \sum \text{Credit}$.
+- **Sales & Distribution (SD)**: `VBAK` (Sales Order Header), `VBAP` (Sales Order Line Items), `VBRK`/`VBRP` (Billing).
+- **Materials Management (MM)**: `MARA` (Material Master), `MARC` (Plant Data), `EKKO`/`EKPO` (Purchase Orders), `MSEG` (Stock Movement Journals).
+
+### B. ERPNext Reference Architecture
+- **DocStatus Life-Cycle**: `0 = Draft`, `1 = Submitted` (Immutable), `2 = Cancelled` (Reversible entries).
+- **Ledger Invariants**: Financial impact -> `tabGL Entry`; Inventory impact -> `tabStock Ledger Entry`.
+
+---
+
+## 5. Two-Step UI Search & Visual Wireframe Blueprint
+
+### Step 1: Search & Pattern Discovery
+- Extract visual intent, design tokens, layout hierarchy, and responsive grid from enterprise benchmarks.
+
+### Step 2: Visual Blueprint Output in Chat (Pre-Code Verification)
+Output a high-fidelity visual layout wireframe before writing any frontend code:
+
+```
++------------------------------------------------------------------------------------+
+|  [Logo] ERP Nexus | Sales Orders > SO-2026-0891              [Search...] [Admin v] |
++------------------------------------------------------------------------------------+
+| [Summary Cards]                                                                    |
+|  +--------------------+ +--------------------+ +--------------------+              |
+|  | Total Net Value    | | Delivery Status    | | Payment Status     |              |
+|  | $148,250.00 USD    | | PARTIALLY SHIPPED  | | UNPAID (Due 15d)   |              |
+|  +--------------------+ +--------------------+ +--------------------+              |
++------------------------------------------------------------------------------------+
+| [Action Bar] [ + Add Item ] [ Post Document ] [ Print PDF ]             [ Filter v]|
++------------------------------------------------------------------------------------+
+| Line Item Table                                                                    |
+| [#]  [Item Code]     [Description]       [Qty]  [UoM]  [Unit Price]  [Total USD]   |
+| 01   MAT-10029       Ball Bearing 50mm   500    EA     $42.00        $21,000.00    |
+| 02   MAT-40912       Hydraulic Seal      1,200  EA     $18.50        $22,200.00    |
++------------------------------------------------------------------------------------+
+```
+
+---
+
+## 6. Project Knowledge Bank & Auto-Sync (`my_ai_agent`)
+
+1. **Context Memory vs Raw RAG**: Hierarchical structured dossiers (`PROJECT_FLOWS.md`, `WORKSTYLE.md`) provide 100% accurate recall without token shredding or hallucinated vector snippets.
+2. **Automatic Secret-Scrubbed Sync**:
+   ```bash
+   node tools/sync-knowledge-bank.mjs --project "project-name" --dir "C:\Path\To\Project" --push
+   ```
+   Scorches API keys, passwords, and tokens, formatting clean architectural learnings and syncing them to `https://github.com/mansoor-farooq/my_ai_agent.git`.
