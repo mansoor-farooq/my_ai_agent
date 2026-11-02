@@ -216,6 +216,8 @@ Final handoff ke liye `--phase final` use hota hai. Tool isolated temporary clon
 
 This makes the knowledge bank reusable across your five devices: every agent can fetch the project branch, read the latest dossier, and continue from recorded decisions and rounds without starting from a fresh approach.
 
+The complete architecture audit and ultra-autonomous upgrade roadmap is in [ULTRA_AUTONOMOUS_AUDIT.md](ULTRA_AUTONOMOUS_AUDIT.md).
+
 ---
 
 ## 8. Current production manifest and count clarification
