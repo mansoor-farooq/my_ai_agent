@@ -189,10 +189,10 @@ Agents virtual parallel loop mein communicate karte hain:
 
 ## 7. Knowledge Bank Auto-Sync: project branches and rounds
 
-Knowledge sync ab `main` par direct push nahin karta. Har project/product ke liye private branch `knowledge/<project-slug>` banti hai. Planning, implementation aur final rounds usi branch par timestamped files ke taur par append hote hain:
+Knowledge sync ab `main` par direct push nahin karta. Har contributor aur project ke liye private branch `knowledge/<contributor>/<project-slug>-<stable-id>` banti hai. Planning, implementation aur final rounds usi branch par timestamped files ke taur par append hote hain:
 
 ```text
-knowledge/cartivo/
+knowledge/ali/cartivo-a19f2c/
   PROJECT_DOSSIER.md       # latest consolidated context
   manifest.json            # phase, round aur scrubbed inventory metadata
   rounds/
@@ -206,6 +206,8 @@ Lead agent is command ko planning round, implementation round aur final handoff 
 ```powershell
 node tools/sync-knowledge-bank.mjs `
   --project "Cartivo" `
+  --contributor "Ali" `
+  --git-url "https://github.com/example/cartivo.git" `
   --dir "D:\Work\my_cafa" `
   --phase planning `
   --round 01 `
@@ -214,7 +216,7 @@ node tools/sync-knowledge-bank.mjs `
 
 Final handoff ke liye `--phase final` use hota hai. Tool isolated temporary clone mein kaam karta hai, current hub checkout ko switch ya modify nahin karta, secret files exclude karta hai, metadata/content scrub karta hai, aur branch ko `origin` par push karta hai. `--dry-run` se branch name aur inventory pehle verify ki ja sakti hai.
 
-This makes the knowledge bank reusable across your five devices: every agent can fetch the project branch, read the latest dossier, and continue from recorded decisions and rounds without starting from a fresh approach.
+This makes the knowledge bank reusable across your five devices: every agent can fetch the contributor/project branch, read the latest dossier, and continue from recorded decisions and rounds without starting from a fresh approach. The safe export contract is documented in `AGENT_EXPORT_POLICY.md` and `shared/knowledge/PROJECT_MEMORY_SCHEMA.md`.
 
 The complete architecture audit and ultra-autonomous upgrade roadmap is in [ULTRA_AUTONOMOUS_AUDIT.md](ULTRA_AUTONOMOUS_AUDIT.md).
 

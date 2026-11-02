@@ -38,7 +38,7 @@ When harvesting knowledge from a project:
    - Architecture Stack & Justification
    - Core Schemas & Entity Relationships
    - Key Bugs Solved & Lessons Learned
-4. SYNC: Run `node tools/sync-knowledge-bank.mjs --project ... --dir ... --phase ... --round ... --push` to commit and push only the product knowledge branch in your private knowledge repo.
+4. SYNC: Run `node tools/sync-knowledge-bank.mjs --project ... --contributor ... --git-url ... --dir ... --phase ... --round ... --push` to commit and push only the contributor/project knowledge branch in your private knowledge repo.
 ```
 
 ---
@@ -48,7 +48,7 @@ When harvesting knowledge from a project:
 Run the bundled sync tool from your agents hub:
 
 ```bash
-node tools/sync-knowledge-bank.mjs --project "project-slug" --dir "C:\Path\To\ClientProject" --phase planning --round 01 --push
+node tools/sync-knowledge-bank.mjs --project "project-slug" --contributor "contributor-name" --git-url "https://github.com/org/project.git" --dir "C:\Path\To\ClientProject" --phase planning --round 01 --push
 ```
 
-The script excludes credential files, scrubs secrets, creates a consolidated dossier plus a round snapshot under `shared/knowledge/project-branches/<project-slug>/`, and pushes only `knowledge/<project-slug>`. Use `--phase implementation` and `--phase final` for later rounds; use `--dry-run` before a push when needed.
+The script excludes credential files, scrubs secrets, captures approved project-memory files such as `PLAN.md`, `FLOW.md`, `DECISIONS.md`, `EVIDENCE.md`, `RESEARCH.md` and `PROMPT_LEDGER.md`, creates a consolidated dossier plus a round snapshot under `shared/knowledge/project-branches/<contributor>/<project-slug>-<stable-id>/`, and pushes only that contributor/project branch. Use `--phase implementation` and `--phase final` for later rounds; use `--dry-run` before a push when needed. Raw hidden reasoning, credentials and unrelated data are never part of the export contract.

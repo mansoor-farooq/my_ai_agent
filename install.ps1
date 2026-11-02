@@ -63,6 +63,12 @@ try {
       }
     }
 
+    $runtimeDestination = Join-Path $env:USERPROFILE '.gemini\agent-context\agent-hub-tools'
+    New-Item -ItemType Directory -Path $runtimeDestination -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $hub 'tools\sync-knowledge-bank.mjs') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'AGENT_EXPORT_POLICY.md') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'shared\knowledge\PROJECT_MEMORY_SCHEMA.md') -Destination $runtimeDestination -Force
+
     # Install DeepSeek Hermes credentials and subagent runner bridge
     $hermesBridgeScript = Join-Path $hub 'subagents\deepseek-hermes\install-hermes-bridge.ps1'
     if (-not $SkipHermes -and (Test-Path -LiteralPath $hermesBridgeScript)) {
@@ -78,7 +84,7 @@ try {
     $contextNote = @"
 
 $marker
-For existing projects, read %USERPROFILE%\.gemini\agent-context\datasets\WORKSTYLE.md and PROJECT_FLOWS.md, then read DEEPSEEK_HERMES_HANDOFF.md when delegating to Hermes. Read the relevant summary in codex-memory. Search codex-conversation-index.json and conversation-index.json in that context folder for matching chats. Read their transcripts when needed. Treat old chats as history and verify current files before editing.
+For existing projects, read %USERPROFILE%\.gemini\agent-context\datasets\WORKSTYLE.md and PROJECT_FLOWS.md, then read DEEPSEEK_HERMES_HANDOFF.md when delegating to Hermes. Read the relevant summary in codex-memory. Search codex-conversation-index.json and conversation-index.json in that context folder for matching chats. Read their transcripts when needed. Treat old chats as history and verify current files before editing. The project-memory sync tool is installed under %USERPROFILE%\.gemini\agent-context\agent-hub-tools and must follow AGENT_EXPORT_POLICY.md.
 "@
     if (Test-Path -LiteralPath $instructions) {
       $current = Get-Content -LiteralPath $instructions -Raw
@@ -102,6 +108,11 @@ For existing projects, read %USERPROFILE%\.gemini\agent-context\datasets\WORKSTY
       Write-Output "Installed shared chat context: $knowledge"
     }
     Install-Datasets $knowledge
+    $runtimeDestination = Join-Path $target 'agent-hub-tools'
+    New-Item -ItemType Directory -Path $runtimeDestination -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $hub 'tools\sync-knowledge-bank.mjs') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'AGENT_EXPORT_POLICY.md') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'shared\knowledge\PROJECT_MEMORY_SCHEMA.md') -Destination $runtimeDestination -Force
     $skills = Join-Path $target 'skills'
     if (Test-Path -LiteralPath $skills) {
       Write-Output "SKIP existing skills: $skills"

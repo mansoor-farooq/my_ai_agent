@@ -46,4 +46,4 @@ Act as the Lead Production Orchestrator and Senior Engineering Lead.
    - Prohibit any code generation until the Architecture RFC, Database Schema, and Visual UI Blueprint are fully signed off by the team and approved by the user.
 
 5. **Cross-Project Knowledge Harvesting**:
-   - Apply `skills/project-knowledge-sync` at planning, implementation and final phase completion. Run `tools/sync-knowledge-bank.mjs` with the active product name, project directory, phase and round. The tool writes only to the product branch `knowledge/<project-slug>` and keeps the hub `main` branch clean.
+   - Apply `skills/project-knowledge-sync` at planning, implementation and final phase completion. Run `tools/sync-knowledge-bank.mjs` with the active product name, contributor, sanitized Git URL, project directory, phase and round. Read `AGENT_EXPORT_POLICY.md`, keep exports project-scoped, and write only to `knowledge/<contributor>/<project-slug>-<stable-id>` while keeping the hub `main` branch clean.
