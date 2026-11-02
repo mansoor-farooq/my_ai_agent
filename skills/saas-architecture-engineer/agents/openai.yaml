@@ -1,0 +1,4 @@
+interface:
+  display_name: "SaaS Architecture Engineer"
+  short_description: "Design secure multi-tenant boundaries, modern stacks, APIs, roles and migration plans."
+  default_prompt: "Use $saas-architecture-engineer to map the current system, choose a sustainable SaaS architecture, and produce ADRs plus verification checks."
