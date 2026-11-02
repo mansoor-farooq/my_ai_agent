@@ -5,13 +5,14 @@ description: Production-grade autonomous deep search and secondary verification 
 
 # Autonomous Deep Research & Secondary Verification Engine
 
-Use this skill whenever building production features, designing user interfaces (minimalism, glassmorphism, polymorphism, high-density ERP), selecting frameworks, or evaluating architectural patterns.
+Use this skill whenever building production features, designing user interfaces (minimalism, glassmorphism, polymorphism, high-density ERP), selecting frameworks, researching backend module patterns, or evaluating architectural patterns.
 
 ## Core Philosophy
 
 1. **Autonomous Investigation over User Hand-Holding** — When a user gives a brief direction (e.g. *"minimalism UI chahiye"*, *"glassmorphism effect banao"*, *"event-driven order booking"*), do NOT ask the user for examples, CSS snippets, or references. The agent autonomously searches, analyzes, and extracts industry benchmarks.
 2. **Secondary Verification via Multi-Option Synthesis** — Never settle on a single naive output. Always produce secondary verification: synthesize 2-3 validated options with distinct trade-offs (e.g. Pure Minimalist vs Frosted Glass Polymorphic vs Dynamic Bento).
-3. **Evidence-Based Visual Blueprints** — Deliver an ASCII visual wireframe + exact token specifications before writing production code.
+3. **Evidence-Based Decision Briefs** — For UI, backend and architecture work, deliver a source-backed recommendation, alternatives, trade-offs and a visual wireframe or module/data-flow diagram before implementation when the user asked for inspiration or a new direction.
+4. **Approval then execution** — If the user requested inspiration/options, wait for approval of the recommended direction before editing. After approval, proceed with scoped implementation and verification. For already-scoped fixes, do not add an unnecessary approval pause.
 
 ---
 
