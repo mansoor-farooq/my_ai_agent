@@ -14,7 +14,7 @@
 > A private, multi-agent engineering workspace for turning a clear brief into researched plans, careful implementation, and verifiable outcomes.
 
 <p align="center">
-  <a href="skills/"><img src="https://img.shields.io/badge/CAPABILITIES-49%20%2B%20REPAIR-146C94?style=for-the-badge&labelColor=101820" alt="49 capabilities plus repair utility"></a>
+<a href="skills/"><img src="https://img.shields.io/badge/CAPABILITIES-79%20%2B%20REPAIR-146C94?style=for-the-badge&labelColor=101820" alt="79 capabilities plus repair utility"></a>
   <a href="agents/Antigravity/custom-agents/"><img src="https://img.shields.io/badge/SPECIALISTS-6-3D7A78?style=for-the-badge&labelColor=101820" alt="6 specialized agents"></a>
   <a href="shared/control-plane/"><img src="https://img.shields.io/badge/CONTROL-LEAST%20PRIVILEGE-C59B57?style=for-the-badge&labelColor=101820" alt="Least privilege control plane"></a>
 </p>
@@ -29,7 +29,8 @@
   | Layer | Purpose |
   | :--- | :--- |
   | **Agent orchestration** | Routes work through architecture, schema, UI, builder and verifier roles. |
-  | **Research & reconstruction** | Finds authoritative references and maps existing code before proposing changes. |
+| **Research & reconstruction** | Finds authoritative references and maps existing code before proposing changes. |
+| **.NET engineering** | 30 focused skills for architecture, ASP.NET Core, data, security, testing, operations and releases. |
   | **Project continuity** | Keeps plans, decisions, evidence and rounds in contributor-scoped knowledge branches. |
   | **Portable setup** | Installs the skills, specialist agents and approved context on Windows devices. |
   | **Provider bridge** | Supports optional DeepSeek Hermès execution with Gemini fallback. |
@@ -44,6 +45,7 @@
   3. [Research engine](#3-research--secondary-verification)
   4. [Agent architecture](#4-agent-architecture)
   5. [Skills inventory](#5-skills-inventory)
+  5a. [.NET engineering pack](#5a-net-engineering-pack)
   6. [Specialist agents](#6-specialist-agents)
   7. [Project knowledge](#7-project-knowledge)
   8. [Control plane](#8-control-plane)
@@ -221,6 +223,21 @@ Agents virtual parallel loop mein communicate karte hain:
 | 49 | `accidental-data-loss-prevention` | **Safety** | Guardrails against destructive commands and data drops. |
 | 50 | `skill-repair` | **Self-Healing** | Automatic detection and patching of corrupted agent manifests. |
 
+## 5a. .NET engineering pack — 30 specialist skills
+
+The new pack routes by project signals and task scope. It follows Microsoft's guidance that logical layers and physical deployment tiers are different concepts; start with a layered or modular monolith unless independent deployment/scaling needs justify distributed services. [Microsoft architecture guidance](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures)
+
+| Focus | Skills |
+| :--- | :--- |
+| **Architecture** | `dotnet-solution-architect`, `dotnet-three-tier-architecture`, `dotnet-clean-architecture`, `dotnet-modular-monolith`, `dotnet-domain-driven-design`, `dotnet-architecture-review` |
+| **Application & data** | `dotnet-aspnetcore-api`, `dotnet-efcore-data`, `dotnet-database-migrations`, `dotnet-dependency-injection`, `dotnet-openapi-contracts`, `dotnet-frontend-blazor-mvc` |
+| **Security & tenancy** | `dotnet-authentication-authorization`, `dotnet-secure-coding`, `dotnet-secrets-configuration`, `dotnet-multitenancy-data-isolation` |
+| **Testing & quality** | `dotnet-testing-strategy`, `dotnet-xunit-testing`, `dotnet-integration-testing`, `dotnet-cicd-quality-gates` |
+| **Operations & performance** | `dotnet-background-workers`, `dotnet-resilience-observability`, `dotnet-performance-profiling`, `dotnet-caching`, `dotnet-containerization-deployment`, `dotnet-release-readiness` |
+| **Integration & evolution** | `dotnet-messaging-integration`, `dotnet-domain-events-cqrs`, `dotnet-upgrades-dependency-health`, `dotnet-legacy-modernization` |
+
+For every .NET task, load `dotnet-solution-architect` plus only the skills matching the changed area. Examples: EF schema work loads data + migration + integration-testing; a new API loads API + auth + OpenAPI + testing; release readiness loads security + deployment + CI + release skills.
+
 ---
 
 ## 6. Specialist agents (`agents/Antigravity/custom-agents/`)
@@ -283,7 +300,7 @@ GitHub rulesets should protect `main`, block force-push, and target `knowledge/*
 
 ## 8.1 Inventory note
 
-The current hub contains **50 skill folders**: **49 core capability skills plus `skill-repair` as the self-healing utility**. It contains **6 custom agents**, including `enterprise-schema-architect`, `production-orchestrator`, `saas-architect`, `mansoor-ui-specialist`, `live-web-auditor`, and `omniroute-gateway-operator`.
+The current hub inventory now contains **80 skill folders**: **79 capability skills plus `skill-repair` as the self-healing utility**. This includes the new 30-skill .NET engineering pack. It contains **6 custom agents**, including `enterprise-schema-architect`, `production-orchestrator`, `saas-architect`, `mansoor-ui-specialist`, `live-web-auditor`, and `omniroute-gateway-operator`.
 
 The count is verified from the folders currently present in `skills/` and `agents/Antigravity/custom-agents/`. It is safer to describe this as an inventory verification than to claim that every production behavior has been exhaustively tested on every destination PC.
 
@@ -341,7 +358,7 @@ Reusable context is stored in `shared/knowledge/datasets/` and is installed to `
 
 ## 12. Verification record
 
-- 50 skill folders and 6 custom agent definitions were counted from the current E: hub.
+- 80 skill folders and 6 custom agent definitions are the documented inventory after adding the .NET pack.
 - DeepSeek Hermes provider files in the hub match the current local Hermes setup by size and SHA-256; secret values were not printed.
 - Native Antigravity snapshot contains 56 app conversations, 4 IDE stores, 56 sidebar summary rows and 18 project definitions.
 - Native sidebar SQLite summary passes `integrity_check` and contains 56 conversation rows.

@@ -19,6 +19,13 @@ skills:
   - skills/interactive-grill-consultant
   - skills/project-knowledge-sync
   - skills/autonomous-deep-researcher
+  - skills/dotnet-solution-architect
+  - skills/dotnet-three-tier-architecture
+  - skills/dotnet-clean-architecture
+  - skills/dotnet-aspnetcore-api
+  - skills/dotnet-efcore-data
+  - skills/dotnet-testing-strategy
+  - skills/dotnet-secure-coding
 ---
 
 # System Prompt
@@ -47,3 +54,6 @@ Act as the Lead Production Orchestrator and Senior Engineering Lead.
 
 5. **Cross-Project Knowledge Harvesting**:
    - Apply `skills/project-knowledge-sync` at planning, implementation and final phase completion. Run `tools/sync-knowledge-bank.mjs` with the active product name, contributor, sanitized Git URL, project directory, phase and round. Read `AGENT_EXPORT_POLICY.md`, keep exports project-scoped, and write only to `knowledge/<contributor>/<project-slug>-<stable-id>` while keeping the hub `main` branch clean.
+
+6. **.NET Engineering Capability Routing**:
+   - When the target repository uses `.sln`, `.csproj`, `.fsproj`, `global.json`, ASP.NET Core or EF Core, load `skills/dotnet-solution-architect` and the smallest relevant .NET skill subset from the README .NET catalogue. For layered work always inspect whether layers are logical or physically deployed tiers; do not default to microservices. For security, data migrations and production releases, load the corresponding specialist skill before proposing changes.
