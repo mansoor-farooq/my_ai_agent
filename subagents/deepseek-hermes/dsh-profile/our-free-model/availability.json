@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "at": 1793182075002,
+  "egress": {
+    "ip": "113.203.240.178"
+  },
+  "results": {
+    "beam-free": {
+      "state": "throttled",
+      "detail": "Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go",
+      "latencyMs": 689,
+      "at": 1793182073908
+    },
+    "flint-40b-free": {
+      "state": "throttled",
+      "detail": "Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go",
+      "latencyMs": 738,
+      "at": 1793182073957
+    },
+    "nemotron-3.5-super-vl-free": {
+      "state": "throttled",
+      "detail": "Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go",
+      "latencyMs": 224,
+      "at": 1793182074181
+    },
+    "mimo-v2.6-flash-free": {
+      "state": "throttled",
+      "detail": "Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go",
+      "latencyMs": 851,
+      "at": 1793182074759
+    },
+    "nemotron-3.5-lightning-free": {
+      "state": "throttled",
+      "detail": "Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go",
+      "latencyMs": 278,
+      "at": 1793182074459
+    },
+    "jev-1.13-free": {
+      "state": "throttled",
+      "detail": "Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go",
+      "latencyMs": 216,
+      "at": 1793182074675
+    },
+    "deepseek-v4.1-flash-free": {
+      "state": "throttled",
+      "detail": "Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go",
+      "latencyMs": 270,
+      "at": 1793182074945
+    },
+    "glm-5.3-flash-free": {
+      "state": "throttled",
+      "detail": "Free usage limit reached. Free models work in OpenCode (https://opencode.ai); subscribe to OpenCode Go to keep going: https://opencode.ai/go",
+      "latencyMs": 242,
+      "at": 1793182075001
+    }
+  }
+}

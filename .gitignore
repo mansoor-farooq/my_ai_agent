@@ -1,10 +1,14 @@
-# Secrets & Credentials
-.env
-.env.*
-*.key
+# Secrets & Credentials (General)
 *.pem
 *.secret
-*credentials*
+
+# Whitelist portable DeepSeek Hermes bridge in private repository
+!subagents/deepseek-hermes/.env
+!subagents/deepseek-hermes/gemini-pool.json
+!subagents/deepseek-hermes/dsh-profile/
+!subagents/deepseek-hermes/dsh-profile/**
+!subagents/deepseek-hermes/dsh-profile/.*
+
 
 # Large Native SQLite Profile Dumps (>50MB, PC local)
 shared/native-profile/

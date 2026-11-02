@@ -62,6 +62,12 @@ try {
       }
     }
 
+    # Install DeepSeek Hermes credentials and subagent runner bridge
+    $hermesBridgeScript = Join-Path $hub 'subagents\deepseek-hermes\install-hermes-bridge.ps1'
+    if (Test-Path -LiteralPath $hermesBridgeScript) {
+      & $hermesBridgeScript
+    }
+
     if ($RestoreNativeHistory) { & (Join-Path $hub 'restore-native-history.ps1') }
 
     $instructions = Join-Path $env:USERPROFILE '.gemini\GEMINI.md'
