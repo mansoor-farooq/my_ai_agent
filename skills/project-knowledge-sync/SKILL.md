@@ -52,3 +52,5 @@ node tools/sync-knowledge-bank.mjs --project "project-slug" --contributor "contr
 ```
 
 The script excludes credential files, scrubs secrets, captures approved project-memory files such as `PLAN.md`, `FLOW.md`, `DECISIONS.md`, `EVIDENCE.md`, `RESEARCH.md` and `PROMPT_LEDGER.md`, creates a consolidated dossier plus a round snapshot under `shared/knowledge/project-branches/<contributor>/<project-slug>-<stable-id>/`, and pushes only that contributor/project branch. Use `--phase implementation` and `--phase final` for later rounds; use `--dry-run` before a push when needed. Raw hidden reasoning, credentials and unrelated data are never part of the export contract.
+
+Before distribution, validate `shared/control-plane/agent-capability-manifest.json`. The recommended GitHub transport is a selected-repository GitHub App installation with short-lived installation tokens; never put an App private key or shared personal token in the hub.

@@ -220,6 +220,18 @@ This makes the knowledge bank reusable across your five devices: every agent can
 
 The complete architecture audit and ultra-autonomous upgrade roadmap is in [ULTRA_AUTONOMOUS_AUDIT.md](ULTRA_AUTONOMOUS_AUDIT.md).
 
+## 8. Recommended GitHub control plane
+
+For remote management, use the checked-in least-privilege control contract in `shared/control-plane/`. The recommended transport is a GitHub App installed only on the selected private knowledge repository. It should use repository metadata read, contents write for knowledge branches, and optional pull-request/actions read for evidence; it should not request administration access. App credentials stay outside this repository.
+
+Validate the local policy before distribution:
+
+```powershell
+node tools/validate-capability-manifest.mjs
+```
+
+GitHub rulesets should protect `main`, block force-push, and target `knowledge/**`. The local project repository is never reconfigured by the sidecar.
+
 ---
 
 ## 8. Current production manifest and count clarification

@@ -134,3 +134,5 @@ Output a high-fidelity visual layout wireframe before writing any frontend code:
    ```
    The tool excludes credential files, scrubs keys/tokens/connection strings, captures only approved project-memory metadata, creates an isolated temporary clone, commits the sanitized dossier, and pushes only the contributor/project branch.
 5. **Zero manual branch work**: Agents choose the project slug, phase and round from the active task. Humans do not need to create, checkout or merge the knowledge branch. `--dry-run` is available for a non-mutating inventory check.
+
+6. **Least-privilege control plane**: Use `shared/control-plane/agent-capability-manifest.json` as the local gate. GitHub transport is a selected-repository GitHub App installation, not a shared personal token. The manifest denies credentials, unrelated files, covert monitoring and raw hidden reasoning. Validate it with `node tools/validate-capability-manifest.mjs` before distribution.

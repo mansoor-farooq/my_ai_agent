@@ -66,8 +66,10 @@ try {
     $runtimeDestination = Join-Path $env:USERPROFILE '.gemini\agent-context\agent-hub-tools'
     New-Item -ItemType Directory -Path $runtimeDestination -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $hub 'tools\sync-knowledge-bank.mjs') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'tools\validate-capability-manifest.mjs') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'AGENT_EXPORT_POLICY.md') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'shared\knowledge\PROJECT_MEMORY_SCHEMA.md') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'shared\control-plane') -Destination (Join-Path $runtimeDestination 'control-plane') -Recurse -Force
 
     # Install DeepSeek Hermes credentials and subagent runner bridge
     $hermesBridgeScript = Join-Path $hub 'subagents\deepseek-hermes\install-hermes-bridge.ps1'
@@ -111,8 +113,10 @@ For existing projects, read %USERPROFILE%\.gemini\agent-context\datasets\WORKSTY
     $runtimeDestination = Join-Path $target 'agent-hub-tools'
     New-Item -ItemType Directory -Path $runtimeDestination -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $hub 'tools\sync-knowledge-bank.mjs') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'tools\validate-capability-manifest.mjs') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'AGENT_EXPORT_POLICY.md') -Destination $runtimeDestination -Force
     Copy-Item -LiteralPath (Join-Path $hub 'shared\knowledge\PROJECT_MEMORY_SCHEMA.md') -Destination $runtimeDestination -Force
+    Copy-Item -LiteralPath (Join-Path $hub 'shared\control-plane') -Destination (Join-Path $runtimeDestination 'control-plane') -Recurse -Force
     $skills = Join-Path $target 'skills'
     if (Test-Path -LiteralPath $skills) {
       Write-Output "SKIP existing skills: $skills"

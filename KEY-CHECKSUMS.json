@@ -1,13 +1,13 @@
 [
   {
     "Path": "Agents/README.md",
-    "SHA256": "5183BCD223FE264E7CA074A3A19532E6337C2B6D9A53D8223EEE2ECA2C7EDEE1",
-    "Bytes": 20220
+    "SHA256": "215738E0914F09CB1E3AC531DCB7534D31904F6B1E9AEF05ADA1B765B7BD6DCB",
+    "Bytes": 20953
   },
   {
     "Path": "Agents/shared/SUPER_AGENT_PROTOCOL.md",
-    "SHA256": "D3EB0867C05C6983EB5B1153FDF1AAFCA3437A4EEE22277CA039EBDCCF15C65D",
-    "Bytes": 8470
+    "SHA256": "9F47217ED527E2442288004575265918674A5EC81CB12113EF05579C1373C0B7",
+    "Bytes": 8860
   },
   {
     "Path": "Agents/tools/sync-knowledge-bank.mjs",
@@ -21,8 +21,8 @@
   },
   {
     "Path": "Agents/skills/project-knowledge-sync/SKILL.md",
-    "SHA256": "7FB91196675B95EE20969826956766C07AE6ED05C4E51F0CEBAD73285B2C0AA2",
-    "Bytes": 3519
+    "SHA256": "DE8F5E3DE8DB399D2461A98D799BE0A34F3EA0DFCD97907A3F2CDFA87D898EAC",
+    "Bytes": 3791
   },
   {
     "Path": "Agents/ULTRA_AUTONOMOUS_AUDIT.md",
@@ -45,9 +45,34 @@
     "Bytes": 1270
   },
   {
+    "Path": "Agents/tools/validate-capability-manifest.mjs",
+    "SHA256": "F9ECDD56397E3758347A2C2A364E4503F122C8A64BD452F5D0F7961B1B81BEB8",
+    "Bytes": 3313
+  },
+  {
+    "Path": "Agents/tools/validate-capability-manifest.test.mjs",
+    "SHA256": "875F39F99521F954D1AA26A2940470C106429B27CD706A36DBABBB2405865789",
+    "Bytes": 1286
+  },
+  {
+    "Path": "Agents/shared/control-plane/agent-capability-manifest.json",
+    "SHA256": "178FBE69A46A139A4EA0B75DCE435208ED3B4CCAD14D48BEAEB3290F72130D8E",
+    "Bytes": 1544
+  },
+  {
+    "Path": "Agents/shared/control-plane/README.md",
+    "SHA256": "F9EA016DF16B9DCA27C0392A529AEF47A6C3383F5D2D675656D59E536A2F881B",
+    "Bytes": 1420
+  },
+  {
+    "Path": "Agents/shared/control-plane/ADR-0001-github-app-control-plane.md",
+    "SHA256": "565F09723FFA0B314D9EEE46DF050F7A893BCC61C0D9911088423520BFA8BC3D",
+    "Bytes": 1834
+  },
+  {
     "Path": "Agents/install.ps1",
-    "SHA256": "9883654311B66745F46DFC20711E8BD00A2B5870233D3A9393ED0FA46CEC6701",
-    "Bytes": 7678
+    "SHA256": "D617129DBE34E51131FCC11EB388D1CC4CF8CDA4412994DBF9EF493CB293EDBE",
+    "Bytes": 8216
   },
   {
     "Path": "Agents/restore-native-history.ps1",
