@@ -14,7 +14,7 @@
 > A private, multi-agent engineering workspace for turning a clear brief into researched plans, careful implementation, and verifiable outcomes.
 
 <p align="center">
-<a href="skills/"><img src="https://img.shields.io/badge/CAPABILITIES-119%20%2B%20REPAIR-146C94?style=for-the-badge&labelColor=101820" alt="119 capabilities plus repair utility"></a>
+<a href="skills/"><img src="https://img.shields.io/badge/CAPABILITIES-124%20%2B%20REPAIR-146C94?style=for-the-badge&labelColor=101820" alt="124 capabilities plus repair utility"></a>
   <a href="agents/Antigravity/custom-agents/"><img src="https://img.shields.io/badge/SPECIALISTS-6-3D7A78?style=for-the-badge&labelColor=101820" alt="6 specialized agents"></a>
   <a href="shared/control-plane/"><img src="https://img.shields.io/badge/CONTROL-LEAST%20PRIVILEGE-C59B57?style=for-the-badge&labelColor=101820" alt="Least privilege control plane"></a>
 </p>
@@ -30,8 +30,9 @@
   | :--- | :--- |
   | **Agent orchestration** | Routes work through architecture, schema, UI, builder and verifier roles. |
 | **Research & reconstruction** | Finds authoritative references and maps existing code before proposing changes. |
+| **Distinctive UI & image assets** | Routes product-specific art direction, reference research, and optional image generation automatically. |
 | **.NET engineering** | 30 focused skills for architecture, ASP.NET Core, data, security, testing, operations and releases. |
-| **Backend & ML engineering** | 39 specialist skills for Node.js, Python APIs, PyTorch, datasets, training, evaluation, model serving and MLOps. |
+| **Backend & ML engineering** | 39 specialist skills for Node.js, Python APIs, PyTorch, datasets, training, evaluation, model serving and MLOps, plus shared threat modeling and clean-code standards. |
 | **Automatic team routing** | One manager selects global skills, consults architecture/UI profiles when relevant, and delegates task-scoped workers with contract handoffs and verification. |
   | **Project continuity** | Keeps plans, decisions, evidence and rounds in contributor-scoped knowledge branches. |
   | **Portable setup** | Installs the skills, specialist agents and approved context on Windows devices. |
@@ -77,7 +78,7 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity -Resto
 ```
 
 ### Ye Command Kya Karti Hai:
-1. **119 capability skills + 1 repair utility** ko `%USERPROFILE%\.gemini\config\skills` mein install karti hai.
+1. **124 capability skills + 1 repair utility** ko `%USERPROFILE%\.gemini\config\skills` mein install karti hai.
 2. **6 persistent custom-agent profiles** ko `%USERPROFILE%\.gemini\config\agents` mein register/update karti hai. Backend/ML worker roles are task-scoped manager invocations, not extra installed profiles.
 3. **DeepSeek Hermès Bridge** ko portable setup karti hai:
    - `subagents/deepseek-hermes/dsh-profile/` se aapke pre-configured login credentials (`.credentials.yaml`), free-tier device tokens, aur gateway settings ko `%USERPROFILE%\.dsh\` par restore kar deti hai.
@@ -225,6 +226,13 @@ Agents virtual parallel loop mein communicate karte hain:
 | 48 | `premium-web-workflow` | **Web Delivery** | End-to-end premium web delivery from brief to verified build. |
 | 49 | `accidental-data-loss-prevention` | **Safety** | Guardrails against destructive commands and data drops. |
 | 50 | `skill-repair` | **Self-Healing** | Automatic detection and patching of corrupted agent manifests. |
+| 51 | `modern-ui-art-direction` | **Product UI** | Product-specific visual direction, hierarchy, density, accessibility and responsive composition. |
+| 52 | `design-reference-research` | **UI Research** | Verified first-party references, traceable adaptations and visual trade-offs. |
+| 53 | `production-image-generation` | **Visual Assets** | Provider-aware realistic image prompts, reference edits, output inspection and secret-safe setup. |
+| 54 | `secure-design-threat-modeling` | **Security** | Cross-stack abuse-case mapping, tenant/auth boundaries and evidence-linked controls. |
+| 55 | `production-code-quality` | **Engineering Quality** | Maintainable functions, useful API docs/comments and reviewable production changes. |
+
+These five capabilities are automatically routed by `production-orchestrator`: UI work receives art direction/research, image generation is selected only when the task needs an asset, and backend work receives shared threat modeling plus its runtime-specific security skill. Image generation depends on an actually available provider/tool; API keys remain in the user's local secret store and are never part of the portable skills pack. The prompt workflow follows current provider documentation (for example, [Google Gemini image generation](https://ai.google.dev/gemini-api/docs/image-generation)); verify current model IDs and output support when running it.
 
 ## 5a. .NET engineering pack — 30 specialist skills
 
@@ -320,7 +328,7 @@ GitHub rulesets should protect `main`, block force-push, and target `knowledge/*
 
 ## 8.1 Inventory note
 
-The current hub inventory now contains **120 skill folders**: **119 capability skills plus `skill-repair` as the self-healing utility**. This includes the 30-skill .NET pack and 39-skill backend/ML pack, plus the routing skill. It contains **6 persistent custom agents**; backend/ML worker roles are spawned under the production manager for each task.
+The current hub inventory now contains **125 skill folders**: **124 capability skills plus `skill-repair` as the self-healing utility**. This includes the 30-skill .NET pack, 39-skill backend/ML pack, five new cross-cutting UI/image/security/quality skills, and existing orchestration skills. It contains **6 persistent custom agents**; backend/ML worker roles are spawned under the production manager for each task.
 
 The count is verified from the folders currently present in `skills/` and `agents/Antigravity/custom-agents/`. It is safer to describe this as an inventory verification than to claim that every production behavior has been exhaustively tested on every destination PC.
 
@@ -378,8 +386,8 @@ Reusable context is stored in `shared/knowledge/datasets/` and is installed to `
 
 ## 12. Verification record
 
-- 120 skill folders (119 capability skills plus repair utility) and 6 persistent custom-agent definitions are present after adding the backend/ML pack.
-- Backend/ML routing tests cover manager-only routing, task-scoped Node/Python/ML workers, UI/architecture review selection, training gates and manifest-only detection.
+- 125 skill folders (124 capability skills plus repair utility) and 6 persistent custom-agent definitions are present after adding the UI/image/security/quality pack.
+- Backend/ML routing tests cover manager-only routing, task-scoped Node/Python/ML workers, automatic modern UI/image/security skill selection, UI/architecture review selection, training gates and manifest-only detection.
 - DeepSeek Hermes provider files in the hub match the current local Hermes setup by size and SHA-256; secret values were not printed.
 - Native Antigravity snapshot contains 56 app conversations, 4 IDE stores, 56 sidebar summary rows and 18 project definitions.
 - Native sidebar SQLite summary passes `integrity_check` and contains 56 conversation rows.

@@ -123,6 +123,15 @@ Output a high-fidelity visual layout wireframe before writing any frontend code:
 
 ---
 
+### 5.1 Automatic UI, image, security and code-quality routing
+
+- The production manager chooses skills from the request, changed-file signals, manifests and trust boundaries; users never need to select skills or profiles manually.
+- UI work routes to product-specific art direction and source-verified design research. Use the existing product and brand as evidence; adapt reference principles rather than cloning protected designs.
+- A requested or necessary image routes to `production-image-generation`. Check whether the active runtime really exposes an image tool/provider. Generate and inspect the image when possible; otherwise return a provider-ready prompt and state that generation is unavailable. Credentials stay in a local secret store and never in the portable skills pack.
+- Backend/API and trust-boundary work routes to `secure-design-threat-modeling` and the matching language/framework security skill. Verify authorization, tenant isolation, data handling and negative paths.
+- `production-code-quality` documents public/non-obvious contracts using the repository's conventions. Comments explain why, invariants or side effects; they do not restate obvious code.
+- Better autonomy means reliable research, scoped delegation, counterexample review and empirical verification. Skills do not change model permissions or guarantee stronger base-model reasoning.
+
 ## 6. Project Knowledge Bank & Auto-Sync (`my_ai_agent`)
 
 1. **Context Memory vs Raw RAG**: Hierarchical structured dossiers (`PROJECT_FLOWS.md`, `WORKSTYLE.md`) provide stable recall without token shredding or hallucinated vector snippets.

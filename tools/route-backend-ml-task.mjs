@@ -11,7 +11,7 @@ const catalog = {
     ['node-typescript-services', /\btypescript|\bts\b/i],
     ['node-framework-nestjs', /\bnest(?:js)?\b/i],
     ['node-framework-express-fastify', /\bexpress|fastify\b/i],
-    ['node-auth-security', /\b(auth|oauth|jwt|security|permission|rbac|session)\b/i],
+    ['node-auth-security', /\b(auth\w*|oauth|jwt|security|permission|rbac|session|tenant|secret|upload|ssrf|injection)\b/i],
     ['node-data-access', /\b(database|data access|orm|query|persistence|migration)\b/i],
     ['node-postgres-data', /\bpostgres(?:ql)?|\bpg\b/i],
     ['node-queues-workers', /\b(queue|worker|background|job|kafka|rabbitmq|bullmq)\b/i],
@@ -27,7 +27,7 @@ const catalog = {
     ['python-typing-contracts', /\b(typing|type hints|pydantic|contract|schema)\b/i],
     ['python-async-concurrency', /\b(async|asyncio|concurren|parallel|worker)\b/i],
     ['python-data-persistence', /\b(database|sqlalchemy|postgres|sqlite|orm|migration|persistence)\b/i],
-    ['python-security', /\b(auth|security|oauth|jwt|permission|secret|vulnerab)\b/i],
+    ['python-security', /\b(auth\w*|security|oauth|jwt|permission|secret|vulnerab\w*|tenant|upload|ssrf|injection)\b/i],
     ['python-testing-quality', /\b(test|testing|pytest|coverage|quality)\b/i],
     ['python-packaging-deployment', /\b(packag|deploy|deployment|docker|container|ci\/cd|release|production)\b/i]
   ],
@@ -57,14 +57,18 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   const text = `${task}\n${files.join('\n')}`;
   const taskText = String(task);
   const normalizedFiles = files.map(file => String(file).replaceAll('\\', '/'));
+  const isImageTask = /\b(image|images|imagery|photo|photos|illustration|illustrations|visual assets?|artwork)\b/i.test(taskText);
   const hasNodeManifest = normalizedFiles.some(file => /(^|\/)(package\.json|pnpm-lock\.yaml|yarn\.lock|package-lock\.json|tsconfig\.json)$/i.test(file));
   const hasPythonManifest = normalizedFiles.some(file => /(^|\/)(pyproject\.toml|requirements[^/]*\.txt|Pipfile|poetry\.lock)$/i.test(file));
-  const isUi = /\b(ui|ux|frontend|front-end|screen|component|layout|responsive|visual|design system|react|vue|svelte)\b/i.test(taskText)
+  const isUi = /\b(ui|ux|frontend|front-end|screen|component|layout|responsive|visual|design system|interface|dashboard|image generation|image asset|react|vue|svelte)\b/i.test(taskText)
     || normalizedFiles.some(file => /\.(tsx|jsx|vue|svelte)$/i.test(file));
   const isNode = /\b(node(?:\.js)?|typescript|javascript|nestjs|express|fastify|npm|pnpm|yarn)\b/i.test(taskText)
     || (hasNodeManifest && /\b(backend|api|server|service|endpoint|worker)\b/i.test(taskText));
   const isPython = /\b(python|py(?:thon)?|fastapi|django|pytorch|torch|scikit.?learn|ml|machine learning|model training)\b/i.test(text)
     || (hasPythonManifest && /\b(backend|api|server|service|training|train|model)\b/i.test(taskText));
+  const isDotnet = /\b(dotnet|asp\.net(?: core)?)\b/i.test(taskText)
+    || /(?:^|\W)\.net(?:\W|$)|(?:^|\W)c\s?#(?:\W|$)/i.test(taskText)
+    || normalizedFiles.some(file => /(^|\/)([^/]+\.(?:csproj|sln|fsproj)|global\.json)$/i.test(file) || /\.cs$/i.test(file));
   const isMl = /\b(ml|machine learning|pytorch|torch|training|train|dataset|transformer|llm|forecast)\b/i.test(taskText)
     || (!isUi && /\b(model|inference|serving)\b/i.test(taskText) && /\b(api|backend|server|deploy)\b/i.test(taskText));
   const groups = [];
@@ -80,25 +84,46 @@ export function routeTask({ task = '', files = [], project = null, root = projec
     if (group === 'python' && !selected.includes('python-backend-architecture')) selected.push('python-backend-architecture');
     if (group === 'ml' && !selected.includes('ml-problem-framing')) selected.push('ml-problem-framing');
   }
+  if (isDotnet) {
+    selected.push('dotnet-solution-architect', 'dotnet-secure-coding', 'dotnet-testing-strategy');
+    if (/\b(api|rest|endpoint|asp\.net)\b/i.test(text)) selected.push('dotnet-aspnetcore-api', 'dotnet-openapi-contracts');
+    if (/\b(auth\w*|oauth|jwt|rbac|permission|session)\b/i.test(text)) selected.push('dotnet-authentication-authorization');
+    if (/\b(database|schema|sql|postgres|efcore|migration|persistence)\b/i.test(text)) selected.push('dotnet-efcore-data', 'dotnet-database-migrations');
+    if (/\b(integration test|contract test)\b/i.test(text)) selected.push('dotnet-integration-testing');
+  }
+  if (isNode) selected.push('node-auth-security');
+  if (isPython) selected.push('python-security');
   if (isNode && isMl) selected.push('backend-ml-integration');
   if (isUi && /\b(model|inference|prediction)\b/i.test(taskText)) selected.push('ml-model-serving', 'backend-ml-integration');
+  if (isUi) selected.push('modern-ui-art-direction', 'design-reference-research', 'production-code-quality');
+  if (isImageTask) selected.push('production-image-generation');
+  if (groups.length || isDotnet) selected.push('secure-design-threat-modeling', 'production-code-quality');
 
   const skills = unique(selected);
   const missing = skills.filter(name => !fs.existsSync(path.join(root, 'skills', name, 'SKILL.md')));
   if (missing.length) throw new Error(`Routed skill files are missing: ${missing.join(', ')}`);
 
   const supportProfiles = [];
-  if (groups.length) supportProfiles.push('saas-architect');
+  if (groups.length || isDotnet) supportProfiles.push('saas-architect');
   if (/\b(database|schema|sql|postgres|mysql|ledger|sap|erp|migration)\b/i.test(text)) supportProfiles.push('enterprise-schema-architect');
   if (isUi) supportProfiles.push('mansoor-ui-specialist');
 
   const taskWorkers = [];
-  if (isNode) taskWorkers.push({ role: 'node-backend-builder', project, skills: skills.filter(name => name.startsWith('node-') || name === 'backend-ml-integration') });
-  if (isPython) taskWorkers.push({ role: 'python-backend-builder', project, skills: skills.filter(name => name.startsWith('python-')) });
-  if (isMl) taskWorkers.push({ role: 'ml-engineer-pytorch', project, skills: skills.filter(name => name.startsWith('ml-') || name.startsWith('mlops-') || name.startsWith('pytorch-') || name === 'backend-ml-integration') });
-  if (groups.length) {
-    selected.push('gravitas-verification');
-    taskWorkers.push({ role: 'independent-verifier', project, skills: ['gravitas-verification'] });
+  if (isNode) taskWorkers.push({ role: 'node-backend-builder', project, skills: skills.filter(name => name.startsWith('node-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name)) });
+  if (isPython) taskWorkers.push({ role: 'python-backend-builder', project, skills: skills.filter(name => name.startsWith('python-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name)) });
+  if (isDotnet) taskWorkers.push({ role: 'dotnet-backend-builder', project, skills: skills.filter(name => name.startsWith('dotnet-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name)) });
+  if (isMl) taskWorkers.push({ role: 'ml-engineer-pytorch', project, skills: skills.filter(name => name.startsWith('ml-') || name.startsWith('mlops-') || name.startsWith('pytorch-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name)) });
+  if (groups.length || isDotnet) {
+    const verifierSkills = unique([
+      'gravitas-verification',
+      ...(isNode ? ['node-testing-quality', 'node-auth-security'] : []),
+      ...(isPython ? ['python-testing-quality', 'python-security'] : []),
+      ...(isDotnet ? ['dotnet-testing-strategy', 'dotnet-secure-coding'] : []),
+      'secure-design-threat-modeling',
+      'production-code-quality'
+    ]);
+    selected.push(...verifierSkills);
+    taskWorkers.push({ role: 'independent-verifier', project, skills: verifierSkills });
   }
   const routedSkills = unique(selected);
   const missingVerifierSkills = routedSkills.filter(name => !fs.existsSync(path.join(root, 'skills', name, 'SKILL.md')));
@@ -117,6 +142,10 @@ export function routeTask({ task = '', files = [], project = null, root = projec
       'discover repository, runtime versions, constraints, and existing contracts',
       'load or refresh this project memory; architecture profile reviews boundaries when selected',
       'manager selects only the global skills needed and writes worker handoff contracts',
+      ...(isUi ? ['research product-fit visual references; route image generation only when an asset is requested or needed and a provider is available'] : []),
+      ...(isImageTask && !isUi ? ['check image-generation tool/provider availability; generate and inspect an asset or return a ready-to-run prompt without claiming generation'] : []),
+      ...(groups.length ? ['apply shared threat modeling and stack-specific security; verify denied and cross-tenant paths'] : []),
+      ...(isDotnet ? ['apply .NET security and verification skills; keep .NET architecture and deployment decisions evidence-based'] : []),
       'parallelize independent task-scoped workers with non-overlapping file ownership',
       ...(isMl ? ['block training or release on split integrity, leakage checks, reproducibility, and task-appropriate evaluation'] : []),
       'independent verification by the manager or verifier checks tests, security, runtime behavior, and changed-file scope',

@@ -5,6 +5,8 @@
 **Repository:** `my_ai_agent`  
 **Scope:** skills, custom agents, portable installer, chat/context handoff, DeepSeek Hermes bridge, knowledge-bank sync, branch isolation, verification and security boundaries.
 
+The original findings below are a point-in-time snapshot of revision `9209991`; current skill counts and capability updates are recorded in the addendum at the end.
+
 ## Executive verdict
 
 The hub is a strong capability bundle, but it is not yet a fully autonomous project-memory platform. It already has 50 skill folders, 6 custom agents, a portable installer, readable chat context, native Antigravity profile restoration, DeepSeek Hermes handoff material, research/reverse-engineering instructions, and a project-branch sync tool.
@@ -257,4 +259,10 @@ The system should not be called production-ready until these are demonstrated:
 ## Final recommendation
 
 Keep the current hub architecture and evolve it with a **Project Memory Control Plane** rather than adding more disconnected skills. The control plane should own identity, memory schemas, conversation indexing, evidence, branch isolation, retries, retention and verification. Skills remain reusable workers; the control plane becomes the stable contract that makes the whole system feel ultra-autonomous across projects and devices.
+
+## Addendum — UI, image, security and code-quality capability update (2026-11-02)
+
+The hub now has five additional reusable skills: `modern-ui-art-direction`, `design-reference-research`, `production-image-generation`, `secure-design-threat-modeling`, and `production-code-quality`. The production manager and UI specialist load these capabilities automatically from task signals; no new persistent peer agents or permissions are added. The backend/ML router now sends shared threat modeling and code-quality standards to backend workers, and recognizes standalone image requests.
+
+Image generation remains provider-dependent: the skill checks the active runtime and local secret configuration, uses current official provider docs when available, and falls back to a ready-to-run prompt without claiming an image was created. The portable pack contains no added image API key. The README records the updated skill inventory and the routing tests cover UI, standalone image and backend-security cases.
 
