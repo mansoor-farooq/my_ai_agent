@@ -1,15 +1,62 @@
-# Antigravity Super-Agent Hub & Autonomous Skills Platform
+# MANSOOR · AGENT OS
 
-> **Production Super-Agent System** with Autonomous Deep Research, Secondary Multi-Option Verification, Enterprise ERP Reverse Engineering (SAP & ERPNext), Multi-Agent Consensus, and an optional portable DeepSeek Hermès Subagent Bridge.
+<p align="center">
+  <strong>PRIVATE ENGINEERING INTELLIGENCE</strong><br>
+  <sub>Research deeply. Understand the system. Build with evidence.</sub>
+</p>
 
-[![Skills Count](https://img.shields.io/badge/Core%20Skills-49%20%2B%20Repair%20Utility-success)](skills/)
-[![Custom Agents](https://img.shields.io/badge/Custom%20Agents-6%20Specialized-blue)](agents/Antigravity/custom-agents/)
-[![DeepSeek Hermes](https://img.shields.io/badge/DeepSeek%20Hermes-Portable%20Bridge%20Active-brightgreen)](subagents/deepseek-hermes/)
-[![Security](https://img.shields.io/badge/Architecture-Zero--Code%20Gate%20Enforced-orange)](shared/SUPER_AGENT_PROTOCOL.md)
+<p align="center">
+  <code>DISCOVER</code> &nbsp; ◆ &nbsp; <code>RESEARCH</code> &nbsp; ◆ &nbsp; <code>PLAN</code> &nbsp; ◆ &nbsp; <code>BUILD</code> &nbsp; ◆ &nbsp; <code>VERIFY</code>
+</p>
 
 ---
 
-## 1. Zero-Friction Portable Deployment (One Command for Any PC)
+> A private, multi-agent engineering workspace for turning a clear brief into researched plans, careful implementation, and verifiable outcomes.
+
+<p align="center">
+  <a href="skills/"><img src="https://img.shields.io/badge/CAPABILITIES-49%20%2B%20REPAIR-146C94?style=for-the-badge&labelColor=101820" alt="49 capabilities plus repair utility"></a>
+  <a href="agents/Antigravity/custom-agents/"><img src="https://img.shields.io/badge/SPECIALISTS-6-3D7A78?style=for-the-badge&labelColor=101820" alt="6 specialized agents"></a>
+  <a href="shared/control-plane/"><img src="https://img.shields.io/badge/CONTROL-LEAST%20PRIVILEGE-C59B57?style=for-the-badge&labelColor=101820" alt="Least privilege control plane"></a>
+</p>
+
+<p align="center"><sub>Designed and maintained by <strong>Mansoor Khan</strong> · Private use</sub></p>
+
+<details>
+  <summary><strong>At a glance</strong></summary>
+
+  <br>
+
+  | Layer | Purpose |
+  | :--- | :--- |
+  | **Agent orchestration** | Routes work through architecture, schema, UI, builder and verifier roles. |
+  | **Research & reconstruction** | Finds authoritative references and maps existing code before proposing changes. |
+  | **Project continuity** | Keeps plans, decisions, evidence and rounds in contributor-scoped knowledge branches. |
+  | **Portable setup** | Installs the skills, specialist agents and approved context on Windows devices. |
+  | **Provider bridge** | Supports optional DeepSeek Hermès execution with Gemini fallback. |
+
+</details>
+
+<details>
+  <summary><strong>Contents</strong></summary>
+
+  1. [Portable setup](#1-portable-setup)
+  2. [Execution bridge](#2-deepseek-hermès--gemini-fallback)
+  3. [Research engine](#3-research--secondary-verification)
+  4. [Agent architecture](#4-agent-architecture)
+  5. [Skills inventory](#5-skills-inventory)
+  6. [Specialist agents](#6-specialist-agents)
+  7. [Project knowledge](#7-project-knowledge)
+  8. [Control plane](#8-control-plane)
+  9. [Provider setup](#9-provider-setup)
+  10. [Operating protocol](#10-operating-protocol)
+  11. [Shared project context](#11-shared-project-context)
+  12. [Verification record](#12-verification-record)
+
+</details>
+
+---
+
+## 1. Portable setup
 
 Jab aap kisi doosre computer par ye repository clone karein:
 
@@ -35,7 +82,7 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity -Resto
 
 ---
 
-## 2. DeepSeek Hermès & 4-Key Gemini Subagent Execution Engine
+## 2. DeepSeek Hermès & Gemini fallback
 
 Aapka system autonomous subagent execution ke liye 2-tier priority model use karta hai:
 
@@ -56,7 +103,7 @@ Tamam runner scripts aur connection files [`subagents/deepseek-hermes/`](subagen
 
 ---
 
-## 3. Autonomous Deep Research & Secondary Verification Engine
+## 3. Research & secondary verification
 
 Production-line workflow ke liye agent kabhi user se design references ya CSS snippets nahi mangta. Jab aap bolte hain:
 > *"minimalism UI chahiye"* ya *"frosted glassmorphic layout banao"* ya *"high-density SAP table chahiye"*
@@ -78,7 +125,7 @@ Chat mein code likhne se pehle complete visual blueprint render hoti hai taake a
 
 ---
 
-## 4. Multi-Agent Consensus Topology & Strict Zero-Code Gate
+## 4. Agent architecture
 
 Agents virtual parallel loop mein communicate karte hain:
 
@@ -119,7 +166,7 @@ Agents virtual parallel loop mein communicate karte hain:
 
 ---
 
-## 5. 100% Tested 50 Skills Inventory
+## 5. Skills inventory
 
 | # | Skill | Category | Production Capability |
 | :---: | :--- | :--- | :--- |
@@ -176,7 +223,7 @@ Agents virtual parallel loop mein communicate karte hain:
 
 ---
 
-## 6. 6 Specialized Custom Subagents (`agents/Antigravity/custom-agents/`)
+## 6. Specialist agents (`agents/Antigravity/custom-agents/`)
 
 1. **`production-orchestrator`** *(Lead Super-Agent)*: Governs multi-agent consensus, Socratic grilling, and the Zero-Code Gate.
 2. **`saas-architect`**: Cloud & enterprise software architecture, multi-tenancy, and ADRs.
@@ -187,7 +234,7 @@ Agents virtual parallel loop mein communicate karte hain:
 
 ---
 
-## 7. Knowledge Bank Auto-Sync: project branches and rounds
+## 7. Project knowledge: branches and rounds
 
 Knowledge sync ab `main` par direct push nahin karta. Har contributor aur project ke liye private branch `knowledge/<contributor>/<project-slug>-<stable-id>` banti hai. Planning, implementation aur final rounds usi branch par timestamped files ke taur par append hote hain:
 
@@ -220,7 +267,7 @@ This makes the knowledge bank reusable across your five devices: every agent can
 
 The complete architecture audit and ultra-autonomous upgrade roadmap is in [ULTRA_AUTONOMOUS_AUDIT.md](ULTRA_AUTONOMOUS_AUDIT.md).
 
-## 8. Recommended GitHub control plane
+## 8. Control plane
 
 For remote management, use the checked-in least-privilege control contract in `shared/control-plane/`. The recommended transport is a GitHub App installed only on the selected private knowledge repository. It should use repository metadata read, contents write for knowledge branches, and optional pull-request/actions read for evidence; it should not request administration access. App credentials stay outside this repository.
 
@@ -234,13 +281,13 @@ GitHub rulesets should protect `main`, block force-push, and target `knowledge/*
 
 ---
 
-## 8. Current production manifest and count clarification
+## 8.1 Inventory note
 
 The current hub contains **50 skill folders**: **49 core capability skills plus `skill-repair` as the self-healing utility**. It contains **6 custom agents**, including `enterprise-schema-architect`, `production-orchestrator`, `saas-architect`, `mansoor-ui-specialist`, `live-web-auditor`, and `omniroute-gateway-operator`.
 
 The count is verified from the folders currently present in `skills/` and `agents/Antigravity/custom-agents/`. It is safer to describe this as an inventory verification than to claim that every production behavior has been exhaustively tested on every destination PC.
 
-## 9. DeepSeek Hermès is an optional provider bridge
+## 9. Provider setup
 
 The hub already contains the current Hermes bridge under `subagents/deepseek-hermes/`:
 
@@ -274,7 +321,7 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity -Resto
 
 The command installs skills, custom agents, datasets, Hermes configuration and native sidebar history. The native restore creates a timestamped backup before replacing local conversation stores. Start Antigravity only after the command finishes.
 
-## 10. Production operating protocol
+## 10. Operating protocol
 
 Every requested build follows this sequence:
 
@@ -288,11 +335,11 @@ Every requested build follows this sequence:
 
 “Minimal UI”, “glass effect”, “polymorphism”, or similar requests trigger the research and option-comparison path automatically. The user does not need to provide CSS examples first.
 
-## 11. Knowledge and project-flow datasets
+## 11. Shared project context
 
 Reusable context is stored in `shared/knowledge/datasets/` and is installed to `%USERPROFILE%\.gemini\agent-context\datasets`. Read `WORKSTYLE.md`, then `PROJECT_FLOWS.md`, then the relevant project dossier and conversation index before changing an existing project. These files describe approaches and invariants; the agent must still inspect the current repository because archived context can become stale.
 
-## 12. Verification performed for this hub
+## 12. Verification record
 
 - 50 skill folders and 6 custom agent definitions were counted from the current E: hub.
 - DeepSeek Hermes provider files in the hub match the current local Hermes setup by size and SHA-256; secret values were not printed.
