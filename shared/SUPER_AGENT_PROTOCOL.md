@@ -132,6 +132,14 @@ Output a high-fidelity visual layout wireframe before writing any frontend code:
 - `production-code-quality` documents public/non-obvious contracts using the repository's conventions. Comments explain why, invariants or side effects; they do not restate obvious code.
 - Better autonomy means reliable research, scoped delegation, counterexample review and empirical verification. Skills do not change model permissions or guarantee stronger base-model reasoning.
 
+### 5.2 Workflow automation, research and data-backed UI
+
+- For workflow, integration, approval, orchestration, schedule, webhook or operator-console tasks, the manager runs the task router and automatically loads only the matching `workflow-*` skills. The user never chooses a skill list.
+- Begin with repository evidence: schema, API, permissions, persisted records, existing state transitions and side effects. For a new domain or product flow, use Google Search and direct source reading to inspect first-party documentation and real product references; verify high-impact claims and save a dated source ledger in project memory.
+- Write a concrete scenario matrix for success, invalid input, duplicate event, timeout, retry exhaustion, stale approval, permission denial, partial completion, replay and recovery as applicable. Mark unknown data explicitly and do not make up production records, metrics or capabilities.
+- Keep visual design approval distinct from an end user's business approval. Material visual changes receive a compact blueprint review unless already approved. Business approvals are real API/database transitions with role authorization, version checks, actor, reason, timestamp and immutable/auditable history.
+- Operator surfaces must read real persisted data and expose loading, empty, stale, denied, partial and retryable error states. A chat transcript or static sample dashboard is not a substitute for the product database.
+
 ## 6. Project Knowledge Bank & Auto-Sync (`my_ai_agent`)
 
 1. **Context Memory vs Raw RAG**: Hierarchical structured dossiers (`PROJECT_FLOWS.md`, `WORKSTYLE.md`) provide stable recall without token shredding or hallucinated vector snippets.

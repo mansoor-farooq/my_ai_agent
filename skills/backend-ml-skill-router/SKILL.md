@@ -27,3 +27,10 @@ Run node tools/route-backend-ml-task.mjs with --project, --task and --files when
 - Respect provider plan limits and cooldowns. Do not cycle accounts or keys to evade a provider's rate or daily limits; use supported fallback or report that capacity is unavailable.
 - If the detector misses a framework, pass the task and manifest path explicitly, then load the named skill manually.
 - For UI or generated-asset requests, use the same manager-owned routing: `modern-ui-art-direction` and `design-reference-research` for visual work; `production-image-generation` only when an image is requested or genuinely needed. Confirm tool/provider availability before claiming generation.
+
+## Workflow automation routing
+- Run `route-backend-ml-task.mjs` for workflow, automation, orchestration, integration, approval, scheduled job, webhook, pipeline or operator-console work. It selects the baseline workflow skills automatically and adds specialist skills from the request's data, approval, retry, schedule, connector, queue and release signals.
+- `workflow-source-research` is mandatory for new domain/product workflow design: search current first-party docs and real product references, verify claims, and persist a dated evidence ledger in the project's memory. Do not return generic inspiration as if it came from web research.
+- Inspect live repository schema/API and authorization before UI proposals. Product screens use persisted data and real state transitions; synthetic records are allowed only in isolated tests or clearly labeled prototypes.
+- For approval work, route design approval through the manager's visual blueprint gate and business approval through a persisted, authorized, version-checked transition with an audit event. These are different approvals.
+- Load and pass only the selected workflow skills to each scoped worker. Small unrelated UI/code fixes must not preload the workflow pack.

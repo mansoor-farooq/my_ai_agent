@@ -77,7 +77,7 @@ try {
 
     $sourceSkills = Join-Path $hub 'skills'
     $skillDestination = Join-Path $env:USERPROFILE '.gemini\config\skills'
-    $managedSkillDocs = @('autonomous-deep-researcher', 'backend-ml-skill-router')
+    $managedSkillDocs = @('autonomous-deep-researcher', 'backend-ml-skill-router', 'workflow-source-research')
     New-Item -ItemType Directory -Path $skillDestination -Force | Out-Null
     $installedSkills = 0
     $updatedSkills = 0

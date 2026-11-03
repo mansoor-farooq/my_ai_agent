@@ -14,7 +14,7 @@
 > A private, multi-agent engineering workspace for turning a clear brief into researched plans, careful implementation, and verifiable outcomes.
 
 <p align="center">
-<a href="skills/"><img src="https://img.shields.io/badge/CAPABILITIES-124%20%2B%20REPAIR-146C94?style=for-the-badge&labelColor=101820" alt="124 capabilities plus repair utility"></a>
+<a href="skills/"><img src="https://img.shields.io/badge/CAPABILITIES-148%20%2B%20REPAIR-146C94?style=for-the-badge&labelColor=101820" alt="148 capabilities plus repair utility"></a>
   <a href="agents/Antigravity/custom-agents/"><img src="https://img.shields.io/badge/SPECIALISTS-6-3D7A78?style=for-the-badge&labelColor=101820" alt="6 specialized agents"></a>
   <a href="shared/control-plane/"><img src="https://img.shields.io/badge/CONTROL-LEAST%20PRIVILEGE-C59B57?style=for-the-badge&labelColor=101820" alt="Least privilege control plane"></a>
 </p>
@@ -34,6 +34,7 @@
 | **.NET engineering** | 30 focused skills for architecture, ASP.NET Core, data, security, testing, operations and releases. |
 | **Backend & ML engineering** | 39 specialist skills for Node.js, Python APIs, PyTorch, datasets, training, evaluation, model serving and MLOps, plus shared threat modeling and clean-code standards. |
 | **Automatic team routing** | One manager selects global skills, consults architecture/UI profiles when relevant, and delegates task-scoped workers with contract handoffs and verification. |
+| **Workflow automation** | 24 condition-routed skills cover research, contracts, state machines, durable runs, approvals, retries, connectors, schedules, observability and operator consoles. |
   | **Project continuity** | Keeps plans, decisions, evidence and rounds in contributor-scoped knowledge branches. |
   | **Portable setup** | Installs the skills, specialist agents and approved context on Windows devices. |
   | **Provider bridge** | Supports optional DeepSeek Hermès execution with Gemini fallback. |
@@ -78,8 +79,8 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -Agent Antigravity -Resto
 ```
 
 ### Ye Command Kya Karti Hai:
-1. **124 capability skills + 1 repair utility** ko `%USERPROFILE%\.gemini\config\skills` mein install karti hai.
-   - Naye hub skills add hote hain; hub ke `autonomous-deep-researcher` aur `backend-ml-skill-router` documents update hon to purani copies timestamped backup ke baad replace hoti hain. Doosre existing skill folders preserve rehte hain.
+1. **148 capability skills + 1 repair utility** ko `%USERPROFILE%\.gemini\config\skills` mein install karti hai.
+   - Naye hub skills add hote hain; hub ke `autonomous-deep-researcher`, `backend-ml-skill-router` aur `workflow-source-research` documents update hon to purani copies timestamped backup ke baad replace hoti hain. Doosre existing skill folders preserve rehte hain.
 2. **6 persistent custom-agent profiles** ko `%USERPROFILE%\.gemini\config\agents` mein register/update karti hai. Backend/ML worker roles are task-scoped manager invocations, not extra installed profiles.
 3. **DeepSeek Hermès Bridge** ko portable setup karti hai:
    - `subagents/deepseek-hermes/dsh-profile/` se aapke pre-configured login credentials (`.credentials.yaml`), free-tier device tokens, aur gateway settings ko `%USERPROFILE%\.dsh\` par restore kar deti hai.
@@ -112,23 +113,22 @@ Tamam runner scripts aur connection files [`subagents/deepseek-hermes/`](subagen
 
 ## 3. Research & secondary verification
 
-Production-line workflow ke liye agent kabhi user se design references ya CSS snippets nahi mangta. Jab aap bolte hain:
+Research ka pehla qadam existing repository aur uske real domain/data ko samajhna hai. Jab aap bolte hain:
 > *"minimalism UI chahiye"* ya *"frosted glassmorphic layout banao"* ya *"high-density SAP table chahiye"*
 
-Agent autonomously 3-Phase Deep Search run karta hai:
+manager Antigravity ke native Google Search aur URL-reading tools se actual product/domain ke references dhoondta hai. UI inspiration ke liye pehle real first-party product docs/design systems, aur workflow ke liye official API/process docs dekhe jaate hain. References se principles nikale jaate hain; protected screens/assets copy nahi hote. Agar search/network tool available na ho, us run ko researched kehne ke bajaye limitation clearly record hoti hai.
 
-### Phase 1: Autonomous Intent & Real-World Benchmark Search
-- Production design systems (Linear, Apple macOS, Stripe, Vercel, SAP Fiori Horizon) ko search karke exact physics aur mathematical tokens extract karta hai:
-  - Specular highlights (`border: 1px solid rgba(255, 255, 255, 0.25)`), dynamic backdrop blur (`blur(16px)`), refraction shadows, aur baseline typography rhythm ($WCAG\ AAA$).
+### Phase 1: Product and evidence discovery
+- Existing routes, components, schema, API contracts, permissions, states and representative records inspect hote hain.
+- Search request industry/task-specific hoti hai. Relevant primary sources open karke claim, publisher, date and direct URL record kiye jaate hain.
 
-### Phase 2: Secondary Verification & Multi-Option Synthesis
-Agent ek guess par nahi rukta, balki **2-3 battle-tested options** visually compare karta hai:
-- **Option A (Modern Minimalist Pure):** High-speed rendering, zero unnecessary chrome, crisp 1px borders.
-- **Option B (Polymorphic / Frosted Glass):** Translucent depth, specular light catching, macOS visual elevation.
-- **Option C (High-Density Enterprise Grid):** 36px compact rows, frozen headers, strict status semantics.
+### Phase 2: Cross-check and scenarios
+- Consequential decisions ke liye relevant independent source cross-check hota hai; evidence, inference aur unknown alag rakhe jaate hain.
+- Workflow changes ke liye actual trigger, states, data writes, permissions, duplicate events, retries, failure/recovery and operator actions map hote hain.
+- UI ke liye product-fit visual options compare hote hain; example records tabhi use hote hain jab clearly isolated prototype/test fixtures hon.
 
-### Phase 3: Visual ASCII Wireframe Blueprint Delivery
-Chat mein code likhne se pehle complete visual blueprint render hoti hai taake aap 1 click mein visual confirm karein.
+### Phase 3: Reviewable plan and reusable record
+Material visual ya architecture choice ke liye concise blueprint/flow manager review ko dikhata hai. Approval ke baad source-backed decision ledger project memory mein save hota hai, aur implementation real APIs/data contracts ke against hoti hai. Routine scoped fixes par redundant approval nahi roki jaati.
 
 ---
 
@@ -267,6 +267,12 @@ Start with `backend-ml-skill-router`; it uses repository reverse engineering, se
 
 The skills' operating checks are grounded in primary documentation: [Node.js learning and operations](https://nodejs.org/learn), [FastAPI deployment concepts](https://fastapi.tiangolo.com/deployment/concepts/), [PyTorch training tutorials](https://docs.pytorch.org/tutorials/beginner/introyt/trainingyt), and [scikit-learn leakage and validation pitfalls](https://scikit-learn.org/stable/common_pitfalls).
 
+## 5c. Workflow automation pack — 24 condition-routed skills
+
+The manager automatically routes only the workflow capabilities indicated by the task: intake and scope, source research, requirements/contracts, data contracts and provenance, state machines, DAG/durable execution, human approvals, idempotency, retries/compensation, queues, webhooks, schedules, connectors and credential lifecycle, observability, simulation/testing, recovery runbooks, database change control, releases, quotas, handoffs and data-backed operator-console UI. You do not select these skills manually.
+
+For new workflow/product design, the manager uses native Google Search and direct URL reading to check first-party sources and real product references, then stores a dated evidence ledger in that project's memory. Before UI work it inspects the actual API/schema, permissions and persisted states. It separates the visual blueprint approval from in-product business approvals; business decisions must be authorized, persisted and auditable. Invented production data and generic chat-only inspiration are disallowed.
+
 ---
 
 ## 6. Specialist agents (`agents/Antigravity/custom-agents/`)
@@ -329,7 +335,7 @@ GitHub rulesets should protect `main`, block force-push, and target `knowledge/*
 
 ## 8.1 Inventory note
 
-The current hub inventory now contains **125 skill folders**: **124 capability skills plus `skill-repair` as the self-healing utility**. This includes the 30-skill .NET pack, 39-skill backend/ML pack, five new cross-cutting UI/image/security/quality skills, and existing orchestration skills. It contains **6 persistent custom agents**; backend/ML worker roles are spawned under the production manager for each task.
+The current hub inventory now contains **149 skill folders**: **148 capability skills plus `skill-repair` as the self-healing utility**. This includes the 30-skill .NET pack, 39-skill backend/ML pack, 24 workflow-automation skills, and existing cross-cutting/orchestration skills. It contains **6 persistent custom agents**; implementation workers remain task-scoped under the production manager.
 
 The count is verified from the folders currently present in `skills/` and `agents/Antigravity/custom-agents/`. It is safer to describe this as an inventory verification than to claim that every production behavior has been exhaustively tested on every destination PC.
 
@@ -387,7 +393,7 @@ Reusable context is stored in `shared/knowledge/datasets/` and is installed to `
 
 ## 12. Verification record
 
-- 125 skill folders (124 capability skills plus repair utility) and 6 persistent custom-agent definitions are present after adding the UI/image/security/quality pack.
+- 149 skill folders (148 capability skills plus repair utility) and 6 persistent custom-agent definitions are present after adding the workflow automation pack.
 - Backend/ML routing tests cover manager-only routing, task-scoped Node/Python/ML workers, automatic modern UI/image/security skill selection, UI/architecture review selection, training gates and manifest-only detection.
 - DeepSeek Hermes provider files in the hub match the current local Hermes setup by size and SHA-256; secret values were not printed.
 - Native Antigravity snapshot contains 56 app conversations, 4 IDE stores, 56 sidebar summary rows and 18 project definitions.

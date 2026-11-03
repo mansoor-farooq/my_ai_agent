@@ -71,6 +71,15 @@ export function routeTask({ task = '', files = [], project = null, root = projec
     || normalizedFiles.some(file => /(^|\/)([^/]+\.(?:csproj|sln|fsproj)|global\.json)$/i.test(file) || /\.cs$/i.test(file));
   const isMl = /\b(ml|machine learning|pytorch|torch|training|train|dataset|transformer|llm|forecast)\b/i.test(taskText)
     || (!isUi && /\b(model|inference|serving)\b/i.test(taskText) && /\b(api|backend|server|deploy)\b/i.test(taskText));
+  const isWorkflow = /\b(workflow|automation|automate|orchestrat\w*|approval|human.?in.?the.?loop|state machine|webhook|callback|scheduled job|cron|connector|integration flow|pipeline|runbook|operator console)\b/i.test(text);
+  const hasApproval = /\b(approval|approve|approver|sign.?off|human.?in.?the.?loop|review gate)\b/i.test(text);
+  const hasWebhook = /\b(webhook|event.?driven|callback|duplicate event|deduplication)\b/i.test(text);
+  const hasRetryOrRecovery = /\b(retr(?:y|ies|ied)|compensation|recover\w*|resume|replay|dead.?letter|failure handling)\b/i.test(text);
+  const hasSchedule = /\b(schedule(?:d)?|cron|recurring|time zone|timezone|calendar trigger)\b/i.test(text);
+  const hasConnector = /\b(connector|integration|third.?party|external provider|oauth connection|sync with)\b/i.test(text);
+  const hasDataContract = /\b(database|schema|postgres(?:ql)?|mysql|sql|data model|persist\w*|audit history|records?)\b/i.test(text);
+  const hasRelease = /\b(release|deploy|rollout|feature flag|canary|rollback)\b/i.test(text);
+  const hasQueue = /\b(queue|worker|backpressure|kafka|rabbitmq|bullmq|dead.?letter)\b/i.test(text);
   const groups = [];
   if (isNode) groups.push('node');
   if (isPython) groups.push('python');
@@ -99,6 +108,28 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   if (isImageTask) selected.push('production-image-generation');
   if (groups.length || isDotnet) selected.push('secure-design-threat-modeling', 'production-code-quality');
 
+  if (isWorkflow) {
+    selected.push(
+      'workflow-intake-and-scope',
+      'workflow-source-research',
+      'workflow-requirements-to-contract',
+      'workflow-state-machines',
+      'workflow-testing-simulation',
+      'workflow-observability'
+    );
+    if (hasDataContract) selected.push('workflow-data-contracts', 'workflow-data-provenance', 'workflow-database-change-control');
+    if (hasApproval) selected.push('workflow-human-approval-gates', ...(isUi ? ['workflow-operator-console-ui'] : []));
+    if (/\b(dag|parallel|fan.?out|fan.?in|orchestrat\w*|pipeline)\b/i.test(text)) selected.push('workflow-dag-orchestration', 'workflow-durable-execution', 'workflow-agent-handoffs');
+    if (hasWebhook) selected.push('workflow-webhook-contracts', 'workflow-system-connectors', 'workflow-idempotency');
+    if (hasRetryOrRecovery) selected.push('workflow-retries-compensation', 'workflow-recovery-runbooks', ...(hasWebhook ? ['workflow-idempotency'] : []));
+    if (hasSchedule) selected.push('workflow-scheduled-jobs', 'workflow-durable-execution');
+    if (hasConnector) selected.push('workflow-system-connectors', 'workflow-credential-lifecycle');
+    if (hasQueue) selected.push('workflow-queues-backpressure', ...(hasRetryOrRecovery ? ['workflow-retries-compensation'] : []));
+    if (hasRelease) selected.push('workflow-release-rollouts');
+    if (/\b(quota|rate.?limit|cost|budget|usage cap)\b/i.test(text)) selected.push('workflow-cost-quota-controls');
+    if (isUi && (hasApproval || /\b(operator|execution dashboard|operations dashboard|workflow console)\b/i.test(text))) selected.push('workflow-operator-console-ui');
+  }
+
   const skills = unique(selected);
   const missing = skills.filter(name => !fs.existsSync(path.join(root, 'skills', name, 'SKILL.md')));
   if (missing.length) throw new Error(`Routed skill files are missing: ${missing.join(', ')}`);
@@ -109,10 +140,11 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   if (isUi) supportProfiles.push('mansoor-ui-specialist');
 
   const taskWorkers = [];
-  if (isNode) taskWorkers.push({ role: 'node-backend-builder', project, skills: skills.filter(name => name.startsWith('node-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name)) });
-  if (isPython) taskWorkers.push({ role: 'python-backend-builder', project, skills: skills.filter(name => name.startsWith('python-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name)) });
-  if (isDotnet) taskWorkers.push({ role: 'dotnet-backend-builder', project, skills: skills.filter(name => name.startsWith('dotnet-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name)) });
-  if (isMl) taskWorkers.push({ role: 'ml-engineer-pytorch', project, skills: skills.filter(name => name.startsWith('ml-') || name.startsWith('mlops-') || name.startsWith('pytorch-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name)) });
+  const workflowWorkerSkills = name => name.startsWith('workflow-');
+  if (isNode) taskWorkers.push({ role: 'node-backend-builder', project, skills: skills.filter(name => name.startsWith('node-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
+  if (isPython) taskWorkers.push({ role: 'python-backend-builder', project, skills: skills.filter(name => name.startsWith('python-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
+  if (isDotnet) taskWorkers.push({ role: 'dotnet-backend-builder', project, skills: skills.filter(name => name.startsWith('dotnet-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
+  if (isMl) taskWorkers.push({ role: 'ml-engineer-pytorch', project, skills: skills.filter(name => name.startsWith('ml-') || name.startsWith('mlops-') || name.startsWith('pytorch-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
   if (groups.length || isDotnet) {
     const verifierSkills = unique([
       'gravitas-verification',
@@ -142,7 +174,10 @@ export function routeTask({ task = '', files = [], project = null, root = projec
       'discover repository, runtime versions, constraints, and existing contracts',
       'load or refresh this project memory; architecture profile reviews boundaries when selected',
       'manager selects only the global skills needed and writes worker handoff contracts',
-      ...(isUi ? ['research product-fit visual references; route image generation only when an asset is requested or needed and a provider is available'] : []),
+      ...(isWorkflow ? ['inspect the real schema, API, permissions, workflow states and representative records before proposing the product flow; never substitute chat-only or invented production data'] : []),
+      ...(isWorkflow ? ['research current first-party docs and real product examples with Google Search/URL reading; verify material claims and save a dated source ledger in project memory'] : []),
+      ...(isWorkflow && hasApproval ? ['separate design approval from runtime business approval; persist business approval state, actor, reason, version and audit event through authorized database/API transitions'] : []),
+      ...(isUi ? ['research product-fit visual references; route image generation only when an asset is requested or needed and a provider is available; wait for approval of a material visual blueprint unless already authorized'] : []),
       ...(isImageTask && !isUi ? ['check image-generation tool/provider availability; generate and inspect an asset or return a ready-to-run prompt without claiming generation'] : []),
       ...(groups.length ? ['apply shared threat modeling and stack-specific security; verify denied and cross-tenant paths'] : []),
       ...(isDotnet ? ['apply .NET security and verification skills; keep .NET architecture and deployment decisions evidence-based'] : []),

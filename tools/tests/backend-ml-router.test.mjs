@@ -77,6 +77,63 @@ test('keeps UI and backend specialists available for a mixed admin-interface tas
   assert.ok(result.skills.includes('node-api-design'));
 });
 
+test('routes a data-backed workflow UI through research, approval, database and operator-console skills', () => {
+  const result = routeTask({
+    task: 'Design a customer onboarding automation with a React operations dashboard, PostgreSQL approval records, scheduled follow-ups, retries, and audit history',
+    files: ['package.json', 'src/app/workflows/page.tsx'],
+    root
+  });
+  for (const name of [
+    'workflow-intake-and-scope',
+    'workflow-source-research',
+    'workflow-requirements-to-contract',
+    'workflow-state-machines',
+    'workflow-data-contracts',
+    'workflow-human-approval-gates',
+    'workflow-scheduled-jobs',
+    'workflow-retries-compensation',
+    'workflow-data-provenance',
+    'workflow-observability',
+    'workflow-testing-simulation',
+    'workflow-operator-console-ui'
+  ]) assert.ok(result.skills.includes(name), name);
+  assert.ok(result.workflow.some(step => step.includes('research')));
+  assert.ok(result.supportProfiles.includes('mansoor-ui-specialist'));
+});
+
+test('selects webhook, idempotency, connector and recovery skills from workflow conditions', () => {
+  const result = routeTask({
+    task: 'Build a webhook integration that deduplicates events and retries transient failures with recovery logs',
+    files: ['services/webhook.ts'],
+    root
+  });
+  for (const name of [
+    'workflow-intake-and-scope',
+    'workflow-webhook-contracts',
+    'workflow-system-connectors',
+    'workflow-idempotency',
+    'workflow-retries-compensation',
+    'workflow-recovery-runbooks',
+    'workflow-testing-simulation'
+  ]) assert.ok(result.skills.includes(name), name);
+});
+
+test('selects persisted data and schema controls for PostgreSQL workflow requests', () => {
+  const result = routeTask({
+    task: 'Create an approval workflow stored in PostgreSQL with data lineage and audit records',
+    root
+  });
+  for (const name of ['workflow-data-contracts', 'workflow-data-provenance', 'workflow-database-change-control']) {
+    assert.ok(result.skills.includes(name), name);
+  }
+});
+
+test('does not preload workflow skills for an unrelated bounded code task', () => {
+  const result = routeTask({ task: 'Fix the icon alignment in this React button', files: ['src/Button.tsx'], root });
+  assert.ok(result.skills.includes('modern-ui-art-direction'));
+  assert.ok(!result.skills.some(name => name.startsWith('workflow-')));
+});
+
 test('adds shared security and code-quality skills to backend work without manual selection', () => {
   const result = routeTask({
     task: 'Build a Python FastAPI multi-tenant service with authentication',
