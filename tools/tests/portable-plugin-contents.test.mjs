@@ -92,6 +92,16 @@ test('Flutter specialist carries production layout QA and ERP research capabilit
   ]) assert.match(profile, new RegExp(`skills/${name}`));
 });
 
+test('skill provenance ledger covers every bundled skill without inventing public licences', async () => {
+  const manifest = JSON.parse(await readFile(path.join(root, 'SKILL-PROVENANCE.json'), 'utf8'));
+  const inventory = await inspectPortableSource(root);
+  assert.equal(manifest.policy.packageDistribution, 'private-only');
+  assert.equal(manifest.policy.neverInventLicenseOrProvenance, true);
+  assert.equal(manifest.skills.length, inventory.skills.length);
+  assert.deepEqual(manifest.skills.map((entry) => entry.name).sort(), inventory.skills);
+  assert.ok(manifest.skills.every((entry) => Array.isArray(entry.sourceRoots) && entry.sourceRoots.length));
+});
+
 test('portable bundle retains important non-Antigravity skill support files', async () => {
   const output = await mkdtemp(path.join(os.tmpdir(), 'mansoor-agent-hub-support-'));
   try {
@@ -119,6 +129,7 @@ test('built ZIP retains the support files after archive creation', async () => {
     for (const relative of requiredPortableSupportFiles) {
       await assert.doesNotReject(access(path.join(output, relative)), relative);
     }
+    await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
     assert.equal(plugin.version, '1.3.2');
   } finally {

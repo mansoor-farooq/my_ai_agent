@@ -47,6 +47,24 @@ function checksumReport() {
   return { errors, checked, skipped };
 }
 
+function provenanceReport(portable) {
+  const file = path.join(root, 'SKILL-PROVENANCE.json');
+  let manifest;
+  try { manifest = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (error) { return { errors: [`Skill provenance ledger unreadable: ${error.message}`], reviewRequired: 0 }; }
+  const entries = Array.isArray(manifest.skills) ? manifest.skills : [];
+  const names = entries.map((entry) => entry?.name);
+  const errors = [];
+  if (manifest?.policy?.packageDistribution !== 'private-only') errors.push('Skill provenance policy must remain private-only');
+  if (entries.length !== portable.skills.length) errors.push(`Skill provenance ledger covers ${entries.length} skills, expected ${portable.skills.length}`);
+  if (new Set(names).size !== names.length) errors.push('Skill provenance ledger contains duplicate names');
+  for (const name of portable.skills) {
+    const entry = entries.find((candidate) => candidate?.name === name);
+    if (!entry) errors.push(`Skill provenance missing: ${name}`);
+    else if (!Array.isArray(entry.sourceRoots) || !entry.sourceRoots.length) errors.push(`Skill provenance has no source roots: ${name}`);
+  }
+  return { errors, reviewRequired: entries.filter((entry) => entry?.publicReleaseReviewRequired).length };
+}
+
 export async function runDoctor() {
   const checks = [];
   const add = (status, name, detail) => checks.push({ status, name, detail });
@@ -88,6 +106,10 @@ export async function runDoctor() {
   } else {
     add('FAIL', 'portable skills and rules', `skills=${portable.skills.length}, rules=${portable.rules.length}, invalidSkills=[${portable.invalidSkills.join(', ')}], invalidRules=[${portable.invalidRules.join(', ')}], nested=[${portable.nestedSkillFiles.join(', ')}], unsafe=[${portable.unsafePaths.join(', ')}], brokenRefs=[${portable.brokenLocalReferences.join(', ')}], provenance=[${portable.provenanceGaps.join(', ')}], missing=[${missingSkillBodies.join(', ')}]`);
   }
+
+  const provenance = provenanceReport(portable);
+  if (provenance.errors.length) add('FAIL', 'skill provenance ledger', provenance.errors.join('; '));
+  else add('PASS', 'skill provenance ledger', `${portable.skills.length} skills mapped to source categories; ${provenance.reviewRequired} remain private-only pending public licence/source review`);
 
   const forbiddenProfiles = shippedAgents.filter((name) => {
     const text = fs.readFileSync(path.join(profilesRoot, name, 'agent.md'), 'utf8');

@@ -1,0 +1,1935 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": "E:/Agents/skills",
+  "policy": {
+    "packageDistribution": "private-only",
+    "unverifiedSkillsMayShipPrivately": true,
+    "publicReleaseRequiresDeclaredLicenseAndSource": true,
+    "neverInventLicenseOrProvenance": true
+  },
+  "skills": [
+    {
+      "name": "accidental-data-loss-prevention",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "agent-hub-operations",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "android-design",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": "hashgraph-online/awesome-codex-plugins",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "autonomous-deep-researcher",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "backend-ml-integration",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "backend-ml-skill-router",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "bigquery-ai-ml",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "bigquery-bigframes",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "bigquery-data-transfer-service",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "bigquery-graph-author",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "bigquery-graph-query",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "bigquery-observability",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "bigquery-optimization",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "bigquery-sql",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "bigquery-troubleshooting",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "building-data-apps",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "cinematic-ui",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "claude-style-response-quality",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "cloud-databases-onboarding",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "create-plan",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": "Apache-2.0 (see bundled LICENSE.txt)",
+      "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "data-autocleaning",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dataform-bigquery",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dbt-bigquery",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dc-premium-template",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "design-reference-research",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "discovering-gcp-data-assets",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-architecture-review",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-aspnetcore-api",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-authentication-authorization",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-background-workers",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-caching",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-cicd-quality-gates",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-clean-architecture",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-containerization-deployment",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-database-migrations",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-dependency-injection",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-domain-driven-design",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-domain-events-cqrs",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-efcore-data",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-frontend-blazor-mvc",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-integration-testing",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-legacy-modernization",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-messaging-integration",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-modular-monolith",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-multitenancy-data-isolation",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-openapi-contracts",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-performance-profiling",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-release-readiness",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-resilience-observability",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-secrets-configuration",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-secure-coding",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-solution-architect",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-testing-strategy",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-three-tier-architecture",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-upgrades-dependency-health",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "dotnet-xunit-testing",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "efficient-context",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "enforcing-resource-attribution",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "enterprise-erp-reverse-engineering",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "feature-documentation",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "federate-lakehouse-catalog",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "flutter-production-layout-qa",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "Proprietary-Private",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "flutter-ui-ux",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": "Proprietary - private distribution only",
+      "declaredSource": "Mansoor Agent Hub private skill library",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-ui-ux-engineer",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": "Proprietary - private distribution only",
+      "declaredSource": "Mansoor Agent Hub private skill library",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "frontend-design",
+      "sourceRoots": [
+        "antigravity-global",
+        "cross-runtime-agents",
+        "codex-global"
+      ],
+      "declaredLicense": "Complete terms in LICENSE.txt",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "gcp-data-pipelines",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "gcp-dataflow",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "gcp-pipeline-orchestration",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "gcp-pipeline-resource-provisioning",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "gcp-spark",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "gcp-spark-observability",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "gcp-spark-troubleshooting",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "gh-address-comments",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": "Apache-2.0 (see bundled LICENSE.txt)",
+      "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "gh-fix-ci",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": "Apache-2.0 (see bundled LICENSE.txt)",
+      "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "google-cloud-auth-verification",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "gravitas-verification",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "impeccable",
+      "sourceRoots": [
+        "antigravity-global",
+        "cross-runtime-agents",
+        "codex-global"
+      ],
+      "declaredLicense": "Apache 2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "interactive-grill-consultant",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "learn-deeply",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "live-web-quality-auditor",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "managing-python-dependencies",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "mansoor-ui-specialist",
+      "sourceRoots": [
+        "antigravity-global",
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "Proprietary - private distribution only",
+      "declaredSource": "Mansoor Agent Hub private global skill library",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "memory",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-best-practices",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-data-quality",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-evaluation-validation",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-experiment-reproducibility",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-feature-engineering",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-gpu-performance",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-hyperparameter-optimization",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-inference-optimization",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-model-serving",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-monitoring-drift",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-privacy-supply-chain",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-problem-framing",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-pytorch-model-design",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ml-transformers-finetuning",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "mlops-pipelines-registry",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "mobile-ui-ux-designer",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": "Proprietary - private distribution only",
+      "declaredSource": "Mansoor Agent Hub private skill library",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "modern-ui-art-direction",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "multi-agent-consensus",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-api-design",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-auth-security",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-backend-architecture",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-data-access",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-deployment-delivery",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-framework-express-fastify",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-framework-nestjs",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-observability-resilience",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-performance-runtime",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-postgres-data",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-queues-workers",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-testing-quality",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "node-typescript-services",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "notebook-guidance",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "omniroute-gateway",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Proprietary - private distribution only",
+      "declaredSource": "Mansoor Agent Hub private global skill library",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "open-source-architecture-research",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "pre-implementation-evidence-gate",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "premium-crm-template",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "Proprietary-Private",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "premium-web-workflow",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "production-code-quality",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "production-image-generation",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "project-context-orchestrator",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "project-knowledge-sync",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "python-async-concurrency",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "python-backend-architecture",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "python-data-persistence",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "python-django-api",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "python-fastapi-services",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "python-packaging-deployment",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "python-security",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "python-testing-quality",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "python-typing-contracts",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "pytorch-distributed-training",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "pytorch-training-systems",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "reverse-deep-researcher",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "reverse-engineering",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "saas-architecture-engineer",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "schema-mapping",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "secure-design-threat-modeling",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "security-casebook",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "skill-repair",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Apache-2.0",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "software-architect",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "spec-driven-engineering",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "stop-slop",
+      "sourceRoots": [
+        "antigravity-global",
+        "codex-global"
+      ],
+      "declaredLicense": "MIT (see bundled LICENSE)",
+      "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "two-step-ui-blueprint",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ui-ux-pro-max",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "understand-anything",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "webapp-testing",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": "Complete terms in LICENSE.txt",
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-agent-handoffs",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-cost-quota-controls",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-credential-lifecycle",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-dag-orchestration",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-data-contracts",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-data-provenance",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-database-change-control",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-durable-execution",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-human-approval-gates",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-idempotency",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-intake-and-scope",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-observability",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-operator-console-ui",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-queues-backpressure",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-recovery-runbooks",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-release-rollouts",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-requirements-to-contract",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-retries-compensation",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-scheduled-jobs",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-source-research",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-state-machines",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-system-connectors",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-testing-simulation",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "workflow-webhook-contracts",
+      "sourceRoots": [
+        "antigravity-global"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    }
+  ]
+}

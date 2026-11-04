@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "F5331B71AAC5616BFF1828AE27BF409AB82330827CA62598A9EC7F1A5EC1A4A6",
-    "Bytes": 8607
+    "SHA256": "B30075AD23DED9F5BC5683AA556297C709D8655AFBF25901012D15C5EC2D16CE",
+    "Bytes": 9385
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -198,6 +198,11 @@
     "Path": "Agents/shared/SUPER_AGENT_PROTOCOL.md",
     "SHA256": "B3E0D79B17DCD2D904ECA889BF89CFB307DB7DF3A7BB51237E68F3A3559F2D75",
     "Bytes": 11849
+  },
+  {
+    "Path": "Agents/SKILL-PROVENANCE.json",
+    "SHA256": "9A61F973D622E0D33CD6B54A86B8C91692B40EDAC103FCCE2DDC122C568145ED",
+    "Bytes": 53148
   },
   {
     "Path": "Agents/skills/accidental-data-loss-prevention/SKILL.md",
@@ -2191,13 +2196,13 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "F76B1D916358BCB4993AB92A7F465A3D5754294E35C1D0873098E6BDD0921E4B",
-    "Bytes": 9392
+    "SHA256": "78AB27F737147CFDECC280475BE8BA940347CB5C9FE3F368EFFDB8EC70EB1FA7",
+    "Bytes": 11027
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "3E2B033144921A3F0948B653E683955AD8B7FDC13F391FAB22899FCBDA6B2012",
-    "Bytes": 17456
+    "SHA256": "99C2DB88F2E0BBDD7CE7130399FD8629048FECE20AAE61588C7C981C0DAC37B5",
+    "Bytes": 18167
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2208,6 +2213,11 @@
     "Path": "Agents/tools/generate-backend-ml-pack.mjs",
     "SHA256": "955857606A4B8BCBA9D252722380BFC62138A6EAC5A5CCA80E6E5BDB26E34E19",
     "Bytes": 23824
+  },
+  {
+    "Path": "Agents/tools/generate-skill-provenance.mjs",
+    "SHA256": "EB292FDEB30394BF94BE35239BBE70F7748DF426C98E6A55EA065A5A5F238B64",
+    "Bytes": 2264
   },
   {
     "Path": "Agents/tools/package-signing.mjs",
@@ -2256,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "C22CA77C9DED35A703966B8442A3A813EF7872698ACF19B99A9895D0E450D99A",
-    "Bytes": 5298
+    "SHA256": "DCC5B7E00A12E48809C00742A16D38618A0CFBA087AA057A7068787C55547C61",
+    "Bytes": 6073
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

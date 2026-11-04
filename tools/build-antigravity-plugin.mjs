@@ -52,6 +52,17 @@ for (const entry of await readdir(sourceAgents, { withFileTypes: true })) {
 }
 
 const { skillCount, ruleCount } = await copyPortableComponents(root, target, secretPattern);
+const provenancePath = join(root, 'SKILL-PROVENANCE.json');
+const provenanceText = await readFile(provenancePath, 'utf8');
+const provenance = JSON.parse(provenanceText);
+if (!Array.isArray(provenance.skills) || provenance.skills.length !== skillCount) {
+  throw new Error(`Skill provenance ledger must cover all ${skillCount} bundled skills.`);
+}
+const provenanceNames = provenance.skills.map((entry) => entry?.name);
+if (new Set(provenanceNames).size !== provenanceNames.length || provenanceNames.some((name) => typeof name !== 'string')) {
+  throw new Error('Skill provenance ledger has duplicate or invalid skill names.');
+}
+await writeFile(join(target, 'SKILL-PROVENANCE.json'), provenanceText);
 
 const manifest = {
   $schema: 'https://antigravity.google/schemas/v1/plugin.json',

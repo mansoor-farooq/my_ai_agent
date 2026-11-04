@@ -126,6 +126,12 @@ npm run build
 
 Current package target: 15 agent profiles, 173 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. The OmniRoute and memory entries are portable guidance only; runtime gateways, databases, private memory and keys are not distributed.
 
+`SKILL-PROVENANCE.json` maps every bundled skill to its observed source category and explicitly marks skills whose public licence/source review is still pending. The package remains private-only until those entries are cleared; no licence or provenance is invented.
+
+## Official plugin boundary
+
+The current owner machine exposes 266 skill names through separate official Antigravity plugins; 93 plugin-owned names are not copied into this provider-free ZIP. They remain with their official plugin because their behavior can depend on plugin MCP servers, hooks, telemetry, account consent or provider-specific runtime files. The Agent Hub records and routes its own 173 reusable skill bodies; it does not silently clone or auto-install those external plugin connections.
+
 ## Skill source coverage
 
 The release ships the materialized reusable skill library maintained in `E:\Agents\skills`. That library is synchronized from the owner-managed Antigravity, Codex and cross-runtime skill sources before release, including important references, templates, starter assets and skill-local agent metadata. Duplicate bodies are deduplicated by skill name. Platform-internal `.codex\skills\.system` files, official plugin packages with their own MCP/hooks, private conversations, native profiles, caches and credentials are not copied into this product ZIP.
