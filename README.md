@@ -84,6 +84,8 @@ This is tamper detection, not an unbreakable DRM system. Anyone with full filesy
 
 See [portfolio SEO copy and public-release checklist](docs/PORTFOLIO_SEO.md) before publishing this project.
 
+Antigravity compatibility notes and the post-update subagent checks are recorded in [ANTIGRAVITY_SUBAGENT_COMPATIBILITY.md](docs/ANTIGRAVITY_SUBAGENT_COMPATIBILITY.md).
+
 Portfolio keywords: Antigravity agent orchestration, Gemini agent team, software architecture, production UI engineering, .NET, Node.js, Python, PyTorch, workflow automation, application security and release engineering.
 
 ## Build and verify from source

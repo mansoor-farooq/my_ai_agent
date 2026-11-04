@@ -21,10 +21,10 @@ if ((await readdir(target)).length) throw new Error(`Output folder must be empty
 const excludedAgentFolders = new Set(['live-web-auditor', 'omniroute-gateway-operator']);
 const secretPattern = /(?:AIza[0-9A-Za-z_-]{30,}|AQ\.[0-9A-Za-z_-]{32,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9_]{30,})/;
 const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
-const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n`;
+const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.2.0';
+const packageVersion = '1.2.1';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -66,14 +66,14 @@ const manifest = {
   name: 'mansoor-agent-hub',
   displayName: 'Mansoor Gemini Agent Team',
   version: packageVersion,
-  description: 'A Gemini-inherited single manager with focused field specialists. Uses Antigravity host skills, bounded reference research and approved UI asset generation without bundling duplicate skill catalogs or provider connectors.',
+  description: 'A private, owner-signed Gemini agent team with focused specialists, bounded research and production-minded delivery.',
   logo: 'assets/logo.svg',
   suggestedPrompts: [
     'Inspect this repository and route the task to one matching domain expert.',
     'Ask the specialist to make a bounded change and report local verification evidence.',
     'Request a focused security or release review for this diff.'
   ],
-  author: { name: 'Mansoor' }
+  author: { name: 'Mansoor Farooq' }
 };
 await writeFile(join(target, 'plugin.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 await mkdir(join(target, 'assets'), { recursive: true });
