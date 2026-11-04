@@ -85,6 +85,16 @@
     "Bytes": 1767
   },
   {
+    "Path": "Agents/docs/OWNER_RELEASE_SECURITY.md",
+    "SHA256": "B1477CEFDCCCAAB156875CD0F6CF4BBFDE3BFC11CFF9449F96A667199BD9D80F",
+    "Bytes": 2533
+  },
+  {
+    "Path": "Agents/docs/PORTFOLIO_SEO.md",
+    "SHA256": "77F251B6207B41B8D0C1E7B7C4A65794F6E5F5597B2FED2342401BFFB730FE1A",
+    "Bytes": 1381
+  },
+  {
     "Path": "Agents/docs/research/2026-11-03-ecc-and-free-integrations.md",
     "SHA256": "401E4866378851865B04A4F165F0D6EC867D968841D020401130E34C4CC57C80",
     "Bytes": 3511
@@ -100,6 +110,16 @@
     "Bytes": 2705
   },
   {
+    "Path": "Agents/docs/superpowers/plans/2026-11-04-owner-signed-premium-release.md",
+    "SHA256": "6F9564D0EBC4F2CFD610AA20E5A1E65E1074832109959E14E541EA67D30B721E",
+    "Bytes": 4204
+  },
+  {
+    "Path": "Agents/docs/superpowers/specs/2026-11-04-owner-signed-premium-release-design.md",
+    "SHA256": "0A3BF1CA21DA3B86852B461909B3F50183CB42892ADCAB01878A221C3F006C26",
+    "Bytes": 2611
+  },
+  {
     "Path": "Agents/install-antigravity-portable.ps1",
     "SHA256": "CAF3C4A4154CC2AF475FF9F02BB96CD12A9CCD7ACB29AC366573421736D16495",
     "Bytes": 2534
@@ -111,13 +131,13 @@
   },
   {
     "Path": "Agents/Progress/2026-11-03.md",
-    "SHA256": "B2BEA05B5C9E256C7D83849BF35EB7D71996CCDCC8BC532FAF027229F2FE0F4D",
-    "Bytes": 7757
+    "SHA256": "1FD3CD957274EA7CDB0726BF4371DBED5FAF4933D4EF8EC0FAADDA9064112B60",
+    "Bytes": 8691
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "EC647A0CBB1383C7F688FC497680E5D2CCE306FB23AC762CFB7705B4A60706FE",
-    "Bytes": 4734
+    "SHA256": "507F030B5090DCC3C8C680C65BD9D61214F3BFD50E1FE034E00847F1C5A33ABC",
+    "Bytes": 6556
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -221,8 +241,18 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "D9D487BEC51E2F916C2E668E3AAD67E254CD3D475D4F45065175A0FE19525B2F",
-    "Bytes": 9848
+    "SHA256": "090D3D7EF6958F83F5CD098122FC8A4DA31CE83A469655DC58089E9054DB89DF",
+    "Bytes": 16800
+  },
+  {
+    "Path": "Agents/tools/create-owner-signing-key.mjs",
+    "SHA256": "99C18994E43607816A1DA03E65DB955569E9B04FCDEFD4C23C1D22A5EECD7726",
+    "Bytes": 1419
+  },
+  {
+    "Path": "Agents/tools/package-signing.mjs",
+    "SHA256": "1C9228E34445E781507DFCA4672639083F305D9522BF6B40C347322C782FFCC9",
+    "Bytes": 2995
   },
   {
     "Path": "Agents/tools/route-backend-ml-task.mjs",
@@ -248,6 +278,11 @@
     "Path": "Agents/tools/tests/backend-ml-router.test.mjs",
     "SHA256": "20651861EFADB390EB9F85E4649D65A7AA8E62D270D38337FFCA8795E81475A4",
     "Bytes": 10103
+  },
+  {
+    "Path": "Agents/tools/tests/package-signing.test.mjs",
+    "SHA256": "05723B2B59229C980A4D7081030F4261D91B108DC4B33B662552E656E836B249",
+    "Bytes": 1769
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
