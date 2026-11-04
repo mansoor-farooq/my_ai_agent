@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "2B4968D66D3666B064B2495B0EB49C4ACD612471923096DC024D0A428F279D91",
+    "SHA256": "F8E8DFCABFF44F77846C2B5FFDDD63A54C03EE565CE82F7379C3A483A5C6DEA8",
     "Bytes": 287
   },
   {
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "1F94EF9294376B36DE8C8239EDBB39CA12FB41B491C9B76D5D652D6E7F34A5D3",
-    "Bytes": 21346
+    "SHA256": "C38F08AFC02C65A599437B01BECF255629F9B69ED8075EDACAE12C39A87951F9",
+    "Bytes": 24108
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "31D8D179F92B39AE87C72430CC4B846F40E1F1658EDF26CC51EDFAB6562486F0",
-    "Bytes": 6073
+    "SHA256": "A4DCECC5AD44A656A6256EC618B2A32197ACF4067239AC4CA9C53B38ECD224BA",
+    "Bytes": 6487
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

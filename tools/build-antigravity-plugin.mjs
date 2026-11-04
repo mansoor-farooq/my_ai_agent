@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.3.5';
+const packageVersion = '1.3.6';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -121,7 +121,7 @@ const premiumPackageReadme = [
   '',
   '## Recipient setup',
   '',
-  'Install Antigravity and sign in once, extract this ZIP, then double-click Install-Mansoor-Agent-Team.cmd. If the Antigravity CLI is missing, the installer downloads it from Google’s official install endpoint. It then installs the Agent Hub and tries the included official plugin set. If a plugin needs account consent or provider configuration, its original Antigravity message is shown; finish that setup in Antigravity and rerun the same installer. A failure in one plugin does not stop the others.',
+  'Install Antigravity and sign in once, extract this ZIP, then double-click Install-Mansoor-Agent-Team.cmd. If Node.js or the Antigravity CLI is missing, the installer downloads them from their official sources and verifies the Node.js archive checksum. It then installs the Agent Hub and tries the included official plugin set. If a plugin needs account consent or provider configuration, its original Antigravity message is shown; finish that setup in Antigravity and rerun the same installer. A failure in one plugin does not stop the others.',
   '',
   '## Owner build setup',
   '',
@@ -164,7 +164,38 @@ const signedInstaller = [
   '  if ($hash -ne $record.SHA256 -or $bytes -ne $record.Bytes) { throw "Package integrity check failed: $($record.Path)" }',
   '}',
   '$node = Get-Command node -ErrorAction SilentlyContinue',
-  "if (-not $node) { throw 'Node.js is required to verify the owner-signed package. Install Node.js, then run this installer again.' }",
+  'if (-not $node) {',
+  "  if (-not [Environment]::Is64BitOperatingSystem) { throw 'Automatic Node.js setup requires 64-bit Windows.' }",
+  "  Write-Host 'Node.js is missing. Downloading the latest LTS runtime from nodejs.org...' -ForegroundColor Cyan",
+  '  $nodeRoot = Join-Path $env:LOCALAPPDATA "Mansoor-Agent-Hub\\runtime"',
+  '  $runtimeInfo = Invoke-RestMethod -Uri "https://nodejs.org/dist/index.json"',
+  '  $nodeRelease = $runtimeInfo | Where-Object { $_.lts } | Select-Object -First 1',
+  "  if (-not $nodeRelease -or $nodeRelease.version -notmatch '^v\\d+\\.\\d+\\.\\d+$') { throw 'Could not identify the latest Node.js LTS release.' }",
+  '  $archiveName = "node-$($nodeRelease.version)-win-x64.zip"',
+  '  $releaseUrl = "https://nodejs.org/dist/$($nodeRelease.version)"',
+  '  $downloadRoot = Join-Path $env:TEMP ("Mansoor-Agent-Node-" + [guid]::NewGuid().ToString("N"))',
+  '  New-Item -ItemType Directory -Path $downloadRoot | Out-Null',
+  '  try {',
+  '    Invoke-WebRequest -Uri "$releaseUrl/$archiveName" -OutFile (Join-Path $downloadRoot $archiveName)',
+  '    $checksumsPath = Join-Path $downloadRoot "SHASUMS256.txt"',
+  '    Invoke-WebRequest -Uri "$releaseUrl/SHASUMS256.txt" -OutFile $checksumsPath',
+  '    $checksumLine = Select-String -Path $checksumsPath -Pattern ("^([0-9a-fA-F]{64})\\s+\\*?" + [regex]::Escape($archiveName) + "\\s*$") | Select-Object -First 1',
+  "    if (-not $checksumLine) { throw 'Official Node.js checksum entry was not found.' }",
+  '    $expectedHash = [regex]::Match($checksumLine.Line, "^([0-9a-fA-F]{64})").Groups[1].Value.ToUpperInvariant()',
+  '    $actualHash = (Get-FileHash -LiteralPath (Join-Path $downloadRoot $archiveName) -Algorithm SHA256).Hash',
+  "    if ($actualHash -ne $expectedHash) { throw 'Node.js archive checksum mismatch; installation stopped.' }",
+  '    Expand-Archive -LiteralPath (Join-Path $downloadRoot $archiveName) -DestinationPath $downloadRoot',
+  '    $nodeDestination = Join-Path $nodeRoot $nodeRelease.version',
+  '    if (-not (Test-Path -LiteralPath (Join-Path $nodeDestination "node.exe") -PathType Leaf)) {',
+  '      if (Test-Path -LiteralPath $nodeDestination) { throw "Incomplete Node.js runtime folder exists: $nodeDestination" }',
+  '      New-Item -ItemType Directory -Path $nodeRoot -Force | Out-Null',
+  '      Move-Item -LiteralPath (Join-Path $downloadRoot ($archiveName -replace "\\.zip$", "")) -Destination $nodeDestination',
+  '    }',
+  '    $nodePath = Join-Path $nodeDestination "node.exe"',
+  '    if (-not (Test-Path -LiteralPath $nodePath -PathType Leaf)) { throw "Node.js installation did not produce node.exe: $nodePath" }',
+  '  } finally { if (Test-Path -LiteralPath $downloadRoot) { Remove-Item -LiteralPath $downloadRoot -Recurse -Force } }',
+  '  $node = [pscustomobject]@{ Source = $nodePath }',
+  '}',
   "$verifier = Join-Path $pluginRoot 'verify-package-signature.mjs'",
   '& $node.Source $verifier',
   "if ($LASTEXITCODE -ne 0) { throw 'Owner package signature verification failed. Installation stopped.' }",
