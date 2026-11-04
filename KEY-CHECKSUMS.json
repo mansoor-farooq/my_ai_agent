@@ -36,8 +36,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/enterprise-schema-architect/agent.md",
-    "SHA256": "FFD86A329062879FD952CF3A19883BB03CC117560EA12F395DF9B29389B95289",
-    "Bytes": 2767
+    "SHA256": "F8FA0D50906C98B9919B87C9468A6BD89DB8FC5F01289160D5E2E3ADAF6A22A5",
+    "Bytes": 2800
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/flutter-mobile-specialist/agent.md",
@@ -46,8 +46,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
-    "SHA256": "EABC1D8437C7DFA2A95BB438547AD7B8D60F194772BEDA965F8D1C71B8E20408",
-    "Bytes": 5044
+    "SHA256": "51003C29A8FEE1D2A30AE0A390B88488B4B5AEE1382A51FD982C88724E100FF0",
+    "Bytes": 5077
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/gemini-cli-agent.md",
@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "4DD41EC256297BF3FAB0B1CDAF82A245B1B8BD37404F6D022A80FEA5430F4275",
-    "Bytes": 6434
+    "SHA256": "A2332AFCA5810B74EF49E07379104713B43D450DE800D55867CCA35C5A50B9E1",
+    "Bytes": 6668
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -86,13 +86,13 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/saas-architect/agent.md",
-    "SHA256": "31BE15895BF20B6CEB8F5D8EF471E5789B5F34A2A9B1A77F237CADAB4DFC46D8",
-    "Bytes": 3355
+    "SHA256": "CECBD500BF728D3327DC715BF34736D9563472B3849E541100EB4CD8EA9B4D81",
+    "Bytes": 3388
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/workflow-automation-specialist/agent.md",
-    "SHA256": "0BD3711829087151E783FA8843063010BC91FA5CC72A6D55B6C1684DD773A245",
-    "Bytes": 1767
+    "SHA256": "5C74890434B5227C54FCAEEAC865B84BAFD5469101678754DE4007A3F9BC555D",
+    "Bytes": 1800
   },
   {
     "Path": "Agents/Build-Agent-Hub.cmd",
@@ -161,7 +161,7 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "41FBDA70B0A588DC61B4408C4166A0903CB346C3C2BDCBDB78FDBF51F5FEF581",
+    "SHA256": "86001D789ADFBB845542FB609D9F8FC9F6B3465AA142D8C6BF019D112E98EE0A",
     "Bytes": 8607
   },
   {
@@ -1745,6 +1745,21 @@
     "Bytes": 3039
   },
   {
+    "Path": "Agents/skills/premium-crm-template/agents/openai.yaml",
+    "SHA256": "812E718C0D14F4AA0FCB7B3B507258D083827A0CCEB605B256B898D2BD51DF81",
+    "Bytes": 274
+  },
+  {
+    "Path": "Agents/skills/premium-crm-template/references/premium-crm-template.md",
+    "SHA256": "F64EF76040A85176FB0BD720BD5E5DF7B158D03D44E3452CADFCDE806CE279EF",
+    "Bytes": 3511
+  },
+  {
+    "Path": "Agents/skills/premium-crm-template/SKILL.md",
+    "SHA256": "E6984AD852448D2BE654D21BC2CFAC112711802364031F185DB71C26AE77F474",
+    "Bytes": 3441
+  },
+  {
     "Path": "Agents/skills/premium-web-workflow/SKILL.md",
     "SHA256": "4D3300FF8B97D3CA9079E367E59A249A6F30361BDF0B02E02B7CC10F9E5281E8",
     "Bytes": 2107
@@ -2161,7 +2176,7 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "68B0655E886F6C7ADBF9E54E95F230CA3C0E870E3D4CF00A526125AE697F7ECA",
+    "SHA256": "1247ED0E59EA3C231561B700D6144446C678E60E0E9DD1A8F631778ABBAB7BDE",
     "Bytes": 9392
   },
   {
@@ -2226,8 +2241,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "67FF7144311F22029B71DF352CD06A95366FD16D93B05ABDAFD01C0D33EB6066",
-    "Bytes": 4064
+    "SHA256": "D1C5F78AB0ADA9FF1C5ABC83FCAB2EB90FEBE5E5C5B80D29BFFEBA65312F7B86",
+    "Bytes": 4627
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

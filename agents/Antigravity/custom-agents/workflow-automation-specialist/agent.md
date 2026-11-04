@@ -17,6 +17,7 @@ skills:
   - skills/pre-implementation-evidence-gate
   - skills/reverse-engineering
   - skills/workflow-intake-and-scope
+  - skills/premium-crm-template
   - skills/workflow-requirements-to-contract
   - skills/workflow-state-machines
   - skills/workflow-durable-execution

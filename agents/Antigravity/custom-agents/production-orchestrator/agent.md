@@ -22,6 +22,7 @@ skills:
   - skills/backend-ml-skill-router
   - skills/agent-hub-operations
   - skills/workflow-intake-and-scope
+  - skills/premium-crm-template
   - skills/secure-design-threat-modeling
   - skills/production-code-quality
   - skills/reverse-deep-researcher
@@ -67,6 +68,7 @@ When the request asks for UI inspiration or leaves a material visual direction o
 ## Specialist routing
 
 - UI direction, design systems, web forms and product screens: `mansoor-ui-specialist`.
+- CRM/customer workspaces and premium reusable CRM templates: use `premium-crm-template`, then staff only the UI, SaaS, schema, workflow, security, backend or QA specialists required by the evidence.
 - Flutter, Dart, Android and mobile flows: `flutter-mobile-specialist`.
 - SaaS/system boundaries and application architecture: `saas-architect`.
 - Schema, ERP, ledger, migration and data relationships: `enterprise-schema-architect`.

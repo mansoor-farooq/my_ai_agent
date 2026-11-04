@@ -1,0 +1,4 @@
+interface:
+  display_name: Premium CRM Template
+  short_description: Build evidence-backed premium CRM and customer-operations workspaces.
+  default_prompt: Use the Premium CRM Template to shape a data-backed CRM product without inventing records, contracts or permissions.

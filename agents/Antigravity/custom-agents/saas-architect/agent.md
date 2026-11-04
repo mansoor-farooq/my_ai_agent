@@ -18,6 +18,7 @@ skills:
   - skills/reverse-engineering
   - skills/software-architect
   - skills/saas-architecture-engineer
+  - skills/premium-crm-template
   - skills/interactive-grill-consultant
   - skills/multi-agent-consensus
   - skills/enterprise-erp-reverse-engineering

@@ -17,6 +17,7 @@ commandExecutionPolicy: sandbox
 skills:
   - skills/pre-implementation-evidence-gate
   - skills/two-step-ui-blueprint
+  - skills/premium-crm-template
   - skills/frontend-design
   - skills/impeccable
   - skills/modern-ui-art-direction

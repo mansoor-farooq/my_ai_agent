@@ -15,6 +15,7 @@ commandExecutionPolicy: sandbox
 skills:
   - skills/pre-implementation-evidence-gate
   - skills/enterprise-erp-reverse-engineering
+  - skills/premium-crm-template
   - skills/reverse-engineering
   - skills/schema-mapping
   - skills/multi-agent-consensus

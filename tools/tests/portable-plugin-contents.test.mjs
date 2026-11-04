@@ -17,7 +17,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 test('portable source contains the complete owned skill and rule library', async () => {
   const inventory = await inspectPortableSource(root);
 
-  assert.equal(inventory.skills.length, 171);
+  assert.equal(inventory.skills.length, 172);
   assert.equal(inventory.rules.length, 4);
   assert.deepEqual(inventory.invalidSkills, []);
   assert.deepEqual(inventory.invalidRules, []);
@@ -66,6 +66,15 @@ test('every shipped agent skill reference resolves to a bundled skill body', asy
 
   assert.deepEqual(missing, []);
   assert.ok(references.length >= 200, `expected at least 200 skill references, found ${references.length}`);
+});
+
+test('premium CRM capability is present and staffed to the right specialists', async () => {
+  const inventory = await inspectPortableSource(root);
+  assert.ok(inventory.skills.includes('premium-crm-template'));
+  for (const agent of ['production-orchestrator', 'mansoor-ui-specialist', 'saas-architect', 'enterprise-schema-architect', 'workflow-automation-specialist']) {
+    const profile = await readFile(path.join(root, 'agents', 'Antigravity', 'custom-agents', agent, 'agent.md'), 'utf8');
+    assert.match(profile, /skills\/premium-crm-template/);
+  }
 });
 
 test('portable bundle retains important non-Antigravity skill support files', async () => {
