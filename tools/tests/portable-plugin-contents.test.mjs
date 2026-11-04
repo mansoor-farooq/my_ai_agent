@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { access } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -61,4 +62,25 @@ test('every shipped agent skill reference resolves to a bundled skill body', asy
 
   assert.deepEqual(missing, []);
   assert.ok(references.length >= 200, `expected at least 200 skill references, found ${references.length}`);
+});
+
+test('portable bundle retains important non-Antigravity skill support files', async () => {
+  const expectedFiles = [
+    'skills/impeccable/agents/impeccable_asset_producer.toml',
+    'skills/impeccable/agents/impeccable_documenter.toml',
+    'skills/impeccable/agents/impeccable_finish_reviewer.toml',
+    'skills/impeccable/agents/impeccable_manual_edit_applier.toml',
+    'skills/impeccable/agents/openai.yaml',
+    'skills/frontend-design/LICENSE',
+    'skills/frontend-design/assets/vanilla-starter/index.html',
+    'skills/frontend-design/assets/vanilla-starter/script.js',
+    'skills/frontend-design/assets/vanilla-starter/style.css',
+    'skills/frontend-design/references/aesthetic-playbook.md',
+    'skills/frontend-design/references/implementation-patterns.md',
+    'skills/project-context-orchestrator/agents/openai.yaml',
+  ];
+
+  for (const relative of expectedFiles) {
+    await assert.doesNotReject(access(path.join(root, relative)), relative);
+  }
 });

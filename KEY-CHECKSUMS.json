@@ -131,8 +131,8 @@
   },
   {
     "Path": "Agents/docs/superpowers/specs/2026-11-04-full-portable-agent-product-design.md",
-    "SHA256": "C2D47615B42B6E20712C73A825E33C6848E1E3AD8F3DA861858CAC69C4B14345",
-    "Bytes": 1517
+    "SHA256": "AF81CBF0215E515030F35BB766AF275CA5198D031353727A59D44B54E506EAB5",
+    "Bytes": 1660
   },
   {
     "Path": "Agents/docs/superpowers/specs/2026-11-04-owner-signed-premium-release-design.md",
@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "CDA957AEE9457001D712511EECF80EBAA3B901F01FEE13A1475DED18BE1A2431",
+    "SHA256": "E3EB051D3448DCB24466967D850302154FF7F094707EBF237408FAA17F67464A",
     "Bytes": 287
   },
   {
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "9F4B1D9A8F387AA02FDD408173CF27641F71DBDFBC7E9E2F5542A67CB173B0AD",
-    "Bytes": 8025
+    "SHA256": "C28304A6E662CE8EFFAF6BE0048E83CC70D8B3B3F90A05B5EF506367CBA6C2F5",
+    "Bytes": 8529
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -895,9 +895,39 @@
     "Bytes": 4946
   },
   {
+    "Path": "Agents/skills/frontend-design/assets/vanilla-starter/index.html",
+    "SHA256": "1A5B52AA69583A9965C52620A46F2CEFA2A7EEDDF46133E721B49B654A7E12B4",
+    "Bytes": 5076
+  },
+  {
+    "Path": "Agents/skills/frontend-design/assets/vanilla-starter/script.js",
+    "SHA256": "AFDE7C7BE3F55E9097B9374BBB40095ADC254378F09D97AEAACDBF3D77C643F9",
+    "Bytes": 332
+  },
+  {
+    "Path": "Agents/skills/frontend-design/assets/vanilla-starter/style.css",
+    "SHA256": "376FE84D96AC39047200BF9B8D4A3F9B85A7E51E7CA1E3974A84D4C65849EAE5",
+    "Bytes": 8230
+  },
+  {
+    "Path": "Agents/skills/frontend-design/LICENSE",
+    "SHA256": "1C5966F99A41C277743C09326F21B1933BB4E0F40AA938C835134F047360EA3D",
+    "Bytes": 1068
+  },
+  {
     "Path": "Agents/skills/frontend-design/LICENSE.txt",
     "SHA256": "EB3D7B5485466ACBD81F2B496F595AB637D2792E268206B27D99E793BDB67549",
     "Bytes": 10351
+  },
+  {
+    "Path": "Agents/skills/frontend-design/references/aesthetic-playbook.md",
+    "SHA256": "C46FE375A908738F473095B5968E8BE40685AA48303DCA82838B8C675D418F88",
+    "Bytes": 3099
+  },
+  {
+    "Path": "Agents/skills/frontend-design/references/implementation-patterns.md",
+    "SHA256": "C9EA6CE54BBF83A9CD3452C5B353CFD8EBF011DDD80BEE22581E7DCCCF9442F9",
+    "Bytes": 3874
   },
   {
     "Path": "Agents/skills/frontend-design/SKILL.md",
@@ -1148,6 +1178,31 @@
     "Path": "Agents/skills/gravitas-verification/SKILL.md",
     "SHA256": "D0F87C7064273A94444CB973C82E1A5A8FC7E9AD8464CD1CBC01958A1A497C40",
     "Bytes": 1300
+  },
+  {
+    "Path": "Agents/skills/impeccable/agents/impeccable_asset_producer.toml",
+    "SHA256": "4DBDB0CFDC2466961DA6B22D200F3EC7BF8BB47C27448A2E6E3C03CDBF589831",
+    "Bytes": 8429
+  },
+  {
+    "Path": "Agents/skills/impeccable/agents/impeccable_documenter.toml",
+    "SHA256": "2FEB3768125BA6469C92A50D516727E6D42F44579165DDFD33409948E2A3803D",
+    "Bytes": 3203
+  },
+  {
+    "Path": "Agents/skills/impeccable/agents/impeccable_finish_reviewer.toml",
+    "SHA256": "1B80232E22D52B06A7278B9CA1F24F871A181C62CD91F4B18728807E7CF49DBD",
+    "Bytes": 15703
+  },
+  {
+    "Path": "Agents/skills/impeccable/agents/impeccable_manual_edit_applier.toml",
+    "SHA256": "6C9CE3E27EC4520EAD001DA3AAD2A2EBBA481C4E5CD22873DB8890259EE579FE",
+    "Bytes": 7032
+  },
+  {
+    "Path": "Agents/skills/impeccable/agents/openai.yaml",
+    "SHA256": "CE9967AD70F99CF04456F3347C266723C2FBBB600267D10A822B7CD20562C321",
+    "Bytes": 236
   },
   {
     "Path": "Agents/skills/impeccable/reference/adapt.md",
@@ -1705,6 +1760,11 @@
     "Bytes": 3752
   },
   {
+    "Path": "Agents/skills/project-context-orchestrator/agents/openai.yaml",
+    "SHA256": "FD19CAC9E5DB356DFAC84EE195DDAABE01380C9F39CDA8DB949A6A13DEA054FA",
+    "Bytes": 339
+  },
+  {
     "Path": "Agents/skills/project-context-orchestrator/references/incremental-refresh.md",
     "SHA256": "7D84FACAFD1777D60892EDAE0D5F34DBA3532C5455B23CA365B8E1D9ED3E3E02",
     "Bytes": 1729
@@ -2106,7 +2166,7 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "8EDEB39BD470EFB2FB709CFA4E4C6BAF04AB1F77B27DBA533FF706711964B0C4",
+    "SHA256": "3E2B033144921A3F0948B653E683955AD8B7FDC13F391FAB22899FCBDA6B2012",
     "Bytes": 17456
   },
   {
@@ -2166,8 +2226,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "3D4F2D4C9855935D780A7C1AA43BBB33D2C7BF927A875F057203CB92C6805ABE",
-    "Bytes": 2281
+    "SHA256": "5F389683CB400994F339A370AB4F3ABF482B61F5A7B41F19A0BA1F878A7B129E",
+    "Bytes": 3295
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

@@ -126,4 +126,8 @@ npm run build
 
 Current package target: 15 agent profiles, 171 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. The OmniRoute and memory entries are portable guidance only; runtime gateways, databases, private memory and keys are not distributed.
 
+## Skill source coverage
+
+The release merges the reusable skill folders found in the owner-managed Antigravity, Codex and cross-runtime agent skill locations, including important references, templates, starter assets and skill-local agent metadata. Duplicate bodies are deduplicated by skill name. Platform-internal `.codex\skills\.system` files, official plugin packages with their own MCP/hooks, private conversations, native profiles, caches and credentials are not copied into this product ZIP.
+
 — Mansoor Farooq

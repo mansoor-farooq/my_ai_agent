@@ -12,6 +12,7 @@ Build a self-contained Antigravity plugin from the owned `E:\Agents` source. Bun
 
 - Keep `production-orchestrator` as the only main agent and retain the 14 specialists.
 - Bundle 171 skill bodies and 4 rules; every agent skill reference must resolve locally.
+- Preserve reusable skill-local references, templates, starter assets and agent metadata from the owner-managed non-Antigravity skill sources.
 - Keep MCP servers, hooks, sidecars, provider bridges, credentials, private chats and native profile data out of the ZIP.
 - Preserve third-party licence and provenance notices.
 - Sign and checksum every packaged file and fail closed on tampering.
