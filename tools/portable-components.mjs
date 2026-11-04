@@ -10,9 +10,24 @@ const importedSkillNames = new Set([
   'omniroute-gateway', 'stop-slop',
 ]);
 const portableTextExtensions = new Set([
-  '', '.cmd', '.css', '.html', '.js', '.json', '.jsx', '.md', '.mjs', '.ps1',
-  '.py', '.sh', '.ts', '.txt', '.yaml', '.yml',
+  '', '.cfg', '.cmd', '.conf', '.css', '.html', '.ini', '.js', '.json', '.jsx',
+  '.md', '.mjs', '.ps1', '.py', '.sh', '.toml', '.ts', '.txt', '.xml', '.yaml', '.yml',
 ]);
+
+export const requiredPortableSupportFiles = [
+  'skills/impeccable/agents/impeccable_asset_producer.toml',
+  'skills/impeccable/agents/impeccable_documenter.toml',
+  'skills/impeccable/agents/impeccable_finish_reviewer.toml',
+  'skills/impeccable/agents/impeccable_manual_edit_applier.toml',
+  'skills/impeccable/agents/openai.yaml',
+  'skills/frontend-design/LICENSE',
+  'skills/frontend-design/assets/vanilla-starter/index.html',
+  'skills/frontend-design/assets/vanilla-starter/script.js',
+  'skills/frontend-design/assets/vanilla-starter/style.css',
+  'skills/frontend-design/references/aesthetic-playbook.md',
+  'skills/frontend-design/references/implementation-patterns.md',
+  'skills/project-context-orchestrator/agents/openai.yaml',
+];
 
 async function directoryEntries(directory) {
   try {
@@ -149,5 +164,10 @@ export async function copyPortableComponents(root, target, credentialPattern) {
   await mkdir(target, { recursive: true });
   await cp(path.join(root, 'skills'), path.join(target, 'skills'), { recursive: true, errorOnExist: true });
   await cp(path.join(root, 'rules'), path.join(target, 'rules'), { recursive: true, errorOnExist: true });
+  const missingSupportFiles = [];
+  for (const relative of requiredPortableSupportFiles) {
+    try { await readFile(path.join(target, relative)); } catch { missingSupportFiles.push(relative); }
+  }
+  if (missingSupportFiles.length) throw new Error(`Required portable skill support files were not copied: ${missingSupportFiles.join(', ')}`);
   return { skillCount: inventory.skills.length, ruleCount: inventory.rules.length };
 }

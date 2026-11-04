@@ -1,10 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { access, mkdtemp, readFile, rm } from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  copyPortableComponents,
   inspectPortableSource,
+  requiredPortableSupportFiles,
   readAgentSkillReferences,
 } from '../portable-components.mjs';
 
@@ -65,22 +69,35 @@ test('every shipped agent skill reference resolves to a bundled skill body', asy
 });
 
 test('portable bundle retains important non-Antigravity skill support files', async () => {
-  const expectedFiles = [
-    'skills/impeccable/agents/impeccable_asset_producer.toml',
-    'skills/impeccable/agents/impeccable_documenter.toml',
-    'skills/impeccable/agents/impeccable_finish_reviewer.toml',
-    'skills/impeccable/agents/impeccable_manual_edit_applier.toml',
-    'skills/impeccable/agents/openai.yaml',
-    'skills/frontend-design/LICENSE',
-    'skills/frontend-design/assets/vanilla-starter/index.html',
-    'skills/frontend-design/assets/vanilla-starter/script.js',
-    'skills/frontend-design/assets/vanilla-starter/style.css',
-    'skills/frontend-design/references/aesthetic-playbook.md',
-    'skills/frontend-design/references/implementation-patterns.md',
-    'skills/project-context-orchestrator/agents/openai.yaml',
-  ];
+  const output = await mkdtemp(path.join(os.tmpdir(), 'mansoor-agent-hub-support-'));
+  try {
+    await copyPortableComponents(root, output, /(?:AIza[0-9A-Za-z_-]{30,}|AQ\.[0-9A-Za-z_-]{32,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9_]{30,})/);
+    for (const relative of requiredPortableSupportFiles) {
+      await assert.doesNotReject(access(path.join(output, relative)), relative);
+    }
+  } finally {
+    await rm(output, { recursive: true, force: true });
+  }
+});
 
-  for (const relative of expectedFiles) {
-    await assert.doesNotReject(access(path.join(root, relative)), relative);
+test('built ZIP retains the support files after archive creation', async () => {
+  const archive = path.join(root, 'dist', 'mansoor-agent-hub.zip');
+  await assert.doesNotReject(access(archive), 'build the ZIP before running archive assertions');
+  const output = await mkdtemp(path.join(os.tmpdir(), 'mansoor-agent-hub-archive-'));
+  try {
+    const quotePowerShell = (value) => `'${value.replaceAll("'", "''")}'`;
+    execFileSync('powershell.exe', [
+      '-NoProfile',
+      '-Command',
+      `Expand-Archive -LiteralPath ${quotePowerShell(archive)} -DestinationPath ${quotePowerShell(output)} -Force`,
+    ], { stdio: 'pipe' });
+
+    for (const relative of requiredPortableSupportFiles) {
+      await assert.doesNotReject(access(path.join(output, relative)), relative);
+    }
+    const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
+    assert.equal(plugin.version, '1.3.2');
+  } finally {
+    await rm(output, { recursive: true, force: true });
   }
 });

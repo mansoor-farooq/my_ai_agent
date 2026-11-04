@@ -18,6 +18,26 @@ if (-not $node) { throw 'Node.js is required to assemble the local agent-team pl
 & $node.Source (Join-Path $hub 'tools\build-antigravity-plugin.mjs') $output
 if ($LASTEXITCODE -ne 0) { throw 'Plugin packaging stopped. Review the diagnostic above.' }
 
+$requiredSupportFiles = @(
+  'skills\impeccable\agents\impeccable_asset_producer.toml',
+  'skills\impeccable\agents\impeccable_documenter.toml',
+  'skills\impeccable\agents\impeccable_finish_reviewer.toml',
+  'skills\impeccable\agents\impeccable_manual_edit_applier.toml',
+  'skills\impeccable\agents\openai.yaml',
+  'skills\frontend-design\LICENSE',
+  'skills\frontend-design\assets\vanilla-starter\index.html',
+  'skills\frontend-design\assets\vanilla-starter\script.js',
+  'skills\frontend-design\assets\vanilla-starter\style.css',
+  'skills\frontend-design\references\aesthetic-playbook.md',
+  'skills\frontend-design\references\implementation-patterns.md',
+  'skills\project-context-orchestrator\agents\openai.yaml'
+)
+foreach ($relative in $requiredSupportFiles) {
+  if (-not (Test-Path -LiteralPath (Join-Path $output $relative) -PathType Leaf)) {
+    throw "Required portable skill support file missing from build: $relative"
+  }
+}
+
 if ([string]::IsNullOrWhiteSpace($ArchivePath)) {
   $ArchivePath = Join-Path $dist 'mansoor-agent-hub.zip'
 }

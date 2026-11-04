@@ -141,8 +141,8 @@
   },
   {
     "Path": "Agents/install-antigravity-portable.ps1",
-    "SHA256": "F21142BDF956394137966EB505DA20C93A255CF436A7D30EEA0512F4CDA8147A",
-    "Bytes": 2534
+    "SHA256": "F15F559E85E8778A1B7883DE5924EF810CC446CC8783D8061210E7DC7230B7C4",
+    "Bytes": 3494
   },
   {
     "Path": "Agents/install.ps1",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "C28304A6E662CE8EFFAF6BE0048E83CC70D8B3B3F90A05B5EF506367CBA6C2F5",
-    "Bytes": 8529
+    "SHA256": "41FBDA70B0A588DC61B4408C4166A0903CB346C3C2BDCBDB78FDBF51F5FEF581",
+    "Bytes": 8607
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2186,8 +2186,8 @@
   },
   {
     "Path": "Agents/tools/portable-components.mjs",
-    "SHA256": "D68A7F9EB40D5F0A6BF1B874D9C61B41161F7F4AF4089D07C2F108EB9B17CDC7",
-    "Bytes": 7389
+    "SHA256": "88D2A4851D9EE1863E721C3AAA4ECCEA27D6C66C029083E82D7CF8B14C66A507",
+    "Bytes": 8517
   },
   {
     "Path": "Agents/tools/route-backend-ml-task.mjs",
@@ -2226,8 +2226,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "5F389683CB400994F339A370AB4F3ABF482B61F5A7B41F19A0BA1F878A7B129E",
-    "Bytes": 3295
+    "SHA256": "67FF7144311F22029B71DF352CD06A95366FD16D93B05ABDAFD01C0D33EB6066",
+    "Bytes": 4064
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

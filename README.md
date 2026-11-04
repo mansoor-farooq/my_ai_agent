@@ -128,6 +128,6 @@ Current package target: 15 agent profiles, 171 bundled skill bodies, 4 governed 
 
 ## Skill source coverage
 
-The release merges the reusable skill folders found in the owner-managed Antigravity, Codex and cross-runtime agent skill locations, including important references, templates, starter assets and skill-local agent metadata. Duplicate bodies are deduplicated by skill name. Platform-internal `.codex\skills\.system` files, official plugin packages with their own MCP/hooks, private conversations, native profiles, caches and credentials are not copied into this product ZIP.
+The release ships the materialized reusable skill library maintained in `E:\Agents\skills`. That library is synchronized from the owner-managed Antigravity, Codex and cross-runtime skill sources before release, including important references, templates, starter assets and skill-local agent metadata. Duplicate bodies are deduplicated by skill name. Platform-internal `.codex\skills\.system` files, official plugin packages with their own MCP/hooks, private conversations, native profiles, caches and credentials are not copied into this product ZIP.
 
 — Mansoor Farooq
