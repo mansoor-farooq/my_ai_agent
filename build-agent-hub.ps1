@@ -26,6 +26,11 @@ try {
   }
 
   Write-Host ''
+  Write-Host 'Refreshing owner source checksums...'
+  & $node.Source (Join-Path $hub 'tools\update-key-checksums.mjs')
+  if ($LASTEXITCODE -ne 0) { throw 'Source checksum refresh failed.' }
+
+  Write-Host ''
   Write-Host 'Step 1/3: Building and signing the portable ZIP...'
   & (Join-Path $hub 'install-antigravity-portable.ps1')
 

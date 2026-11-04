@@ -101,8 +101,8 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "886169E84AA3681E469B4E9224F35104F12D07CBF17F6101F7924E64E908E5FE",
-    "Bytes": 2484
+    "SHA256": "97D733264FF99371B2A81C59D371FCB1C3FFB07AD01FACE452FBB466B0259EBB",
+    "Bytes": 2691
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "E3EB051D3448DCB24466967D850302154FF7F094707EBF237408FAA17F67464A",
+    "SHA256": "B779236B1F9D41DA010E0DBC7353F82C4BBF779B28F3903605F02C96F757A089",
     "Bytes": 287
   },
   {
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "99C2DB88F2E0BBDD7CE7130399FD8629048FECE20AAE61588C7C981C0DAC37B5",
-    "Bytes": 18167
+    "SHA256": "F1A3E65E761E8ADBFE450FD7E5AB35796143F4539D19456C3F5C75A50CF3AE5B",
+    "Bytes": 20181
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2266,7 +2266,7 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "DCC5B7E00A12E48809C00742A16D38618A0CFBA087AA057A7068787C55547C61",
+    "SHA256": "D2165EA8F20843B68C2E275C5FE2309CAFE9AC60D2A5A1BD0C9133BD9DAF5E19",
     "Bytes": 6073
   },
   {
