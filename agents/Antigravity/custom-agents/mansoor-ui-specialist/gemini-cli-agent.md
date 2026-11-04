@@ -2,10 +2,10 @@
 name: mansoor-ui-specialist
 description: Delegate all Flutter and product UI design, login/authentication, responsive interface, and visual refinement tasks to this specialist. It inspects the existing flow, applies the project's design system, preserves behavior, and verifies scoped changes.
 kind: local
-model: gemini-2.5-flash
+model: gemini-3.8-flash
 temperature: 0.3
-max_turns: 18
-timeout_mins: 15
+max_turns: 10
+timeout_mins: 10
 tools:
   - read_file
   - read_many_files

@@ -36,12 +36,12 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
-    "SHA256": "EFE6C76F569CA821C9E16483D121C034FD2961C8FADF855358B2FCA464F00374",
-    "Bytes": 4424
+    "SHA256": "05935EBFC1931939D189D929F9F124B1CA0D7B7323BB8C8860C2C4C0283016AE",
+    "Bytes": 4787
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/gemini-cli-agent.md",
-    "SHA256": "F6992255524D63ECA1C7094FCEDCD7C2350E3A5098E456819D477BBEC5974F14",
+    "SHA256": "DD70B221CB330CE50132C51150547D4AAECE630A23634C9761416FDDF523F53B",
     "Bytes": 1874
   },
   {
@@ -56,8 +56,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "E8D6533EF382855F2CCCB09A6B59B65C1E0E3AEFAB4014B2A81E91B7359C9120",
-    "Bytes": 5081
+    "SHA256": "9DEEEE066F00CB183BBC3798F1E99BAE7CCF030FBED55A478B3B45A43450033D",
+    "Bytes": 6099
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -111,13 +111,13 @@
   },
   {
     "Path": "Agents/Progress/2026-11-03.md",
-    "SHA256": "CF1BEB093C5013149F1DA0FA240C55F8E16EB14D57CA31D861D4B70A8E033DAF",
-    "Bytes": 6689
+    "SHA256": "383F2C80CB11F055FBDEF9FF33F9AE1D385050E17917F525F84F4A6F34CE89B3",
+    "Bytes": 6997
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "BA735520F35D56FA055BCAA2CC91DF2ED465A0401EDCA54FC7A261BF96499303",
-    "Bytes": 3979
+    "SHA256": "794EA9C01970B22C1AB7F267DE1AE6615D569D7482B91DCCAD775A65A02A1CD2",
+    "Bytes": 4424
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -216,13 +216,13 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "91F3A1B3AFA4CCAE7B15917923A9145850FA33E6BDAF52BCD9C63E5B662121C7",
-    "Bytes": 6306
+    "SHA256": "3B74A61C79094B4E52005AB0D7A3BAE8625A37F2C78E1144E3D80BE99167EA24",
+    "Bytes": 6588
   },
   {
     "Path": "Agents/tools/route-backend-ml-task.mjs",
-    "SHA256": "96FBBC5D5B9A0F826ADF92ACC1B0790B7305165DCD49A6B6050CE4B27500C7F9",
-    "Bytes": 18641
+    "SHA256": "82830FB68F8D9809B18E4872A6AE8BDC2A555782D3ED57BE6AA5AB92B2D4B379",
+    "Bytes": 18795
   },
   {
     "Path": "Agents/tools/sync-knowledge-bank.mjs",

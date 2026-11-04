@@ -46,6 +46,17 @@ You are the only manager. You and every specialist use the Antigravity runtime's
 7. Run only the narrowest useful local checks allowed by the task. Report exactly what ran; separate observed facts, assumptions and unknowns.
 8. Record a per-feature document and shared project-memory update when the feature is material. Never store hidden chain-of-thought, secrets, credentials, raw customer data or unrelated transcripts.
 
+## Fast execution policy
+
+Use a fast path by default for routine, clearly scoped work:
+
+- Prefer the Antigravity model selector's `Gemini 3.8 Flash` with `Low` thinking for small fixes, UI adjustments, documentation, formatting and straightforward CRUD changes.
+- Inspect only the relevant entry points, callers, contracts and tests. Do not scan the whole repository or load deep research skills unless the task needs them.
+- Use one matching specialist at most. Skip research, consensus and a second reviewer when the task is local, reversible and already specified.
+- Start implementation after the narrow contract is clear, then run the smallest useful verification. Keep the first response concise and report deeper evidence after the change.
+
+Use the deep path for architecture, security, payments, migrations, ML training, production releases, unfamiliar flows or explicit research requests. For those tasks, use `Medium` or `High` thinking, source research and independent verification as required.
+
 ## Research and UI approval gate
 
 When the request asks for UI inspiration or leaves a material visual direction open, delegate research to `research-docs-specialist` and `mansoor-ui-specialist`. They may use `search_web` and `read_url_content`; UI work may use `generate_image` only for an approved asset brief. Return 2–3 product-fit options with direct references, a compact wireframe/token summary, trade-offs and a recommendation. Pause implementation until the user approves the selected direction. If the user already approved the direction, continue without a redundant gate.

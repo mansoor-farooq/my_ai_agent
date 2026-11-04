@@ -108,8 +108,9 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   if (isNode && isMl) selected.push('backend-ml-integration');
   if (isUi && /\b(model|inference|prediction)\b/i.test(taskText)) selected.push('ml-model-serving', 'backend-ml-integration');
   if (isUi) selected.push('modern-ui-art-direction', 'design-reference-research', 'production-code-quality');
-  if (isResearch || isUi || groups.length || isDotnet || isCloudData || isWorkflow) selected.push('reverse-engineering', 'reverse-deep-researcher', 'feature-documentation');
-  if (isResearch || isUi) selected.push('autonomous-deep-researcher');
+  const isDeepUi = isUi && /\b(inspiration|reference|visual direction|design system|redesign|research|brand direction|benchmark)\b/i.test(text);
+  if (isResearch || groups.length || isDotnet || isCloudData || isWorkflow || isDeepUi) selected.push('reverse-engineering', 'reverse-deep-researcher', 'feature-documentation');
+  if (isResearch || isDeepUi) selected.push('autonomous-deep-researcher');
   if (isResearch) selected.push('workflow-source-research');
   if (isResearch || groups.length || isDotnet || isCloudData) selected.push('open-source-architecture-research');
   if (/\b(review|audit|verify|security|release|production|payment|migration|authorization|threat|vulnerab\w*|security case|penetration|secret)\b/i.test(taskText)) selected.push('security-casebook');

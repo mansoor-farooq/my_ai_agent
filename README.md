@@ -48,6 +48,10 @@ This writes `dist\mansoor-agent-hub.zip` inside this repository and does not cha
 
 The installer checks Antigravity's CLI, validates the plugin, and installs or updates it automatically. No GitHub sign-in is needed. The target machine must have Antigravity CLI and its own Gemini sign-in. The agents use the target's inherited Gemini model; this kit does not configure model credentials.
 
+## Fast mode
+
+For quick work, choose `Gemini 3.8 Flash` and `Low` thinking in Antigravity's model selector. The manager then uses one relevant specialist, reads only the affected files and skips deep research unless the task needs it. For architecture, security, migration, ML or explicit research work, switch to `Medium` or `High` thinking. Antigravity CLI also supports `agy --model="Gemini 3.8 Flash"` for a session-level model choice.
+
 ## Model and optional keys
 
 When no API key is present, the manager and all specialists use the signed-in Antigravity/Gemini session through `model: inherit`. If you have provider keys, copy `.env.example` to a local `.env` beside the extracted package or inside the relevant project and fill only the variables required by an explicitly configured integration. The portable plugin does not automatically read or route those keys, and `.env` must never be committed or shared.
