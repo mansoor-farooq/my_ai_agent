@@ -45,4 +45,4 @@ try {
     Remove-Item -LiteralPath $resolvedOutput -Recurse -Force
   }
 }
-Write-Output 'To install on a target system: agy plugin install <extracted-folder>'
+Write-Output 'Target setup: install Antigravity, extract the ZIP, then double-click Install-Mansoor-Agent-Team.cmd.'

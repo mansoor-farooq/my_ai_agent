@@ -38,14 +38,15 @@ powershell -ExecutionPolicy Bypass -File .\install-antigravity-portable.ps1
 node tools/agent-hub-doctor.mjs --format json
 ```
 
-This writes `dist\mansoor-agent-hub.zip` inside this repository and does not change a user profile or contact providers. On a target machine, extract the ZIP and run:
+This writes `dist\mansoor-agent-hub.zip` inside this repository and does not change a user profile or contact providers. On a target machine:
 
 ```powershell
-agy plugin validate --strict <extracted-folder>
-agy plugin install <extracted-folder>
+1. Install Antigravity and sign in with the target user's Gemini account.
+2. Extract `mansoor-agent-hub.zip`.
+3. Double-click `Install-Mansoor-Agent-Team.cmd`.
 ```
 
-No GitHub sign-in is needed for a local folder install. The target machine must have Antigravity CLI and its own Gemini sign-in. The agents use the target's inherited Gemini model; this kit does not configure model credentials.
+The installer checks Antigravity's CLI, validates the plugin, and installs or updates it automatically. No GitHub sign-in is needed. The target machine must have Antigravity CLI and its own Gemini sign-in. The agents use the target's inherited Gemini model; this kit does not configure model credentials.
 
 ## Source boundary
 
