@@ -26,4 +26,4 @@
 2. Extend automatic routing and tests for workflow baseline, approval UI/database backing, webhook/idempotency, and no workflow noise for a bounded UI fix.
 3. Strengthen manager/UI prompt policy: mandatory product research on new product/architecture/workflow work; visual approval gate; database-backed operator surfaces; native search/fetch/image tools.
 4. Update README and installer so new skills install and hub-managed workflow/router references update safely.
-5. Run router, manifest, skill-frontmatter and installer syntax checks; install locally without Hermes credential or native history changes; push all four branches.
+5. Run router, manifest, skill-frontmatter and installer syntax checks; build the local provider-free package without credential or native history changes. Branch synchronization remains an operator task outside this source-only plan.

@@ -41,13 +41,13 @@ Use this skill whenever running multi-agent tasks, cross-cutting features, enter
                                      |
                        +-------------v-------------+
                        |    Scoped Builder Agent   |
-                       | (DeepSeek/Gemini Subagent)|
+                       | (Gemini Specialist Team) |
                        | - Minimal Diff Edits      |
                        +-------------+-------------+
                                      |
                        +-------------v-------------+
                        |      Verifier Agent       |
-                       | (live-web-auditor/Tests)  |
+                       | (QA/Release Specialist)   |
                        | - Empirical Proof         |
                        +---------------------------+
 ```

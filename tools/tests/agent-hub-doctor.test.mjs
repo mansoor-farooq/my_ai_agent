@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { runDoctor } from '../agent-hub-doctor.mjs';
+
+test('doctor verifies the portable Gemini expert team from the E:\\Agents source only', () => {
+  const report = runDoctor();
+  assert.equal(report.failures, 0, JSON.stringify(report.checks.filter((item) => item.status === 'FAIL')));
+  assert.equal(report.warnings, 0);
+  assert.ok(report.checks.some((item) => item.name === 'single Gemini manager' && item.status === 'PASS'));
+  assert.ok(report.checks.some((item) => item.name === 'expert team inventory' && item.detail.includes('15')));
+});
+
+test('doctor enforces provider-free packaging and agent tool boundaries', () => {
+  const report = runDoctor();
+  assert.ok(report.checks.some((item) => item.name === 'connector-free package policy' && item.status === 'PASS'));
+  assert.ok(report.checks.some((item) => item.name === 'agent tool boundary' && item.status === 'PASS'));
+});

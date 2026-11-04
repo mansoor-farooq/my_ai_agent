@@ -57,11 +57,13 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   const text = `${task}\n${files.join('\n')}`;
   const taskText = String(task);
   const normalizedFiles = files.map(file => String(file).replaceAll('\\', '/'));
-  const isImageTask = /\b(image|images|imagery|photo|photos|illustration|illustrations|visual assets?|artwork)\b/i.test(taskText);
   const hasNodeManifest = normalizedFiles.some(file => /(^|\/)(package\.json|pnpm-lock\.yaml|yarn\.lock|package-lock\.json|tsconfig\.json)$/i.test(file));
   const hasPythonManifest = normalizedFiles.some(file => /(^|\/)(pyproject\.toml|requirements[^/]*\.txt|Pipfile|poetry\.lock)$/i.test(file));
   const isUi = /\b(ui|ux|frontend|front-end|screen|component|layout|responsive|visual|design system|interface|dashboard|image generation|image asset|react|vue|svelte)\b/i.test(taskText)
     || normalizedFiles.some(file => /\.(tsx|jsx|vue|svelte)$/i.test(file));
+  const isMobile = /\b(flutter|dart|android|ios|mobile|react native)\b/i.test(text)
+    || normalizedFiles.some(file => /(^|\/)(pubspec\.yaml|androidmanifest\.xml)$/i.test(file));
+  const isCloudData = /\b(bigquery|spark|dataproc|dataflow|dbt|dataform|data pipeline|data engineering|warehouse analytics)\b/i.test(text);
   const isNode = /\b(node(?:\.js)?|typescript|javascript|nestjs|express|fastify|npm|pnpm|yarn)\b/i.test(taskText)
     || (hasNodeManifest && /\b(backend|api|server|service|endpoint|worker)\b/i.test(taskText));
   const isPython = /\b(python|py(?:thon)?|fastapi|django|pytorch|torch|scikit.?learn|ml|machine learning|model training)\b/i.test(text)
@@ -72,6 +74,7 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   const isMl = /\b(ml|machine learning|pytorch|torch|training|train|dataset|transformer|llm|forecast)\b/i.test(taskText)
     || (!isUi && /\b(model|inference|serving)\b/i.test(taskText) && /\b(api|backend|server|deploy)\b/i.test(taskText));
   const isWorkflow = /\b(workflow|automation|automate|orchestrat\w*|approval|human.?in.?the.?loop|state machine|webhook|callback|scheduled job|cron|connector|integration flow|pipeline|runbook|operator console)\b/i.test(text);
+  const isResearch = /\b(research|reference|inspiration|open.?source|official docs?|architecture decision|compare libraries|benchmark|reverse engineer|reconstruct|document the feature)\b/i.test(text);
   const hasApproval = /\b(approval|approve|approver|sign.?off|human.?in.?the.?loop|review gate)\b/i.test(text);
   const hasWebhook = /\b(webhook|event.?driven|callback|duplicate event|deduplication)\b/i.test(text);
   const hasRetryOrRecovery = /\b(retr(?:y|ies|ied)|compensation|recover\w*|resume|replay|dead.?letter|failure handling)\b/i.test(text);
@@ -105,7 +108,19 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   if (isNode && isMl) selected.push('backend-ml-integration');
   if (isUi && /\b(model|inference|prediction)\b/i.test(taskText)) selected.push('ml-model-serving', 'backend-ml-integration');
   if (isUi) selected.push('modern-ui-art-direction', 'design-reference-research', 'production-code-quality');
-  if (isImageTask) selected.push('production-image-generation');
+  if (isResearch || isUi || groups.length || isDotnet || isCloudData || isWorkflow) selected.push('reverse-engineering', 'reverse-deep-researcher', 'feature-documentation');
+  if (isResearch || isUi) selected.push('autonomous-deep-researcher');
+  if (isResearch) selected.push('workflow-source-research');
+  if (isResearch || groups.length || isDotnet || isCloudData) selected.push('open-source-architecture-research');
+  if (/\b(review|audit|verify|security|release|production|payment|migration|authorization|threat|vulnerab\w*|security case|penetration|secret)\b/i.test(taskText)) selected.push('security-casebook');
+  if (isUi && /\b(image|asset|illustration|hero|mockup|visual)\b/i.test(text)) selected.push('production-image-generation');
+  if (isCloudData) {
+    if (/\bbigquery|dbt|dataform\b/i.test(text)) selected.push('bigquery-sql', 'dbt-bigquery', 'dataform-bigquery');
+    if (/\bspark|dataproc\b/i.test(text)) selected.push('gcp-spark', 'gcp-spark-troubleshooting');
+    if (/\bdataflow\b/i.test(text)) selected.push('gcp-dataflow');
+    selected.push('gcp-data-pipelines', 'workflow-data-contracts', 'workflow-data-provenance');
+  }
+  if (isMobile) selected.push('production-code-quality');
   if (groups.length || isDotnet) selected.push('secure-design-threat-modeling', 'production-code-quality');
 
   if (isWorkflow) {
@@ -138,25 +153,23 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   if (groups.length || isDotnet) supportProfiles.push('saas-architect');
   if (/\b(database|schema|sql|postgres|mysql|ledger|sap|erp|migration)\b/i.test(text)) supportProfiles.push('enterprise-schema-architect');
   if (isUi) supportProfiles.push('mansoor-ui-specialist');
+  if (isMobile) supportProfiles.push('flutter-mobile-specialist');
+  if (isCloudData) supportProfiles.push('cloud-data-engineer');
+  if (isWorkflow) supportProfiles.push('workflow-automation-specialist');
+  if (isResearch) supportProfiles.push('research-docs-specialist');
 
   const taskWorkers = [];
   const workflowWorkerSkills = name => name.startsWith('workflow-');
-  if (isNode) taskWorkers.push({ role: 'node-backend-builder', project, skills: skills.filter(name => name.startsWith('node-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
-  if (isPython) taskWorkers.push({ role: 'python-backend-builder', project, skills: skills.filter(name => name.startsWith('python-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
-  if (isDotnet) taskWorkers.push({ role: 'dotnet-backend-builder', project, skills: skills.filter(name => name.startsWith('dotnet-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
-  if (isMl) taskWorkers.push({ role: 'ml-engineer-pytorch', project, skills: skills.filter(name => name.startsWith('ml-') || name.startsWith('mlops-') || name.startsWith('pytorch-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
-  if (groups.length || isDotnet) {
-    const verifierSkills = unique([
-      'gravitas-verification',
-      ...(isNode ? ['node-testing-quality', 'node-auth-security'] : []),
-      ...(isPython ? ['python-testing-quality', 'python-security'] : []),
-      ...(isDotnet ? ['dotnet-testing-strategy', 'dotnet-secure-coding'] : []),
-      'secure-design-threat-modeling',
-      'production-code-quality'
-    ]);
-    selected.push(...verifierSkills);
-    taskWorkers.push({ role: 'independent-verifier', project, skills: verifierSkills });
-  }
+  if (isNode) taskWorkers.push({ role: 'node-backend-specialist', project, skills: skills.filter(name => name.startsWith('node-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
+  if (isPython) taskWorkers.push({ role: 'python-backend-specialist', project, skills: skills.filter(name => name.startsWith('python-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
+  if (isDotnet) taskWorkers.push({ role: 'dotnet-backend-specialist', project, skills: skills.filter(name => name.startsWith('dotnet-') || ['secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
+  if (isMobile) taskWorkers.push({ role: 'flutter-mobile-specialist', project, skills: skills.filter(name => ['production-code-quality'].includes(name)) });
+  if (isCloudData) taskWorkers.push({ role: 'cloud-data-engineer', project, skills: skills.filter(name => name.startsWith('gcp-') || name.startsWith('bigquery-') || ['dbt-bigquery', 'dataform-bigquery', 'workflow-data-contracts', 'workflow-data-provenance', 'production-code-quality'].includes(name)) });
+  if (isResearch) taskWorkers.push({ role: 'research-docs-specialist', project, skills: skills.filter(name => ['reverse-engineering', 'reverse-deep-researcher', 'open-source-architecture-research', 'feature-documentation', 'workflow-source-research', 'autonomous-deep-researcher'].includes(name)) });
+  if (isMl) taskWorkers.push({ role: 'ml-systems-specialist', project, skills: skills.filter(name => name.startsWith('ml-') || name.startsWith('mlops-') || name.startsWith('pytorch-') || ['backend-ml-integration', 'secure-design-threat-modeling', 'production-code-quality'].includes(name) || workflowWorkerSkills(name)) });
+  if (isWorkflow) taskWorkers.push({ role: 'workflow-automation-specialist', project, skills: skills.filter(workflowWorkerSkills) });
+  const reviewRequested = /\b(review|audit|verify|security|release|production|payment|migration|authorization)\b/i.test(taskText);
+  if (reviewRequested) taskWorkers.push({ role: /\b(security|authorization|payment|tenant)\b/i.test(taskText) ? 'application-security-reviewer' : 'qa-release-specialist', project, skills: skills.filter(name => ['secure-design-threat-modeling', 'production-code-quality', 'gravitas-verification', 'dotnet-testing-strategy', 'node-testing-quality', 'python-testing-quality'].includes(name)) });
   const routedSkills = unique(selected);
   const missingVerifierSkills = routedSkills.filter(name => !fs.existsSync(path.join(root, 'skills', name, 'SKILL.md')));
   if (missingVerifierSkills.length) throw new Error(`Routed skill files are missing: ${missingVerifierSkills.join(', ')}`);
@@ -168,20 +181,18 @@ export function routeTask({ task = '', files = [], project = null, root = projec
     taskWorkers,
     skills: routedSkills,
     coordination: taskWorkers.length > 1
-      ? 'The manager assigns task-scoped workers, gives each disjoint file ownership, and resolves their contracts; architecture/UI profiles advise only when selected.'
-      : 'The manager handles the task or assigns one task-scoped worker; persistent profile count stays unchanged.',
+      ? 'The manager assigns one primary domain expert plus only a requested/high-risk reviewer, with disjoint file ownership.'
+      : 'The manager handles the task or assigns one matching persistent domain specialist.',
     workflow: [
       'discover repository, runtime versions, constraints, and existing contracts',
       'load or refresh this project memory; architecture profile reviews boundaries when selected',
       'manager selects only the global skills needed and writes worker handoff contracts',
       ...(isWorkflow ? ['inspect the real schema, API, permissions, workflow states and representative records before proposing the product flow; never substitute chat-only or invented production data'] : []),
-      ...(isWorkflow ? ['research current first-party docs and real product examples with Google Search/URL reading; verify material claims and save a dated source ledger in project memory'] : []),
       ...(isWorkflow && hasApproval ? ['separate design approval from runtime business approval; persist business approval state, actor, reason, version and audit event through authorized database/API transitions'] : []),
-      ...(isUi ? ['research product-fit visual references; route image generation only when an asset is requested or needed and a provider is available; wait for approval of a material visual blueprint unless already authorized'] : []),
-      ...(isImageTask && !isUi ? ['check image-generation tool/provider availability; generate and inspect an asset or return a ready-to-run prompt without claiming generation'] : []),
+      ...(isUi ? ['use the installed local design skills and inspect product assets; show a compact blueprint only when a material direction is open'] : []),
       ...(groups.length ? ['apply shared threat modeling and stack-specific security; verify denied and cross-tenant paths'] : []),
       ...(isDotnet ? ['apply .NET security and verification skills; keep .NET architecture and deployment decisions evidence-based'] : []),
-      'parallelize independent task-scoped workers with non-overlapping file ownership',
+      'use one primary domain expert; parallelize only when file ownership is independent and necessary',
       ...(isMl ? ['block training or release on split integrity, leakage checks, reproducibility, and task-appropriate evaluation'] : []),
       'independent verification by the manager or verifier checks tests, security, runtime behavior, and changed-file scope',
       'report evidence, limitations, and rollback or next-step notes'

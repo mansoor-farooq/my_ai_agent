@@ -1,4 +1,6 @@
-# Ultra-Autonomous Agent Hub Audit
+# Historical Agent Hub Audit (superseded)
+
+> This is a point-in-time archive. The current connector-free/provider-free team contract is documented in `README.md` and `docs/superpowers/plans/2026-11-03-antigravity-domain-agent-team.md`. Legacy provider and gateway paths described below were removed from the active source tree.
 
 **Audit date:** 2026-11-02  
 **Audited revision:** `9209991` (`feat: store knowledge rounds on project branches`)  

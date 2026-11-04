@@ -1,36 +1,29 @@
 ---
 name: backend-ml-skill-router
-description: Use when a task spans Node.js, Python, data engineering or machine learning, or when choosing global skills and task-scoped workers under one manager.
+description: Use when routing a backend, data-platform or ML task to the focused Gemini domain specialist and selecting a small subset of Antigravity's already-installed skills.
 ---
 
-# Backend and ML Skill Router
+# Backend, Data and ML Specialist Routing
 
-Run node tools/route-backend-ml-task.mjs with --project, --task and --files when this repository contains the router. On a portable Antigravity install, run the installed agent-hub-tools/route-backend-ml-task.mjs and pass --root to the Antigravity config directory. For multiple projects, route each project separately with its own root/files and memory ID. Treat its output as a starting selection; repository evidence and task scope decide the final subset.
+Keep `production-orchestrator` as the only manager. The expert agents inherit the active Gemini model and are installed as persistent Antigravity subagents.
 
-## Lead-agent team flow
-1. **Discover/reverse engineer:** read AGENTS.md/README, manifests and lockfiles; map entry points, data flow, existing contracts, tests and deployment files. Use the repository's reverse-engineering skill for unfamiliar or legacy code.
-2. **Single manager:** production-orchestrator is the only always-on lead. Call saas-architect for backend/system boundaries, enterprise-schema-architect for relational/schema work, and mansoor-ui-specialist for UI scope; these are review profiles, not extra managers.
-3. **Select expertise:** always load the matching architecture skill and then the narrow skill subset for API, auth, data, queues, tests, deployment, model/data/evaluation/serving signals. Include security and testing whenever those boundaries change.
-   - Automatically include `secure-design-threat-modeling` for backend/API and trust-boundary work, along with the stack-specific security skill when available. Include `production-code-quality` for implementation and review tasks. Never ask the user to choose these skills.
-4. **Research:** check current official documentation for version-sensitive APIs and security guidance. Record source, version/date, applicable claim and a second independent check for consequential decisions. If sources disagree, state the discrepancy.
-5. **Coordinate:** exchange SCOPE, CONTRACT, RISK, FILE-OWNERSHIP, and EVIDENCE notes. Agree on request/schema ownership, transaction boundaries, error semantics and verification before concurrent edits.
-6. **Build:** manager may invoke multiple task-scoped workers through its subagent tool, passing only the selected global skills and a disjoint file scope. These invocations do not create persistent agent profiles. Use tests before implementation for behavior changes.
-7. **Verify independently:** reviewer checks the diff, contracts, tests, auth/data isolation, failure cases, and actual runtime evidence. ML changes additionally require leakage-safe splits, reproducibility record and task-appropriate evaluation. A route selection itself is not proof of implementation quality.
-8. **Memory and close:** load or build .agents/memory for each project, then update its map, decisions, project plan/flow and verification evidence at phase end. Give each worker exactly one project ID/root and its memory references; never mix project memories. Keep raw project data local; sync only sanitized, policy-approved notes. Never store hidden chain-of-thought. Report changed paths, commands/results, unknowns and rollback notes.
+## Route by task
 
-## Routing guardrails
-- package.json/Node runtime signals select Node expertise; Python manifests/runtime select Python; model/training/data/inference task signals add ML expertise.
-- A Python manifest alone does not mean the project uses ML. A Node API that calls a model may need both Node and ML serving/integration expertise.
-- Do not spin up every specialist for every task. One focused specialist can be sufficient; multi-agent review is for cross-boundary work.
-- Keep the persistent roster to the lead manager, architecture profile and Mansoor UI profile, with schema/audit/gateway profiles available when relevant. Backend/ML workers are task-scoped subagent invocations under the manager, not separately installed peer agents.
-- Skills are installed globally and reusable. Load only the selected skill documents from the global skill directory; do not dump the entire skill library into every prompt.
-- Respect provider plan limits and cooldowns. Do not cycle accounts or keys to evade a provider's rate or daily limits; use supported fallback or report that capacity is unavailable.
-- If the detector misses a framework, pass the task and manifest path explicitly, then load the named skill manually.
-- For UI or generated-asset requests, use the same manager-owned routing: `modern-ui-art-direction` and `design-reference-research` for visual work; `production-image-generation` only when an image is requested or genuinely needed. Confirm tool/provider availability before claiming generation.
+- Node/TypeScript services -> `node-backend-specialist`
+- Python services -> `python-backend-specialist`
+- .NET/C#/ASP.NET Core -> `dotnet-backend-specialist`
+- ML, PyTorch, training, evaluation or serving -> `ml-systems-specialist`
+- BigQuery, Spark, Dataproc, Dataflow or data pipelines -> `cloud-data-engineer`
+- state machines, retries, queues, approvals or scheduled workflows -> `workflow-automation-specialist`
 
-## Workflow automation routing
-- Run `route-backend-ml-task.mjs` for workflow, automation, orchestration, integration, approval, scheduled job, webhook, pipeline or operator-console work. It selects the baseline workflow skills automatically and adds specialist skills from the request's data, approval, retry, schedule, connector, queue and release signals.
-- `workflow-source-research` is mandatory for new domain/product workflow design: search current first-party docs and real product references, verify claims, and persist a dated evidence ledger in the project's memory. Do not return generic inspiration as if it came from web research.
-- Inspect live repository schema/API and authorization before UI proposals. Product screens use persisted data and real state transitions; synthetic records are allowed only in isolated tests or clearly labeled prototypes.
-- For approval work, route design approval through the manager's visual blueprint gate and business approval through a persisted, authorized, version-checked transition with an audit event. These are different approvals.
-- Load and pass only the selected workflow skills to each scoped worker. Small unrelated UI/code fixes must not preload the workflow pack.
+Use `saas-architect` for system boundaries and `enterprise-schema-architect` for schema/ERP invariants. Add `application-security-reviewer` or `qa-release-specialist` only when the risk or requested review warrants it.
+
+Load only the few matching skills from the Antigravity host catalog. A skill inventory or router suggestion is not evidence that its instructions were loaded or its checks ran. Preserve project APIs, permissions, tenant isolation, data provenance and existing local changes.
+
+## Research boundary
+
+The agent hub does not configure MCP, OAuth, provider bridges, or external service clients. Specialists may use bounded `search_web` and `read_url_content` for official framework/security references after repository reconstruction. Never send secrets, private project files or customer data to research tools.
+
+## Handoff
+
+Give the selected specialist one project root, a narrow goal, owned paths, invariants, relevant skill names and expected local evidence. Keep separate tasks disjoint. The manager integrates results and reports changed paths, actual checks, assumptions and blockers. Never store hidden chain-of-thought, credentials, raw customer data or unrelated transcripts.

@@ -2,12 +2,15 @@
 *.pem
 *.secret
 
-# Whitelist portable DeepSeek Hermes bridge in private repository
-!subagents/deepseek-hermes/.env
-!subagents/deepseek-hermes/gemini-pool.json
-!subagents/deepseek-hermes/dsh-profile/
-!subagents/deepseek-hermes/dsh-profile/**
-!subagents/deepseek-hermes/dsh-profile/.*
+# Never track provider credentials, per-device identifiers, runtime state, or install artifacts.
+subagents/deepseek-hermes/.env
+subagents/deepseek-hermes/gemini-pool.json
+subagents/deepseek-hermes/dsh-profile/.anonymous-user-id
+subagents/deepseek-hermes/dsh-profile/.credentials.yaml
+subagents/deepseek-hermes/dsh-profile/openai-gateway/
+subagents/deepseek-hermes/dsh-profile/our-free-model/
+subagents/deepseek-hermes/dsh-profile/profiles/*/node_modules/
+subagents/deepseek-hermes/dsh-profile/profiles/*/.plugin-manager/
 
 
 # Large Native SQLite Profile Dumps (>50MB, PC local)
@@ -28,6 +31,7 @@ Thumbs.db
 .DS_Store
 $RECYCLE.BIN/
 node_modules/
+dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
