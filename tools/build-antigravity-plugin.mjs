@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.3.2';
+const packageVersion = '1.3.3';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -117,11 +117,11 @@ const premiumPackageReadme = [
   '2. Download the release from https://github.com/mansoor-farooq/my_ai_agent.',
   '3. Extract the ZIP and run Install-Mansoor-Agent-Team.cmd.',
   '',
-  'The installer verifies the owner signature and every packaged file before Antigravity validation. No GitHub login is required on the target machine.',
+  'The installer verifies the owner signature and every packaged file, installs the Agent Hub, then attempts the selected official Antigravity plugins. No GitHub login is required on the target machine.',
   '',
   '## Recipient setup',
   '',
-  'Install Antigravity, extract this ZIP, and double-click Install-Mansoor-Agent-Team.cmd. The recipient does not need the source repository, signing key, GitHub login or build tools.',
+  'Install Antigravity and sign in once, extract this ZIP, then double-click Install-Mansoor-Agent-Team.cmd. The installer installs the Agent Hub and tries the included official plugin set. If a plugin needs account consent or provider configuration, its original Antigravity message is shown; finish that setup in Antigravity and rerun the same installer. A failure in one plugin does not stop the others.',
   '',
   '## Owner build setup',
   '',
@@ -173,8 +173,34 @@ const signedInstaller = [
   '& $agy.Source plugin validate --strict $pluginRoot',
   "if ($LASTEXITCODE -ne 0) { throw 'Antigravity plugin validation failed.' }",
   '& $agy.Source plugin install $pluginRoot',
-  "if ($LASTEXITCODE -ne 0) { throw 'Antigravity plugin installation failed.' }",
-  "Write-Host 'Mansoor Gemini Agent Team installed successfully.'",
+  "if ($LASTEXITCODE -ne 0) { throw 'Mansoor Agent Hub installation failed.' }",
+  "Write-Host ''",
+  "Write-Host 'Installing official Antigravity plugins...' -ForegroundColor Cyan",
+  '$officialPlugins = @(',
+  "  'android-cli-plugin', 'chrome-devtools-plugin', 'data-agent-kit-plugin', 'flutter',",
+  "  'gemini-api', 'google-antigravity-sdk', 'google-cloud-developer', 'google-developer-knowledge',",
+  "  'google_maps_platform', 'modern-web-guidance-plugin', 'gcalendar', 'gdocs', 'gdrive',",
+  "  'gsheets', 'gslides', 'science'",
+  ')',
+  '$failedPlugins = @()',
+  'foreach ($plugin in $officialPlugins) {',
+  '  $target = "$plugin@antigravity-plugins-official"',
+  '  Write-Host "`n[$plugin] Installing..." -ForegroundColor Cyan',
+  '  $pluginOutput = @(& $agy.Source plugin install $target 2>&1)',
+  '  $pluginExitCode = $LASTEXITCODE',
+  '  foreach ($line in $pluginOutput) { Write-Host ([string]$line) }',
+  '  if ($pluginExitCode -eq 0) { Write-Host "[$plugin] Installed." -ForegroundColor Green } else {',
+  '    Write-Host "[$plugin] Needs attention (exit $pluginExitCode). Original Antigravity output is shown above." -ForegroundColor Yellow',
+  '    $failedPlugins += $plugin',
+  '  }',
+  '}',
+  "Write-Host ''",
+  "Write-Host 'Mansoor Gemini Agent Team installed successfully.' -ForegroundColor Green",
+  'if ($failedPlugins.Count -gt 0) {',
+  '  Write-Host ("Plugins needing attention: " + ($failedPlugins -join ", ")) -ForegroundColor Yellow',
+  "  Write-Host 'Open Antigravity and finish any requested account consent or plugin setup, then rerun this same installer.' -ForegroundColor Yellow",
+  "  Write-Host 'Some plugins require their own provider account/API setup; Antigravity will show the required setup when enabled.' -ForegroundColor Yellow",
+  "} else { Write-Host 'All selected official plugins installed.' -ForegroundColor Green }",
   "Write-Host 'Restart Antigravity, or reload its skills/agents if the app is already open.'",
   ''
 ].join('\n');
