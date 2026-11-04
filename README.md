@@ -48,6 +48,10 @@ This writes `dist\mansoor-agent-hub.zip` inside this repository and does not cha
 
 The installer checks Antigravity's CLI, validates the plugin, and installs or updates it automatically. No GitHub sign-in is needed. The target machine must have Antigravity CLI and its own Gemini sign-in. The agents use the target's inherited Gemini model; this kit does not configure model credentials.
 
+## Model and optional keys
+
+When no API key is present, the manager and all specialists use the signed-in Antigravity/Gemini session through `model: inherit`. If you have provider keys, copy `.env.example` to a local `.env` beside the extracted package or inside the relevant project and fill only the variables required by an explicitly configured integration. The portable plugin does not automatically read or route those keys, and `.env` must never be committed or shared.
+
 ## Source boundary
 
 The checked-out repository contains historical provider/connector experiments from earlier work. They are not part of this portable agent kit, are not copied by its packer, and are not configured by this installation path. The packer includes only the selected agent profiles, manifest, logo, and README.

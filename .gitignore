@@ -1,6 +1,10 @@
 # Secrets & Credentials (General)
 *.pem
 *.secret
+.env
+.env.local
+.env.*.local
+!.env.example
 
 # Never track provider credentials, per-device identifiers, runtime state, or install artifacts.
 subagents/deepseek-hermes/.env
