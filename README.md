@@ -1,65 +1,81 @@
-# Mansoor Gemini Agent Team
+# MANSOOR FAROOQ
 
-Portable expert-agent team for Antigravity. The package has one Gemini-inherited manager and focused field specialists. It includes **no external provider connectors, provider bridges, OAuth setup, API keys, MCP servers, or bundled skill bodies**; bounded research/image tools are declared in the agent contracts and come from the target runtime.
+## Private Gemini Agent Team
 
-## Team
+An evidence-led expert-agent system for Antigravity. One lead manager routes each task to the right specialist, keeps project context focused and returns clear, professional engineering decisions.
 
-`production-orchestrator` is the only manager. It routes a bounded task to the matching expert and loads only relevant skills already available in the host Antigravity installation.
+> Designed and maintained by Mansoor Farooq · Private engineering workspace
+
+## What this system delivers
+
+| Capability | Result |
+|---|---|
+| Single manager | `production-orchestrator` owns routing, delegation and final verification. |
+| Specialist team | UI, Flutter, .NET, Node, Python, ML, cloud data, workflows, security, QA, research and hub operations. |
+| Evidence-first work | Repository reconstruction, current research, explicit assumptions and reproducible checks. |
+| Fast execution | Flash model, low thinking and one relevant specialist for routine work. |
+| Claude-style quality | Result-first answers, concise rationale, clear evidence boundaries and professional handoffs. |
+| Portable install | One ZIP and one installer command for a new Antigravity machine. |
+| Integrity gate | Package changes are detected before installation and installation stops. |
+
+## Team map
 
 | Area | Agent |
 |---|---|
-| Flutter, Dart, Android | `flutter-mobile-specialist` |
+| Manager and orchestration | `production-orchestrator` |
 | Product UI and design systems | `mansoor-ui-specialist` |
+| Flutter, Dart and Android | `flutter-mobile-specialist` |
 | SaaS and system architecture | `saas-architect` |
-| ERP, schema, data relationships | `enterprise-schema-architect` |
-| .NET / ASP.NET Core | `dotnet-backend-specialist` |
-| Node.js / TypeScript | `node-backend-specialist` |
+| ERP, schema and relationships | `enterprise-schema-architect` |
+| .NET and ASP.NET Core | `dotnet-backend-specialist` |
+| Node.js and TypeScript | `node-backend-specialist` |
 | Python services | `python-backend-specialist` |
-| ML and model operations | `ml-systems-specialist` |
+| ML, PyTorch and MLOps | `ml-systems-specialist` |
 | Cloud data engineering | `cloud-data-engineer` |
-| Workflow engineering | `workflow-automation-specialist` |
+| Workflow automation | `workflow-automation-specialist` |
 | Application security | `application-security-reviewer` |
 | QA and release readiness | `qa-release-specialist` |
-| Research and engineering docs | `research-docs-specialist` |
-| This agent hub | `agent-hub-maintainer` |
+| Research and documentation | `research-docs-specialist` |
+| Agent hub maintenance | `agent-hub-maintainer` |
 
-There are **15 agent profiles** in the package, including the manager. Browser/gateway connector profiles were removed from the source tree; bounded reference research remains available through the research tools declared in the relevant agents.
+## Installation
 
-## Skills and context budget
+1. Install Antigravity and sign in with the target user's Gemini account.
+2. Extract [mansoor-agent-hub.zip](dist/mansoor-agent-hub.zip).
+3. Double-click `Install-Mansoor-Agent-Team.cmd`.
 
-Antigravity remains the owner of its installed skill library. This kit does not copy or install the user's 453 claimed skills. Each agent names relevant skill areas and the manager loads only what a task needs, avoiding a second bulk catalog and reducing always-loaded context. A local inventory found 258 unique Antigravity skill names across the inspected global skills/plugins; this does not confirm the separate 453 count shown in the user's environment.
+The installer verifies the package, runs Antigravity's strict plugin validation and installs or updates the team. No GitHub sign-in is required. Restart Antigravity after installation or reload its skills and agents.
 
-## Build and validate
+## Fast mode
 
-Run from this checkout:
+For quick fixes, choose `Gemini 3.8 Flash` with `Low` thinking. The manager reads the affected files, chooses one specialist and skips deep research unless the task needs it. Use `Medium` or `High` thinking for architecture, security, migration, ML, release work or explicit research. CLI sessions can use:
+
+```powershell
+agy --model="Gemini 3.8 Flash"
+```
+
+## Response quality
+
+`claude-style-response-quality` is a shared contract across the team. It requires result-first answers, plain language, concise rationale, evidence and assumption boundaries, production-grade change reports, Roman Urdu when that matches the user and no invented tool results or hidden chain-of-thought. It improves answer quality without pretending that the underlying model is Claude.
+
+## Models and keys
+
+All agent profiles use `model: inherit`. With no API keys, the signed-in Antigravity/Gemini session powers the manager and specialists. Optional integration keys belong in a local ignored `.env` created from [.env.example](.env.example). The portable plugin does not route keys automatically; a project-specific integration must explicitly read its variable.
+
+## Integrity and tamper response
+
+The generated package includes `PACKAGE-CHECKSUMS.json`. The installer hashes every packaged file before calling Antigravity. If a file is changed, removed or replaced, installation stops with an integrity error. This protects execution from accidental or ordinary unauthorized modification.
+
+This is tamper detection, not an unbreakable DRM system. Anyone with full filesystem access can inspect or replace code. Strong protection requires a privately held signing key, restricted file permissions, encrypted distribution or a hosted service. The package never contains provider credentials, customer data, private chats or hidden model reasoning.
+
+## Build and verify from source
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install-antigravity-portable.ps1
 node tools/agent-hub-doctor.mjs --format json
+node --test tools/tests/agent-hub-doctor.test.mjs tools/tests/backend-ml-router.test.mjs
 ```
 
-This writes `dist\mansoor-agent-hub.zip` inside this repository and does not change a user profile or contact providers. On a target machine:
+Current package facts: 15 agent profiles, zero bundled skill bodies, zero provider connectors, zero credential paths, strict Antigravity validation and focused tests passing.
 
-```powershell
-1. Install Antigravity and sign in with the target user's Gemini account.
-2. Extract `mansoor-agent-hub.zip`.
-3. Double-click `Install-Mansoor-Agent-Team.cmd`.
-```
-
-The installer checks Antigravity's CLI, validates the plugin, and installs or updates it automatically. No GitHub sign-in is needed. The target machine must have Antigravity CLI and its own Gemini sign-in. The agents use the target's inherited Gemini model; this kit does not configure model credentials.
-
-## Fast mode
-
-For quick work, choose `Gemini 3.8 Flash` and `Low` thinking in Antigravity's model selector. The manager then uses one relevant specialist, reads only the affected files and skips deep research unless the task needs it. For architecture, security, migration, ML or explicit research work, switch to `Medium` or `High` thinking. Antigravity CLI also supports `agy --model="Gemini 3.8 Flash"` for a session-level model choice.
-
-All manager and specialist handoffs include the `claude-style-response-quality` contract: result-first answers, clear evidence/assumption boundaries, concise rationale, production-grade reporting and Roman Urdu when that matches the user's language. This improves response quality without claiming to run the Claude model.
-
-## Model and optional keys
-
-When no API key is present, the manager and all specialists use the signed-in Antigravity/Gemini session through `model: inherit`. If you have provider keys, copy `.env.example` to a local `.env` beside the extracted package or inside the relevant project and fill only the variables required by an explicitly configured integration. The portable plugin does not automatically read or route those keys, and `.env` must never be committed or shared.
-
-## Source boundary
-
-The checked-out repository contains historical provider/connector experiments from earlier work. They are not part of this portable agent kit, are not copied by its packer, and are not configured by this installation path. The packer includes only the selected agent profiles, manifest, logo, and README.
-
-Current objective and design: [agent-team plan](docs/superpowers/plans/2026-11-03-antigravity-domain-agent-team.md). Timestamped work history: [daily progress](Progress/2026-11-03.md).
+— Mansoor Farooq
