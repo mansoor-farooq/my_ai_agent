@@ -7,6 +7,7 @@ import {
   publicKeyPemFromPrivate,
   signPackageManifest
 } from './package-signing.mjs';
+import { copyPortableComponents } from './portable-components.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const target = resolve(process.argv[2] || '');
@@ -24,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.2.1';
+const packageVersion = '1.3.0';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -42,17 +43,6 @@ for (const entry of await readdir(sourceAgents, { withFileTypes: true })) {
   try { text = await readFile(source, 'utf8'); } catch { continue; }
   if (secretPattern.test(text)) throw new Error(`Credential-like value detected in agent profile: ${entry.name}`);
 
-  // Keep Antigravity's host-owned skill library as the source; ship only a compact name map.
-  let skills = [];
-  text = text.replace(/^skills:\r?\n((?:[ \t]+-[^\r\n]*\r?\n)+)/m, (_block, entries) => {
-    skills = [...entries.matchAll(/^\s+-\s+(.+?)\s*$/gm)].map((match) => match[1].replace(/^skills\//, ''));
-    return '';
-  });
-  if (skills.length) {
-    const frontMatterEnd = text.indexOf('---', 4) + 3;
-    const skillNote = `\n\n## Relevant host skills\n\nWhen these skills exist in Antigravity's installed catalog, load only the few needed for the assigned task:\n${skills.map((name) => `- ${name}`).join('\n')}\n`;
-    text = `${text.slice(0, frontMatterEnd)}${skillNote}${text.slice(frontMatterEnd)}`;
-  }
   text += responsePolicy;
 
   const destination = join(target, 'agents', entry.name);
@@ -61,12 +51,14 @@ for (const entry of await readdir(sourceAgents, { withFileTypes: true })) {
   agentCount += 1;
 }
 
+const { skillCount, ruleCount } = await copyPortableComponents(root, target, secretPattern);
+
 const manifest = {
   $schema: 'https://antigravity.google/schemas/v1/plugin.json',
   name: 'mansoor-agent-hub',
   displayName: 'Mansoor Gemini Agent Team',
   version: packageVersion,
-  description: 'A private, owner-signed Gemini agent team with focused specialists, bounded research and production-minded delivery.',
+  description: 'A private, owner-signed Antigravity engineering product with a lead manager, focused specialists, portable skills and governed delivery.',
   logo: 'assets/logo.svg',
   suggestedPrompts: [
     'Inspect this repository and route the task to one matching domain expert.',
@@ -131,6 +123,8 @@ const premiumPackageReadme = [
   'Designed and maintained by Mansoor Farooq. This is a private owner-controlled release, not a public redistribution licence. The private signing key stays outside Git and the ZIP. Future public publishing requires a deliberate licence and release review.',
   '',
   '## Security boundary',
+  '',
+  `The package contains ${agentCount} agent profiles, ${skillCount} portable skills and ${ruleCount} governed rules. It does not include MCP servers, hooks, sidecars, provider credentials, private chats or native-profile data.`,
   '',
   'The package does not collect project files, private chats, customer data, credentials or hidden reasoning. Signature verification detects ordinary unauthorized changes and fails closed. It is not unbreakable DRM against a local administrator; stronger secrecy requires a signed runtime or private hosted execution.',
   '',
@@ -201,4 +195,4 @@ const packageSignature = signPackageManifest(manifestBytes, {
   version: packageVersion
 });
 await writeFile(join(target, packageSignatureName), `${JSON.stringify(packageSignature, null, 2)}\n`);
-console.log(`Built owner-signed Gemini expert agent plugin at ${target} (${agentCount} agents; zero bundled provider connectors or skill bodies).`);
+console.log(`Built owner-signed Antigravity agent product at ${target} (${agentCount} agents, ${skillCount} skills, ${ruleCount} rules; zero provider connectors).`);

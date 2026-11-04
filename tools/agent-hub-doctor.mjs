@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { inspectPortableSource, readAgentSkillReferences } from './portable-components.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const shippedAgents = [
@@ -46,7 +47,7 @@ function checksumReport() {
   return { errors, checked, skipped };
 }
 
-export function runDoctor() {
+export async function runDoctor() {
   const checks = [];
   const add = (status, name, detail) => checks.push({ status, name, detail });
   const profilesRoot = path.join(root, 'agents', 'Antigravity', 'custom-agents');
@@ -71,9 +72,21 @@ export function runDoctor() {
   const packer = fs.readFileSync(path.join(root, 'tools', 'build-antigravity-plugin.mjs'), 'utf8');
   const excluded = excludedAgents.filter((name) => !packer.includes(name));
   const forbiddenDefinitions = /mcpServers|oauthClients|"type"\s*:\s*"mcp"/i.test(packer);
-  if (!excluded.length && !forbiddenDefinitions && /zero bundled (?:skills\/connectors|provider connectors or skill bodies)/.test(packer)) {
-    add('PASS', 'connector-free package policy', 'packer excludes connected profiles and bundles no MCP/provider connector or skill bodies');
-  } else add('FAIL', 'connector-free package policy', `excluded rules missing=[${excluded.join(', ')}], connector definitions present=${forbiddenDefinitions}`);
+  if (!excluded.length && !forbiddenDefinitions && /copyPortableComponents/.test(packer)) {
+    add('PASS', 'self-contained package policy', 'packer excludes provider connectors and bundles the approved local skill/rule library');
+  } else add('FAIL', 'self-contained package policy', `excluded rules missing=[${excluded.join(', ')}], connector definitions present=${forbiddenDefinitions}`);
+
+  const portable = await inspectPortableSource(root);
+  const skillReferences = await readAgentSkillReferences(root);
+  const missingSkillBodies = [...new Set(skillReferences.filter((name) => !portable.skills.includes(name)))].sort();
+  if (portable.skills.length === 159 && portable.rules.length === 4
+      && !portable.invalidSkills.length && !portable.invalidRules.length
+      && !portable.nestedSkillFiles.length && !portable.unsafePaths.length
+      && !portable.brokenLocalReferences.length && !missingSkillBodies.length) {
+    add('PASS', 'portable skills and rules', `${portable.skills.length} skills and ${portable.rules.length} rules are valid; all ${skillReferences.length} agent references resolve locally`);
+  } else {
+    add('FAIL', 'portable skills and rules', `skills=${portable.skills.length}, rules=${portable.rules.length}, invalidSkills=[${portable.invalidSkills.join(', ')}], invalidRules=[${portable.invalidRules.join(', ')}], nested=[${portable.nestedSkillFiles.join(', ')}], unsafe=[${portable.unsafePaths.join(', ')}], brokenRefs=[${portable.brokenLocalReferences.join(', ')}], missing=[${missingSkillBodies.join(', ')}]`);
+  }
 
   const forbiddenProfiles = shippedAgents.filter((name) => {
     const text = fs.readFileSync(path.join(profilesRoot, name, 'agent.md'), 'utf8');
@@ -104,7 +117,7 @@ export function runDoctor() {
   return { ok: failures === 0, failures, warnings: 0, checks };
 }
 
-function main() {
+async function main() {
   const args = process.argv.slice(2);
   const formatIndex = args.indexOf('--format');
   const format = formatIndex >= 0 ? args[formatIndex + 1] : 'text';
@@ -115,7 +128,7 @@ function main() {
   }
   if (args.some((arg, index) => arg === '--root' || arg === '--user-profile')) throw new Error('This doctor is scoped to its own E:\\Agents checkout.');
   if (!['text', 'json'].includes(format)) throw new Error('--format must be text or json');
-  const report = runDoctor();
+  const report = await runDoctor();
   if (format === 'json') console.log(JSON.stringify(report, null, 2));
   else {
     for (const item of report.checks) console.log(`[${item.status}] ${item.name}: ${item.detail}`);
@@ -125,7 +138,7 @@ function main() {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  try { main(); } catch (error) {
+  try { await main(); } catch (error) {
     console.error(`Agent Hub Doctor: ${error.message}`);
     process.exitCode = 2;
   }

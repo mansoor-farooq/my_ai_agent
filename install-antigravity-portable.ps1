@@ -36,7 +36,7 @@ try {
     Write-Output 'Antigravity CLI not found here; strict validation can run on the target machine after extraction.'
   }
   Compress-Archive -Path (Join-Path $output '*') -DestinationPath $archive -Force
-  Write-Output "Connector-free Gemini agent-team ZIP: $archive"
+  Write-Output "Self-contained Mansoor Agent Hub ZIP: $archive"
 } finally {
   $resolvedOutput = [IO.Path]::GetFullPath($output)
   if ($resolvedOutput.StartsWith($hubPrefix, [StringComparison]::OrdinalIgnoreCase) -and

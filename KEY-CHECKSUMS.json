@@ -1,5 +1,15 @@
 [
   {
+    "Path": "Agents/.env.example",
+    "SHA256": "33876D782723888DA5A6368932C28B74504C9B1DC2F35239C1C9602D69CF6B2D",
+    "Bytes": 334
+  },
+  {
+    "Path": "Agents/.gitignore",
+    "SHA256": "69EE987A69F344EB4F57539C2133E6302047FEFC9A4579A390EFDA693D04C322",
+    "Bytes": 1072
+  },
+  {
     "Path": "Agents/AGENT_EXPORT_POLICY.md",
     "SHA256": "847E6290CB34C6C36A48ED4CFFFE7E64CD5F5830CCF356BB2002A586147C89C5",
     "Bytes": 1803
@@ -91,28 +101,13 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "4C82FB573A49089A25F8789D541CB51F0D480B5AA236DA55DDB38584BBC97DFB",
-    "Bytes": 2413
+    "SHA256": "886169E84AA3681E469B4E9224F35104F12D07CBF17F6101F7924E64E908E5FE",
+    "Bytes": 2484
   },
   {
-    "Path": "Agents/docs/ANTIGRAVITY_SUBAGENT_COMPATIBILITY.md",
-    "SHA256": "093A2B621837D9007BC459727CDEB3E4DB59DF0558A638E44F3684C15D75165A",
-    "Bytes": 2448
-  },
-  {
-    "Path": "Agents/docs/OWNER_RELEASE_SECURITY.md",
-    "SHA256": "B1477CEFDCCCAAB156875CD0F6CF4BBFDE3BFC11CFF9449F96A667199BD9D80F",
-    "Bytes": 2533
-  },
-  {
-    "Path": "Agents/docs/PORTFOLIO_SEO.md",
-    "SHA256": "77F251B6207B41B8D0C1E7B7C4A65794F6E5F5597B2FED2342401BFFB730FE1A",
-    "Bytes": 1381
-  },
-  {
-    "Path": "Agents/docs/research/2026-11-03-ecc-and-free-integrations.md",
-    "SHA256": "401E4866378851865B04A4F165F0D6EC867D968841D020401130E34C4CC57C80",
-    "Bytes": 3511
+    "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
+    "SHA256": "C55E945BE7A05447D87BC75738857450BE447DED6374DD62D0745A6B791C2467",
+    "Bytes": 4734
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-03-antigravity-domain-agent-team.md",
@@ -125,9 +120,19 @@
     "Bytes": 2705
   },
   {
+    "Path": "Agents/docs/superpowers/plans/2026-11-04-full-portable-agent-product.md",
+    "SHA256": "BC8B7566275873432082E72FFB51BE576F7B445CA73DCCBF5BB92DE88CE862E3",
+    "Bytes": 2872
+  },
+  {
     "Path": "Agents/docs/superpowers/plans/2026-11-04-owner-signed-premium-release.md",
     "SHA256": "6F9564D0EBC4F2CFD610AA20E5A1E65E1074832109959E14E541EA67D30B721E",
     "Bytes": 4204
+  },
+  {
+    "Path": "Agents/docs/superpowers/specs/2026-11-04-full-portable-agent-product-design.md",
+    "SHA256": "36EF36B3C0A5884DE298EFFC951733D3B57E8FF1910FA09E4CF8319C043F0BC8",
+    "Bytes": 1516
   },
   {
     "Path": "Agents/docs/superpowers/specs/2026-11-04-owner-signed-premium-release-design.md",
@@ -136,7 +141,7 @@
   },
   {
     "Path": "Agents/install-antigravity-portable.ps1",
-    "SHA256": "CAF3C4A4154CC2AF475FF9F02BB96CD12A9CCD7ACB29AC366573421736D16495",
+    "SHA256": "F21142BDF956394137966EB505DA20C93A255CF436A7D30EEA0512F4CDA8147A",
     "Bytes": 2534
   },
   {
@@ -146,13 +151,8 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "AB83D6BA63265072FC3CA93D64134A9CE0B44E13E6E60A012F1AA826674F6E9D",
+    "SHA256": "0A797339DAB1C31CE0F69138B99364CF352C66BF1A20288069B1CEACA5828A03",
     "Bytes": 287
-  },
-  {
-    "Path": "Agents/Progress/2026-11-03.md",
-    "SHA256": "2DE5959F1E33E1D573B71E4823D6D22EB3CB2033E425FA71773A8EFD23F31623",
-    "Bytes": 9064
   },
   {
     "Path": "Agents/Push-All-Branches.cmd",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "5104F1C6F0228FC5045CEAD728D489BCEBDC949441CA508C3A210BAFD71450FE",
-    "Bytes": 7825
+    "SHA256": "B7C04C63BA30200B286D34968B5207D14C3DECD1312F079F111ACC53B3356BC7",
+    "Bytes": 7860
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -170,9 +170,24 @@
     "Bytes": 2372
   },
   {
-    "Path": "Agents/shared/control-plane/ADR-0001-github-app-control-plane.md",
-    "SHA256": "565F09723FFA0B314D9EEE46DF050F7A893BCC61C0D9911088423520BFA8BC3D",
-    "Bytes": 1834
+    "Path": "Agents/rules/architecture-governance.md",
+    "SHA256": "20EFEB54F63492E019D0593DB6F24DF1EE452C64D541F4ACD1124809F6C1DC6B",
+    "Bytes": 3146
+  },
+  {
+    "Path": "Agents/rules/flutter-mobile-standards.md",
+    "SHA256": "29801C0163D0BC5B6ECDC5D456537773218C1D8C6500CD8F352124B1804A6C64",
+    "Bytes": 2248
+  },
+  {
+    "Path": "Agents/rules/live-testing-governance.md",
+    "SHA256": "5FDF8D88411159B0ABA035CF23F14E8E53FAE0A6FE3C83BB1F1E8AAC69367306",
+    "Bytes": 2171
+  },
+  {
+    "Path": "Agents/rules/saas-architecture-governance.md",
+    "SHA256": "7E3D61A04431485D5479BF05DF093A8F52E701ED047E8B8A699EFF08F9BD0E86",
+    "Bytes": 941
   },
   {
     "Path": "Agents/shared/control-plane/agent-capability-manifest.json",
@@ -180,39 +195,14 @@
     "Bytes": 1544
   },
   {
-    "Path": "Agents/shared/control-plane/README.md",
-    "SHA256": "F9EA016DF16B9DCA27C0392A529AEF47A6C3383F5D2D675656D59E536A2F881B",
-    "Bytes": 1420
-  },
-  {
-    "Path": "Agents/shared/knowledge/datasets/PROJECT_FLOWS.md",
-    "SHA256": "A9C02BD96C0FBB62C9DB295D5A82F9C13EE410ED4396B7CD0EC60375AE0AC02E",
-    "Bytes": 4185
-  },
-  {
-    "Path": "Agents/shared/knowledge/datasets/WORKSTYLE.md",
-    "SHA256": "A07F7CC681C604FF9035353642FED92281FDCF86E932209880C6CCE68E9EE0C9",
-    "Bytes": 1377
-  },
-  {
-    "Path": "Agents/shared/knowledge/PROJECT_MEMORY_SCHEMA.md",
-    "SHA256": "549B5948C4910EC6E4BA159EB9E54882FEECCA065D7D3B7720348BCB629B2F24",
-    "Bytes": 1448
-  },
-  {
-    "Path": "Agents/shared/native-profile/app/conversation_summaries.db",
-    "SHA256": "330525FFC80326ACFDA94BF705388FB5CEFB7E8D8B1F7FEDA688318A21B38003",
-    "Bytes": 8650752
-  },
-  {
-    "Path": "Agents/shared/native-profile/manifest.json",
-    "SHA256": "918FCC61C5B0CA53EB9CED89DAE17BD0810C68FC67D3C941027C5C2AA8CAE33F",
-    "Bytes": 275
-  },
-  {
     "Path": "Agents/shared/SUPER_AGENT_PROTOCOL.md",
     "SHA256": "B3E0D79B17DCD2D904ECA889BF89CFB307DB7DF3A7BB51237E68F3A3559F2D75",
     "Bytes": 11849
+  },
+  {
+    "Path": "Agents/skills/accidental-data-loss-prevention/SKILL.md",
+    "SHA256": "82769E3C99FBBAE081420EA62D6E3318EAF80B9C97DA12A62C1CF97049826878",
+    "Bytes": 1316
   },
   {
     "Path": "Agents/skills/agent-hub-operations/SKILL.md",
@@ -220,9 +210,289 @@
     "Bytes": 1973
   },
   {
+    "Path": "Agents/skills/android-design/LICENSE.txt",
+    "SHA256": "EB3D7B5485466ACBD81F2B496F595AB637D2792E268206B27D99E793BDB67549",
+    "Bytes": 10351
+  },
+  {
+    "Path": "Agents/skills/android-design/NOTICE.md",
+    "SHA256": "A80F107E387DC9A81EC6292F4179F94CF2A2B549EC6F4AA9C2D3481CD5F78F46",
+    "Bytes": 296
+  },
+  {
+    "Path": "Agents/skills/android-design/SKILL.md",
+    "SHA256": "ED7D24EAE2EDAA630647BB1384F6075CD303196EC26057DB17AFC4B85BEEB805",
+    "Bytes": 7691
+  },
+  {
+    "Path": "Agents/skills/autonomous-deep-researcher/SKILL.md",
+    "SHA256": "9E3760D6DF6581E3DBD4CA64D0C1282DA604B6D8F1447CBD54026BE53EEAD0BC",
+    "Bytes": 6938
+  },
+  {
+    "Path": "Agents/skills/backend-ml-integration/SKILL.md",
+    "SHA256": "846EA18B35782A2ECFB162D10FFE07D0F3A3A47BB770AD9C3E1DE5F2A5ECA44E",
+    "Bytes": 1783
+  },
+  {
     "Path": "Agents/skills/backend-ml-skill-router/SKILL.md",
     "SHA256": "99472229216DF01D8C8412BDF00282B9747CC7DBEA04C7972ADBB35AE274F603",
     "Bytes": 2085
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/OWNERS",
+    "SHA256": "E1C6AA09264BFA9E45CAF2FC0EE37429FE2A66E7532EAE7E168E2709516A1A64",
+    "Bytes": 69
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_agg.md",
+    "SHA256": "8C48D0D0DF592CC5D6AF22557DF19312571D35FE207B53980FD98F66E9CBAEDD",
+    "Bytes": 3621
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_classify.md",
+    "SHA256": "372531829A6E6036957E3EF67ABB34905EE236D2AC437F65030295EF1BC3B8AB",
+    "Bytes": 3800
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_detect_anomalies.md",
+    "SHA256": "60C873F1272F117F6FFFA1A3D243AB7F4585804F3942408F510940A2C5507892",
+    "Bytes": 4657
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_evaluate.md",
+    "SHA256": "5B195FC893EC4649577A32C410E9A1E1AFB2C5F2AB7DB41FB9EEC0C05D1232B7",
+    "Bytes": 2227
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_forecast.md",
+    "SHA256": "818F36C1F92277B4EFCD8116B7E4C4A6F350A93EBC0DF3EC1EBE048FD08F1891",
+    "Bytes": 6671
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_function_best_practices.md",
+    "SHA256": "546C3770D1EF56D31468F8472E9311DC745E6CCEB5D7F2E15B7841622FCDA571",
+    "Bytes": 2836
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_generate_embedding.md",
+    "SHA256": "7F8522CC9973A71F79B952558BEE03E4CDF5E15B48DDF2C24EB35606265B3092",
+    "Bytes": 1685
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_generate_table.md",
+    "SHA256": "49DE655028CA350182208605EE98792A4D38D329889C309012ADF73B54F9E1C8",
+    "Bytes": 3018
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_generate.md",
+    "SHA256": "CD89D035D3D37DE8EC99CB22B730297B0869A264C26F3E0279DA48C02FD7707C",
+    "Bytes": 4040
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_if.md",
+    "SHA256": "C833954F58CA1E6D21B7155CF90299E53236F01CF2568A23D990865A059C7E9D",
+    "Bytes": 2051
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_key_drivers.md",
+    "SHA256": "2D5EB5D30814D37AA253AF4EB4579478B9B49BDF5FEA26C0618721EC73EE2B06",
+    "Bytes": 4147
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_score.md",
+    "SHA256": "2D473F9850D502735DD8D876853296AE5A9F2E7B3C02736B9DD5815A6789AEE4",
+    "Bytes": 1922
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_search.md",
+    "SHA256": "44AB2B704113F646827FE97B470890339201639FF2E31CDFBC8F22E84AFD5D7F",
+    "Bytes": 3752
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ai_similarity.md",
+    "SHA256": "52F54D47C68F873546472977EEB379EC468127342C899256B42B84F5A8DCB503",
+    "Bytes": 2812
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/ml_contribution_analysis.md",
+    "SHA256": "E6B4D0C705B437EEBEA236AB52D9CAA5A4E7ED580DBFCC83CA6CF1C27B4D33EA",
+    "Bytes": 4944
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/remote_models.md",
+    "SHA256": "58F7405AB59F6038222A5B95967739F41BE568F736C22C9BD2240C307B6CD28E",
+    "Bytes": 871
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/references/vector_search.md",
+    "SHA256": "80C73327841576C2A5B220B4007354CF9A4E139FBD579F91F18FC651BDC7F4E6",
+    "Bytes": 4147
+  },
+  {
+    "Path": "Agents/skills/bigquery-ai-ml/SKILL.md",
+    "SHA256": "9FE56418ADC5FAD9DA1877EF273B81758C15653A8826984A0BE405EE3FCF18F0",
+    "Bytes": 2908
+  },
+  {
+    "Path": "Agents/skills/bigquery-bigframes/OWNERS",
+    "SHA256": "3174817B4B7DD5935EA87313EE09CCF3628B04B0730CB6A31BCA41EC9F1948CD",
+    "Bytes": 94
+  },
+  {
+    "Path": "Agents/skills/bigquery-bigframes/SKILL.md",
+    "SHA256": "305DAEC3AABB5878709ED6817AC822053820DA603BAF082FEE1A21E879CDEF89",
+    "Bytes": 3249
+  },
+  {
+    "Path": "Agents/skills/bigquery-data-transfer-service/scripts/bigquery_dts.py",
+    "SHA256": "DF119B061911407D874EC62732FBA3E7659B58DCD759EEF444D82F379DF0EB5C",
+    "Bytes": 4984
+  },
+  {
+    "Path": "Agents/skills/bigquery-data-transfer-service/SKILL.md",
+    "SHA256": "8B34BF814948ECBC1BC4FA4CD3AA1DA829339EFBF95347CBE75985665E78BB27",
+    "Bytes": 7139
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/OWNERS",
+    "SHA256": "D7511FB24C73FEBE60E50B1BDA4CEAAB6AD3E126C2A97271B46AEE904721D814",
+    "Bytes": 23
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/references/data-discovery.md",
+    "SHA256": "929FEEB155FED3E3FA5AEB5CEA37874169BCF110A15E927469EA80B67D04F781",
+    "Bytes": 14001
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/references/ddl/best-practices.md",
+    "SHA256": "B06C3E96D8F951D0B871291BCBCB858C987E58E8CA0B579AD3697F65114BA79D",
+    "Bytes": 7156
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/references/ddl/ddl-advisor.md",
+    "SHA256": "F1A76235EA758F6B3EB0215A72801A6D1339575E59A370DC85F2FF1E750CF03C",
+    "Bytes": 3906
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/references/ddl/ddl-reference.md",
+    "SHA256": "B9FB4AA3FA5E4D55FB240446AE97443107C1EE726CAF27C55156CF8B13CAB13B",
+    "Bytes": 9254
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/references/ddl/feature-parity.md",
+    "SHA256": "E9925F47B273F5A7FE7C4FF8C246CF2F0A3D732570646D054CFDDA36AB10AB98",
+    "Bytes": 4903
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/references/document-source.md",
+    "SHA256": "94A8691787FD2887B1033E78D08042C17A77BF81CFC6F568D06020F7821D7147",
+    "Bytes": 14578
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/references/graph-verification.md",
+    "SHA256": "29DCE935E372C454BFA16D9CD3313767C23EC28297AA306BF81E9D7C3FE1DAFF",
+    "Bytes": 9795
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/references/relationship-verification.md",
+    "SHA256": "1927F7A1A97088140CEF75996B40EB2EE2C97A5935D3E1745CA707C6444C7B47",
+    "Bytes": 7047
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/references/semantic-enrichment.md",
+    "SHA256": "8CEB8E8E6990ECD70C61395453482F7A62D58744D7527473E715456842FBF656",
+    "Bytes": 15752
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-author/SKILL.md",
+    "SHA256": "9B26FD3F69DD4CB1F5C980E35CC098202E107C8E31A530AB657392EFEC1CDC93",
+    "Bytes": 10890
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-query/OWNERS",
+    "SHA256": "4E41C0A50B2770AA8E234AEDDCF6A4BFA9A106B77B5FC70D969F55F8AB70BFFD",
+    "Bytes": 56
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-query/references/gql-advanced-functions-and-perf.md",
+    "SHA256": "3248D505E2F8355F1B7711A38D8EDB5FF736B2A5DBA8E483B9E90651F62FE4CB",
+    "Bytes": 3038
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-query/references/gql-subqueries.md",
+    "SHA256": "01D2883F1BFBD3906DC94F8760CEEEAA08C422547A6498996D5CAEE30930B1C6",
+    "Bytes": 2082
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-query/references/graph-table-and-sql-integration.md",
+    "SHA256": "5D146D03507E7E9C9954969749A65AF62719B7BAA4EF04E628A16829711DA75D",
+    "Bytes": 3270
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-query/references/hybrid-vector-graph-search.md",
+    "SHA256": "5AC9D4E8BFD30F86975DA97316C41215D3C2E570F23A7321EE73C8CA53ACA5A2",
+    "Bytes": 4955
+  },
+  {
+    "Path": "Agents/skills/bigquery-graph-query/SKILL.md",
+    "SHA256": "4CA3AB9CF2D38184198372F4DBEA55CAE1D68E80D9A2D13F8F7A5BC0625114AC",
+    "Bytes": 22072
+  },
+  {
+    "Path": "Agents/skills/bigquery-sql/OWNERS",
+    "SHA256": "E1C6AA09264BFA9E45CAF2FC0EE37429FE2A66E7532EAE7E168E2709516A1A64",
+    "Bytes": 69
+  },
+  {
+    "Path": "Agents/skills/bigquery-sql/SKILL.md",
+    "SHA256": "7BDD109924142AC3207E5B883CB0BB9FEA1C349141B9870B5F2B20EE74A87B6F",
+    "Bytes": 1803
+  },
+  {
+    "Path": "Agents/skills/building-data-apps/examples/express_chat.ts",
+    "SHA256": "79EE5DB7270CF6A8B3607B0BFEA2D693C72DAA192C8812AD1C9D849241DCD76A",
+    "Bytes": 5108
+  },
+  {
+    "Path": "Agents/skills/building-data-apps/examples/fastapi_chat.py",
+    "SHA256": "7DD0BF8BEF98D24375362205E36705D256FC1A48D9B625A29718B428D35B3A09",
+    "Bytes": 4774
+  },
+  {
+    "Path": "Agents/skills/building-data-apps/examples/react_chat_panel.jsx",
+    "SHA256": "8E811A6E21D30ED2F0DD1CCB0C8B1ACF712D82D2B1DBC639D22D81C06832242C",
+    "Bytes": 11937
+  },
+  {
+    "Path": "Agents/skills/building-data-apps/references/chat_integration.md",
+    "SHA256": "D5F8DAAF7A040EF733FE0CDB1F25F95F48D71518E7B5BD87F159456989F862A5",
+    "Bytes": 4389
+  },
+  {
+    "Path": "Agents/skills/building-data-apps/references/react_framework.md",
+    "SHA256": "31C8ABEFB2DD0577BF979553F667A8015F1B645BAC272F4E61B980D9A35A86AA",
+    "Bytes": 10348
+  },
+  {
+    "Path": "Agents/skills/building-data-apps/references/shared_design_system.md",
+    "SHA256": "AAB74A43B3A3CD764D1C827DAB484CB42A03E52607DE27FBA0F8935B10932F20",
+    "Bytes": 1159
+  },
+  {
+    "Path": "Agents/skills/building-data-apps/references/streamlit_framework.md",
+    "SHA256": "DA541AD658B125D925A4E457D05775911F69C4E489D5C44E3BCD4FBB081B2B15",
+    "Bytes": 8491
+  },
+  {
+    "Path": "Agents/skills/building-data-apps/SKILL.md",
+    "SHA256": "A9153D270F9D50B3D265BE48B778255F9B955FA0F1609C269220038D5880732F",
+    "Bytes": 6317
+  },
+  {
+    "Path": "Agents/skills/cinematic-ui/SKILL.md",
+    "SHA256": "AB42A0A42ABC9A679A5DBE79842BB721F24830B9EFD532321F23F05E259CB06F",
+    "Bytes": 1176
   },
   {
     "Path": "Agents/skills/claude-style-response-quality/SKILL.md",
@@ -230,9 +500,824 @@
     "Bytes": 1596
   },
   {
+    "Path": "Agents/skills/data-autocleaning/scripts/dataplex_scanner.py",
+    "SHA256": "C8FFBE895EAD22329F07BD38C236DFD499F6313D652274E5848DDC7CE72B16C0",
+    "Bytes": 7528
+  },
+  {
+    "Path": "Agents/skills/data-autocleaning/SKILL.md",
+    "SHA256": "2D4339A699687F70E8EE87420FCB8A892B510AEF1F5DEF97FA3F75DC8A33219E",
+    "Bytes": 12134
+  },
+  {
+    "Path": "Agents/skills/dataform-bigquery/SKILL.md",
+    "SHA256": "E8CAF84796538388421AC87CDCD36AA8C70B8D1416DDC0FE8FD95DC597CADA36",
+    "Bytes": 12448
+  },
+  {
+    "Path": "Agents/skills/dbt-bigquery/SKILL.md",
+    "SHA256": "6AE77AEF9FA238663A88B001DA95C1642A45C1DB5D48CD1774F53606D83724E3",
+    "Bytes": 11905
+  },
+  {
+    "Path": "Agents/skills/dc-premium-template/SKILL.md",
+    "SHA256": "4D264991437B5D2D35521185C7076F575071CE1A47B21D80B13DF9205B72C286",
+    "Bytes": 4632
+  },
+  {
+    "Path": "Agents/skills/design-reference-research/SKILL.md",
+    "SHA256": "315A07E683E860D9FC3AF39C0C861DBE0AECAAC46FD1560BD4A26E46076562DC",
+    "Bytes": 2230
+  },
+  {
+    "Path": "Agents/skills/discovering-gcp-data-assets/SKILL.md",
+    "SHA256": "558A0E0738A9D9448463193371400A3A82C6E17D24B6915CD35477F5329D3BD4",
+    "Bytes": 9919
+  },
+  {
+    "Path": "Agents/skills/dotnet-architecture-review/SKILL.md",
+    "SHA256": "ADF51905AA31AF18225320CB6C86FF6BCF5284AEF665D07F6E20728697465C74",
+    "Bytes": 656
+  },
+  {
+    "Path": "Agents/skills/dotnet-aspnetcore-api/SKILL.md",
+    "SHA256": "7E9616A5D92BB7F7FC3A59CF20301B69A8449066B16512ECC818B9405030F7E1",
+    "Bytes": 637
+  },
+  {
+    "Path": "Agents/skills/dotnet-authentication-authorization/SKILL.md",
+    "SHA256": "8092E40DC050C118553440CBA3DE3865BC8B4D08F4C13F3D1F12F63EF84EF421",
+    "Bytes": 662
+  },
+  {
+    "Path": "Agents/skills/dotnet-background-workers/SKILL.md",
+    "SHA256": "540E61D3AE0F825CB7F009A64CA05E607B1A3EA29F7883BFD5990CB876BBB1FB",
+    "Bytes": 559
+  },
+  {
+    "Path": "Agents/skills/dotnet-caching/SKILL.md",
+    "SHA256": "2F673FE27B773726410B4D29D6538EF16C32B9A3B3BAE941756621CF006C4FB2",
+    "Bytes": 511
+  },
+  {
+    "Path": "Agents/skills/dotnet-cicd-quality-gates/SKILL.md",
+    "SHA256": "81AE6D98E5E4A35E4FB636AD9E630EE9C3E56705F3CE7AF64B8491091FD30488",
+    "Bytes": 560
+  },
+  {
+    "Path": "Agents/skills/dotnet-clean-architecture/SKILL.md",
+    "SHA256": "1CC9B7174BC3C6FC4CC66E440442BAB01741C824B2A1C85B8F7A51AAC864595A",
+    "Bytes": 727
+  },
+  {
+    "Path": "Agents/skills/dotnet-containerization-deployment/SKILL.md",
+    "SHA256": "32CBFE94C52B0EE01897D1F3774ED753DEF31F53995D025D490C6937BBFD1BE7",
+    "Bytes": 595
+  },
+  {
+    "Path": "Agents/skills/dotnet-database-migrations/SKILL.md",
+    "SHA256": "4C6061E28EBC10A07D02CB92F22ADBA67AC5E185DE8C07C7D27AF4AACBF9A979",
+    "Bytes": 620
+  },
+  {
+    "Path": "Agents/skills/dotnet-dependency-injection/SKILL.md",
+    "SHA256": "97B7F8AD0C089E81D4110F740338139D6396007B4B4CD5029224B5394066E395",
+    "Bytes": 575
+  },
+  {
+    "Path": "Agents/skills/dotnet-domain-driven-design/SKILL.md",
+    "SHA256": "81F60924CA62518219B4FAA429B2B2CB19CEED142F67F1E5C8899F6866029D55",
+    "Bytes": 727
+  },
+  {
+    "Path": "Agents/skills/dotnet-domain-events-cqrs/SKILL.md",
+    "SHA256": "F41B5C2BBA93C9B5EE89FD67826075BF00877629B1A8FF2BCEC53ACC4F718FF1",
+    "Bytes": 551
+  },
+  {
+    "Path": "Agents/skills/dotnet-efcore-data/SKILL.md",
+    "SHA256": "C618DA9F09C70078B64C9CCDAFBDBE716A519A80E47455FCBA8EED3A27F4FCA7",
+    "Bytes": 653
+  },
+  {
+    "Path": "Agents/skills/dotnet-frontend-blazor-mvc/SKILL.md",
+    "SHA256": "106FE9302C94D93AECA69630DDE269A54CE771B6E946CE5640101F6F06B3A517",
+    "Bytes": 603
+  },
+  {
+    "Path": "Agents/skills/dotnet-integration-testing/SKILL.md",
+    "SHA256": "080B5AF4D7FA9853CCE3E604879A44B00771045803105730F53511D1C211D933",
+    "Bytes": 624
+  },
+  {
+    "Path": "Agents/skills/dotnet-legacy-modernization/SKILL.md",
+    "SHA256": "E449F6DC77D2CAEFCF82852A3EBAA5489140414133B9531CD116CB4A29D5C9C7",
+    "Bytes": 605
+  },
+  {
+    "Path": "Agents/skills/dotnet-messaging-integration/SKILL.md",
+    "SHA256": "15191CACE5FAAEBCEE6598DBDA71945A46C44F057AA1B0B6DE0DDA91176B8D1E",
+    "Bytes": 582
+  },
+  {
+    "Path": "Agents/skills/dotnet-modular-monolith/SKILL.md",
+    "SHA256": "FEB88374F28A1811F5A7E98175348F7CDE7BBF689845A9F1980A82E996930AB2",
+    "Bytes": 625
+  },
+  {
+    "Path": "Agents/skills/dotnet-multitenancy-data-isolation/SKILL.md",
+    "SHA256": "F9F36A8ED8D22B2D4F3AE96890682C056211DDF99BC30BACDF2905664C50B8EC",
+    "Bytes": 590
+  },
+  {
+    "Path": "Agents/skills/dotnet-openapi-contracts/SKILL.md",
+    "SHA256": "6E9993C91219C3F33073FBAC8E121B69E52B3754133D2DE442F0F7F07E1BCFA5",
+    "Bytes": 520
+  },
+  {
+    "Path": "Agents/skills/dotnet-performance-profiling/SKILL.md",
+    "SHA256": "8DD08ADB6195AE5B57E04DC91D28E1E5542C334351A02D33AABC57F4B20C8D4F",
+    "Bytes": 576
+  },
+  {
+    "Path": "Agents/skills/dotnet-release-readiness/SKILL.md",
+    "SHA256": "C833303AF5A09D5EB1EA0E69FE5D5F64C8DC4CC6143BFFB80E2AD63ABBFFEBA3",
+    "Bytes": 511
+  },
+  {
+    "Path": "Agents/skills/dotnet-resilience-observability/SKILL.md",
+    "SHA256": "A5B3271D18A3F291F6196D5FE54042EFDD40E367035C7999D0063396AF50C326",
+    "Bytes": 575
+  },
+  {
+    "Path": "Agents/skills/dotnet-secrets-configuration/SKILL.md",
+    "SHA256": "56807929B2F78138674983954C7ED4D5C7FCEE6B076010BF747EE9F0C4291CE6",
+    "Bytes": 624
+  },
+  {
+    "Path": "Agents/skills/dotnet-secure-coding/SKILL.md",
+    "SHA256": "C4E52ED6E774FBA951BC0C087CB1BE9B30ED018253DA3E1E41942D5E066A3B79",
+    "Bytes": 595
+  },
+  {
+    "Path": "Agents/skills/dotnet-solution-architect/SKILL.md",
+    "SHA256": "956BF76C2B52822162FFD4D4FCCD36DD3C87DEC2CCA064A2BEB20F7C10D59F75",
+    "Bytes": 1135
+  },
+  {
+    "Path": "Agents/skills/dotnet-testing-strategy/SKILL.md",
+    "SHA256": "5323C9CE60741C669808A79D58CDD8B432E4A7133551499338AB53DC5B93060B",
+    "Bytes": 611
+  },
+  {
+    "Path": "Agents/skills/dotnet-three-tier-architecture/SKILL.md",
+    "SHA256": "C3038B206F40D6894109BD002D7EFE5E712165243BDB2BFCF8FB5CCE60E06F37",
+    "Bytes": 1085
+  },
+  {
+    "Path": "Agents/skills/dotnet-upgrades-dependency-health/SKILL.md",
+    "SHA256": "EB9498EEEA036C3BD95ED6EE6B6CB0E2FE16CE426E27E676E833C941D84AEABA",
+    "Bytes": 575
+  },
+  {
+    "Path": "Agents/skills/dotnet-xunit-testing/SKILL.md",
+    "SHA256": "564B91493A12BD18E4378E4B96776031469030339085DD5320B079CA368CD669",
+    "Bytes": 580
+  },
+  {
+    "Path": "Agents/skills/efficient-context/SKILL.md",
+    "SHA256": "79D40A65223E94F28612FD5BD1FA59525C0D0A492E24D8516770292C90FB401E",
+    "Bytes": 1421
+  },
+  {
+    "Path": "Agents/skills/enforcing-resource-attribution/SKILL.md",
+    "SHA256": "775C8ED9C2B00D543BF5D24AC441F0E46CA84637923A4D3BD1CAC841D3FC254E",
+    "Bytes": 4229
+  },
+  {
+    "Path": "Agents/skills/enterprise-erp-reverse-engineering/SKILL.md",
+    "SHA256": "0529C4ACFAB21B82E48E94E38D91D5B903677838CCA4A640A88100DA48ECE421",
+    "Bytes": 5546
+  },
+  {
     "Path": "Agents/skills/feature-documentation/SKILL.md",
     "SHA256": "CADF501BB192CC3A2FFDC2CDEA3FC1FE70801321A3BC1B50CA0393422704F9F5",
     "Bytes": 937
+  },
+  {
+    "Path": "Agents/skills/federate-lakehouse-catalog/SKILL.md",
+    "SHA256": "5B3E2480A91C8FE92C92B26C14447D1415CC31794272160E4BCF90882BAF58CF",
+    "Bytes": 10330
+  },
+  {
+    "Path": "Agents/skills/flutter-ui-ux-engineer/SKILL.md",
+    "SHA256": "484FF0148CED847F711B83AEC685A569832844F867697A7E0045B67261F653B9",
+    "Bytes": 2401
+  },
+  {
+    "Path": "Agents/skills/flutter-ui-ux/SKILL.md",
+    "SHA256": "4479334CC7B61BD683DF8B80970341DD8C103F0BBDFC40CBA491FC53ACA14A85",
+    "Bytes": 4946
+  },
+  {
+    "Path": "Agents/skills/frontend-design/LICENSE.txt",
+    "SHA256": "EB3D7B5485466ACBD81F2B496F595AB637D2792E268206B27D99E793BDB67549",
+    "Bytes": 10351
+  },
+  {
+    "Path": "Agents/skills/frontend-design/SKILL.md",
+    "SHA256": "B8009AE690DFA69EDC7F08BB8715F32DB8817112CFA4388741DBAF876C237DF8",
+    "Bytes": 9461
+  },
+  {
+    "Path": "Agents/skills/gcp-data-pipelines/SKILL.md",
+    "SHA256": "89C5D1B906395C513896B34CB176C6189CF7EB2FDDD14266E629659C5F9132AF",
+    "Bytes": 9538
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/bottlenecks_and_parallelism_context.md",
+    "SHA256": "D04D12F0AD8FC481775F597525B53B3EAF7D98B031D2718C44BF9B7BC826994D",
+    "Bytes": 5094
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/dataflow_diagnostics_reference.md",
+    "SHA256": "631979ECFE793CC3DCD64ED7719AE82CA4F386E11A2631DBF8B8C834A3923831",
+    "Bytes": 3495
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/dataflow_metrics_bigquery.md",
+    "SHA256": "7A91F78ACC2DA1F5CD82D08A36EAE39FDBCF324F1EB4F6962B5DA1362A4502BD",
+    "Bytes": 447
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/dataflow_metrics_core_job.md",
+    "SHA256": "E1F2E3BD4A18093FB27649FDCC26E7F22FF1438F6D8387EC35D21769CBFC3FEA",
+    "Bytes": 6915
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/dataflow_metrics_pubsub.md",
+    "SHA256": "3FD6710D0D75BB2857138CFF821F430B09D1A93E886F2CC0810AD7AC214C8276",
+    "Bytes": 3388
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/dataflow_metrics_streaming_engine.md",
+    "SHA256": "DEA16EB4194737F8CB200142E9EB654FD79F1BBDC49E30A692F31ADE4E9DD726",
+    "Bytes": 5108
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/python_flex_template_reference.md",
+    "SHA256": "9C35060ECCD8096D14BE0137994BD650012EC3BE0C87E92D66793EBC294F905E",
+    "Bytes": 1933
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/reporting_findings.md",
+    "SHA256": "F3C831D1223E2847CF26F32D62DEA7CEAE5BE1927E9734BE404A9E2439B21383",
+    "Bytes": 9234
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/streaming_horizontal_autoscaling_analysis.md",
+    "SHA256": "9F46BD512FB6589E58889E725D8352631F553F52ECA7F29153F253051965B9BF",
+    "Bytes": 4674
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/references/streaming_job_health.md",
+    "SHA256": "75CD1F44E27DEDFCB453CA5585577027E403B503B88A70085FF6C1379A831E83",
+    "Bytes": 2755
+  },
+  {
+    "Path": "Agents/skills/gcp-dataflow/SKILL.md",
+    "SHA256": "6E1A4E5541603FFBAC0B8652A1B0B37B6B65C4D31ACDEC385E49B78676EFF070",
+    "Bytes": 21530
+  },
+  {
+    "Path": "Agents/skills/gcp-pipeline-orchestration/references/orchestration-pipelines-schema.md",
+    "SHA256": "D0C92E580EA66D57AED2D12A0D56EF69CA2173D3A77BE9BD56A252EE3B73DC4A",
+    "Bytes": 25737
+  },
+  {
+    "Path": "Agents/skills/gcp-pipeline-orchestration/scripts/trigger/airflow_trigger.py",
+    "SHA256": "F4122CF0245DD74CF259DEFD38DE94597EE596AC0C6503A2555D9F050AEEFEAF",
+    "Bytes": 4582
+  },
+  {
+    "Path": "Agents/skills/gcp-pipeline-orchestration/SKILL.md",
+    "SHA256": "91589CCADC49E96E3D6EFD754C6F8FED66EA0ECE5632F40024D5713EA79BCF71",
+    "Bytes": 22485
+  },
+  {
+    "Path": "Agents/skills/gcp-pipeline-resource-provisioning/references/gcp_pipeline_resource_provisioning_spec.md",
+    "SHA256": "6317E740D1BFAE7FEA202B4255BD50ACFE73132C0CE25011409B82D4F7E5B241",
+    "Bytes": 3362
+  },
+  {
+    "Path": "Agents/skills/gcp-pipeline-resource-provisioning/SKILL.md",
+    "SHA256": "375D3A13D9FA91EE42B55EA5AF7E57569C9EA702D46158573EEC8F0055955AC9",
+    "Bytes": 6528
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-troubleshooting/references/diagnostic_rules_catalog.md",
+    "SHA256": "EE0FFCDA2F95F816E8CD881DB1CCBC2918B3E47D473B5928EE4C8974806CF9E2",
+    "Bytes": 18573
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-troubleshooting/references/gcs_event_log_guide.md",
+    "SHA256": "EAEABBBF9BF025FCEF86F528C9F5C0D55D435CC27A93E3142762F8A7C1E3E4C0",
+    "Bytes": 3111
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-troubleshooting/references/rca_report_template.md",
+    "SHA256": "BE7EF606092FDAFE23874CE416820D787FB94E61CA1308BCB23F59592293C0B8",
+    "Bytes": 2267
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-troubleshooting/references/spark_log_patterns.md",
+    "SHA256": "AF33EF75DC446F3794D1330DF9A425925E9B6F5C2C3910D48CD2B7CA4E14C546",
+    "Bytes": 6342
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-troubleshooting/scripts/spark_applications.py",
+    "SHA256": "73DACF45C0C4D90A8562142F047B56931E90742E12FE7AE825A28FF470D918D0",
+    "Bytes": 55769
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-troubleshooting/scripts/spark_code_inspector.py",
+    "SHA256": "53AF04BDDD742B8A32B62952194C08A85CFCA72E311EEA010B75DAA2B71D42B8",
+    "Bytes": 25812
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-troubleshooting/scripts/spark_gcs_log_reader.py",
+    "SHA256": "33CFCDECCE6454351F25F352B016E3AABA30C97F01A2FBAA3D0B386F40E2AEBF",
+    "Bytes": 33735
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-troubleshooting/scripts/spark_stage_diagnostics.py",
+    "SHA256": "872268F73C6482E2C852E5C1F6B333C392B5438EC470DFD88BF99D16B90C1BE5",
+    "Bytes": 36984
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-troubleshooting/SKILL.md",
+    "SHA256": "9ABD694EA79C6242A21864E2E56022713F987974CDEA6EE147344CE09B2D42EC",
+    "Bytes": 23803
+  },
+  {
+    "Path": "Agents/skills/gcp-spark/references/gcloud_dataproc.md",
+    "SHA256": "02A8E2321D023DB243C701418EFF537D79A3E15A7BE7A142DF88BE5BBC162436",
+    "Bytes": 12878
+  },
+  {
+    "Path": "Agents/skills/gcp-spark/references/ml_tasks.md",
+    "SHA256": "C3CC99295A9D550FBB2226226B0432A590D39A4E94C673514E8AB4151421CA23",
+    "Bytes": 3098
+  },
+  {
+    "Path": "Agents/skills/gcp-spark/references/read_write_data.md",
+    "SHA256": "59F896A11C3416FE9FCDD070168C6D28F317B19453DEFB749CD186093CACDADD",
+    "Bytes": 20751
+  },
+  {
+    "Path": "Agents/skills/gcp-spark/references/schema_direct_inspection.md",
+    "SHA256": "3E369EA5B1D16A63A178434DD380C0730A3EEC3F1C0DABA15BA86A597B7F0475",
+    "Bytes": 1284
+  },
+  {
+    "Path": "Agents/skills/gcp-spark/references/spark_optimizations.md",
+    "SHA256": "C5A45490ED90CFA0BF497F5776BF17B1E991FE4048D2337562C8220D7869B259",
+    "Bytes": 7390
+  },
+  {
+    "Path": "Agents/skills/gcp-spark/references/spark_refactoring_guide.md",
+    "SHA256": "28473FACAFAB07B24827C73B4A132ACE70EB026FFCCD0EC6AA551C5DCF7E2513",
+    "Bytes": 2607
+  },
+  {
+    "Path": "Agents/skills/gcp-spark/SKILL.md",
+    "SHA256": "40242992F27596A0E34EE34195A261C8C7E5B656FED7F2D93126413CA9FF3D62",
+    "Bytes": 13254
+  },
+  {
+    "Path": "Agents/skills/google-cloud-auth-verification/SKILL.md",
+    "SHA256": "0D1E316D095D53A9AB443921E9B23D96BF1BA3EC3DA866F927C40BE939E3F5E6",
+    "Bytes": 4710
+  },
+  {
+    "Path": "Agents/skills/gravitas-verification/SKILL.md",
+    "SHA256": "D0F87C7064273A94444CB973C82E1A5A8FC7E9AD8464CD1CBC01958A1A497C40",
+    "Bytes": 1300
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/adapt.md",
+    "SHA256": "5826BB4BCA75D7B891BED17FF03BD3B685DFF0E4F26D387FA6190D4BA3F065E4",
+    "Bytes": 11313
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/adapt.native.md",
+    "SHA256": "ACBEECBCBF6558D438ED4AEC6B85027D72587BF181B8AE12D4DFBE8DCE62E9A5",
+    "Bytes": 3910
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/android.md",
+    "SHA256": "43780ABCF10AC12A569D98001AE38AF2B337727A0F7CE66268246AC1D54B5D34",
+    "Bytes": 4203
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/animate.md",
+    "SHA256": "94B4CE6299FEA93D9F256B2D25705961A76BC5EA940C56DB4145686EBC99DF1B",
+    "Bytes": 5236
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/audit.md",
+    "SHA256": "F048EBE823D716A46A8A07E817EB20604FFCEE45EDF93AB2BF0B0DC5A8B12E90",
+    "Bytes": 9583
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/audit.native.md",
+    "SHA256": "33A4AC3906140CFD73F65CD35026867E261ADF411DA0FC6DA95770D9B6EDEB81",
+    "Bytes": 8326
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/bolder.md",
+    "SHA256": "37565671B09D983EA1AD83A9E9190BC37255D93C68445958C6FACECC7E0F7C4F",
+    "Bytes": 3476
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/clarify.md",
+    "SHA256": "6C382F8283756E8A693D832B750F7E4CBFF1CA5BDCC3825B2B4EF4DA9F21876A",
+    "Bytes": 4590
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/colorize.md",
+    "SHA256": "D1FBD55074ABB2251BDAA03749D34ACC42C38E46E47549F18F5848DF57D43C42",
+    "Bytes": 4537
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/component-review.md",
+    "SHA256": "ACB4250C33EDCCB84BD47AB06C3D9ECCEB35D063CD3CF839B63F2124B75DD99E",
+    "Bytes": 8008
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/craft-floor.md",
+    "SHA256": "BA01BBAB98671095B76C2170324ABDCCEB55FD39FD281BC46DADDC2B3C2B0753",
+    "Bytes": 4516
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/craft.md",
+    "SHA256": "9205E222BC6565B37FB504CEEC93233C2D2A456802B69D16E6B1C44723907C4C",
+    "Bytes": 555
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/critique.md",
+    "SHA256": "8236969EC55E98575D4A9DD3FA25C4433D03452B5989B420113FFCC0BD36A474",
+    "Bytes": 45608
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/degraded/asset-producer.md",
+    "SHA256": "F9DFF5B094A69EF93279F07FAE39790DBD169EAF6078F741DAE2D2FECF43CE44",
+    "Bytes": 8425
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/degraded/documenter.md",
+    "SHA256": "BCC05EA92FAEBB5C74037A9D4263A5CE9A56F5AB07C8AB3C59EE704D8CADE745",
+    "Bytes": 3325
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/degraded/finish-reviewer.md",
+    "SHA256": "C33C4CFA7F0CE0BEDDE80D4FC3B595E747D0E9B43A77F06CACB8E899802F709D",
+    "Bytes": 15803
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/degraded/manual-edit-applier.md",
+    "SHA256": "5FAE7F8A2FC3DDD49AD0A413446DC44DAEDEF5B6B7DE5EB935BD2FBFAD646D58",
+    "Bytes": 7196
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/delight.md",
+    "SHA256": "56500B1F9D2FCEC8324D7F448D813048B5831A46D3FEEB1055BD3EB17EC3660F",
+    "Bytes": 3716
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/distill.md",
+    "SHA256": "D083500A160AA812A719B884A12EBED10A48D027CDD266C58076C4046474CF54",
+    "Bytes": 5508
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/doctor.md",
+    "SHA256": "1E7FD319AB3D6C9F715083766E111CBC6735E996DF20DBF55738437E8A8E7B5B",
+    "Bytes": 5615
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/document.md",
+    "SHA256": "352793AE5868063E4D921EB91C4736C811BDA34A0EC14A828D0A730B475EA6E3",
+    "Bytes": 27436
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/extract.md",
+    "SHA256": "6C943AB41DA0B1DE5D5F568C9801FF3566502A58BA9D4E82342A41DFF1C93A6A",
+    "Bytes": 3316
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/generate.md",
+    "SHA256": "2499B18F26639694344CA95682F47C65494F730CFFF88AA9BD2AA83A22E5926D",
+    "Bytes": 13125
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/harden.md",
+    "SHA256": "98244DB22D907A134CAC0C94FFB829BA480BA61CFAC67AE155AC2F46444DA7C9",
+    "Bytes": 10748
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/hooks.md",
+    "SHA256": "90FCBD91ACFB2175F57455FB138C722D1F93D1DF37E1CC127B85A68B83FC7F2D",
+    "Bytes": 14485
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/init.md",
+    "SHA256": "69BC0879C301D86B04F2571919C472B0DB81851AFD2B7A2B7A6F7DCFC79C98CF",
+    "Bytes": 11676
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/ios.md",
+    "SHA256": "40C87038B5F75147A5952A96237ACF312A327BF70C1BCD8E0A5F064625AE9668",
+    "Bytes": 3812
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/layout.md",
+    "SHA256": "D7211A816AA8CA1111701930F7CDAB82B4C8CAA94C9A37522C1D7945209B01C2",
+    "Bytes": 5160
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/live-setup.md",
+    "SHA256": "745B1F74877F6B3445DA48AF65DC45C66C3DAA7738CB9A928AAA900889C2A204",
+    "Bytes": 8185
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/live.md",
+    "SHA256": "C7D46922BF691B072C93928E76FC6303578975F442496D6EDAB028975597BC01",
+    "Bytes": 36878
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/mode-operate.md",
+    "SHA256": "7A52DD7A94EE75F6AE89542C86A1B6E1D306812B16E0D9DBF12D4ACAD44D148B",
+    "Bytes": 4716
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/mode-persuade.md",
+    "SHA256": "21E78C8A77BADB3F83290CD4577ED3B24BD4DD3B57136D7DA75733D4F3EE9AC0",
+    "Bytes": 3638
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/mode-read.md",
+    "SHA256": "A569989E6A3D6453B4C45E9474E162A15CC54E11732AC6BAA7990A6E7CCCC0B5",
+    "Bytes": 4396
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/new-work.md",
+    "SHA256": "6C2E8DC91A22BBDFCF54EF50DF6CC5695AF360CE05BF628A8A562F8691FBB280",
+    "Bytes": 62438
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/onboard.md",
+    "SHA256": "EB713F3D6686BAC6431DD874F7B02358B4CF08E879E11BF747D75660DEDD685A",
+    "Bytes": 7688
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/operate.md",
+    "SHA256": "A9D2203ACD45CA33A13D5C68B02B23ED512425AC15F0E8438318ED124B43729D",
+    "Bytes": 4145
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/optimize.md",
+    "SHA256": "7ECC07226FA99B198EBA37EA57F3C3E2465A80CC65093F0098DC888F7EE27273",
+    "Bytes": 7577
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/overdrive.md",
+    "SHA256": "5426CC8156D0ADAAB3B6EAB034B8C7B58C11DE19281BAE6E32178F17FE0FFA46",
+    "Bytes": 8989
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/polish.md",
+    "SHA256": "B5F4FBB4A044C3F5EC14ADC847222488F00FCCABBF79ECD0B21084C8D319D616",
+    "Bytes": 6644
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/quieter.md",
+    "SHA256": "56195B07D4F3E2DEF848EAA3B804160F297C50ADD99CD480A946B7E8A019EF7D",
+    "Bytes": 4930
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/region-map.md",
+    "SHA256": "8157B5A376E46980117F1AD6D08B24EE7BE966F5DE64B041BD213D486EA8C077",
+    "Bytes": 3358
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/routing.md",
+    "SHA256": "C06EFFCDC60859157208D3B7EE23D56160F2386F6A2DFA2514BA82FE21828AE0",
+    "Bytes": 3334
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/shape.md",
+    "SHA256": "A55F016C046CB6A27C55BD7F346375AEB506A755C4FBCA19A5F92DBD42309C23",
+    "Bytes": 3547
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/typeset.md",
+    "SHA256": "4B84315C494781281E34FE70963510ED1A28A123E3F6947741490A49FCC0D569",
+    "Bytes": 6262
+  },
+  {
+    "Path": "Agents/skills/impeccable/reference/visualize.md",
+    "SHA256": "3DC25AC85430654B996D85D9D16AE5C15F04B1BB6C8C7CF48056CC0F98BD5355",
+    "Bytes": 13955
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/bin/windows-x64/impeccable.exe",
+    "SHA256": "8F61E96B0C97001546A824D79B44F46B423B560F3EB1A0CC44A8695A1B395D9F",
+    "Bytes": 20435344
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/command-metadata.json",
+    "SHA256": "C6DCBEED7F13152205CA022C8F24D08683770835083F0A7325261C1C2D5F215C",
+    "Bytes": 8318
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/data/font-index-failures.json",
+    "SHA256": "835F19A0A3812F3652DD6979A2CE5597F654FD01F26E1B420B92D5F42B997CE4",
+    "Bytes": 2437
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/data/font-index.json",
+    "SHA256": "47EDBDFAF27073C47033D1AC7DFEE881BE49E2DCBDA7671D1157300481DDE6DA",
+    "Bytes": 1100013
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/engine-checksums.txt",
+    "SHA256": "2F0235179CBC515D7C7EC71A9A08283D0CB88A5238D35FFA5A5F42122E78FE35",
+    "Bytes": 787
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/impeccable",
+    "SHA256": "D9709EE88E790BDA2D98F55C4D1ABE42E28B91DB849882A2998BAC79B1E074CB",
+    "Bytes": 10167
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/impeccable.cmd",
+    "SHA256": "74154D320DDA16E7CB184406A9DEECC8C6A5953AB675AF99CEA207471D63B4B4",
+    "Bytes": 11095
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/live-browser-dom.js",
+    "SHA256": "4B379AFF87CE0F485008A2B6A0DC711D00A869F5CF0EC2459279D6364FBF0C9E",
+    "Bytes": 12283
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/live-browser-ignores.js",
+    "SHA256": "BA8905AB865FDE5162E34FC17EB80EBA26CC990B319B14A6EED6CA89FD491897",
+    "Bytes": 10423
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/live-browser-session.js",
+    "SHA256": "E042339A54D4521FC47555B602013ED5B51410EC9D7D8878D99A526F5F237F68",
+    "Bytes": 5838
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/live-browser.js",
+    "SHA256": "718B7E3C5C9CC3CC8FB75ED99B32A7EBCE627E3B6A108E21656FA0FD298E34F0",
+    "Bytes": 553621
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/modern-screenshot.umd.js",
+    "SHA256": "BB36665889124A0B6E15F16045265737449C3BDCF2712CDB08AF3CFA01563E2B",
+    "Bytes": 29290
+  },
+  {
+    "Path": "Agents/skills/impeccable/scripts/VERSION",
+    "SHA256": "447836D46F39C5900FAF74AD6A6554B8E1FAFECA1F78DE0416D5F05C6E09A080",
+    "Bytes": 7
+  },
+  {
+    "Path": "Agents/skills/impeccable/SKILL.md",
+    "SHA256": "23D203B9C731C2245DFC026F8FB5245FF0FBFF41B997139E2D28CF0FC78546EA",
+    "Bytes": 11864
+  },
+  {
+    "Path": "Agents/skills/interactive-grill-consultant/SKILL.md",
+    "SHA256": "CA541B84DA3A23E6DE2BB9D53E96CC27D26944446D060459FB19F3ECF2FB8D58",
+    "Bytes": 3402
+  },
+  {
+    "Path": "Agents/skills/learn-deeply/SKILL.md",
+    "SHA256": "805B696DC1CFF0B50269971B9929A94E57987141A36157F2C90DD39A7467A34D",
+    "Bytes": 2961
+  },
+  {
+    "Path": "Agents/skills/live-web-quality-auditor/agents/openai.yaml",
+    "SHA256": "D0BE378FB67B4D2355271D1930529A432E952DC62DA3FBF927358504D06A52D0",
+    "Bytes": 303
+  },
+  {
+    "Path": "Agents/skills/live-web-quality-auditor/references/report-schema.md",
+    "SHA256": "14506CB840541960D69010F13D9277443E79C6D7DD6CF546A63DE04E312F94DB",
+    "Bytes": 1642
+  },
+  {
+    "Path": "Agents/skills/live-web-quality-auditor/references/transactional-manifest.md",
+    "SHA256": "D157AAE7FD46C76242AC8D16B7BB89756A8D650BC2DFAE2F49CAFD78F53DE829",
+    "Bytes": 2006
+  },
+  {
+    "Path": "Agents/skills/live-web-quality-auditor/SKILL.md",
+    "SHA256": "0E5A6F9240981EE47F3CEE662869B64C837575BABBB71B5AE1F12FFFC5AD908E",
+    "Bytes": 8949
+  },
+  {
+    "Path": "Agents/skills/managing-python-dependencies/SKILL.md",
+    "SHA256": "C87D58B802AEEC6AA2D25C11A6D03DD9587B22BE57C46B125AE54DDE4D16FB92",
+    "Bytes": 4702
+  },
+  {
+    "Path": "Agents/skills/ml-best-practices/SKILL.md",
+    "SHA256": "AE010FD52E6B29F9C18302C4BDB36CE444BFC5581A52A0E036AE1F0B6AB44473",
+    "Bytes": 9805
+  },
+  {
+    "Path": "Agents/skills/ml-data-quality/SKILL.md",
+    "SHA256": "C81ABC28B9FC8002BF52536D251C4C270F8253E27B8AEBAFAA623D9C78C3BA79",
+    "Bytes": 1743
+  },
+  {
+    "Path": "Agents/skills/ml-evaluation-validation/SKILL.md",
+    "SHA256": "1E6C5255A4FE57813153FB751090B9C373B8BE4BDFC0D2ABE04AD2687A356D7D",
+    "Bytes": 1782
+  },
+  {
+    "Path": "Agents/skills/ml-experiment-reproducibility/SKILL.md",
+    "SHA256": "F0150B839D0398A44BAF1759E13FA8E5FCA4579167C4503DAAE230014D1362F9",
+    "Bytes": 1779
+  },
+  {
+    "Path": "Agents/skills/ml-feature-engineering/SKILL.md",
+    "SHA256": "8B09095EA2F767EDDC118E9CC657D0C0F09A19D2894E001EF203E8BF8122A1F5",
+    "Bytes": 1751
+  },
+  {
+    "Path": "Agents/skills/ml-gpu-performance/SKILL.md",
+    "SHA256": "888BC414DC83B05FAFB390FB0523F5CC0C52A9618A1042AF0252073321751277",
+    "Bytes": 1740
+  },
+  {
+    "Path": "Agents/skills/ml-hyperparameter-optimization/SKILL.md",
+    "SHA256": "B3436ACD302B65EB74D333A5AAE1E6E45E7B0E513B59CB300889ABA446CFAD35",
+    "Bytes": 1733
+  },
+  {
+    "Path": "Agents/skills/ml-inference-optimization/SKILL.md",
+    "SHA256": "89900F2E904CBFA38ABCFD1E349FC9BA3076785657C82E72EEE97DBF867235B8",
+    "Bytes": 1737
+  },
+  {
+    "Path": "Agents/skills/ml-model-serving/SKILL.md",
+    "SHA256": "C744674993D3A089AB5B988FA3DFF181F88606846AD98E774E4CABC9B1160E8A",
+    "Bytes": 1718
+  },
+  {
+    "Path": "Agents/skills/ml-monitoring-drift/SKILL.md",
+    "SHA256": "5CF3A3D0291642DF5D13206E17D7977CFC58A1298BA1C3ED66531D118620D7C1",
+    "Bytes": 1754
+  },
+  {
+    "Path": "Agents/skills/ml-privacy-supply-chain/SKILL.md",
+    "SHA256": "F94D2A68F7F1F958E71319ABEECF961133BE119562B69EF063BE7605889B4A01",
+    "Bytes": 1778
+  },
+  {
+    "Path": "Agents/skills/ml-problem-framing/SKILL.md",
+    "SHA256": "E06FF132F44B27271A6FE48FDC8911F7B9E02620D9B20FBD99E6ACE838A38583",
+    "Bytes": 1762
+  },
+  {
+    "Path": "Agents/skills/ml-pytorch-model-design/SKILL.md",
+    "SHA256": "D9CA38C8F3ECEB8F9F0CCA60239D77D7C44A4B7DC601363EBB6F015E2649837E",
+    "Bytes": 1739
+  },
+  {
+    "Path": "Agents/skills/ml-transformers-finetuning/SKILL.md",
+    "SHA256": "486EE4091490387BEE4126D452126579A8C0EB3286378FE4395DE37D402C5C34",
+    "Bytes": 1769
+  },
+  {
+    "Path": "Agents/skills/mlops-pipelines-registry/SKILL.md",
+    "SHA256": "615DECC6531A0F012CE23B5E92CE9D6ECF877AFABC928F810F6129775A642B7C",
+    "Bytes": 1719
+  },
+  {
+    "Path": "Agents/skills/mobile-ui-ux-designer/SKILL.md",
+    "SHA256": "6667DF8C2FAED88A067B9F77887AD498CFCA93E2227BA3360925BBFD8F86599A",
+    "Bytes": 2456
+  },
+  {
+    "Path": "Agents/skills/modern-ui-art-direction/SKILL.md",
+    "SHA256": "9AF5A05C5D71D0FABDB8FEDB4BAA1A5C241D70F8ED711012F0A318AC800EDF85",
+    "Bytes": 3609
   },
   {
     "Path": "Agents/skills/multi-agent-consensus/SKILL.md",
@@ -240,9 +1325,114 @@
     "Bytes": 5097
   },
   {
+    "Path": "Agents/skills/node-api-design/SKILL.md",
+    "SHA256": "04F72A03F9AB3F64EFFD573FEC262EB7919344F032CD7AFDD0628CED7827E395",
+    "Bytes": 1686
+  },
+  {
+    "Path": "Agents/skills/node-auth-security/SKILL.md",
+    "SHA256": "B84ADE7D2DC2A79894861108D40425AC5DA719E4F6B54308828C9B3821AB6EAD",
+    "Bytes": 1735
+  },
+  {
+    "Path": "Agents/skills/node-backend-architecture/SKILL.md",
+    "SHA256": "0E3B5555EA7573B746271EDA9906B61CA4A8C17D1AA9FD0F501846290F824C1E",
+    "Bytes": 1805
+  },
+  {
+    "Path": "Agents/skills/node-data-access/SKILL.md",
+    "SHA256": "D4670BF575CB783CD5703FD5451D6A147FE68ACAD7DB4250D026A20660EF64BF",
+    "Bytes": 1727
+  },
+  {
+    "Path": "Agents/skills/node-deployment-delivery/SKILL.md",
+    "SHA256": "A8F5391D9A0B3CC30698A1B7F56FAD226CFBEB588987504B478B617ADB7ADB21",
+    "Bytes": 1732
+  },
+  {
+    "Path": "Agents/skills/node-framework-express-fastify/SKILL.md",
+    "SHA256": "75C9070C34ECEC5E44D6C4D8CA6187673498A08EB3F72E0611AD48EC705E3A79",
+    "Bytes": 1741
+  },
+  {
+    "Path": "Agents/skills/node-framework-nestjs/SKILL.md",
+    "SHA256": "754AF9FC6853787F167551D4DE4B2E681DC6A0089CDF88DE5B0EF813F6D891B2",
+    "Bytes": 1710
+  },
+  {
+    "Path": "Agents/skills/node-observability-resilience/SKILL.md",
+    "SHA256": "B5E82429E6512A615172AE22D701B670ACDE773EB131B72AD494E5D4E1C3FB3D",
+    "Bytes": 1752
+  },
+  {
+    "Path": "Agents/skills/node-performance-runtime/SKILL.md",
+    "SHA256": "BBBBD24585029CC14F4BB55769617BDBF27EDDED281305B088613C4E64F40FA5",
+    "Bytes": 1730
+  },
+  {
+    "Path": "Agents/skills/node-postgres-data/SKILL.md",
+    "SHA256": "9BF45B6E945E610DF6AC57A79D107BCD50A0C3D2C87847CE7E339B02C3CEC668",
+    "Bytes": 1709
+  },
+  {
+    "Path": "Agents/skills/node-queues-workers/SKILL.md",
+    "SHA256": "2DC4BCB9C88A272D1263298D2854AE1D7564A6A50EA30D15B7E637083B8CC9C3",
+    "Bytes": 1706
+  },
+  {
+    "Path": "Agents/skills/node-testing-quality/SKILL.md",
+    "SHA256": "0DEB3E86D805969593004CD2B3D3BB4A30563A26596895FCB82F18A9F4CF80E3",
+    "Bytes": 1719
+  },
+  {
+    "Path": "Agents/skills/node-typescript-services/SKILL.md",
+    "SHA256": "2C0A337DB3860F88477A8FA4576BE2B9917344A27EFAF6A1FC13BDB0810249B5",
+    "Bytes": 1710
+  },
+  {
+    "Path": "Agents/skills/notebook-guidance/SKILL.md",
+    "SHA256": "58C40FDC7A764E999BB033E943714EA0560DD27B06A00BF0DEF424F5BA9CF0FF",
+    "Bytes": 21597
+  },
+  {
     "Path": "Agents/skills/open-source-architecture-research/SKILL.md",
     "SHA256": "04931C800F6649EBB19D7C28EA6790C56422D14D0ABD052CAB16D7AAF2EF66A7",
     "Bytes": 1332
+  },
+  {
+    "Path": "Agents/skills/pre-implementation-evidence-gate/SKILL.md",
+    "SHA256": "66983DF89B3E157DA3434E21E34C34BE1B412163F8191406D2BF9CBC6CF815AC",
+    "Bytes": 3039
+  },
+  {
+    "Path": "Agents/skills/premium-web-workflow/SKILL.md",
+    "SHA256": "4D3300FF8B97D3CA9079E367E59A249A6F30361BDF0B02E02B7CC10F9E5281E8",
+    "Bytes": 2107
+  },
+  {
+    "Path": "Agents/skills/production-code-quality/SKILL.md",
+    "SHA256": "8DF91F72A73296FE18CABD81641CFF62CDB4003DCB4FD8AB7637EFD4F4E4ED98",
+    "Bytes": 2527
+  },
+  {
+    "Path": "Agents/skills/production-image-generation/SKILL.md",
+    "SHA256": "4CD68CD3B0BB15E812CF282276D37743C8EAEFE0C3934D73FD61C02ACD680BBA",
+    "Bytes": 3752
+  },
+  {
+    "Path": "Agents/skills/project-context-orchestrator/references/incremental-refresh.md",
+    "SHA256": "7D84FACAFD1777D60892EDAE0D5F34DBA3532C5455B23CA365B8E1D9ED3E3E02",
+    "Bytes": 1729
+  },
+  {
+    "Path": "Agents/skills/project-context-orchestrator/references/memory-schema.md",
+    "SHA256": "C77FC4BD142C52C1C8FF3FFE49CE403CD76DFAA20A2307D78CF0EE3A49D2EC80",
+    "Bytes": 1729
+  },
+  {
+    "Path": "Agents/skills/project-context-orchestrator/SKILL.md",
+    "SHA256": "7BF2C13722F1404F0316364A6F8F4ADF171A560E2C3EB2DF030069933854E8AE",
+    "Bytes": 4160
   },
   {
     "Path": "Agents/skills/project-knowledge-sync/SKILL.md",
@@ -250,9 +1440,99 @@
     "Bytes": 3791
   },
   {
+    "Path": "Agents/skills/python-async-concurrency/SKILL.md",
+    "SHA256": "77438F85281DA002B083335845E46A227E0808E20C92E147560BDE4507204D7E",
+    "Bytes": 1709
+  },
+  {
+    "Path": "Agents/skills/python-backend-architecture/SKILL.md",
+    "SHA256": "56281513833EBA0C4A815929856F3A14B0BB62C8C0D8B44783F8B89C7813194B",
+    "Bytes": 1742
+  },
+  {
+    "Path": "Agents/skills/python-data-persistence/SKILL.md",
+    "SHA256": "264D1E336CA10286CEDC017D96C5AD9229575A44A4F29E5B1A50FE5E70D06AB0",
+    "Bytes": 1723
+  },
+  {
+    "Path": "Agents/skills/python-django-api/SKILL.md",
+    "SHA256": "A7AE1BB7627EB11682500175223BCE017EA29D0AEA08A930306926F8B213BFBD",
+    "Bytes": 1719
+  },
+  {
+    "Path": "Agents/skills/python-fastapi-services/SKILL.md",
+    "SHA256": "38BAFFD2462A2C8B5D6127011E82390405C95DC4A3E4F3BE0E41F292A84BB1E0",
+    "Bytes": 1712
+  },
+  {
+    "Path": "Agents/skills/python-packaging-deployment/SKILL.md",
+    "SHA256": "F19E909F629A831F9D2EA58711F11F0170A5525C5CDA85214C2D66D1D5D82E68",
+    "Bytes": 1759
+  },
+  {
+    "Path": "Agents/skills/python-security/SKILL.md",
+    "SHA256": "700F30F1438D85160F9A8B7E4326292167256DB083B272D3D638C25A8AFF0F2D",
+    "Bytes": 1729
+  },
+  {
+    "Path": "Agents/skills/python-testing-quality/SKILL.md",
+    "SHA256": "98C43570C73AE3CBDE7937F201857F71FA837D9B23A69C213CD91ACDBCFCC8E2",
+    "Bytes": 1743
+  },
+  {
+    "Path": "Agents/skills/python-typing-contracts/SKILL.md",
+    "SHA256": "448C5CB5698CFEC7AEEB64B9361E39DADA51B57F310D506D2D82C4DCD140B89F",
+    "Bytes": 1757
+  },
+  {
+    "Path": "Agents/skills/pytorch-distributed-training/SKILL.md",
+    "SHA256": "E5973DAB67C60A411049E6589CB3CF32B2FA0AC29C1CDB655EBF127981F8DF44",
+    "Bytes": 1781
+  },
+  {
+    "Path": "Agents/skills/pytorch-training-systems/SKILL.md",
+    "SHA256": "6DDDCE0418CD9434C8535B96B363D43957993ED7FC8377002385E89287B0E907",
+    "Bytes": 1742
+  },
+  {
     "Path": "Agents/skills/reverse-deep-researcher/SKILL.md",
     "SHA256": "886F0D2DE0C03734F6C43A48FE31AEAF10920BC3B8CD32CCCA3A3AD854A3868F",
     "Bytes": 1522
+  },
+  {
+    "Path": "Agents/skills/reverse-engineering/references/reconstruction-checklist.md",
+    "SHA256": "ED8E10EAE750F7CB89F74A833153585DA9AA69B5457746463173EF471756F3AE",
+    "Bytes": 2200
+  },
+  {
+    "Path": "Agents/skills/reverse-engineering/SKILL.md",
+    "SHA256": "E5C28B6DFC41558F02427446F3259B400DF0269C32DFA43BD80A9778180005CF",
+    "Bytes": 6597
+  },
+  {
+    "Path": "Agents/skills/saas-architecture-engineer/agents/openai.yaml",
+    "SHA256": "4C93BA03F0FAEAA7D16645639D42A396B10DB91B3AF01542F3F7E68823BB20F8",
+    "Bytes": 328
+  },
+  {
+    "Path": "Agents/skills/saas-architecture-engineer/references/decision-record-template.md",
+    "SHA256": "C7C9DAC5C5F3E58800F94E656C5042B6BE69D86BF376BADE3553B209277EF2EB",
+    "Bytes": 536
+  },
+  {
+    "Path": "Agents/skills/saas-architecture-engineer/SKILL.md",
+    "SHA256": "154903CEEC424ACBF361BDC39263D41D46A095F83EBB58AA4B4EDBAE8FEA76C4",
+    "Bytes": 3979
+  },
+  {
+    "Path": "Agents/skills/schema-mapping/SKILL.md",
+    "SHA256": "8ECE5FA91050EF54AF7E2CEAB130A60D3F8990760969F8E37F1DEA824B1D0811",
+    "Bytes": 11780
+  },
+  {
+    "Path": "Agents/skills/secure-design-threat-modeling/SKILL.md",
+    "SHA256": "0B2CC0FCCC5C2FF4E6D9CBFB6B21CFF8A58E71C39DADA3938E6E2786C227C17D",
+    "Bytes": 2443
   },
   {
     "Path": "Agents/skills/security-casebook/SKILL.md",
@@ -260,14 +1540,254 @@
     "Bytes": 887
   },
   {
+    "Path": "Agents/skills/skill-repair/SKILL.md",
+    "SHA256": "7ED4B7EB5D82D14686967967159AA472869313BD9804CED44B16EAB4884B7F00",
+    "Bytes": 1777
+  },
+  {
+    "Path": "Agents/skills/software-architect/README.md",
+    "SHA256": "917BF4A8F857A46F5C642EDA493B0385B616BE037F484664CF1AF34A7BD3B90E",
+    "Bytes": 9747
+  },
+  {
+    "Path": "Agents/skills/software-architect/references/adr-guide.md",
+    "SHA256": "A7F860007D79FB147CBDD1B251AF1C30A0F8847C3049646E05AFCB4B66421394",
+    "Bytes": 9881
+  },
+  {
+    "Path": "Agents/skills/software-architect/references/analysis.md",
+    "SHA256": "5515B5A2A0C3B392120790C50CCB290233CC2E7C4F20F351E2935A2DC4A69C37",
+    "Bytes": 8241
+  },
+  {
+    "Path": "Agents/skills/software-architect/references/anti-patterns.md",
+    "SHA256": "EA22C563C0ED96318AED5CE1B607A3EC6C607EA2FB2294241FB062934FC07D73",
+    "Bytes": 14256
+  },
+  {
+    "Path": "Agents/skills/software-architect/references/fitness-functions.md",
+    "SHA256": "04332B770BD4E73B582C2CEE9FD6B3972D094AB51057E8A0F3F5149989BBEC86",
+    "Bytes": 12840
+  },
+  {
+    "Path": "Agents/skills/software-architect/references/patterns.md",
+    "SHA256": "BC9708468762C032D8685CF35389EEF8EB13458255A6EF89EC8F84C1DBD6D58B",
+    "Bytes": 16154
+  },
+  {
+    "Path": "Agents/skills/software-architect/scripts/adr_init.py",
+    "SHA256": "D8D23B73E8144EFC59B7756727B86D87CFB8C72174144929FE6FA43FB282D608",
+    "Bytes": 4257
+  },
+  {
+    "Path": "Agents/skills/software-architect/scripts/architecture_validator.py",
+    "SHA256": "693704B3D9002028610A3A5DFE32097821BEB4C91B9C35C72195518F91C267A8",
+    "Bytes": 19905
+  },
+  {
+    "Path": "Agents/skills/software-architect/scripts/dependency_analyzer.py",
+    "SHA256": "B71A12A723357239DF3DCC21EEA0F0F13781AE14BF98EC2D0CC4BE3902F4152D",
+    "Bytes": 15747
+  },
+  {
+    "Path": "Agents/skills/software-architect/SKILL.md",
+    "SHA256": "E501CD0E0D95D1F62DB554AE6DA345B78FD6029E3CB2F1785F075F9AB569C47F",
+    "Bytes": 23494
+  },
+  {
+    "Path": "Agents/skills/software-architect/skills-lock.json",
+    "SHA256": "C781730665E1CF4F46C2ABD7E405A68A3E90E8E72188A272D9388B16636971E0",
+    "Bytes": 273
+  },
+  {
+    "Path": "Agents/skills/software-architect/templates/adr-template.md",
+    "SHA256": "A550B45F8325589A2E2FCA57DED59F19D4D7559C4724E0BCE92E89503D203F59",
+    "Bytes": 845
+  },
+  {
+    "Path": "Agents/skills/software-architect/templates/architecture-config.json",
+    "SHA256": "24DA6FE8C8AF4FBA49B0508FE4C4E98EA33A81A8B4766E2ABFD5E093C7F47987",
+    "Bytes": 1992
+  },
+  {
+    "Path": "Agents/skills/spec-driven-engineering/SKILL.md",
+    "SHA256": "8A2A7A7C4613761BEE88BB8712BC2C1A264692EF0FB031442D6C243137E22D7D",
+    "Bytes": 1156
+  },
+  {
+    "Path": "Agents/skills/two-step-ui-blueprint/SKILL.md",
+    "SHA256": "D7D16BD8268789D4C95DE5B7BEE95A383258833245DAEF972EB49CC650F1F452",
+    "Bytes": 4724
+  },
+  {
+    "Path": "Agents/skills/ui-ux-pro-max/SKILL.md",
+    "SHA256": "9F37796308F793C1FC261A09EAC87C3CF5BA3EBE2D062D46F04F336421BCDBCE",
+    "Bytes": 7691
+  },
+  {
+    "Path": "Agents/skills/understand-anything/SKILL.md",
+    "SHA256": "CAB8CFEED81012EB881F61447B17BB57A3D203FC3716C70B0AFC3870DFACEBAC",
+    "Bytes": 1164
+  },
+  {
+    "Path": "Agents/skills/webapp-testing/examples/console_logging.py",
+    "SHA256": "4E94847003F32053BE993213D1AEC2C28F2F3673872884F06A8BC7CF4AC96D6B",
+    "Bytes": 1090
+  },
+  {
+    "Path": "Agents/skills/webapp-testing/examples/element_discovery.py",
+    "SHA256": "11C26B4DBB2A11D80431FBE4219FDC12FBB943B0682E3DC35462637F5F763A2E",
+    "Bytes": 1529
+  },
+  {
+    "Path": "Agents/skills/webapp-testing/examples/static_html_automation.py",
+    "SHA256": "6652EA9F2BB5D188D8B60ECC92BC808ABB4D35ED993CDDEAE3E5C9F11A7D0E0B",
+    "Bytes": 959
+  },
+  {
+    "Path": "Agents/skills/webapp-testing/LICENSE.txt",
+    "SHA256": "BC6B3AF2F331CBC7FB0DA1344EFB2CBE5877A31498B4D70DBC7000F3405A1362",
+    "Bytes": 11345
+  },
+  {
+    "Path": "Agents/skills/webapp-testing/scripts/with_server.py",
+    "SHA256": "B0DCF4918935B795F4EDA9821579B9902119235FF4447F687A30286E7D0925FD",
+    "Bytes": 3693
+  },
+  {
+    "Path": "Agents/skills/webapp-testing/SKILL.md",
+    "SHA256": "4FF479192BF6746F33519925A7985890B501A731C648D4106538FC18DACA2724",
+    "Bytes": 4155
+  },
+  {
+    "Path": "Agents/skills/workflow-agent-handoffs/SKILL.md",
+    "SHA256": "DCC13489B6FDBFE6E21644F7D2B3E26FCE2AC7CC5C940172A171D8778B5F8D40",
+    "Bytes": 1283
+  },
+  {
+    "Path": "Agents/skills/workflow-cost-quota-controls/SKILL.md",
+    "SHA256": "950DC37C32EA89F1BAFA4D825F88B9ABE7500736EC9F25B88CD4AA2C985D8B34",
+    "Bytes": 1170
+  },
+  {
+    "Path": "Agents/skills/workflow-credential-lifecycle/SKILL.md",
+    "SHA256": "D78017EFF6C9F8BA7F9FC6D1C6A05A77AC624A8E068A6E7BA093D1097BA09998",
+    "Bytes": 1131
+  },
+  {
+    "Path": "Agents/skills/workflow-dag-orchestration/SKILL.md",
+    "SHA256": "26B2D770073B3932FB3DC5D4BB03D4A9F7F74F96B500CD3317B9BE505034D721",
+    "Bytes": 1265
+  },
+  {
+    "Path": "Agents/skills/workflow-data-contracts/SKILL.md",
+    "SHA256": "91EF8C9D459FFCBB11225314997AE53E4F2416F758A26203B20C5DE822F4D300",
+    "Bytes": 1277
+  },
+  {
+    "Path": "Agents/skills/workflow-data-provenance/SKILL.md",
+    "SHA256": "402A5BE7B542D931B4F707B6126EE2CA0E9EC7AE2CA3EC62ED0127D0538F1065",
+    "Bytes": 1079
+  },
+  {
+    "Path": "Agents/skills/workflow-database-change-control/SKILL.md",
+    "SHA256": "E18D260FD57501C9CC6749D1B1E97AA88B719704C6D9DF92D947A75CE864918B",
+    "Bytes": 1265
+  },
+  {
+    "Path": "Agents/skills/workflow-durable-execution/SKILL.md",
+    "SHA256": "6C7492ADCF6FF055BDC6C451A5BBDDF6FA9C3A052916BD0DFE8A8929343EC8EC",
+    "Bytes": 1467
+  },
+  {
+    "Path": "Agents/skills/workflow-human-approval-gates/SKILL.md",
+    "SHA256": "0E33D0139E965479AC865DE0E5F75BCEADB1EB86458679061FD90CF3D3B664C6",
+    "Bytes": 1747
+  },
+  {
+    "Path": "Agents/skills/workflow-idempotency/SKILL.md",
+    "SHA256": "6C171414B856093E72E2E679CCF9C7D4CA1B186C1B19AA9405615BA7717DDACE",
+    "Bytes": 1174
+  },
+  {
+    "Path": "Agents/skills/workflow-intake-and-scope/SKILL.md",
+    "SHA256": "02EE0322215A9151BB8439B12AC47B598229562F59AD587EDF5916EDF1FBBF8E",
+    "Bytes": 1418
+  },
+  {
+    "Path": "Agents/skills/workflow-observability/SKILL.md",
+    "SHA256": "5154CFFAFBA6A5F681F78A09942F083FEF9CFE75AA870DE899472BB1AE0FB0DD",
+    "Bytes": 1163
+  },
+  {
+    "Path": "Agents/skills/workflow-operator-console-ui/SKILL.md",
+    "SHA256": "4BB684EB74EAE7ACEBAC874C923F4A24699E020B789FBA4A558E12D6103AD906",
+    "Bytes": 1815
+  },
+  {
+    "Path": "Agents/skills/workflow-queues-backpressure/SKILL.md",
+    "SHA256": "97DFBF80B079CD80279469462B9BC38F9C4B1B9A7105111C41759FEAF828320B",
+    "Bytes": 1306
+  },
+  {
+    "Path": "Agents/skills/workflow-recovery-runbooks/SKILL.md",
+    "SHA256": "9C8DB28C2DBC0951597CC9F49FE47D3760196C1BB497F8E2BD9894DE1B4E8A38",
+    "Bytes": 1070
+  },
+  {
+    "Path": "Agents/skills/workflow-release-rollouts/SKILL.md",
+    "SHA256": "ED8A7079E9FEDB8F6731F6A6DFB6979165B8E79F12FFB4A168CB422513E2E39C",
+    "Bytes": 1211
+  },
+  {
+    "Path": "Agents/skills/workflow-requirements-to-contract/SKILL.md",
+    "SHA256": "E930E023CE1C50C46FD8759A06255EAE3D7485E7A846FCBC774E7C678CE89EEF",
+    "Bytes": 1417
+  },
+  {
+    "Path": "Agents/skills/workflow-retries-compensation/SKILL.md",
+    "SHA256": "C03FEF034BF744D528B01982FE8B38A8479CFE7098C2B2AAE4B4FFC8C2CAFCB7",
+    "Bytes": 1424
+  },
+  {
+    "Path": "Agents/skills/workflow-scheduled-jobs/SKILL.md",
+    "SHA256": "398567C32E44D7511C5B7E1FEE8A96DBDA2B72670A06838A5E515137D4819732",
+    "Bytes": 1191
+  },
+  {
+    "Path": "Agents/skills/workflow-source-research/SKILL.md",
+    "SHA256": "89C53B45EE435BFD6BBE223F9AA21FEE2A7B3409CD98274FCB468236DE4B5F9C",
+    "Bytes": 1802
+  },
+  {
+    "Path": "Agents/skills/workflow-state-machines/SKILL.md",
+    "SHA256": "3D2A3834FA6BCFE9DF485902CDC4D9D5A6AA7257D53F77C067B389C678F5ACB9",
+    "Bytes": 1252
+  },
+  {
+    "Path": "Agents/skills/workflow-system-connectors/SKILL.md",
+    "SHA256": "CC1B16E4CCF214CC6961C8A0CFB9BF17388CE642AF018ED532F22B87211B2A15",
+    "Bytes": 1270
+  },
+  {
+    "Path": "Agents/skills/workflow-testing-simulation/SKILL.md",
+    "SHA256": "4A0F1CB323E72C291E96686832FCB491C8EE3F5A027C285C5FFF94A3EAC5EA56",
+    "Bytes": 1375
+  },
+  {
+    "Path": "Agents/skills/workflow-webhook-contracts/SKILL.md",
+    "SHA256": "D4798D9051D538CB3C4858B8C7C8AF08906244387048AE95AE1110694FF3205F",
+    "Bytes": 1270
+  },
+  {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "FC1B1FB7F11DE32993E88169E0E8EC83102D0E6892651B6F064010D23785BBCE",
-    "Bytes": 8063
+    "SHA256": "8672F9E583827495E62A5C96728614C0818A9C301D15D16BFA14CFDE851E72E2",
+    "Bytes": 9298
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "0AA43C3A8ECB9996D639506A15C9E0364E09CE52B0098B5557D6D7234480003D",
-    "Bytes": 17746
+    "SHA256": "ADB8D995E1DA3D0042976D04E6701608EAD61E8378420DA5F8EE5BD700BA56D0",
+    "Bytes": 17456
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -275,14 +1795,29 @@
     "Bytes": 1740
   },
   {
+    "Path": "Agents/tools/generate-backend-ml-pack.mjs",
+    "SHA256": "955857606A4B8BCBA9D252722380BFC62138A6EAC5A5CCA80E6E5BDB26E34E19",
+    "Bytes": 23824
+  },
+  {
     "Path": "Agents/tools/package-signing.mjs",
     "SHA256": "1C9228E34445E781507DFCA4672639083F305D9522BF6B40C347322C782FFCC9",
     "Bytes": 2995
   },
   {
+    "Path": "Agents/tools/portable-components.mjs",
+    "SHA256": "EB056280B9DDC6B2E1F6E297AE281F34D9E10243219CC9282BE07A9A337F4DBE",
+    "Bytes": 6717
+  },
+  {
     "Path": "Agents/tools/route-backend-ml-task.mjs",
     "SHA256": "82830FB68F8D9809B18E4872A6AE8BDC2A555782D3ED57BE6AA5AB92B2D4B379",
     "Bytes": 18795
+  },
+  {
+    "Path": "Agents/tools/snapshot-native-history.mjs",
+    "SHA256": "F9CA0CCDA6E9FADE7DCEEF59AE21A43D646462452F2083FA44514242EB760672",
+    "Bytes": 3608
   },
   {
     "Path": "Agents/tools/sync-knowledge-bank.mjs",
@@ -296,8 +1831,8 @@
   },
   {
     "Path": "Agents/tools/tests/agent-hub-doctor.test.mjs",
-    "SHA256": "1325476D78017D8F2908636204D59BABED3CD0E1B6BD32B8B69B37B0BE424AEE",
-    "Bytes": 975
+    "SHA256": "85CBFDB984A01AD0C8ACDF98262B6D9BF97ACD4600A4701D76C58FCECE162765",
+    "Bytes": 1112
   },
   {
     "Path": "Agents/tools/tests/backend-ml-router.test.mjs",
@@ -308,6 +1843,11 @@
     "Path": "Agents/tools/tests/package-signing.test.mjs",
     "SHA256": "05723B2B59229C980A4D7081030F4261D91B108DC4B33B662552E656E836B249",
     "Bytes": 1769
+  },
+  {
+    "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
+    "SHA256": "D68FE351E60966EEAC39A0A390319233AED569FFB29491825D5CD9A72C09DBD2",
+    "Bytes": 1646
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

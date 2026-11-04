@@ -336,66 +336,17 @@ diagnostic plan or run any script before it passes.**
         pass them with `--rules_file <path>` or `--custom_rule '<json>'`.
         With no rules the script exits with an error rather than reporting a
         misleading "no anomalies detected".
-    -   Rules are **Python expressions** over `s` (one stage), `stages` (every
-        stage) and `total_executor_summary`. Each record is a flat `dict`
-        keyed by the snake_case proto field path, for example
-        `s["stage_metrics.jvm_gc_time_millis"]` or
-        `s["task_quantile_metrics.duration_millis.percentile_50"]`:
-        -   a rule that reads `s` is evaluated per stage and flags every stage
-            it is truthy for;
-        -   any other rule flags the stages in the list it returns, or the
-            whole application when it returns `True`;
-        -   a rule that fails to compile or evaluate is skipped with a warning.
-        `references/diagnostic_rules_catalog.md` has the field reference, the
-        language rules, example rules for common Spark issues, and patterns
-        for correlating signals.
-    -   Choose thresholds that fit the workload in front of you. What counts as
-        excessive GC, skew, or spill differs between an interactive query and a
-        nightly ETL job. Start with the cheap composite triage rule from the
-        catalog, then write targeted rules for the symptom you observed rather
-        than dumping raw stage data into the conversation. Write the rules to
-        a temporary JSON file (this avoids shell quoting problems), for
-        example:
-
-        ```json
-        [{"ruleId": "GC_PRESSURE",
-          "description": "GC above 15% of run time",
-          "expression": "s['stage_metrics.executor_run_time_millis'] > 60000 and ratio(s['stage_metrics.jvm_gc_time_millis'], s['stage_metrics.executor_run_time_millis']) > 0.15",
-          "detail": "f'{s[\"stage_metrics.jvm_gc_time_millis\"]} ms GC of {s[\"stage_metrics.executor_run_time_millis\"]} ms run time'"}]
-        ```
-
-        Then pass that file to the script:
-
-        ```
-        python3 scripts/spark_stage_diagnostics.py --batch_id=<ID> --region=<REGION> --rules_file=<RULES_FILE>
-        ```
-
-        Absent fields read as `0`, `''`, `[]`, `{}` or `None` (timestamps), so
-        no `None` checks are needed on numbers. Use `ratio(a, b)` for ratios:
-        it yields `0.0` for a zero denominator, whereas `/` raises and skips
-        the rule. `s["status"]` is a string such as `'STAGE_STATUS_FAILED'`,
-        and `*_time` fields are `datetime`s. A key that no stage has and that
-        is not a Dataproc field name produces a warning naming the closest
-        real keys: fix the rule and re-run. Set `detail` (an f-string works
-        well) so that each finding quotes the measured value. Give ratio rules
-        a magnitude floor (for example `executor_run_time_millis > 60000`) so
-        that millisecond-long stages do not fire. If a rule is skipped, read
-        its warning, fix the rule and re-run.
-    -   Add `--format=json` to get the Data Worker Agent's output shape
-        (`status` PASS/FAIL/ERROR, `errorMessage`, `violations`,
-        `stageMetrics`, `summary`), plus `warnings` for skipped rules and
-        other caveats.
-    -   **A fetch error is reported as ERROR, never as a pass.** Re-check the
-        batch ID, region and project. **A "No stage telemetry" warning** means
-        the application ran no Spark stage: it failed before its first action,
-        so read the driver log. The status is PASS in that case, as in the Data
-        Worker Agent, but it is not a clean bill of health. Likewise, "none of
-        the supplied rules matched" only means that your rules did not fire,
-        not that the job is healthy.
-    -   To drill into what a rule flagged, use
-        `scripts/spark_applications.py` (`--action=stage
-        --stage_id=<N>` for task quantiles, `--action=tasks --stage_id=<N>` for
-        the tasks themselves). See `Spark Applications Workflow` above.
+    -   Read `references/diagnostic_rules_catalog.md` before authoring rules.
+        It defines the expression context (`s`, `stages`,
+        `total_executor_summary`), valid field names, `ratio(a, b)`, magnitude
+        floors, JSON examples, warning semantics and correlation patterns.
+    -   Choose workload-specific thresholds, write rules to a temporary JSON
+        file, and pass it with `--rules_file`. Use `--format=json` for the
+        structured PASS/FAIL/ERROR result. Treat fetch errors as ERROR and a
+        no-stage result as a direction to inspect driver logs, never as proof
+        that the application is healthy.
+    -   Drill into a flagged stage with `scripts/spark_applications.py` using
+        `--action=stage` or `--action=tasks` and the relevant stage ID.
 
 4.  **Remote Code Verification (Source of Truth)**:
 
@@ -471,24 +422,9 @@ diagnostic plan or run any script before it passes.**
 
 ## Troubleshooting Scenarios Catalog
 
-Refer to `references/spark_log_patterns.md` for full stack trace patterns and
-remediation recipes:
-
--   **Driver vs. Executor OOM**: Driver OOMs originate from `collect()` or
-    `toPandas()`; Executor OOMs show exit code 137 or FetchFailedException.
--   **Data Skew / Stragglers**: Max task duration > 5x median duration with high
-    input skew. Fix with salting, AQE, or broadcast joins (size the threshold
-    from `scripts/spark_applications.py --action=sql --execution_id=<N>`).
--   **Schema & Type Errors**: `NumberFormatException`, `BadRecordException`. Fix
-    with proper casting or PERMISSIVE read mode.
--   **Serialization & Pickling**: `cannot pickle` closures. Fix by initializing
-    objects inside worker functions.
--   **Python UDF Exceptions**: Inspect `jsonPayload.message` for Python
-    traceback. Fix null handling.
--   **File / Path Not Found & IAM**: `PATH_NOT_FOUND`, 403 Access Denied. Verify
-    GCS path and storage permissions.
--   **Dependency / Import Errors**: `ModuleNotFoundError`. Package dependencies
-    with `--py-files` or archives.
+Read `references/spark_log_patterns.md` for the full OOM, skew, schema,
+serialization, Python UDF, IAM/path and dependency-error pattern catalog and
+its remediation recipes.
 
 --------------------------------------------------------------------------------
 

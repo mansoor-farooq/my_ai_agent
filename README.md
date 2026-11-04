@@ -17,7 +17,7 @@ This private developer tool reflects Mansoor Farooq's senior engineering practic
 | Evidence-first work | Repository reconstruction, current research, explicit assumptions and reproducible checks. |
 | Fast execution | Flash model, low thinking and one relevant specialist for routine work. |
 | Claude-style quality | Result-first answers, concise rationale, clear evidence boundaries and professional handoffs. |
-| Portable install | One ZIP and one installer command for a new Antigravity machine. |
+| Portable install | One ZIP installs the manager, specialists, owned skills and governed rules on a new Antigravity machine. |
 | Owner-signed release | Ed25519 package signature, checksum verification and fail-closed installation before Antigravity validation. |
 
 ## Team map
@@ -124,6 +124,6 @@ cd /d E:\Agents
 npm run build
 ```
 
-Current package facts: 15 agent profiles, zero bundled skill bodies, zero provider connectors, zero credential paths, owner-signed package metadata, strict Antigravity validation and focused tests passing.
+Current package target: 15 agent profiles, 159 bundled skill bodies, 4 governed rules, zero provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation.
 
 — Mansoor Farooq
