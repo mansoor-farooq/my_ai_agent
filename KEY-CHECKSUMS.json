@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "024657EC6DA28DC7EEB37DA23C37E579A37C232BDCC65EE1D97AEB0D6EB59452",
-    "Bytes": 7698
+    "SHA256": "5104F1C6F0228FC5045CEAD728D489BCEBDC949441CA508C3A210BAFD71450FE",
+    "Bytes": 7825
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -271,8 +271,8 @@
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
-    "SHA256": "99C18994E43607816A1DA03E65DB955569E9B04FCDEFD4C23C1D22A5EECD7726",
-    "Bytes": 1419
+    "SHA256": "103F9FB9C8D575748F72102CAAA0D0519B6F2B7A9C19257AF63B7563A3CBB240",
+    "Bytes": 1740
   },
   {
     "Path": "Agents/tools/package-signing.mjs",

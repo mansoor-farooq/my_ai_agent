@@ -67,6 +67,8 @@ The automated build:
 - runs the source doctor and all focused tests;
 - prints the final ZIP path and SHA256 hash.
 
+Do not run the key command separately. If it is run by mistake, it now safely reports that the existing key will be reused.
+
 Share only `E:\Agents\dist\mansoor-agent-hub.zip`. Keep the private key, `.env` files and full source folder private. After source changes, run `npm run build` again; the previous ZIP is replaced with a newly signed release.
 
 The recipient does not need the source repository, signing key, GitHub login or build tools. They install Antigravity, extract the ZIP and run `Install-Mansoor-Agent-Team.cmd`.

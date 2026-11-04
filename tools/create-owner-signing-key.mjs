@@ -1,5 +1,5 @@
 import { generateKeyPairSync } from 'node:crypto';
-import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { chmod, mkdir, stat, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
 
@@ -9,13 +9,22 @@ const privateKeyPath = join(keyDirectory, 'release-ed25519-private.pem');
 const publicKeyPath = join(keyDirectory, 'release-ed25519-public.pem');
 
 await mkdir(keyDirectory, { recursive: true });
-for (const file of [privateKeyPath, publicKeyPath]) {
+const keyFiles = [privateKeyPath, publicKeyPath];
+const existing = await Promise.all(keyFiles.map(async (file) => {
   try {
-    await readFile(file);
-    if (!force) throw new Error(`Key already exists: ${file}. Use --force only if you intend to rotate it.`);
+    return (await stat(file)).isFile();
   } catch (error) {
-    if (error.code !== 'ENOENT') throw error;
+    if (error.code === 'ENOENT') return false;
+    throw error;
   }
+}));
+
+if (!force && existing.every(Boolean)) {
+  console.log(`Owner signing key already exists and will be reused: ${keyDirectory}`);
+  process.exit(0);
+}
+if (!force && existing.some(Boolean)) {
+  throw new Error(`The owner key pair is incomplete in ${keyDirectory}. Restore the missing file or use --force to rotate both files together.`);
 }
 
 const { privateKey, publicKey } = generateKeyPairSync('ed25519', {
