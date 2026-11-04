@@ -48,6 +48,29 @@ This private developer tool reflects Mansoor Farooq's senior engineering practic
 
 The installer verifies the package, runs Antigravity's strict plugin validation and installs or updates the team. No GitHub sign-in is required. Restart Antigravity after installation or reload its skills and agents.
 
+## Complete owner setup
+
+Run these steps only on Mansoor Farooq's owner PC from `E:\Agents`:
+
+1. Install Node.js, Git and Antigravity.
+2. Create the release key once:
+
+```powershell
+node tools/create-owner-signing-key.mjs
+```
+
+3. Build the latest signed package:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install-antigravity-portable.ps1
+```
+
+4. Share only `E:\Agents\dist\mansoor-agent-hub.zip` with another user.
+5. Keep the private key, `.env` files and the full source folder private.
+6. After source changes, repeat step 3. The old ZIP is replaced with a newly signed release.
+
+The recipient does not need the source repository, signing key, GitHub login or build tools. They install Antigravity, extract the ZIP and run `Install-Mansoor-Agent-Team.cmd`.
+
 ## One-click branch push
 
 After the one-time GitHub login, double-click `Push-All-Branches.cmd` from `E:\Agents`. It pushes `main`, `c-development`, `development` and `mansoor-development` together. No login command or browser setup is needed for each push.
@@ -95,9 +118,10 @@ Portfolio keywords: Antigravity agent orchestration, Gemini agent team, software
 ## Build and verify from source
 
 ```powershell
+node tools/create-owner-signing-key.mjs  # first build only
 powershell -ExecutionPolicy Bypass -File .\install-antigravity-portable.ps1
 node tools/agent-hub-doctor.mjs --format json
-node --test tools/tests/agent-hub-doctor.test.mjs tools/tests/backend-ml-router.test.mjs
+node --test tools/tests/package-signing.test.mjs tools/tests/agent-hub-doctor.test.mjs tools/tests/backend-ml-router.test.mjs
 ```
 
 Current package facts: 15 agent profiles, zero bundled skill bodies, zero provider connectors, zero credential paths, owner-signed package metadata, strict Antigravity validation and focused tests passing.

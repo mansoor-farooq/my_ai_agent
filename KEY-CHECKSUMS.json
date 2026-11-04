@@ -146,8 +146,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "773E04F3CDEBBA1F80FA49FB3E2C238FF7D146F4DB4E33A371F79BA5D54BE7B6",
-    "Bytes": 6991
+    "SHA256": "57D92D88C21DB7FB04BAC8919A7112C1488217275BF085CE55F3B6391D8A38CF",
+    "Bytes": 7889
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -251,8 +251,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "5FFF68F74CCBA84150CA1B4375C96ACA9F58A1BDCB7DAA3A89A18080E97D964A",
-    "Bytes": 17103
+    "SHA256": "E783B2267CF347F5C879553EA5A6C017710760B5031444819025FD9E6E392858",
+    "Bytes": 17766
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
