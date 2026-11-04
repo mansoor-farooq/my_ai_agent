@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.3.3';
+const packageVersion = '1.3.5';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -121,7 +121,7 @@ const premiumPackageReadme = [
   '',
   '## Recipient setup',
   '',
-  'Install Antigravity and sign in once, extract this ZIP, then double-click Install-Mansoor-Agent-Team.cmd. The installer installs the Agent Hub and tries the included official plugin set. If a plugin needs account consent or provider configuration, its original Antigravity message is shown; finish that setup in Antigravity and rerun the same installer. A failure in one plugin does not stop the others.',
+  'Install Antigravity and sign in once, extract this ZIP, then double-click Install-Mansoor-Agent-Team.cmd. If the Antigravity CLI is missing, the installer downloads it from Google’s official install endpoint. It then installs the Agent Hub and tries the included official plugin set. If a plugin needs account consent or provider configuration, its original Antigravity message is shown; finish that setup in Antigravity and rerun the same installer. A failure in one plugin does not stop the others.',
   '',
   '## Owner build setup',
   '',
@@ -169,7 +169,20 @@ const signedInstaller = [
   '& $node.Source $verifier',
   "if ($LASTEXITCODE -ne 0) { throw 'Owner package signature verification failed. Installation stopped.' }",
   '$agy = Get-Command agy -ErrorAction SilentlyContinue',
-  "if (-not $agy) { throw 'Antigravity CLI (agy) was not found. Install Antigravity first, then run this installer again.' }",
+  'if (-not $agy) {',
+  "  $agyPath = Join-Path $env:LOCALAPPDATA 'agy\\bin\\agy.exe'",
+  '  if (-not (Test-Path -LiteralPath $agyPath -PathType Leaf)) {',
+  "    Write-Host 'Antigravity CLI is missing. Installing it from the official Google installer...' -ForegroundColor Cyan",
+  '    $bootstrapScript = Join-Path ([IO.Path]::GetTempPath()) (\"agy-install-\" + [guid]::NewGuid().ToString(\"N\") + ".ps1")',
+  '    try {',
+  "      Invoke-WebRequest -Uri 'https://antigravity.google/cli/install.ps1' -OutFile $bootstrapScript",
+  '      & (Join-Path $PSHOME \'powershell.exe\') -NoProfile -ExecutionPolicy Bypass -File $bootstrapScript',
+  "      if ($LASTEXITCODE -ne 0) { throw 'Official Antigravity CLI installation failed.' }",
+  '    } finally { if (Test-Path -LiteralPath $bootstrapScript) { Remove-Item -LiteralPath $bootstrapScript -Force } }',
+  '  }',
+  '  if (Test-Path -LiteralPath $agyPath -PathType Leaf) { $agy = [pscustomobject]@{ Source = $agyPath } } else { $agy = Get-Command agy -ErrorAction SilentlyContinue }',
+  '}',
+  "if (-not $agy) { throw 'Antigravity CLI installation did not produce agy.exe. Check network access, then run this installer again.' }",
   '& $agy.Source plugin validate --strict $pluginRoot',
   "if ($LASTEXITCODE -ne 0) { throw 'Antigravity plugin validation failed.' }",
   '& $agy.Source plugin install $pluginRoot',
