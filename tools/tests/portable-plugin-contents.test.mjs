@@ -17,7 +17,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 test('portable source contains the complete owned skill and rule library', async () => {
   const inventory = await inspectPortableSource(root);
 
-  assert.equal(inventory.skills.length, 172);
+  assert.equal(inventory.skills.length, 173);
   assert.equal(inventory.rules.length, 4);
   assert.deepEqual(inventory.invalidSkills, []);
   assert.deepEqual(inventory.invalidRules, []);
@@ -75,6 +75,21 @@ test('premium CRM capability is present and staffed to the right specialists', a
     const profile = await readFile(path.join(root, 'agents', 'Antigravity', 'custom-agents', agent, 'agent.md'), 'utf8');
     assert.match(profile, /skills\/premium-crm-template/);
   }
+});
+
+test('Flutter specialist carries production layout QA and ERP research capability', async () => {
+  const inventory = await inspectPortableSource(root);
+  assert.ok(inventory.skills.includes('flutter-production-layout-qa'));
+  const profile = await readFile(path.join(root, 'agents', 'Antigravity', 'custom-agents', 'flutter-mobile-specialist', 'agent.md'), 'utf8');
+  for (const name of [
+    'flutter-production-layout-qa',
+    'premium-crm-template',
+    'enterprise-erp-reverse-engineering',
+    'ui-ux-pro-max',
+    'design-reference-research',
+    'workflow-operator-console-ui',
+    'webapp-testing',
+  ]) assert.match(profile, new RegExp(`skills/${name}`));
 });
 
 test('portable bundle retains important non-Antigravity skill support files', async () => {

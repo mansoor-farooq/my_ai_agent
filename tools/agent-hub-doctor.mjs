@@ -79,7 +79,7 @@ export async function runDoctor() {
   const portable = await inspectPortableSource(root);
   const skillReferences = await readAgentSkillReferences(root);
   const missingSkillBodies = [...new Set(skillReferences.filter((name) => !portable.skills.includes(name)))].sort();
-  if (portable.skills.length === 172 && portable.rules.length === 4
+  if (portable.skills.length === 173 && portable.rules.length === 4
       && !portable.invalidSkills.length && !portable.invalidRules.length
       && !portable.nestedSkillFiles.length && !portable.unsafePaths.length
       && !portable.brokenLocalReferences.length && !portable.provenanceGaps.length

@@ -124,7 +124,7 @@ cd /d E:\Agents
 npm run build
 ```
 
-Current package target: 15 agent profiles, 172 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. The OmniRoute and memory entries are portable guidance only; runtime gateways, databases, private memory and keys are not distributed.
+Current package target: 15 agent profiles, 173 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. The OmniRoute and memory entries are portable guidance only; runtime gateways, databases, private memory and keys are not distributed.
 
 ## Skill source coverage
 

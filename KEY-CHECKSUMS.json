@@ -41,8 +41,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/flutter-mobile-specialist/agent.md",
-    "SHA256": "EBD61B0C51102AB4E789AD8D1308075A4E48B1319169A9BD50BF3B38EA580738",
-    "Bytes": 1504
+    "SHA256": "1CB0421D2ED50CE1314AB428A949DD84DED416FB517ADD8FFCD421B66D2BBDBE",
+    "Bytes": 2195
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
@@ -161,7 +161,7 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "86001D789ADFBB845542FB609D9F8FC9F6B3465AA142D8C6BF019D112E98EE0A",
+    "SHA256": "F5331B71AAC5616BFF1828AE27BF409AB82330827CA62598A9EC7F1A5EC1A4A6",
     "Bytes": 8607
   },
   {
@@ -883,6 +883,21 @@
     "Path": "Agents/skills/federate-lakehouse-catalog/SKILL.md",
     "SHA256": "5B3E2480A91C8FE92C92B26C14447D1415CC31794272160E4BCF90882BAF58CF",
     "Bytes": 10330
+  },
+  {
+    "Path": "Agents/skills/flutter-production-layout-qa/agents/openai.yaml",
+    "SHA256": "9572400D984FB752A997EA086AE05491445190B06B3EA32C31BB48DF0AFEB828",
+    "Bytes": 308
+  },
+  {
+    "Path": "Agents/skills/flutter-production-layout-qa/references/erp-ui-research-checklist.md",
+    "SHA256": "95F99C7B25DE962395B602D7E75D13A5B91237493D102634DCBFF442B4B0F872",
+    "Bytes": 1775
+  },
+  {
+    "Path": "Agents/skills/flutter-production-layout-qa/SKILL.md",
+    "SHA256": "935090E43E152D4EEBCC7C55425D18700126A9248DE12C0D32408C7E38CC0622",
+    "Bytes": 3867
   },
   {
     "Path": "Agents/skills/flutter-ui-ux-engineer/SKILL.md",
@@ -2176,7 +2191,7 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "1247ED0E59EA3C231561B700D6144446C678E60E0E9DD1A8F631778ABBAB7BDE",
+    "SHA256": "F76B1D916358BCB4993AB92A7F465A3D5754294E35C1D0873098E6BDD0921E4B",
     "Bytes": 9392
   },
   {
@@ -2241,8 +2256,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "D1C5F78AB0ADA9FF1C5ABC83FCAB2EB90FEBE5E5C5B80D29BFFEBA65312F7B86",
-    "Bytes": 4627
+    "SHA256": "C22CA77C9DED35A703966B8442A3A813EF7872698ACF19B99A9895D0E450D99A",
+    "Bytes": 5298
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

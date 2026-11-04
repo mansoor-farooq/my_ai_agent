@@ -1,0 +1,4 @@
+interface:
+  display_name: Flutter Production Layout QA
+  short_description: Prevent Flutter overflows and verify premium ERP/SaaS UI across real constraints.
+  default_prompt: Use Flutter Production Layout QA to diagnose layout constraints, research ERP/SaaS patterns and verify responsive Flutter screens.
