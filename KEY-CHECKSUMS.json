@@ -36,8 +36,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
-    "SHA256": "05935EBFC1931939D189D929F9F124B1CA0D7B7323BB8C8860C2C4C0283016AE",
-    "Bytes": 4787
+    "SHA256": "EABC1D8437C7DFA2A95BB438547AD7B8D60F194772BEDA965F8D1C71B8E20408",
+    "Bytes": 5044
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/gemini-cli-agent.md",
@@ -56,8 +56,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "9DEEEE066F00CB183BBC3798F1E99BAE7CCF030FBED55A478B3B45A43450033D",
-    "Bytes": 6099
+    "SHA256": "4DD41EC256297BF3FAB0B1CDAF82A245B1B8BD37404F6D022A80FEA5430F4275",
+    "Bytes": 6434
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -111,13 +111,13 @@
   },
   {
     "Path": "Agents/Progress/2026-11-03.md",
-    "SHA256": "383F2C80CB11F055FBDEF9FF33F9AE1D385050E17917F525F84F4A6F34CE89B3",
-    "Bytes": 6997
+    "SHA256": "539A663A83DB49BE74A64F8120D0CCFC6F262CEDEDAD232352E9C4F16F1428C8",
+    "Bytes": 7375
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "794EA9C01970B22C1AB7F267DE1AE6615D569D7482B91DCCAD775A65A02A1CD2",
-    "Bytes": 4424
+    "SHA256": "D517C8CAEF705C08B378048C3078AD7EBDC030667F7BCFEA10E4E6C2A82DBFCC",
+    "Bytes": 4750
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -180,6 +180,11 @@
     "Bytes": 2085
   },
   {
+    "Path": "Agents/skills/claude-style-response-quality/SKILL.md",
+    "SHA256": "A8C0477732C16C133211880A54D087AA0101BD1D0CCA2C9B91026CE6CB3BF196",
+    "Bytes": 1573
+  },
+  {
     "Path": "Agents/skills/feature-documentation/SKILL.md",
     "SHA256": "CADF501BB192CC3A2FFDC2CDEA3FC1FE70801321A3BC1B50CA0393422704F9F5",
     "Bytes": 937
@@ -216,8 +221,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "3B74A61C79094B4E52005AB0D7A3BAE8625A37F2C78E1144E3D80BE99167EA24",
-    "Bytes": 6588
+    "SHA256": "7BE91A097625D6976CF896FE993BEF2D42AAD1541D7F66BD0E0F1B3D5DBF2F99",
+    "Bytes": 7327
   },
   {
     "Path": "Agents/tools/route-backend-ml-task.mjs",

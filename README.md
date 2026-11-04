@@ -52,6 +52,8 @@ The installer checks Antigravity's CLI, validates the plugin, and installs or up
 
 For quick work, choose `Gemini 3.8 Flash` and `Low` thinking in Antigravity's model selector. The manager then uses one relevant specialist, reads only the affected files and skips deep research unless the task needs it. For architecture, security, migration, ML or explicit research work, switch to `Medium` or `High` thinking. Antigravity CLI also supports `agy --model="Gemini 3.8 Flash"` for a session-level model choice.
 
+All manager and specialist handoffs include the `claude-style-response-quality` contract: result-first answers, clear evidence/assumption boundaries, concise rationale, production-grade reporting and Roman Urdu when that matches the user's language. This improves response quality without claiming to run the Claude model.
+
 ## Model and optional keys
 
 When no API key is present, the manager and all specialists use the signed-in Antigravity/Gemini session through `model: inherit`. If you have provider keys, copy `.env.example` to a local `.env` beside the extracted package or inside the relevant project and fill only the variables required by an explicitly configured integration. The portable plugin does not automatically read or route those keys, and `.env` must never be committed or shared.
