@@ -50,24 +50,24 @@ The installer verifies the package, runs Antigravity's strict plugin validation 
 
 ## Complete owner setup
 
-Run these steps only on Mansoor Farooq's owner PC from `E:\Agents`:
+Run this only on Mansoor Farooq's owner PC from `E:\Agents`:
 
-1. Install Node.js, Git and Antigravity.
-2. Create the release key once:
-
-```powershell
-node tools/create-owner-signing-key.mjs
+```cmd
+cd /d E:\Agents
+npm run build
 ```
 
-3. Build the latest signed package:
+Or double-click `Build-Agent-Hub.cmd`.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\install-antigravity-portable.ps1
-```
+The automated build:
 
-4. Share only `E:\Agents\dist\mansoor-agent-hub.zip` with another user.
-5. Keep the private key, `.env` files and the full source folder private.
-6. After source changes, repeat step 3. The old ZIP is replaced with a newly signed release.
+- reuses the existing signing key, or creates it automatically on the first build;
+- builds and signs the portable ZIP;
+- runs Antigravity strict validation when the CLI is available;
+- runs the source doctor and all focused tests;
+- prints the final ZIP path and SHA256 hash.
+
+Share only `E:\Agents\dist\mansoor-agent-hub.zip`. Keep the private key, `.env` files and full source folder private. After source changes, run `npm run build` again; the previous ZIP is replaced with a newly signed release.
 
 The recipient does not need the source repository, signing key, GitHub login or build tools. They install Antigravity, extract the ZIP and run `Install-Mansoor-Agent-Team.cmd`.
 
@@ -117,11 +117,9 @@ Portfolio keywords: Antigravity agent orchestration, Gemini agent team, software
 
 ## Build and verify from source
 
-```powershell
-node tools/create-owner-signing-key.mjs  # first build only
-powershell -ExecutionPolicy Bypass -File .\install-antigravity-portable.ps1
-node tools/agent-hub-doctor.mjs --format json
-node --test tools/tests/package-signing.test.mjs tools/tests/agent-hub-doctor.test.mjs tools/tests/backend-ml-router.test.mjs
+```cmd
+cd /d E:\Agents
+npm run build
 ```
 
 Current package facts: 15 agent profiles, zero bundled skill bodies, zero provider connectors, zero credential paths, owner-signed package metadata, strict Antigravity validation and focused tests passing.

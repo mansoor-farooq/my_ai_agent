@@ -1,0 +1,9 @@
+{
+  "name": "mansoor-agent-hub",
+  "version": "1.2.1",
+  "private": true,
+  "description": "Owner build entrypoint for the Mansoor Farooq private Antigravity agent team.",
+  "scripts": {
+    "build": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1"
+  }
+}

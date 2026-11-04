@@ -122,7 +122,7 @@ const premiumPackageReadme = [
   '',
   '## Owner build setup',
   '',
-  'On the owner PC, keep the source at E:\\Agents. Create the signing key once with node tools/create-owner-signing-key.mjs, then build with powershell -ExecutionPolicy Bypass -File .\\install-antigravity-portable.ps1. The new signed ZIP is written to E:\\Agents\\dist\\mansoor-agent-hub.zip.',
+  'On the owner PC, keep the source at E:\\Agents and run npm run build, or double-click Build-Agent-Hub.cmd. The automated build reuses or creates the signing key, builds the package, runs the doctor and focused tests, then writes E:\\Agents\\dist\\mansoor-agent-hub.zip.',
   '',
   'Share only the ZIP. Never share the private key, .env files or the full source folder.',
   '',
