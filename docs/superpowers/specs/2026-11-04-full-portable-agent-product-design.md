@@ -6,12 +6,12 @@ The recipient ZIP must reproduce the Mansoor Agent Hub's manager, specialist, sk
 
 ## Selected approach
 
-Build a self-contained Antigravity plugin from the owned `E:\Agents` source. Bundle every approved local skill, import the four agent-referenced Flutter/Android skills currently held only in the owner's global profile, preserve each agent's `skills:` metadata, and ship the four applicable global rules as product-owned source files.
+Build a self-contained Antigravity plugin from the owned `E:\Agents` source. Bundle every approved local skill, the four agent-referenced Flutter/Android skills and the twelve remaining unique Antigravity global skills, preserve each agent's `skills:` metadata, and ship the four applicable global rules as product-owned source files.
 
 ## Constraints
 
 - Keep `production-orchestrator` as the only main agent and retain the 14 specialists.
-- Bundle 159 skill bodies and 4 rules; every agent skill reference must resolve locally.
+- Bundle 171 skill bodies and 4 rules; every agent skill reference must resolve locally.
 - Keep MCP servers, hooks, sidecars, provider bridges, credentials, private chats and native profile data out of the ZIP.
 - Preserve third-party licence and provenance notices.
 - Sign and checksum every packaged file and fail closed on tampering.

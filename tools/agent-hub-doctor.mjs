@@ -79,13 +79,14 @@ export async function runDoctor() {
   const portable = await inspectPortableSource(root);
   const skillReferences = await readAgentSkillReferences(root);
   const missingSkillBodies = [...new Set(skillReferences.filter((name) => !portable.skills.includes(name)))].sort();
-  if (portable.skills.length === 159 && portable.rules.length === 4
+  if (portable.skills.length === 171 && portable.rules.length === 4
       && !portable.invalidSkills.length && !portable.invalidRules.length
       && !portable.nestedSkillFiles.length && !portable.unsafePaths.length
-      && !portable.brokenLocalReferences.length && !missingSkillBodies.length) {
+      && !portable.brokenLocalReferences.length && !portable.provenanceGaps.length
+      && !missingSkillBodies.length) {
     add('PASS', 'portable skills and rules', `${portable.skills.length} skills and ${portable.rules.length} rules are valid; all ${skillReferences.length} agent references resolve locally`);
   } else {
-    add('FAIL', 'portable skills and rules', `skills=${portable.skills.length}, rules=${portable.rules.length}, invalidSkills=[${portable.invalidSkills.join(', ')}], invalidRules=[${portable.invalidRules.join(', ')}], nested=[${portable.nestedSkillFiles.join(', ')}], unsafe=[${portable.unsafePaths.join(', ')}], brokenRefs=[${portable.brokenLocalReferences.join(', ')}], missing=[${missingSkillBodies.join(', ')}]`);
+    add('FAIL', 'portable skills and rules', `skills=${portable.skills.length}, rules=${portable.rules.length}, invalidSkills=[${portable.invalidSkills.join(', ')}], invalidRules=[${portable.invalidRules.join(', ')}], nested=[${portable.nestedSkillFiles.join(', ')}], unsafe=[${portable.unsafePaths.join(', ')}], brokenRefs=[${portable.brokenLocalReferences.join(', ')}], provenance=[${portable.provenanceGaps.join(', ')}], missing=[${missingSkillBodies.join(', ')}]`);
   }
 
   const forbiddenProfiles = shippedAgents.filter((name) => {

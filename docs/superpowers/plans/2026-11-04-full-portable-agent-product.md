@@ -32,10 +32,10 @@
 - Create: `tools/portable-components.mjs`
 - Create: `tools/tests/portable-plugin-contents.test.mjs`
 - Create: `rules/*.md`
-- Create: `skills/{android-design,flutter-ui-ux,flutter-ui-ux-engineer,mobile-ui-ux-designer}/...`
+- Create: `skills/{android-design,flutter-ui-ux,flutter-ui-ux-engineer,mobile-ui-ux-designer}/...` and the remaining unique global skill folders.
 
 - [ ] Write and run the failing inventory/reference tests.
-- [ ] Import the four referenced global skills with provenance/licence data.
+- [ ] Import all unique global skills with provenance/licence data while excluding runtime secrets and private state.
 - [ ] Import and repair the four valid Antigravity rules.
 - [ ] Implement source inventory and safe recursive copying.
 - [ ] Run the focused test until it passes.

@@ -121,8 +121,8 @@
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-04-full-portable-agent-product.md",
-    "SHA256": "BC8B7566275873432082E72FFB51BE576F7B445CA73DCCBF5BB92DE88CE862E3",
-    "Bytes": 2872
+    "SHA256": "597A82800724577BDDD42879FE554532C4D4F9B70258DEE05BEDDE2010416D27",
+    "Bytes": 2960
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-04-owner-signed-premium-release.md",
@@ -131,8 +131,8 @@
   },
   {
     "Path": "Agents/docs/superpowers/specs/2026-11-04-full-portable-agent-product-design.md",
-    "SHA256": "36EF36B3C0A5884DE298EFFC951733D3B57E8FF1910FA09E4CF8319C043F0BC8",
-    "Bytes": 1516
+    "SHA256": "C2D47615B42B6E20712C73A825E33C6848E1E3AD8F3DA861858CAC69C4B14345",
+    "Bytes": 1517
   },
   {
     "Path": "Agents/docs/superpowers/specs/2026-11-04-owner-signed-premium-release-design.md",
@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "0A797339DAB1C31CE0F69138B99364CF352C66BF1A20288069B1CEACA5828A03",
+    "SHA256": "CDA957AEE9457001D712511EECF80EBAA3B901F01FEE13A1475DED18BE1A2431",
     "Bytes": 287
   },
   {
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "B7C04C63BA30200B286D34968B5207D14C3DECD1312F079F111ACC53B3356BC7",
-    "Bytes": 7860
+    "SHA256": "9F4B1D9A8F387AA02FDD408173CF27641F71DBDFBC7E9E2F5542A67CB173B0AD",
+    "Bytes": 8025
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -440,6 +440,111 @@
     "Bytes": 22072
   },
   {
+    "Path": "Agents/skills/bigquery-observability/OWNERS",
+    "SHA256": "4AFD259117AEDE16F44C9209BE6CE338DDE9697BEFD570E9163E7ECD806EAD23",
+    "Bytes": 74
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/references/capacity_and_configuration_queries.md",
+    "SHA256": "0FABAA3D59B3D0A02306304C93D2EFCA7A0030468944C13E92D8DFF84E1C8A83",
+    "Bytes": 6788
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/references/compute_capacity_billable.md",
+    "SHA256": "462EAF0CF1B4570C96D5412EB0DF4251E717401C1ACC7E4380BDC87D5B3D9E86",
+    "Bytes": 6313
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/references/compute_ondemand_billable.md",
+    "SHA256": "E083BCB94CA95652EAB256A0AB01E6565F9724B7DFB78C7FADAD5DC8D0B56E65",
+    "Bytes": 5841
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/references/job_performance_queries.md",
+    "SHA256": "9EE743CE742A5D5ED31A3485DA595A78A293475276AB3F97F770ABB79C5AE7FA",
+    "Bytes": 11503
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/references/resource_contention_queries.md",
+    "SHA256": "1DE3B6C069A8E36E85E8E6F60A952C3E974609F1C8149D3E85A515F68E901D2E",
+    "Bytes": 9569
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/references/schema_compute.md",
+    "SHA256": "FCE03BBC52F562D51392C8ABB78153B644C9B9DFB57DEBAAF9B47640AF72ACC2",
+    "Bytes": 41286
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/references/schema_others.md",
+    "SHA256": "0FE201FB012753AEB4EDEC043E00230120DEDD739A34D5DBE1DF9EBB3E4B93B5",
+    "Bytes": 32810
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/references/schema_storage.md",
+    "SHA256": "1E05BF737275CB4632BF2DC59D7EDCF679B9B2A7DE01B112A1894512DD6E68E4",
+    "Bytes": 35142
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/references/storage_footprints.md",
+    "SHA256": "71EE27E42D5F7C6CD8E153CC0175646EB5CFD4266B35AB3D6B1052B37EDCE75F",
+    "Bytes": 10313
+  },
+  {
+    "Path": "Agents/skills/bigquery-observability/SKILL.md",
+    "SHA256": "CBC71A1AE5F66B3BF34389624FAB04A6482F8079D288B4DEA02CC1EEFAE95B26",
+    "Bytes": 12684
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/OWNERS",
+    "SHA256": "26C8EB5148F47226BFF517E0C0A9D9BB08B6BF20D888494B2069916D512225DF",
+    "Bytes": 111
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/references/bi_engine.md",
+    "SHA256": "BC3692F398F67262F43961AA127DE625B35C5179F560715A625AAF572FFB3013",
+    "Bytes": 7439
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/references/capacity_planning_editions.md",
+    "SHA256": "E312E1C5AD8340FA801E4EFF0C560040BB888F6886886D94121B713C9EA02470",
+    "Bytes": 7195
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/references/materialized_views.md",
+    "SHA256": "7922A456C8FC7B66A0E36CC7A7C9B459E5229FD98141D9E1325A7B59E8197D66",
+    "Bytes": 5022
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/references/search_indexes.md",
+    "SHA256": "3EFB5AD278EEECA3613F2419EAF3CDDF847FC89902DDF3E1A41E464D88D9462A",
+    "Bytes": 4144
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/references/sql_optimization.md",
+    "SHA256": "DEA3C1D79E43830E25A3518C30FFA33C9196828C90F8E2506D9E8F18ABB9B405",
+    "Bytes": 24218
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/references/storage_billing_models.md",
+    "SHA256": "D6891EF98D06DA33DE468316909B7CDBBC16EE98F8DB8F08D30065D1D69BFBB0",
+    "Bytes": 6427
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/references/storage_lifecycle_management.md",
+    "SHA256": "BD47ED9FE1E0D2996E712A65BE7A0BC331BEAF49A911C8497AB6E5E2DD3731B3",
+    "Bytes": 2274
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/references/table_partitioning_clustering.md",
+    "SHA256": "F5E3AFD93B4BFD119A665E3CC07FC8932EC3E90DF1875BB330878252ADEF80B9",
+    "Bytes": 15790
+  },
+  {
+    "Path": "Agents/skills/bigquery-optimization/SKILL.md",
+    "SHA256": "B949E18C78613BEFD6939C206A9323D205896713B86DE5DF68D445D3B1D39C89",
+    "Bytes": 7063
+  },
+  {
     "Path": "Agents/skills/bigquery-sql/OWNERS",
     "SHA256": "E1C6AA09264BFA9E45CAF2FC0EE37429FE2A66E7532EAE7E168E2709516A1A64",
     "Bytes": 69
@@ -448,6 +553,46 @@
     "Path": "Agents/skills/bigquery-sql/SKILL.md",
     "SHA256": "7BDD109924142AC3207E5B883CB0BB9FEA1C349141B9870B5F2B20EE74A87B6F",
     "Bytes": 1803
+  },
+  {
+    "Path": "Agents/skills/bigquery-troubleshooting/OWNERS",
+    "SHA256": "4B6FF03FB2C09691812FDC5CB842883CC0025BA99FAC229B9D274AE68E4F9AA1",
+    "Bytes": 47
+  },
+  {
+    "Path": "Agents/skills/bigquery-troubleshooting/references/cost_compute_capacity.md",
+    "SHA256": "42B2C744F2CAD290C72006205576456C40A9C58CB724BD10454D99665CDD1F71",
+    "Bytes": 16619
+  },
+  {
+    "Path": "Agents/skills/bigquery-troubleshooting/references/cost_compute_ondemand.md",
+    "SHA256": "905FEC400A4FCEAF907CD0C2D2CC6419997A3364EC2381EB33BB285CA78D42E6",
+    "Bytes": 16455
+  },
+  {
+    "Path": "Agents/skills/bigquery-troubleshooting/references/cost_storage.md",
+    "SHA256": "1B922D14011D5FEEC114726F2B70CA25725BF50D63EDD44290383AAE570ABE83",
+    "Bytes": 18080
+  },
+  {
+    "Path": "Agents/skills/bigquery-troubleshooting/references/performance_config_changed.md",
+    "SHA256": "F3BEF128173EAF08F0D327BE15156C95DF5895CC12E0B99457A6F5867B5DC91D",
+    "Bytes": 6254
+  },
+  {
+    "Path": "Agents/skills/bigquery-troubleshooting/references/performance_resource_contention.md",
+    "SHA256": "D7314E0E2E6111DE312C3FA312E5E7B3E026FAEE53979113994DEB4F5163BB15",
+    "Bytes": 11323
+  },
+  {
+    "Path": "Agents/skills/bigquery-troubleshooting/references/query_plan_execution_graph.md",
+    "SHA256": "50481D3EFCF7DBD4D62685A556AD7A56F04FD0F32311F1695FFEAA91F271E127",
+    "Bytes": 10665
+  },
+  {
+    "Path": "Agents/skills/bigquery-troubleshooting/SKILL.md",
+    "SHA256": "39D7954E24115F21094B9FA94CB9681777235BFC672AB21B229A1830B0611074",
+    "Bytes": 8192
   },
   {
     "Path": "Agents/skills/building-data-apps/examples/express_chat.ts",
@@ -498,6 +643,36 @@
     "Path": "Agents/skills/claude-style-response-quality/SKILL.md",
     "SHA256": "AAF8131A3002A1B2324546DA36FF7B9706A7EBA61542660CF93BC9B2CB504D31",
     "Bytes": 1596
+  },
+  {
+    "Path": "Agents/skills/cloud-databases-onboarding/OWNERS",
+    "SHA256": "0E098F7FDA7041654E21853166658A3272B22248DD4E7D91B14B934555281E60",
+    "Bytes": 115
+  },
+  {
+    "Path": "Agents/skills/cloud-databases-onboarding/references/onboarding_prompts.md",
+    "SHA256": "5B9FC0B144B607E5F58E954A9C4D1AB07D68A0D7AC7A2F0E81C642CE90C89F45",
+    "Bytes": 13617
+  },
+  {
+    "Path": "Agents/skills/cloud-databases-onboarding/references/recommendation_matrix.txt",
+    "SHA256": "4662FA550DD4D3B1FFAA541A99169C095192A0B868B21A6C8F97EE3121D48652",
+    "Bytes": 44450
+  },
+  {
+    "Path": "Agents/skills/cloud-databases-onboarding/SKILL.md",
+    "SHA256": "B60121F6744F31B1E8A18EFD3DB396062C47A9B4B43A8F700E2AC2FEB6333B4D",
+    "Bytes": 4849
+  },
+  {
+    "Path": "Agents/skills/create-plan/LICENSE.txt",
+    "SHA256": "CFC7749B96F63BD31C3C42B5C471BF756814053E847C10F3EB003417BC523D30",
+    "Bytes": 11358
+  },
+  {
+    "Path": "Agents/skills/create-plan/SKILL.md",
+    "SHA256": "300057898A7400831820E3F16528FA2BB771E31D9426FAE2969088F0BA5F9094",
+    "Bytes": 2569
   },
   {
     "Path": "Agents/skills/data-autocleaning/scripts/dataplex_scanner.py",
@@ -815,6 +990,16 @@
     "Bytes": 6528
   },
   {
+    "Path": "Agents/skills/gcp-spark-observability/references/gcloud_observability_reference.md",
+    "SHA256": "5765C3FD825B1D012F5FADE576FD23B4200BDA918070D930AF4128F7991206B3",
+    "Bytes": 13368
+  },
+  {
+    "Path": "Agents/skills/gcp-spark-observability/SKILL.md",
+    "SHA256": "080E5E9089FACB1CCEF1C30CF6565C18236F3DEE1896D1B940F1F7ACABC0F802",
+    "Bytes": 8777
+  },
+  {
     "Path": "Agents/skills/gcp-spark-troubleshooting/references/diagnostic_rules_catalog.md",
     "SHA256": "EE0FFCDA2F95F816E8CD881DB1CCBC2918B3E47D473B5928EE4C8974806CF9E2",
     "Bytes": 18573
@@ -893,6 +1078,66 @@
     "Path": "Agents/skills/gcp-spark/SKILL.md",
     "SHA256": "40242992F27596A0E34EE34195A261C8C7E5B656FED7F2D93126413CA9FF3D62",
     "Bytes": 13254
+  },
+  {
+    "Path": "Agents/skills/gh-address-comments/agents/openai.yaml",
+    "SHA256": "12CF845A78254DDE85E60EEFB45A60E6CE2129D321F3E1D691D4EBCA9A140861",
+    "Bytes": 303
+  },
+  {
+    "Path": "Agents/skills/gh-address-comments/assets/github-small.svg",
+    "SHA256": "EE05E92D373D4D84F4612AF3C1090EF67698D421BBE30896A4ED5A00CB86A069",
+    "Bytes": 853
+  },
+  {
+    "Path": "Agents/skills/gh-address-comments/assets/github.png",
+    "SHA256": "D55A9BAA41798D8B5108E3058DF3A5BDA09914EA9FD73B49929CC38A8832424F",
+    "Bytes": 1838
+  },
+  {
+    "Path": "Agents/skills/gh-address-comments/LICENSE.txt",
+    "SHA256": "58D1E17FFE5109A7AE296CAAFCADFDBE6A7D176F0BC4AB01E12A689B0499D8BD",
+    "Bytes": 11357
+  },
+  {
+    "Path": "Agents/skills/gh-address-comments/scripts/fetch_comments.py",
+    "SHA256": "D7BC64F6B26F7482F9CA9DD7C923A5B8B20E1EF13491AE2D9052CD208A7C1AD1",
+    "Bytes": 6537
+  },
+  {
+    "Path": "Agents/skills/gh-address-comments/SKILL.md",
+    "SHA256": "6C0470FA9B3AEF234F1D1289149245E2A433A75AF9BA62CEAE2AC51986C5301E",
+    "Bytes": 1365
+  },
+  {
+    "Path": "Agents/skills/gh-fix-ci/agents/openai.yaml",
+    "SHA256": "36F73B9450504983D1647C960689596F59BF9147C14B1B43162912ED7ADA9AF6",
+    "Bytes": 302
+  },
+  {
+    "Path": "Agents/skills/gh-fix-ci/assets/github-small.svg",
+    "SHA256": "EE05E92D373D4D84F4612AF3C1090EF67698D421BBE30896A4ED5A00CB86A069",
+    "Bytes": 853
+  },
+  {
+    "Path": "Agents/skills/gh-fix-ci/assets/github.png",
+    "SHA256": "D55A9BAA41798D8B5108E3058DF3A5BDA09914EA9FD73B49929CC38A8832424F",
+    "Bytes": 1838
+  },
+  {
+    "Path": "Agents/skills/gh-fix-ci/LICENSE.txt",
+    "SHA256": "4DD13869245E356246A5B770723247BBB80A8F07A181D1D3D873A1734297CDB9",
+    "Bytes": 10776
+  },
+  {
+    "Path": "Agents/skills/gh-fix-ci/scripts/inspect_pr_checks.py",
+    "SHA256": "9459E5B03F86785D184A83E5CD8D621B832E918EC04158A2962D867785812C6C",
+    "Bytes": 15222
+  },
+  {
+    "Path": "Agents/skills/gh-fix-ci/SKILL.md",
+    "SHA256": "7CCE38FB11FE36E935B5629BE3A9C6136B7ACCB2856C66CD35729E71956B0B62",
+    "Bytes": 3738
   },
   {
     "Path": "Agents/skills/google-cloud-auth-verification/SKILL.md",
@@ -1235,6 +1480,41 @@
     "Bytes": 4702
   },
   {
+    "Path": "Agents/skills/mansoor-ui-specialist/agents/openai.yaml",
+    "SHA256": "25E2D3478213C5C050CC6F8C9738B12B57A942E338E9AA8468DCE9A1BC3438A6",
+    "Bytes": 340
+  },
+  {
+    "Path": "Agents/skills/mansoor-ui-specialist/references/design-craft.md",
+    "SHA256": "262EC9CC3B025C17B2772DF0262B727D850E4D310FE85B2CA6FB3B11753F4BF8",
+    "Bytes": 2318
+  },
+  {
+    "Path": "Agents/skills/mansoor-ui-specialist/references/enterprise-patterns.md",
+    "SHA256": "5CD00DD827FBD825F9F16E3885F1D365D8DD94959FDAC55DE8F0CA9DA5D2AAD8",
+    "Bytes": 2013
+  },
+  {
+    "Path": "Agents/skills/mansoor-ui-specialist/references/quality-gate.md",
+    "SHA256": "2FBC59046AEC18FA17F2BCFED0919471C213574E032DCFE9321D9412B1E0C6B6",
+    "Bytes": 1456
+  },
+  {
+    "Path": "Agents/skills/mansoor-ui-specialist/references/reverse-engineering.md",
+    "SHA256": "9FCCEAE7CF4CA4C5965302629C9EB0801DD71D967EE0D40B007090922CE755B4",
+    "Bytes": 2352
+  },
+  {
+    "Path": "Agents/skills/mansoor-ui-specialist/SKILL.md",
+    "SHA256": "B58A4A600EB37E917000B0DA2E04D00359537EE4D05A2E643C2B3004D6951302",
+    "Bytes": 6617
+  },
+  {
+    "Path": "Agents/skills/memory/SKILL.md",
+    "SHA256": "978FE3D313EABC990466118BC2AC5182FC0218BC95E57F2F05E6DB112C24DA06",
+    "Bytes": 2666
+  },
+  {
     "Path": "Agents/skills/ml-best-practices/SKILL.md",
     "SHA256": "AE010FD52E6B29F9C18302C4BDB36CE444BFC5581A52A0E036AE1F0B6AB44473",
     "Bytes": 9805
@@ -1393,6 +1673,11 @@
     "Path": "Agents/skills/notebook-guidance/SKILL.md",
     "SHA256": "58C40FDC7A764E999BB033E943714EA0560DD27B06A00BF0DEF424F5BA9CF0FF",
     "Bytes": 21597
+  },
+  {
+    "Path": "Agents/skills/omniroute-gateway/SKILL.md",
+    "SHA256": "F6A51571435555B4D814844B9C5198B06ADDD3CDD33102903C29D7C455439422",
+    "Bytes": 3373
   },
   {
     "Path": "Agents/skills/open-source-architecture-research/SKILL.md",
@@ -1615,6 +1900,41 @@
     "Bytes": 1156
   },
   {
+    "Path": "Agents/skills/stop-slop/CHANGELOG.md",
+    "SHA256": "FE2F1484EF02ABF22EFC09DEF89BAC186A2235831FD0DA13D4895EDB19CC6DD0",
+    "Bytes": 895
+  },
+  {
+    "Path": "Agents/skills/stop-slop/LICENSE",
+    "SHA256": "2E2B2BEAF41CC0CE28485455A62AED81777CDCDF68702E142427AEF1CD720F2C",
+    "Bytes": 1070
+  },
+  {
+    "Path": "Agents/skills/stop-slop/README.md",
+    "SHA256": "D5C699E712E62D286AA4314E6B4BA02CDE7A9DA36CE56102660F98D1A8CEEBBA",
+    "Bytes": 1894
+  },
+  {
+    "Path": "Agents/skills/stop-slop/references/examples.md",
+    "SHA256": "49C592899EB4457F95D0767E15E3143569E2CEF50F2927C3174E62432984CD3D",
+    "Bytes": 1686
+  },
+  {
+    "Path": "Agents/skills/stop-slop/references/phrases.md",
+    "SHA256": "4CA1B7E97123B5C67EFF3DC97E5E977332E0B24021265C1553888A93EC33FA93",
+    "Bytes": 2915
+  },
+  {
+    "Path": "Agents/skills/stop-slop/references/structures.md",
+    "SHA256": "FFBF1316C7FB5AAF552DE005609A64A9639B546ECD76BFB0E482864D5BBE6F58",
+    "Bytes": 5255
+  },
+  {
+    "Path": "Agents/skills/stop-slop/SKILL.md",
+    "SHA256": "5F9B783C9D5E72B287502732A4C083A8EA37E7A54393B4FAD251AEBA260B9AA9",
+    "Bytes": 2705
+  },
+  {
     "Path": "Agents/skills/two-step-ui-blueprint/SKILL.md",
     "SHA256": "D7D16BD8268789D4C95DE5B7BEE95A383258833245DAEF972EB49CC650F1F452",
     "Bytes": 4724
@@ -1781,12 +2101,12 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "8672F9E583827495E62A5C96728614C0818A9C301D15D16BFA14CFDE851E72E2",
-    "Bytes": 9298
+    "SHA256": "68B0655E886F6C7ADBF9E54E95F230CA3C0E870E3D4CF00A526125AE697F7ECA",
+    "Bytes": 9392
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "ADB8D995E1DA3D0042976D04E6701608EAD61E8378420DA5F8EE5BD700BA56D0",
+    "SHA256": "8EDEB39BD470EFB2FB709CFA4E4C6BAF04AB1F77B27DBA533FF706711964B0C4",
     "Bytes": 17456
   },
   {
@@ -1806,8 +2126,8 @@
   },
   {
     "Path": "Agents/tools/portable-components.mjs",
-    "SHA256": "EB056280B9DDC6B2E1F6E297AE281F34D9E10243219CC9282BE07A9A337F4DBE",
-    "Bytes": 6717
+    "SHA256": "D68A7F9EB40D5F0A6BF1B874D9C61B41161F7F4AF4089D07C2F108EB9B17CDC7",
+    "Bytes": 7389
   },
   {
     "Path": "Agents/tools/route-backend-ml-task.mjs",
@@ -1846,8 +2166,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "D68FE351E60966EEAC39A0A390319233AED569FFB29491825D5CD9A72C09DBD2",
-    "Bytes": 1646
+    "SHA256": "3D4F2D4C9855935D780A7C1AA43BBB33D2C7BF927A875F057203CB92C6805ABE",
+    "Bytes": 2281
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

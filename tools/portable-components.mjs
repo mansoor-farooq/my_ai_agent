@@ -2,6 +2,13 @@ import { cp, mkdir, readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const validRuleTriggers = new Set(['always_on', 'model_decision', 'glob', 'manual']);
+const importedSkillNames = new Set([
+  'android-design', 'flutter-ui-ux', 'flutter-ui-ux-engineer', 'mobile-ui-ux-designer',
+  'bigquery-observability', 'bigquery-optimization', 'bigquery-troubleshooting',
+  'cloud-databases-onboarding', 'create-plan', 'gcp-spark-observability',
+  'gh-address-comments', 'gh-fix-ci', 'mansoor-ui-specialist', 'memory',
+  'omniroute-gateway', 'stop-slop',
+]);
 const portableTextExtensions = new Set([
   '', '.cmd', '.css', '.html', '.js', '.json', '.jsx', '.md', '.mjs', '.ps1',
   '.py', '.sh', '.ts', '.txt', '.yaml', '.yml',
@@ -83,6 +90,7 @@ export async function inspectPortableSource(root) {
     .map((file) => path.relative(root, file).replaceAll('\\', '/'))
     .sort();
   const unsafePaths = allPortableFiles.map((file) => portablePathIssue(root, file)).filter(Boolean).sort();
+  const provenanceGaps = skillsWithoutProvenance.filter((name) => importedSkillNames.has(name)).sort();
 
   return {
     skills: skills.sort(),
@@ -93,6 +101,7 @@ export async function inspectPortableSource(root) {
     unsafePaths,
     brokenLocalReferences: [...new Set(brokenLocalReferences)].sort(),
     skillsWithoutProvenance: skillsWithoutProvenance.sort(),
+    provenanceGaps,
   };
 }
 
@@ -122,6 +131,7 @@ export async function copyPortableComponents(root, target, credentialPattern) {
   if (inventory.nestedSkillFiles.length) throw new Error(`Nested duplicate skill bodies are not portable: ${inventory.nestedSkillFiles.join(', ')}`);
   if (inventory.unsafePaths.length) throw new Error(`Unsafe portable component paths: ${inventory.unsafePaths.join(', ')}`);
   if (inventory.brokenLocalReferences.length) throw new Error(`Broken local skill references: ${inventory.brokenLocalReferences.join(', ')}`);
+  if (inventory.provenanceGaps.length) throw new Error(`Imported skills are missing provenance/licence metadata: ${inventory.provenanceGaps.join(', ')}`);
 
   const references = await readAgentSkillReferences(root);
   const missing = [...new Set(references.filter((name) => !inventory.skills.includes(name)))].sort();

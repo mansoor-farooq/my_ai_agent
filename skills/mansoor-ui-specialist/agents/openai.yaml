@@ -1,0 +1,7 @@
+interface:
+  display_name: "Mansoor UI Specialist"
+  short_description: "High-craft ERP and SaaS interface specialist"
+  brand_color: "#167F7A"
+  default_prompt: "Use $mansoor-ui-specialist to design or review this product UI so it feels distinctive, accessible, responsive, and production-ready."
+policy:
+  allow_implicit_invocation: true
