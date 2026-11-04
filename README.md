@@ -48,6 +48,10 @@ This private developer tool reflects Mansoor Farooq's senior engineering practic
 
 The installer verifies the package, runs Antigravity's strict plugin validation and installs or updates the team. No GitHub sign-in is required. Restart Antigravity after installation or reload its skills and agents.
 
+## One-click branch push
+
+After the one-time GitHub login, double-click `Push-All-Branches.cmd` from `E:\Agents`. It pushes `main`, `c-development`, `development` and `mansoor-development` together. No login command or browser setup is needed for each push.
+
 ## Fast mode
 
 For quick fixes, choose `Gemini 3.8 Flash` with `Low` thinking. The manager reads the affected files, chooses one specialist and skips deep research unless the task needs it. Use `Medium` or `High` thinking for architecture, security, migration, ML, release work or explicit research. CLI sessions can use:
