@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.3.6';
+const packageVersion = '1.3.7';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -227,14 +227,35 @@ const signedInstaller = [
   "  'gsheets', 'gslides', 'science'",
   ')',
   '$failedPlugins = @()',
+  'function Invoke-AgyCaptured {',
+  '  param([string[]]$CommandArguments)',
+  '  $captureId = [guid]::NewGuid().ToString("N")',
+  '  $stdoutPath = Join-Path $env:TEMP ("agy-stdout-" + $captureId + ".txt")',
+  '  $stderrPath = Join-Path $env:TEMP ("agy-stderr-" + $captureId + ".txt")',
+  '  try {',
+  '    $process = Start-Process -FilePath $agy.Source -ArgumentList $CommandArguments -Wait -PassThru -NoNewWindow -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath',
+  '    $stdout = if (Test-Path -LiteralPath $stdoutPath) { Get-Content -LiteralPath $stdoutPath -Raw } else { "" }',
+  '    $stderr = if (Test-Path -LiteralPath $stderrPath) { Get-Content -LiteralPath $stderrPath -Raw } else { "" }',
+  '    return [pscustomobject]@{ ExitCode = $process.ExitCode; StdOut = $stdout; StdErr = $stderr }',
+  '  } finally {',
+  '    Remove-Item -LiteralPath $stdoutPath, $stderrPath -Force -ErrorAction SilentlyContinue',
+  '  }',
+  '}',
+  '$installedPluginNames = @()',
+  '$inventoryResult = Invoke-AgyCaptured -CommandArguments @("plugin", "list", "--json")',
+  'if ($inventoryResult.ExitCode -eq 0) {',
+  '  try { $installedPluginNames = @((ConvertFrom-Json -InputObject $inventoryResult.StdOut) | ForEach-Object { [string]$_.name }) } catch { Write-Host "Could not parse installed plugin list; will attempt plugin installs individually." -ForegroundColor Yellow }',
+  '} else { Write-Host "Could not read installed plugin list; will attempt plugin installs individually." -ForegroundColor Yellow; if ($inventoryResult.StdErr) { Write-Host $inventoryResult.StdErr -ForegroundColor Yellow } }',
   'foreach ($plugin in $officialPlugins) {',
   '  $target = "$plugin@antigravity-plugins-official"',
+  '  if ($installedPluginNames -contains $plugin) { Write-Host "[$plugin] Already installed; leaving the active package untouched." -ForegroundColor Green; continue }',
   '  Write-Host "`n[$plugin] Installing..." -ForegroundColor Cyan',
-  '  $pluginOutput = @(& $agy.Source plugin install $target 2>&1)',
-  '  $pluginExitCode = $LASTEXITCODE',
-  '  foreach ($line in $pluginOutput) { Write-Host ([string]$line) }',
-  '  if ($pluginExitCode -eq 0) { Write-Host "[$plugin] Installed." -ForegroundColor Green } else {',
-  '    Write-Host "[$plugin] Needs attention (exit $pluginExitCode). Original Antigravity output is shown above." -ForegroundColor Yellow',
+  '  $pluginResult = Invoke-AgyCaptured -CommandArguments @("plugin", "install", $target)',
+  '  if ($pluginResult.StdOut) { Write-Host $pluginResult.StdOut.TrimEnd() }',
+  '  if ($pluginResult.StdErr) { Write-Host $pluginResult.StdErr.TrimEnd() -ForegroundColor Yellow }',
+  '  if ($pluginResult.ExitCode -eq 0) { Write-Host "[$plugin] Installed." -ForegroundColor Green } else {',
+  '    if ((($pluginResult.StdOut + $pluginResult.StdErr) -match "plugin is in use|failed to move existing plugin|Access is denied")) { Write-Host "[$plugin] Another Antigravity process holds this plugin; it was not forcibly stopped." -ForegroundColor Yellow }',
+  '    Write-Host "[$plugin] Needs attention (exit $($pluginResult.ExitCode)); see output above." -ForegroundColor Yellow',
   '    $failedPlugins += $plugin',
   '  }',
   '}',
