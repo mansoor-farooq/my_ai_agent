@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.3.7';
+const packageVersion = '1.3.8';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -105,7 +105,7 @@ const verifierSource = [
 ].join('\n') + '\n';
 await writeFile(join(target, 'verify-package-signature.mjs'), verifierSource);
 await writeFile(join(target, 'Install-Mansoor-Agent-Team.ps1'), `param()\n$ErrorActionPreference = 'Stop'\n$pluginRoot = Split-Path -Parent $MyInvocation.MyCommand.Path\n$manifestPath = Join-Path $pluginRoot '${packageManifestName}'\nif (-not (Test-Path -LiteralPath $manifestPath)) { throw 'Package integrity manifest is missing. Installation stopped.' }\n$records = @(Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json)\n$rootPath = [IO.Path]::GetFullPath($pluginRoot).TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar\nforeach ($record in $records) {\n  $relative = ([string]$record.Path).Replace('/', [IO.Path]::DirectorySeparatorChar)\n  $file = [IO.Path]::GetFullPath((Join-Path $pluginRoot $relative))\n  if (-not $file.StartsWith($rootPath, [StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $file -PathType Leaf)) { throw \"Package integrity check failed: $($record.Path)\" }\n  $hash = (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash\n  $bytes = (Get-Item -LiteralPath $file).Length\n  if ($hash -ne $record.SHA256 -or $bytes -ne $record.Bytes) { throw \"Package integrity check failed: $($record.Path)\" }\n}\n$agy = Get-Command agy -ErrorAction SilentlyContinue\nif (-not $agy) { throw 'Antigravity CLI (agy) was not found. Install Antigravity first, then run this installer again.' }\n& $agy.Source plugin validate --strict $pluginRoot\nif ($LASTEXITCODE -ne 0) { throw 'Antigravity plugin validation failed.' }\n& $agy.Source plugin install $pluginRoot\nif ($LASTEXITCODE -ne 0) { throw 'Antigravity plugin installation failed.' }\nWrite-Host 'Mansoor Gemini Agent Team installed successfully.'\nWrite-Host 'Restart Antigravity, or reload its skills/agents if the app is already open.'\n`);
-await writeFile(join(target, 'Install-Mansoor-Agent-Team.cmd'), `@echo off\nsetlocal\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Install-Mansoor-Agent-Team.ps1"\nif errorlevel 1 (\n  echo.\n  echo Installation failed. Read the message above.\n  pause\n  exit /b 1\n)\necho.\npause\n`);
+await writeFile(join(target, 'Install-Mansoor-Agent-Team.cmd'), `@echo off\nsetlocal\nset "LOGFILE=%~dp0Install-Mansoor-Agent-Team.log"\necho Installer log: "%LOGFILE%"\necho.\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Install-Mansoor-Agent-Team.ps1"\nset "INSTALL_EXIT=%ERRORLEVEL%"\necho.\nif not "%INSTALL_EXIT%"=="0" echo Installer exited with code %INSTALL_EXIT%.\necho Full output is saved in: "%LOGFILE%"\necho.\npause\nexit /b %INSTALL_EXIT%\n`);
 const premiumPackageReadme = [
   '# MANSOOR FAROOQ | PRIVATE GEMINI AGENT TEAM',
   '',
@@ -148,6 +148,9 @@ const signedInstaller = [
   'param()',
   "$ErrorActionPreference = 'Stop'",
   '$pluginRoot = Split-Path -Parent $MyInvocation.MyCommand.Path',
+  "$logPath = Join-Path $pluginRoot 'Install-Mansoor-Agent-Team.log'",
+  'try { Start-Transcript -Path $logPath -Append | Out-Null } catch { Write-Host "Could not start installer log: $($_.Exception.Message)" -ForegroundColor Yellow }',
+  'try {',
   `$manifestPath = Join-Path $pluginRoot '${packageManifestName}'`,
   "if (-not (Test-Path -LiteralPath $manifestPath)) { throw 'Package integrity manifest is missing. Installation stopped.' }",
   '$manifestJson = Get-Content -LiteralPath $manifestPath -Raw',
@@ -267,6 +270,11 @@ const signedInstaller = [
   "  Write-Host 'Some plugins require their own provider account/API setup; Antigravity will show the required setup when enabled.' -ForegroundColor Yellow",
   "} else { Write-Host 'All selected official plugins installed.' -ForegroundColor Green }",
   "Write-Host 'Restart Antigravity, or reload its skills/agents if the app is already open.'",
+  '} catch {',
+  "  Write-Host ('INSTALLER ERROR: ' + $_.Exception.Message) -ForegroundColor Red",
+  '  if ($_.ScriptStackTrace) { Write-Host $_.ScriptStackTrace -ForegroundColor DarkRed }',
+  '  exit 1',
+  '} finally { try { Stop-Transcript | Out-Null } catch { } }',
   ''
 ].join('\n');
 await writeFile(join(target, 'Install-Mansoor-Agent-Team.ps1'), signedInstaller);

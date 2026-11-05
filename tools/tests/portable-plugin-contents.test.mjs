@@ -131,7 +131,7 @@ test('built ZIP retains the support files after archive creation', async () => {
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.3.7');
+    assert.equal(plugin.version, '1.3.8');
     const installer = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.ps1'), 'utf8');
     assert.match(installer, /nodejs\.org\/dist\/index\.json/);
     assert.match(installer, /SHASUMS256\.txt/);
@@ -140,6 +140,11 @@ test('built ZIP retains the support files after archive creation', async () => {
     assert.match(installer, /"plugin", "list", "--json"/);
     assert.match(installer, /Already installed; leaving the active package untouched/);
     assert.match(installer, /Start-Process/);
+    assert.match(installer, /Start-Transcript/);
+    assert.match(installer, /INSTALLER ERROR:/);
+    const launcher = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.cmd'), 'utf8');
+    assert.match(launcher, /Install-Mansoor-Agent-Team\.log/);
+    assert.match(launcher, /pause/);
     assert.doesNotMatch(installer, /gh auth login|github\.com\/login/);
   } finally {
     await rm(output, { recursive: true, force: true });
