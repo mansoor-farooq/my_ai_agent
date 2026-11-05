@@ -4,6 +4,7 @@
   "private": true,
   "description": "Owner build entrypoint for the Mansoor Farooq private Antigravity agent team.",
   "scripts": {
-    "build": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1"
+    "build": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1",
+    "test": "node --test \"tools/tests/*.test.mjs\""
   }
 }
