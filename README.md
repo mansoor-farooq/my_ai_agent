@@ -143,6 +143,8 @@ The manager selects the mode automatically. Fast mode handles routine reversible
 
 V3 task state, checkpoints and traces remain local under `.agents/ultra-v3/`. A failed command is recoverable and resumable; it is never hidden by deleting state. The package records concise decisions and observable evidence, not hidden chain-of-thought or raw private chats.
 
+The installer displays a branded Mansoor Farooq Agent Team / Ultra Agent v3 safe-build banner, keeps an installer log and stages `tools` and `shared` runtime files before validation so the installed plugin retains the full V3 control plane.
+
 `SKILL-PROVENANCE.json` maps every bundled skill to its observed source category and explicitly marks skills whose public licence/source review is still pending. The package remains private-only until those entries are cleared; no licence or provenance is invented.
 
 ## Official plugin boundary

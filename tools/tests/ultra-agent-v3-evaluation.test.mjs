@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, mkdtemp, rm } from 'node:fs/promises';
+import { access, readFile, mkdtemp, rm } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { evaluateCompletion } from '../ultra-agent-v3/evaluate.mjs';
@@ -28,8 +28,10 @@ test('accepts fast completion with a passing targeted command and changed-path s
 test('premium high-risk failure becomes recoverable and preserves a resume checkpoint', async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-eval-'));
   try {
-    const trace = await appendTrace({ dir, taskId: 'task-003', event: 'verification-failed', status: 'fail', result: 'test failed' });
+    const trace = await appendTrace({ dir, taskId: 'task-003', projectId: 'project-003', evidenceRefs: ['check-2'], event: 'verification-failed', status: 'fail', result: 'test failed' });
     assert.match(trace.tracePath, /task-003\.jsonl$/);
+    assert.equal(trace.record.projectId, 'project-003');
+    assert.deepEqual(trace.record.evidenceRefs, ['check-2']);
     const result = evaluateCompletion({
       dir,
       taskId: 'task-003',
@@ -43,11 +45,25 @@ test('premium high-risk failure becomes recoverable and preserves a resume check
     assert.equal(result.nextState, 'RECOVERABLE_FAILURE');
     assert.ok(result.resumeCheckpoint);
     assert.equal(result.resumeCheckpoint.taskId, 'task-003');
+    await access(result.resumeCheckpoint.checkpointPath);
     const ledger = await readFile(path.join(dir, '.agents', 'ultra-v3', 'traces', 'task-003.jsonl'), 'utf8');
     assert.match(ledger, /verification-failed/);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
+});
+
+test('premium research cannot complete without a research-ledger record', () => {
+  const result = evaluateCompletion({
+    mode: 'premium',
+    explicitResearch: true,
+    changedPaths: ['docs/architecture.md'],
+    researchRecords: [],
+    verificationRecords: [{ id: 'check-4', status: 'pass', kind: 'verification' }],
+    commandResults: [{ command: 'npm test', status: 'pass' }],
+  });
+  assert.equal(result.accepted, false);
+  assert.ok(result.missingEvidence.includes('research-ledger'));
 });
 
 test('premium high-risk completion requires an independent check', () => {

@@ -162,6 +162,9 @@ test('built ZIP retains the support files after archive creation', async () => {
     assert.match(installer, /INSTALLER ERROR:/);
     assert.match(installer, /mansoor-agent-hub-stage-/);
     assert.match(installer, /Copy-Item -LiteralPath \$sourceItem/);
+    assert.match(installer, /@\(.*'tools'.*'shared'.*\)/s);
+    assert.match(installer, /MANSOOR FAROOQ AGENT TEAM/);
+    assert.match(installer, /ULTRA AGENT v3/);
     assert.match(installer, /plugin install \$installStage/);
     const launcher = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.cmd'), 'utf8');
     assert.match(launcher, /Install-Mansoor-Agent-Team\.log/);

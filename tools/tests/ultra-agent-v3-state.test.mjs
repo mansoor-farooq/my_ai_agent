@@ -21,6 +21,24 @@ test('starts a project-scoped task in INTAKE with a stable identity', async () =
     assert.equal(result.state, 'INTAKE');
     assert.equal(result.taskId, 'task-001');
     assert.match(result.projectId, /^[a-f0-9]{8}$/);
+    const events = (await readFile(path.join(fixture, '.agents', 'ultra-v3', 'tasks', 'task-001', 'events.jsonl'), 'utf8')).trim().split(/\r?\n/).map(JSON.parse);
+    assert.equal(events[0].actor, 'antigravity-manager');
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
+
+test('quarantines semantically corrupt events before rewriting a valid state log', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-state-'));
+  try {
+    run('start', fixture);
+    const eventsPath = path.join(fixture, '.agents', 'ultra-v3', 'tasks', 'task-001', 'events.jsonl');
+    const invalid = { schemaVersion: 1, eventId: 'bad', recordedAt: new Date().toISOString(), taskId: 'task-001', projectId: 'wrong', previousState: 'INTAKE', nextState: 'NOT_A_STATE' };
+    await appendFile(eventsPath, `${JSON.stringify(invalid)}\n`, 'utf8');
+    const resumed = run('resume', fixture);
+    assert.equal(resumed.state, 'INTAKE');
+    assert.equal(resumed.recoveredCorruptTail, true);
+    await access(resumed.quarantinePath);
   } finally {
     await rm(fixture, { recursive: true, force: true });
   }

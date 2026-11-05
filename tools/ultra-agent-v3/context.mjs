@@ -38,13 +38,14 @@ function projectIdentity(dir, name) {
 }
 
 function readJsonl(file) {
-  if (!fs.existsSync(file)) return [];
+  if (!fs.existsSync(file)) return { records: [], malformed: false };
   const records = [];
+  let malformed = false;
   for (const line of fs.readFileSync(file, 'utf8').split(/\r?\n/)) {
     if (!line.trim()) continue;
-    try { records.push(JSON.parse(line)); } catch { /* Ignore malformed records; state/evidence tools report their own corruption. */ }
+    try { records.push(JSON.parse(line)); } catch { malformed = true; }
   }
-  return records;
+  return { records, malformed };
 }
 
 function relevant(record, projectId) {
@@ -68,15 +69,20 @@ async function buildContextPacket({ dir = process.cwd(), project = path.basename
   const projectDir = path.resolve(dir);
   const projectInfo = projectIdentity(projectDir, project);
   const memory = path.join(projectDir, '.agents', 'memory');
-  const records = [
-    ...readJsonl(path.join(memory, 'research-ledger.jsonl')),
-    ...readJsonl(path.join(memory, 'verification-ledger.jsonl')),
-  ].filter((record) => relevant(record, projectInfo.projectId));
-  const verifiedFacts = records
+  const research = readJsonl(path.join(memory, 'research-ledger.jsonl'));
+  const verification = readJsonl(path.join(memory, 'verification-ledger.jsonl'));
+  const records = [...research.records, ...verification.records].filter((record) => relevant(record, projectInfo.projectId));
+  const malformedMemory = [
+    research.malformed ? 'research-ledger.jsonl' : null,
+    verification.malformed ? 'verification-ledger.jsonl' : null,
+  ].filter(Boolean);
+  const staleRecords = records.filter((record) => record.commit && record.commit !== projectInfo.commit);
+  const currentRecords = records.filter((record) => !staleRecords.includes(record));
+  const verifiedFacts = currentRecords
     .filter((record) => ['verified', 'pass', 'passed', 'complete'].includes(String(record.status).toLowerCase()))
     .map(fact);
   const groups = new Map();
-  for (const record of records.filter((candidate) => candidate.subject && candidate.claim)) {
+  for (const record of currentRecords.filter((candidate) => candidate.subject && candidate.claim)) {
     const key = String(record.subject).toLowerCase().trim();
     const claims = groups.get(key) || [];
     claims.push(record);
@@ -95,11 +101,50 @@ async function buildContextPacket({ dir = process.cwd(), project = path.basename
       };
     })
     .filter(Boolean);
+  const decisionsFile = path.join(memory, 'decisions.md');
+  const decisionRecords = [];
+  if (fs.existsSync(decisionsFile)) {
+    fs.readFileSync(decisionsFile, 'utf8').split(/\r?\n/).forEach((line, index) => {
+      const match = line.match(/^\[projectId:([^\]]+)\]\s*\[subject:([^\]]+)\]\s*(.+)$/);
+      if (match && match[1] === projectInfo.projectId && !rawReasoning.test(line)) {
+        decisionRecords.push({ id: `decision-${index + 1}`, subject: match[2], claim: match[3] });
+      }
+    });
+  }
+  const decisionGroups = new Map();
+  for (const decision of decisionRecords) {
+    const key = decision.subject.toLowerCase().trim();
+    const candidates = decisionGroups.get(key) || [];
+    candidates.push(decision);
+    decisionGroups.set(key, candidates);
+  }
+  for (const [subject, candidates] of decisionGroups) {
+    const claims = [...new Set(candidates.map((candidate) => candidate.claim.trim()))];
+    if (claims.length > 1) conflicts.push({
+      type: 'contradictory-decision',
+      subject: sanitize(subject),
+      evidenceRefs: candidates.map((candidate) => candidate.id),
+      claims: claims.map(sanitize),
+    });
+  }
+  for (const record of staleRecords) {
+    conflicts.push({
+      type: 'stale-evidence',
+      subject: sanitize(record.subject),
+      evidenceRefs: [sanitize(record.id)].filter(Boolean),
+      recordCommit: sanitize(record.commit),
+      currentCommit: sanitize(projectInfo.commit),
+    });
+  }
+  for (const source of malformedMemory) conflicts.push({ type: 'malformed-memory', source });
   const readNotes = (file) => {
     if (!fs.existsSync(file)) return [];
     return fs.readFileSync(file, 'utf8').split(/\r?\n/)
       .map((line) => line.trim())
-      .filter((line) => line && !line.startsWith('#') && !rawReasoning.test(line))
+      .filter((line) => {
+        const projectMatch = line.match(/^\[projectId:([^\]]+)\]/);
+        return line && !line.startsWith('#') && !rawReasoning.test(line) && (!projectMatch || projectMatch[1] === projectInfo.projectId);
+      })
       .map(sanitize)
       .filter(Boolean)
       .slice(0, 100);

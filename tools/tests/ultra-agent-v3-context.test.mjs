@@ -37,13 +37,35 @@ test('surfaces contradictory same-subject evidence instead of silently merging i
   try {
     const initial = await buildContextPacket({ dir: fixture.dir, project: 'Conflict Fixture' });
     await writeFile(path.join(fixture.memory, 'verification-ledger.jsonl'), [
-      JSON.stringify({ id: 'rest', projectId: initial.project.projectId, subject: 'api-style', kind: 'verification', claim: 'REST is canonical', status: 'pass', commit: 'aaa', recordedAt: '2026-01-01T00:00:00.000Z' }),
-      JSON.stringify({ id: 'graphql', projectId: initial.project.projectId, subject: 'api-style', kind: 'verification', claim: 'GraphQL is canonical', status: 'pass', commit: 'bbb', recordedAt: '2026-01-02T00:00:00.000Z' }),
+      JSON.stringify({ id: 'rest', projectId: initial.project.projectId, subject: 'api-style', kind: 'verification', claim: 'REST is canonical', status: 'pass', recordedAt: '2026-01-01T00:00:00.000Z' }),
+      JSON.stringify({ id: 'graphql', projectId: initial.project.projectId, subject: 'api-style', kind: 'verification', claim: 'GraphQL is canonical', status: 'pass', recordedAt: '2026-01-02T00:00:00.000Z' }),
+    ].join('\n') + '\n');
+    await writeFile(path.join(fixture.memory, 'decisions.md'), [
+      `[projectId:${initial.project.projectId}] [subject:api-style] REST is canonical`,
+      `[projectId:${initial.project.projectId}] [subject:api-style] GraphQL is canonical`,
     ].join('\n') + '\n');
     const packet = await buildContextPacket({ dir: fixture.dir, project: 'Conflict Fixture' });
-    assert.equal(packet.conflicts.length, 1);
-    assert.equal(packet.conflicts[0].subject, 'api-style');
-    assert.deepEqual(packet.conflicts[0].evidenceRefs.sort(), ['graphql', 'rest']);
+    const evidenceConflict = packet.conflicts.find((conflict) => conflict.type === 'contradictory-evidence');
+    assert.ok(evidenceConflict);
+    assert.equal(evidenceConflict.subject, 'api-style');
+    assert.deepEqual(evidenceConflict.evidenceRefs.sort(), ['graphql', 'rest']);
+    assert.ok(packet.conflicts.some((conflict) => conflict.type === 'contradictory-decision'));
+  } finally {
+    await rm(fixture.dir, { recursive: true, force: true });
+  }
+});
+
+test('surfaces stale evidence and malformed memory instead of silently trusting it', async () => {
+  const fixture = await memoryFixture();
+  try {
+    const initial = await buildContextPacket({ dir: fixture.dir, project: 'Stale Fixture' });
+    await writeFile(path.join(fixture.memory, 'verification-ledger.jsonl'), [
+      '{malformed',
+      JSON.stringify({ id: 'stale', projectId: initial.project.projectId, kind: 'verification', claim: 'old fact', status: 'pass', commit: 'old-commit', recordedAt: '2026-01-01T00:00:00.000Z' }),
+    ].join('\n') + '\n');
+    const packet = await buildContextPacket({ dir: fixture.dir, project: 'Stale Fixture' });
+    assert.ok(packet.conflicts.some((conflict) => conflict.type === 'stale-evidence'));
+    assert.ok(packet.conflicts.some((conflict) => conflict.type === 'malformed-memory'));
   } finally {
     await rm(fixture.dir, { recursive: true, force: true });
   }

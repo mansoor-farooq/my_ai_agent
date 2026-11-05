@@ -58,6 +58,7 @@ const taskDir = path.join(projectDir, '.agents', 'ultra-v3', 'tasks', taskId);
 const eventsPath = path.join(taskDir, 'events.jsonl');
 const statePath = path.join(taskDir, 'state.json');
 const checkpointsDir = path.join(taskDir, 'checkpoints');
+const lockPath = path.join(taskDir, '.lock');
 const secretPattern = /(?:AIza[0-9A-Za-z_-]{30,}|(?:sk|ghp|github_pat)_[A-Za-z0-9_-]{16,}|Bearer\s+[A-Za-z0-9._~+/=-]+|(?:password|passwd|pwd|secret|apiKey|api_key|token|authorization)\s*[:=]\s*["']?[^\s"';,}]+)/gi;
 const safeText = (value) => String(value || '').replace(secretPattern, '[REDACTED_SECRET]').slice(0, 1000);
 
@@ -75,17 +76,33 @@ function readEvents() {
   if (!fs.existsSync(eventsPath)) return { events: [], corruptTail: false };
   const events = [];
   let corruptTail = false;
-  for (const line of fs.readFileSync(eventsPath, 'utf8').split(/\r?\n/)) {
+  let corruptLines = [];
+  let previousState = null;
+  const lines = fs.readFileSync(eventsPath, 'utf8').split(/\r?\n/);
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
     if (!line.trim()) continue;
     try {
       const parsed = JSON.parse(line);
-      if (parsed && parsed.taskId === taskId && typeof parsed.nextState === 'string') events.push(parsed);
-      else corruptTail = true;
+      const validState = parsed && parsed.taskId === taskId && parsed.projectId === projectId
+        && STATES.includes(parsed.nextState)
+        && (events.length === 0 ? parsed.previousState === null : parsed.previousState === previousState)
+        && (events.length === 0 || TRANSITIONS.get(previousState)?.has(parsed.nextState));
+      if (validState) {
+        events.push(parsed);
+        previousState = parsed.nextState;
+      } else {
+        corruptTail = true;
+        corruptLines = lines.slice(index).filter((candidate) => candidate.trim());
+        break;
+      }
     } catch {
       corruptTail = true;
+      corruptLines = lines.slice(index).filter((candidate) => candidate.trim());
+      break;
     }
   }
-  return { events, corruptTail };
+  return { events, corruptTail, corruptLines };
 }
 
 function atomicWrite(file, content) {
@@ -118,6 +135,41 @@ function persistEvents(events) {
   return materialize(events);
 }
 
+function sleep(milliseconds) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds);
+}
+
+function withTaskLock(callback) {
+  fs.mkdirSync(taskDir, { recursive: true });
+  let descriptor;
+  for (let attempt = 0; attempt < 100; attempt += 1) {
+    try {
+      descriptor = fs.openSync(lockPath, 'wx');
+      break;
+    } catch (error) {
+      if (error.code !== 'EEXIST') throw error;
+      sleep(10);
+    }
+  }
+  if (descriptor === undefined) throw new Error('Could not acquire task state lock. Retry the task.');
+  try { return callback(); } finally {
+    fs.closeSync(descriptor);
+    try { fs.unlinkSync(lockPath); } catch { /* Another recovery process may have cleaned it. */ }
+  }
+}
+
+function quarantineCorrupt(loaded) {
+  if (!loaded.corruptTail || !loaded.corruptLines.length) return null;
+  const quarantinePath = path.join(taskDir, `events.corrupt-${Date.now()}.jsonl`);
+  atomicWrite(quarantinePath, `${loaded.corruptLines.join('\n')}\n`);
+  return quarantinePath;
+}
+
+function healthy(loaded) {
+  if (loaded.corruptTail) throw new Error(`Task state has corrupt events; run resume before ${action}`);
+  return loaded;
+}
+
 function newEvent(previousState, nextState, extra = {}) {
   return {
     schemaVersion: 1,
@@ -125,6 +177,7 @@ function newEvent(previousState, nextState, extra = {}) {
     recordedAt: new Date().toISOString(),
     taskId,
     projectId,
+    actor: safeText(extra.actor || 'antigravity-manager'),
     previousState: previousState || null,
     nextState,
     error: extra.error ? safeText(extra.error) : null,
@@ -142,41 +195,51 @@ function requireState(events) {
 }
 
 function start() {
-  const existing = readEvents();
-  if (existing.events.length) return { ok: true, action, idempotent: true, ...materialize(existing.events) };
-  const snapshot = persistEvents([newEvent(null, 'INTAKE')]);
-  return { ok: true, action, ...snapshot, projectId };
+  return withTaskLock(() => {
+    const existing = healthy(readEvents());
+    if (existing.events.length) return { ok: true, action, idempotent: true, ...materialize(existing.events) };
+    const snapshot = persistEvents([newEvent(null, 'INTAKE', { actor: getArg('--actor') })]);
+    return { ok: true, action, ...snapshot, projectId };
+  });
 }
 
 function transition() {
-  const loaded = readEvents();
-  const previous = requireState(loaded.events);
-  const next = getArg('--to');
-  if (!STATES.includes(next)) throw new Error(`Unknown state: ${next || '(missing)'}`);
-  if (!TRANSITIONS.get(previous)?.has(next)) throw new Error(`Illegal state transition: ${previous} -> ${next}`);
-  const snapshot = persistEvents([...loaded.events, newEvent(previous, next, {
-    error: getArg('--error'),
-    evidenceRefs: getArg('--evidence').split(',').map((value) => value.trim()).filter(Boolean),
-  })]);
-  return { ok: true, action, ...snapshot };
+  return withTaskLock(() => {
+    const loaded = healthy(readEvents());
+    const previous = requireState(loaded.events);
+    const next = getArg('--to');
+    if (!STATES.includes(next)) throw new Error(`Unknown state: ${next || '(missing)'}`);
+    if (!TRANSITIONS.get(previous)?.has(next)) throw new Error(`Illegal state transition: ${previous} -> ${next}`);
+    const snapshot = persistEvents([...loaded.events, newEvent(previous, next, {
+      actor: getArg('--actor'),
+      error: getArg('--error'),
+      evidenceRefs: getArg('--evidence').split(',').map((value) => value.trim()).filter(Boolean),
+    })]);
+    return { ok: true, action, ...snapshot };
+  });
 }
 
 function checkpoint() {
-  const loaded = readEvents();
-  const snapshot = materialize(loaded.events);
-  if (!snapshot) throw new Error(`Task does not exist: ${taskId}`);
-  fs.mkdirSync(checkpointsDir, { recursive: true });
-  const label = slugify(getArg('--label', 'checkpoint'));
-  const checkpointPath = path.join(checkpointsDir, `${Date.now()}-${label}.json`);
-  atomicWrite(checkpointPath, `${JSON.stringify({ ...snapshot, checkpointLabel: label }, null, 2)}\n`);
-  return { ok: true, action, ...snapshot, checkpointPath };
+  return withTaskLock(() => {
+    const loaded = healthy(readEvents());
+    const snapshot = materialize(loaded.events);
+    if (!snapshot) throw new Error(`Task does not exist: ${taskId}`);
+    fs.mkdirSync(checkpointsDir, { recursive: true });
+    const label = slugify(getArg('--label', 'checkpoint'));
+    const checkpointPath = path.join(checkpointsDir, `${Date.now()}-${label}.json`);
+    atomicWrite(checkpointPath, `${JSON.stringify({ ...snapshot, checkpointLabel: label }, null, 2)}\n`);
+    return { ok: true, action, ...snapshot, checkpointPath };
+  });
 }
 
 function resume() {
-  const loaded = readEvents();
-  if (!loaded.events.length) throw new Error(`Task does not exist: ${taskId}`);
-  const snapshot = persistEvents(loaded.events);
-  return { ok: true, action, ...snapshot, recoveredCorruptTail: loaded.corruptTail };
+  return withTaskLock(() => {
+    const loaded = readEvents();
+    if (!loaded.events.length) throw new Error(`Task does not exist: ${taskId}`);
+    const quarantinePath = quarantineCorrupt(loaded);
+    const snapshot = persistEvents(loaded.events);
+    return { ok: true, action, ...snapshot, recoveredCorruptTail: loaded.corruptTail, quarantinePath };
+  });
 }
 
 function show() {
