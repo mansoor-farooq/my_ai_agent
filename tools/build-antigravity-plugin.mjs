@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { mkdir, readdir, readFile, writeFile, stat } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile, stat, copyFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.3.9';
+const packageVersion = '1.4.0';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -52,6 +52,22 @@ for (const entry of await readdir(sourceAgents, { withFileTypes: true })) {
 }
 
 const { skillCount, ruleCount } = await copyPortableComponents(root, target, secretPattern);
+const portableRuntimeFiles = [
+  'tools/ultra-agent-v2/preflight.mjs',
+  'tools/ultra-agent-v2/memory.mjs',
+  'tools/ultra-agent-v2/evidence.mjs',
+  'tools/sync-knowledge-bank.mjs',
+  'tools/validate-capability-manifest.mjs',
+  'shared/knowledge/PROJECT_MEMORY_SCHEMA.md',
+  'shared/control-plane/agent-capability-manifest.json',
+  'shared/ULTRA_AGENT_V2_PROTOCOL.md',
+];
+for (const relativePath of portableRuntimeFiles) {
+  const source = join(root, relativePath);
+  const destination = join(target, relativePath);
+  await mkdir(dirname(destination), { recursive: true });
+  await copyFile(source, destination);
+}
 const provenancePath = join(root, 'SKILL-PROVENANCE.json');
 const provenanceText = await readFile(provenancePath, 'utf8');
 const provenance = JSON.parse(provenanceText);
@@ -128,6 +144,12 @@ const premiumPackageReadme = [
   'On the owner PC, keep the source at E:\\Agents and run npm run build, or double-click Build-Agent-Hub.cmd. The automated build reuses or creates the signing key, builds the package, runs the doctor and focused tests, then writes E:\\Agents\\dist\\mansoor-agent-hub.zip.',
   '',
   'Share only the ZIP. Never share the private key, .env files or the full source folder.',
+  '',
+  '## Ultra Agent v2 runtime',
+  '',
+  'This release includes dependency-free project preflight, local project-scoped memory, idempotent research/verification ledgers and the existing consent-gated knowledge-bank sync utility. The manager uses these tools for material work and reports observed evidence only. Local memory stays in the target repository; Git sync remains opt-in.',
+  '',
+  'For a repository task, run `node tools/ultra-agent-v2/preflight.mjs --dir . --project my-project` and `node tools/ultra-agent-v2/memory.mjs init --dir . --project my-project`. See `shared/ULTRA_AGENT_V2_PROTOCOL.md` for the runtime contract.',
   '',
   '## Private ownership',
   '',

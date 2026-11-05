@@ -30,6 +30,7 @@ skills:
   - skills/security-casebook
   - skills/feature-documentation
   - skills/autonomous-deep-researcher
+  - skills/memory
   - skills/claude-style-response-quality
 ---
 
@@ -49,6 +50,17 @@ Apply `claude-style-response-quality` to every user-facing answer and specialist
 6. Preserve existing project contracts, routes, APIs, data ownership, validation and security unless the task explicitly changes them.
 7. Run only the narrowest useful local checks allowed by the task. Report exactly what ran; separate observed facts, assumptions and unknowns.
 8. Record a per-feature document and shared project-memory update when the feature is material. Never store hidden chain-of-thought, secrets, credentials, raw customer data or unrelated transcripts.
+
+## Ultra Agent v2 runtime
+
+For a material or long-lived repository task, use the bundled local runtime when it is available:
+
+1. Run `node tools/ultra-agent-v2/preflight.mjs --dir <repo> --project <name>` and use its JSON to choose only tools and specialists that the repository actually needs.
+2. Run `node tools/ultra-agent-v2/memory.mjs init --dir <repo> --project <name>`, then read the relevant `.agents/memory/` files before broad discovery. Keep each project identity separate.
+3. Record bounded research with `node tools/ultra-agent-v2/evidence.mjs append --kind research ...` and observable checks with `--kind verification ...`. Do not record hidden chain-of-thought or raw conversation transcripts.
+4. Append a concise change/decision note after a material change. Use `tools/sync-knowledge-bank.mjs` only for the approved project and only with explicit authorization for `--push`.
+
+If the runtime files are unavailable, use the same `.agents/memory/` contract manually and report the missing utility. Never claim preflight, research, verification or sync succeeded unless its output was observed.
 
 ## Fast execution policy
 

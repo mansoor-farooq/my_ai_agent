@@ -14,13 +14,14 @@ This skill eliminates repetitive exploration, redundant scanning, and lost conte
 
 1. **Memory First, Never Blind Scan:**
    - At the start of every session or task, read `.agents/memory/PROJECT_MEMORY.md` first.
-   - For semantic search across past solutions, call `ruflo`'s `memory_search` or `memory_retrieve`.
+   - When the portable Ultra Agent v2 runtime is present, inspect it with `node tools/ultra-agent-v2/memory.mjs status --dir <repo> --project <name>` and use its project-scoped files as the canonical local fallback.
+   - Use a vector-memory connector only when it is explicitly installed and authorized; never assume `ruflo` exists in a portable Antigravity package.
    - Never run broad file listings or re-read unchanged files that are already mapped in memory.
 
 2. **Durable In-Flight Capturing:**
    - Whenever an important architecture decision, API endpoint contract, or tricky bug fix is resolved:
      - Record the finding in `.agents/memory/PROJECT_MEMORY.md`.
-     - Upsert to ruflo persistent vector memory via `memory_store` with tags like `['project-slug', 'api', 'fix']`.
+     - Record the concise outcome in `.agents/memory/` and, when the local v2 runtime is available, append observable evidence with `tools/ultra-agent-v2/evidence.mjs`.
 
 3. **Strict Zero-Loss & Zero-Leakage:**
    - Never store raw credentials, passwords, or customer PII in memory.
@@ -41,9 +42,11 @@ When the user asks to inspect, fix, or build a feature:
 ## 3. Persistent Memory Sync & Commands
 
 - **Retrieve by keyword/concept:**
-  Use MCP `ruflo:memory_search(query: "...")` or `ruflo:memory_retrieve(key: "...")`.
-- **Save durable knowledge:**
-  Use MCP `ruflo:memory_store(key: "youngs_bazar:catalog_api", value: "...", tags: ["youngs_bazar", "api"])`.
+  Search the local `.agents/memory/` dossier first. If an explicitly configured vector-memory connector exists, it may be used as a secondary index.
+- **Initialize local memory:**
+  `node tools/ultra-agent-v2/memory.mjs init --dir <repo> --project <name>`.
+- **Record research or verification:**
+  `node tools/ultra-agent-v2/evidence.mjs append --dir <repo> --kind research|verification ...`.
 - **Project Dossier:**
   Ensure `.agents/memory/PROJECT_MEMORY.md` stays current with:
   - Active verified endpoints & tokens required.

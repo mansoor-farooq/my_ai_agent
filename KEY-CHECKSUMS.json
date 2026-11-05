@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "A2332AFCA5810B74EF49E07379104713B43D450DE800D55867CCA35C5A50B9E1",
-    "Bytes": 6668
+    "SHA256": "904F12A7958A0D493B730EE7D41AF0FDA233A161D2CCEDAD0FECA1A423463359",
+    "Bytes": 7808
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -101,8 +101,8 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "97D733264FF99371B2A81C59D371FCB1C3FFB07AD01FACE452FBB466B0259EBB",
-    "Bytes": 2691
+    "SHA256": "D26095162CA72E29D9DB4D26B78B4E1F72854E76D2D1D40FF0035228927F58ED",
+    "Bytes": 2752
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "C01CEB33083772DC008BC1D3ACFB58ADDD199EE820500AB69547E91318189ADE",
+    "SHA256": "6CC2C31C8435B14A26640BD81A1E2FE3C31D255C168AF5528F27CBED60AD38C3",
     "Bytes": 287
   },
   {
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "B30075AD23DED9F5BC5683AA556297C709D8655AFBF25901012D15C5EC2D16CE",
-    "Bytes": 9385
+    "SHA256": "E9045491B3B07F3653080F460F4E4E11DC3B6CF45E5C9A9398A3E0AB87419E73",
+    "Bytes": 10111
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -1586,8 +1586,8 @@
   },
   {
     "Path": "Agents/skills/memory/SKILL.md",
-    "SHA256": "978FE3D313EABC990466118BC2AC5182FC0218BC95E57F2F05E6DB112C24DA06",
-    "Bytes": 2666
+    "SHA256": "5C7AD38C5FB6C292417CC2AB2F7DEFE67C64A2EEECA172325866D7A704E4AEFD",
+    "Bytes": 3152
   },
   {
     "Path": "Agents/skills/ml-best-practices/SKILL.md",
@@ -2196,13 +2196,13 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "78AB27F737147CFDECC280475BE8BA940347CB5C9FE3F368EFFDB8EC70EB1FA7",
-    "Bytes": 11027
+    "SHA256": "697F0AE7B763FF17B9592C777E9E48612DD604BF367E5F4B2A1F4E049EF17F93",
+    "Bytes": 11844
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "03DCB67AA488FF035C924067676EF2049C8CC3A435D7BB35CC87D7745B0993C4",
-    "Bytes": 27612
+    "SHA256": "A1BA3E2F091F2F0F41E991B2EA38ACB4DE2D50845E848E00F1971423FEAECE38",
+    "Bytes": 28900
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2251,8 +2251,8 @@
   },
   {
     "Path": "Agents/tools/tests/agent-hub-doctor.test.mjs",
-    "SHA256": "85CBFDB984A01AD0C8ACDF98262B6D9BF97ACD4600A4701D76C58FCECE162765",
-    "Bytes": 1112
+    "SHA256": "F208224198ADBEECB8649B1335F8439D55AE0DD977AFD4671DD31F1C9D988928",
+    "Bytes": 1222
   },
   {
     "Path": "Agents/tools/tests/backend-ml-router.test.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "2B6E208A1B9E700F4DC7DE4D7ECFA4DB166CB95C05B7332A0BB4ABB703A937E1",
-    "Bytes": 7163
+    "SHA256": "F2A5147A1B5E8C8C434CD36D60810B1F5F88D98F786EFA7C9DF2B97EF25DE2C3",
+    "Bytes": 7658
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
@@ -2283,5 +2283,30 @@
     "Path": "Agents/ULTRA_AUTONOMOUS_AUDIT.md",
     "SHA256": "A121ECE440D9491151EA0C2DD1F335CE5573211AE60244F8CE2AD2AC14BA33A6",
     "Bytes": 16255
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v2/preflight.mjs",
+    "SHA256": "C4FAE8EF3E69D6DD03D3864FF6CE08B1FA5068C9C622D7EB2D8BB814D9B9A0BE",
+    "Bytes": 4255
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v2/memory.mjs",
+    "SHA256": "276CA595742B54D80B23FA25D86890852DE5081045BCDC7B411AAB3F94787B99",
+    "Bytes": 5302
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v2/evidence.mjs",
+    "SHA256": "92B6812DAED671213ACA6E7C80A93D0912B70FC0A46C5DC18E68F161A5440ED8",
+    "Bytes": 3160
+  },
+  {
+    "Path": "Agents/tools/tests/ultra-agent-v2.test.mjs",
+    "SHA256": "830FB53C4F2B770A18B7976D6599A9F74B0F73A6A1CAD215C6E79DB0615D892A",
+    "Bytes": 3044
+  },
+  {
+    "Path": "Agents/shared/ULTRA_AGENT_V2_PROTOCOL.md",
+    "SHA256": "FCAA69BE4AD3E4C2C5BFB944D8A4D8581E2790A8264D95C87EC39FA1E1C209EE",
+    "Bytes": 3645
   }
 ]

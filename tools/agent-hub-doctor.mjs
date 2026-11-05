@@ -132,6 +132,19 @@ export async function runDoctor() {
     add('PASS', 'research and UI capability', 'UI and research specialists expose bounded reference research; UI exposes approved image generation');
   } else add('FAIL', 'research and UI capability', 'required research/image tools are missing from the specialist contracts');
 
+  const ultraRuntimeFiles = [
+    'tools/ultra-agent-v2/preflight.mjs',
+    'tools/ultra-agent-v2/memory.mjs',
+    'tools/ultra-agent-v2/evidence.mjs',
+    'shared/ULTRA_AGENT_V2_PROTOCOL.md',
+  ];
+  const missingUltraRuntime = ultraRuntimeFiles.filter((relative) => !fs.existsSync(path.join(root, relative)));
+  if (!missingUltraRuntime.length && /tools\/ultra-agent-v2\/preflight\.mjs/.test(mainText)
+      && /tools\/ultra-agent-v2\/memory\.mjs/.test(mainText)
+      && /tools\/ultra-agent-v2\/evidence\.mjs/.test(mainText)) {
+    add('PASS', 'Ultra Agent v2 runtime', 'project preflight, local memory and research/verification ledgers are present and manager-routable');
+  } else add('FAIL', 'Ultra Agent v2 runtime', `missing=[${missingUltraRuntime.join(', ')}] or manager routing is incomplete`);
+
   const integrity = checksumReport();
   if (integrity.errors.length) add('FAIL', 'source integrity', integrity.errors.join('; '));
   else add('PASS', 'source integrity', `${integrity.checked} checksums verified; ${integrity.skipped} private/bulk archive checksums skipped`);

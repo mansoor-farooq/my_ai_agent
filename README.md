@@ -124,7 +124,18 @@ cd /d E:\Agents
 npm run build
 ```
 
-Current package target: 15 agent profiles, 173 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. The OmniRoute and memory entries are portable guidance only; runtime gateways, databases, private memory and keys are not distributed.
+Current package target: 15 agent profiles, 173 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. Ultra Agent v2 also packages dependency-free project preflight, local project-scoped memory, idempotent research/verification ledgers, the existing consent-gated knowledge-bank sync utility and their protocol/schema files. Runtime gateways, credentials and private chats are not distributed.
+
+## Ultra Agent v2 workflow
+
+For a new repository, the manager can initialize the local control plane with:
+
+```powershell
+node tools/ultra-agent-v2/preflight.mjs --dir . --project my-project
+node tools/ultra-agent-v2/memory.mjs init --dir . --project my-project
+```
+
+Research and verification are recorded separately in `.agents/memory/`. This improves repeat work and auditability without exporting hidden chain-of-thought, credentials, customer data or raw chat transcripts. See [the runtime protocol](shared/ULTRA_AGENT_V2_PROTOCOL.md) for the contract.
 
 `SKILL-PROVENANCE.json` maps every bundled skill to its observed source category and explicitly marks skills whose public licence/source review is still pending. The package remains private-only until those entries are cleared; no licence or provenance is invented.
 
