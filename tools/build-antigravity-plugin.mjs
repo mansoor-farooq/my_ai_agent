@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.3.8';
+const packageVersion = '1.3.9';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -217,10 +217,18 @@ const signedInstaller = [
   '  if (Test-Path -LiteralPath $agyPath -PathType Leaf) { $agy = [pscustomobject]@{ Source = $agyPath } } else { $agy = Get-Command agy -ErrorAction SilentlyContinue }',
   '}',
   "if (-not $agy) { throw 'Antigravity CLI installation did not produce agy.exe. Check network access, then run this installer again.' }",
-  '& $agy.Source plugin validate --strict $pluginRoot',
-  "if ($LASTEXITCODE -ne 0) { throw 'Antigravity plugin validation failed.' }",
-  '& $agy.Source plugin install $pluginRoot',
-  "if ($LASTEXITCODE -ne 0) { throw 'Mansoor Agent Hub installation failed.' }",
+  '$installStage = Join-Path ([IO.Path]::GetTempPath()) ("mansoor-agent-hub-stage-" + [guid]::NewGuid().ToString("N"))',
+  'New-Item -ItemType Directory -Path $installStage | Out-Null',
+  'try {',
+  "  foreach ($item in @('plugin.json', 'README.md', 'assets', 'agents', 'skills', 'rules')) {",
+  '    $sourceItem = Join-Path $pluginRoot $item',
+  '    if (Test-Path -LiteralPath $sourceItem) { Copy-Item -LiteralPath $sourceItem -Destination $installStage -Recurse -Force }',
+  '  }',
+  '  & $agy.Source plugin validate --strict $installStage',
+  "  if ($LASTEXITCODE -ne 0) { throw 'Antigravity plugin validation failed.' }",
+  '  & $agy.Source plugin install $installStage',
+  "  if ($LASTEXITCODE -ne 0) { throw 'Mansoor Agent Hub installation failed.' }",
+  '} finally { if (Test-Path -LiteralPath $installStage) { Remove-Item -LiteralPath $installStage -Recurse -Force -ErrorAction SilentlyContinue } }',
   "Write-Host ''",
   "Write-Host 'Installing official Antigravity plugins...' -ForegroundColor Cyan",
   '$officialPlugins = @(',
