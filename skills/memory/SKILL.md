@@ -14,6 +14,7 @@ This skill eliminates repetitive exploration, redundant scanning, and lost conte
 
 1. **Memory First, Never Blind Scan:**
    - At the start of every session or task, read `.agents/memory/PROJECT_MEMORY.md` first.
+   - For V3 tasks, build a context packet with `node tools/ultra-agent-v3/context.mjs --dir <repo> --project <name>` before broad scanning. Treat reported conflicts as blockers until verified.
    - When the portable Ultra Agent v2 runtime is present, inspect it with `node tools/ultra-agent-v2/memory.mjs status --dir <repo> --project <name>` and use its project-scoped files as the canonical local fallback.
    - Use a vector-memory connector only when it is explicitly installed and authorized; never assume `ruflo` exists in a portable Antigravity package.
    - Never run broad file listings or re-read unchanged files that are already mapped in memory.

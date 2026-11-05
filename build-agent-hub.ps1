@@ -46,7 +46,11 @@ try {
     (Join-Path $hub 'tools\tests\agent-hub-doctor.test.mjs') `
     (Join-Path $hub 'tools\tests\backend-ml-router.test.mjs') `
     (Join-Path $hub 'tools\tests\portable-plugin-contents.test.mjs') `
-    (Join-Path $hub 'tools\tests\ultra-agent-v2.test.mjs')
+    (Join-Path $hub 'tools\tests\ultra-agent-v2.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v3-state.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v3-mode.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v3-context.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v3-evaluation.test.mjs')
   if ($LASTEXITCODE -ne 0) { throw 'Focused tests failed.' }
 
   $archive = Join-Path $hub 'dist\mansoor-agent-hub.zip'

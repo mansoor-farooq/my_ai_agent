@@ -145,6 +145,20 @@ export async function runDoctor() {
     add('PASS', 'Ultra Agent v2 runtime', 'project preflight, local memory and research/verification ledgers are present and manager-routable');
   } else add('FAIL', 'Ultra Agent v2 runtime', `missing=[${missingUltraRuntime.join(', ')}] or manager routing is incomplete`);
 
+  const ultraV3Files = [
+    'tools/ultra-agent-v3/state.mjs',
+    'tools/ultra-agent-v3/mode.mjs',
+    'tools/ultra-agent-v3/plan.mjs',
+    'tools/ultra-agent-v3/context.mjs',
+    'tools/ultra-agent-v3/evaluate.mjs',
+    'tools/ultra-agent-v3/trace.mjs',
+  ];
+  const missingUltraV3 = ultraV3Files.filter((relative) => !fs.existsSync(path.join(root, relative)));
+  const v3Routes = [/tools\/ultra-agent-v3\/mode\.mjs/, /tools\/ultra-agent-v3\/state\.mjs/, /tools\/ultra-agent-v3\/evaluate\.mjs/];
+  if (!missingUltraV3.length && v3Routes.every((pattern) => pattern.test(mainText))) {
+    add('PASS', 'Ultra Agent v3 control plane', 'Fast/Premium routing, resumable state, context, evaluation and trace utilities are present and manager-routable');
+  } else add('FAIL', 'Ultra Agent v3 control plane', `missing=[${missingUltraV3.join(', ')}] or manager routing is incomplete`);
+
   const integrity = checksumReport();
   if (integrity.errors.length) add('FAIL', 'source integrity', integrity.errors.join('; '));
   else add('PASS', 'source integrity', `${integrity.checked} checksums verified; ${integrity.skipped} private/bulk archive checksums skipped`);

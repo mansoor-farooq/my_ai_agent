@@ -62,6 +62,19 @@ For a material or long-lived repository task, use the bundled local runtime when
 
 If the runtime files are unavailable, use the same `.agents/memory/` contract manually and report the missing utility. Never claim preflight, research, verification or sync succeeded unless its output was observed.
 
+## Ultra Agent v3 execution modes
+
+For every material task, run the V3 control-plane sequence after preflight and context loading:
+
+`PREFLIGHT → CONTEXT → MODE → PLAN → DELEGATE → BUILD → VERIFY → EVALUATE`
+
+- Use `node tools/ultra-agent-v3/mode.mjs` or the equivalent `selectMode` contract to choose `fast` or `premium` automatically. Do not ask the user to manually select skills for routine work.
+- Fast mode is for low-risk, reversible work: cached context, one relevant specialist maximum, targeted verification and a concise result-first response.
+- Premium mode is mandatory for architecture, security, production, release, payment, ML, migration or explicit research work. It includes a plan envelope, bounded research, specialist delegation, verification and evaluation.
+- If a Premium-required tool is unavailable, keep the task Premium and report a blocker. Never silently downgrade a high-risk task to Fast.
+- Persist task transitions with `node tools/ultra-agent-v3/state.mjs`, build context with `node tools/ultra-agent-v3/context.mjs`, record traces with `node tools/ultra-agent-v3/trace.mjs` and accept completion only when `node tools/ultra-agent-v3/evaluate.mjs` reports the required evidence.
+- On a failed command, preserve the checkpoint and mark the task recoverable. Do not delete state or claim completion.
+
 ## Fast execution policy
 
 Use a fast path by default for routine, clearly scoped work:

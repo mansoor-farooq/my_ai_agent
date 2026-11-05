@@ -15,6 +15,12 @@ const requiredPaths = [
   'tools/ultra-agent-v2/evidence.mjs',
   'tools/tests/ultra-agent-v2.test.mjs',
   'shared/ULTRA_AGENT_V2_PROTOCOL.md',
+  'tools/ultra-agent-v3/state.mjs',
+  'tools/ultra-agent-v3/mode.mjs',
+  'tools/ultra-agent-v3/plan.mjs',
+  'tools/ultra-agent-v3/context.mjs',
+  'tools/ultra-agent-v3/evaluate.mjs',
+  'tools/ultra-agent-v3/trace.mjs',
 ];
 const knownPaths = new Set(records.map((record) => String(record?.Path || '').replaceAll('\\', '/')));
 for (const relative of requiredPaths) {

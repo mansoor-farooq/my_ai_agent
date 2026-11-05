@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.4.0';
+const packageVersion = '1.5.0';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -61,6 +61,12 @@ const portableRuntimeFiles = [
   'shared/knowledge/PROJECT_MEMORY_SCHEMA.md',
   'shared/control-plane/agent-capability-manifest.json',
   'shared/ULTRA_AGENT_V2_PROTOCOL.md',
+  'tools/ultra-agent-v3/state.mjs',
+  'tools/ultra-agent-v3/mode.mjs',
+  'tools/ultra-agent-v3/plan.mjs',
+  'tools/ultra-agent-v3/context.mjs',
+  'tools/ultra-agent-v3/evaluate.mjs',
+  'tools/ultra-agent-v3/trace.mjs',
 ];
 for (const relativePath of portableRuntimeFiles) {
   const source = join(root, relativePath);
@@ -147,9 +153,9 @@ const premiumPackageReadme = [
   '',
   '## Ultra Agent v2 runtime',
   '',
-  'This release includes dependency-free project preflight, local project-scoped memory, idempotent research/verification ledgers and the existing consent-gated knowledge-bank sync utility. The manager uses these tools for material work and reports observed evidence only. Local memory stays in the target repository; Git sync remains opt-in.',
+  'This release includes the V2 memory/evidence foundation plus the V3 local control plane: automatic Fast/Premium routing, resumable state, conflict-aware context, evidence-gated evaluation, recovery checkpoints and append-only execution traces. The manager reports observed evidence only; local memory stays in the target repository and Git sync remains opt-in.',
   '',
-  'For a repository task, run `node tools/ultra-agent-v2/preflight.mjs --dir . --project my-project` and `node tools/ultra-agent-v2/memory.mjs init --dir . --project my-project`. See `shared/ULTRA_AGENT_V2_PROTOCOL.md` for the runtime contract.',
+  'For a repository task, run `node tools/ultra-agent-v2/preflight.mjs --dir . --project my-project` and `node tools/ultra-agent-v2/memory.mjs init --dir . --project my-project`. V3 mode/state/context/evaluation utilities are used automatically by the manager. See `shared/ULTRA_AGENT_V2_PROTOCOL.md` for the runtime contract.',
   '',
   '## Private ownership',
   '',

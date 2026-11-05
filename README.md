@@ -124,7 +124,7 @@ cd /d E:\Agents
 npm run build
 ```
 
-Current package target: 15 agent profiles, 173 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. Ultra Agent v2 also packages dependency-free project preflight, local project-scoped memory, idempotent research/verification ledgers, the existing consent-gated knowledge-bank sync utility and their protocol/schema files. Runtime gateways, credentials and private chats are not distributed.
+Current package target: 15 agent profiles, 173 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. Ultra Agent v3 packages the V2 foundation plus automatic Fast/Premium routing, resumable task state, conflict-aware context, evidence-gated evaluation, recovery checkpoints and append-only execution traces. Runtime gateways, credentials and private chats are not distributed.
 
 ## Ultra Agent v2 workflow
 
@@ -136,6 +136,12 @@ node tools/ultra-agent-v2/memory.mjs init --dir . --project my-project
 ```
 
 Research and verification are recorded separately in `.agents/memory/`. This improves repeat work and auditability without exporting hidden chain-of-thought, credentials, customer data or raw chat transcripts. See [the runtime protocol](shared/ULTRA_AGENT_V2_PROTOCOL.md) for the contract.
+
+## Fast and Premium modes
+
+The manager selects the mode automatically. Fast mode handles routine reversible work with cached context and targeted verification. Premium mode handles architecture, security, production, release, payment, ML, migration and explicit research with planning, bounded research, specialist delegation, independent verification and evaluation. Missing Premium tools block the task instead of silently downgrading it.
+
+V3 task state, checkpoints and traces remain local under `.agents/ultra-v3/`. A failed command is recoverable and resumable; it is never hidden by deleting state. The package records concise decisions and observable evidence, not hidden chain-of-thought or raw private chats.
 
 `SKILL-PROVENANCE.json` maps every bundled skill to its observed source category and explicitly marks skills whose public licence/source review is still pending. The package remains private-only until those entries are cleared; no licence or provenance is invented.
 

@@ -37,6 +37,19 @@ Memory is an evidence cache, not a transcript archive. It may store verified con
 
 Every ledger record has a stable ID, kind, timestamp, question/claim or command/result, confidence/status and optional source or independent check. Duplicate records are ignored. Secret-like values are redacted before writing. Research and verification remain separate so an unverified idea cannot be presented as a passing check.
 
+## V3 task state and recovery
+
+V3 task state is stored locally under `.agents/ultra-v3/tasks/<task-id>/`. The state utility records atomic JSONL events and a materialized `state.json`. Legal lifecycle states are `INTAKE`, `PREFLIGHT`, `CONTEXT`, `MODE`, `PLAN`, `DELEGATE`, `BUILD`, `VERIFY`, `EVALUATE`, `COMPLETE`, `PAUSED` and `RECOVERABLE_FAILURE`. A corrupt trailing event is ignored and rewritten from the last valid event during `resume`; state is never deleted to hide a failure.
+
+```powershell
+node tools/ultra-agent-v3/state.mjs start --dir . --task task-001 --project my-project
+node tools/ultra-agent-v3/state.mjs transition --dir . --task task-001 --to PREFLIGHT
+node tools/ultra-agent-v3/state.mjs checkpoint --dir . --task task-001 --label before-build
+node tools/ultra-agent-v3/state.mjs resume --dir . --task task-001
+```
+
+V3 traces are append-only JSONL records at `.agents/ultra-v3/traces/<task-id>.jsonl`. Completion is accepted only when the mode-specific evidence threshold is met: Fast requires a passing targeted verification and command result; Premium high-risk work additionally requires an independent check. A failed command returns `RECOVERABLE_FAILURE` with a resume checkpoint and never deletes the task state.
+
 ## Safety and ownership boundaries
 
 - The manager remains the only shipped main agent.
