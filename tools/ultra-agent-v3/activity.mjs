@@ -64,7 +64,7 @@ function formatParentUpdate(record) {
 
 function summarizeActivity({ dir = process.cwd(), project = path.basename(dir), taskId } = {}) {
   const projectDir = path.resolve(dir);
-  const projectInfo = projectIdentity({ dir: projectDir, project });
+  const projectInfo = projectIdentity({ dir: projectDir, project: project || path.basename(projectDir) });
   if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,95}$/.test(String(taskId || ''))) throw new Error('taskId is required and must be safe');
   const file = path.join(projectDir, '.agents', 'ultra-v4', 'activity', `${taskId}.jsonl`);
   const records = readRecords(file).filter((record) => record.projectId === projectInfo.projectId && record.taskId === taskId);

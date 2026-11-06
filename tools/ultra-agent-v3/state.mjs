@@ -116,10 +116,28 @@ function normalizeOwnedPath(value) {
   return String(value || '').replaceAll('\\', '/').replace(/^\.\//, '');
 }
 
+function safeProjectPath(absolutePath) {
+  if (!(absolutePath === projectDir || absolutePath.startsWith(`${projectDir}${path.sep}`))) return false;
+  let current = projectDir;
+  const relative = path.relative(projectDir, absolutePath);
+  for (const segment of relative.split(path.sep).filter(Boolean)) {
+    current = path.join(current, segment);
+    if (!fs.existsSync(current)) break;
+    try { if (fs.lstatSync(current).isSymbolicLink()) return false; } catch { return false; }
+  }
+  try {
+    const rootReal = fs.realpathSync(projectDir);
+    const candidateReal = fs.realpathSync(absolutePath);
+    return candidateReal === rootReal || candidateReal.startsWith(`${rootReal}${path.sep}`);
+  } catch {
+    return true;
+  }
+}
+
 function ownedPathManifest(values = []) {
   return [...new Set(values.map(normalizeOwnedPath).filter(Boolean))].slice(0, 200).map((relativePath) => {
     const absolutePath = path.resolve(projectDir, relativePath);
-    const insideRoot = absolutePath === projectDir || absolutePath.startsWith(`${projectDir}${path.sep}`);
+    const insideRoot = safeProjectPath(absolutePath);
     if (!insideRoot) return { path: relativePath, status: 'outside-root', sha256: null, bytes: null };
     if (!fs.existsSync(absolutePath)) return { path: relativePath, status: 'missing', sha256: null, bytes: null };
     const stat = fs.statSync(absolutePath);
@@ -260,8 +278,8 @@ function checkpoint() {
     const label = slugify(getArg('--label', 'checkpoint'));
     const checkpointPath = path.join(checkpointsDir, `${Date.now()}-${label}.json`);
     const ownedPaths = ownedPathManifest(getArg('--owned-paths').split(',').map((value) => value.trim()));
-    atomicWrite(checkpointPath, `${JSON.stringify({ ...snapshot, checkpointLabel: label, ownedPaths }, null, 2)}\n`);
-    return { ok: true, action, ...snapshot, checkpointPath, ownedPaths };
+    atomicWrite(checkpointPath, `${JSON.stringify({ ...snapshot, projectId, checkpointLabel: label, ownedPaths }, null, 2)}\n`);
+    return { ok: true, action, ...snapshot, projectId, checkpointPath, ownedPaths };
   });
 }
 
@@ -269,11 +287,13 @@ function verifyCheckpoint() {
   const checkpointPath = path.resolve(getArg('--checkpoint'));
   if (!checkpointPath || !fs.existsSync(checkpointPath)) throw new Error('--checkpoint must point to an existing checkpoint JSON');
   const checkpointData = JSON.parse(fs.readFileSync(checkpointPath, 'utf8'));
+  const checkpointProjectId = checkpointData.projectId || checkpointData.project?.projectId || null;
+  if (checkpointData.taskId !== taskId || checkpointProjectId !== projectId) throw new Error('Checkpoint identity mismatch: task or project does not match the requested verification context');
   const modifiedPaths = [], deletedPaths = [], unchangedPaths = [], missingPaths = [], outsideRootPaths = [], unsupportedPaths = [];
   for (const entry of Array.isArray(checkpointData.ownedPaths) ? checkpointData.ownedPaths : []) {
     const relativePath = normalizeOwnedPath(entry.path);
     const absolutePath = path.resolve(projectDir, relativePath);
-    if (entry.status === 'outside-root' || !(absolutePath === projectDir || absolutePath.startsWith(`${projectDir}${path.sep}`))) {
+    if (entry.status === 'outside-root' || !safeProjectPath(absolutePath)) {
       outsideRootPaths.push(relativePath);
       continue;
     }
@@ -285,7 +305,7 @@ function verifyCheckpoint() {
     const currentHash = crypto.createHash('sha256').update(fs.readFileSync(absolutePath)).digest('hex');
     if (entry.status !== 'file' || currentHash !== entry.sha256) modifiedPaths.push(relativePath); else unchangedPaths.push(relativePath);
   }
-  return { ok: true, action, taskId: checkpointData.taskId, projectId: checkpointData.projectId, checkpointPath, modifiedPaths, deletedPaths, unchangedPaths, missingPaths, outsideRootPaths, unsupportedPaths, rollbackApplied: false };
+  return { ok: true, action, taskId: checkpointData.taskId, projectId: checkpointProjectId, checkpointPath, modifiedPaths, deletedPaths, unchangedPaths, missingPaths, outsideRootPaths, unsupportedPaths, rollbackApplied: false };
 }
 
 function resume() {

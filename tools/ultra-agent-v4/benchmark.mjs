@@ -3,7 +3,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const secretPattern = /(?:AIza[0-9A-Za-z_-]{30,}|(?:sk|ghp|github_pat)_[A-Za-z0-9_-]{16,}|Bearer\s+[A-Za-z0-9._~+/=-]+|(?:password|passwd|pwd|secret|apiKey|api_key|token|authorization)\s*[:=]\s*["']?[^\s"';,}]+)/gi;
+const secretPattern = /(?:postgres(?:ql)?:\/\/[^\s"']+|AIza[0-9A-Za-z_-]{30,}|(?:sk|ghp|github_pat)(?:_|-)[A-Za-z0-9_-]{12,}|Bearer\s+[A-Za-z0-9._~+/=-]+|(?:password|passwd|pwd|secret|apiKey|api_key|token|authorization)\s*[:=]\s*["']?[^\s"';,}]+)/gi;
 const sanitize = (value, limit = 1000) => String(value || '').replace(secretPattern, '[REDACTED_SECRET]').slice(0, limit);
 const passing = new Set(['pass', 'passed', 'success', 'verified', 'complete']);
 
@@ -24,7 +24,7 @@ function recordTaskMetric(input = {}) {
   const startedAt = new Date(input.startedAt);
   const completedAt = new Date(input.completedAt);
   if (Number.isNaN(startedAt.valueOf()) || Number.isNaN(completedAt.valueOf()) || completedAt < startedAt) throw new Error('valid startedAt/completedAt are required');
-  const acceptanceChecks = (Array.isArray(input.acceptanceChecks) ? input.acceptanceChecks : []).map((status) => sanitize(status, 50));
+  const acceptanceChecks = (Array.isArray(input.acceptanceChecks) ? input.acceptanceChecks : []).map((status) => sanitize(status, 50)).slice(0, 100);
   const record = {
     schemaVersion: 1,
     metricId: crypto.randomUUID(),

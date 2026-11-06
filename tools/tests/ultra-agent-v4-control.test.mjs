@@ -53,11 +53,12 @@ test('evaluation exposes a redacted benchmark envelope without changing acceptan
   const failed = evaluateCompletion({
     taskId: 'task-failed', projectId: 'project-a', mode: 'fast', risk: 'low',
     startedAt: '2026-01-01T00:00:00.000Z', completedAt: '2026-01-01T00:00:00.100Z',
-    verificationRecords: [], commandResults: [{ command: 'npm test', status: 'fail', failureCode: 'verification-failed', reason: 'token=secret-value' }], changedPaths: ['src/app.ts'],
+    verificationRecords: [], commandResults: [{ command: 'npm test', status: 'fail', failureCode: 'verification-failed', reason: 'token=secret-value postgres://user:password@db.local/app sk-proj-12345678901234567890' }], changedPaths: ['src/app.ts'],
   });
   assert.equal(failed.benchmarkMetric.outcome, 'fail');
   assert.match(failed.benchmarkMetric.failureReason, /REDACTED_SECRET/);
   assert.doesNotMatch(failed.benchmarkMetric.failureReason, /secret-value/);
+  assert.doesNotMatch(failed.benchmarkMetric.failureReason, /postgres:\/\/|sk-proj-123456/);
 });
 
 test('recovery retries one targeted verification then stops on repeated signature', () => {

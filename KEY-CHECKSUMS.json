@@ -2311,8 +2311,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/state.mjs",
-    "SHA256": "304FF07FE4A62EE0F4B59E8211A9DC3C330B7616073A1681A1D4DAAE9CF32C39",
-    "Bytes": 14298
+    "SHA256": "816C86E7D797663FD559007295C60AA37856E14130821FF982DA72018F71AE30",
+    "Bytes": 15250
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/mode.mjs",
@@ -2331,8 +2331,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/evaluate.mjs",
-    "SHA256": "3DD6A14752F0DE1EB81CF1D56A9662C65154C79A4AFF191F06397F59FEF6E563",
-    "Bytes": 5413
+    "SHA256": "28DA8AA8051C08858D3B75455153624E574ECB438B4A88567902C664548523D6",
+    "Bytes": 5462
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/trace.mjs",
@@ -2361,13 +2361,13 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/activity.mjs",
-    "SHA256": "FBF9DD42D4EFDD38FEB09058D0E71AF4DCF5FE681855A1EE4BBBCD723E92DBEB",
-    "Bytes": 8872
+    "SHA256": "0F5646B6495591D2B8DBA2AAEC73D19C8C1D86B41597310AF4DA7D8FF0544018",
+    "Bytes": 8910
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/benchmark.mjs",
-    "SHA256": "B2507F7C8F554A7795E327F03ECCCA1CA167ECC47F25480F9C9D77EC3DA3893C",
-    "Bytes": 5228
+    "SHA256": "0C757887ED0FD262342AF0C5D7C30FF17D86DC0B5F565DB42AF627266B3603C1",
+    "Bytes": 5277
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/recovery.mjs",
@@ -2381,12 +2381,12 @@
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v3-policy-activity.test.mjs",
-    "SHA256": "661E25CE8F9BDD2FCE0DD73153A4950C0E4A072C922EF3BDB06108C066CCA17F",
-    "Bytes": 7022
+    "SHA256": "908F8622CB09AE5CF7A8523672927323837A9E15B3AAA7F29E35BC90D2009A1D",
+    "Bytes": 7755
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v4-control.test.mjs",
-    "SHA256": "E3760246AB77E0E1F9D4C741529272E94D35A0C0ECDEDA0010CD50107A50C6AB",
-    "Bytes": 4745
+    "SHA256": "C93607CD3C2B394D6586B8DEB0CAB19A7C447650FA1D7463D40BEE2E2B8EF9E2",
+    "Bytes": 4905
   }
 ]

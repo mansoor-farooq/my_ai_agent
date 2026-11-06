@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { appendFile, access, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { appendFile, access, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,6 +11,9 @@ const script = path.join(root, 'tools', 'ultra-agent-v3', 'state.mjs');
 
 function run(action, dir, extra = []) {
   return JSON.parse(execFileSync(process.execPath, [script, action, '--dir', dir, '--task', 'task-001', '--project', 'State Fixture', ...extra], { encoding: 'utf8' }));
+}
+function runAs(action, dir, task, project, extra = []) {
+  return JSON.parse(execFileSync(process.execPath, [script, action, '--dir', dir, '--task', task, '--project', project, ...extra], { encoding: 'utf8' }));
 }
 
 test('starts a project-scoped task in INTAKE with a stable identity', async () => {
@@ -96,10 +99,40 @@ test('checkpoint verification detects modified and deleted owned paths without r
     await writeFile(path.join(source, 'app.ts'), 'v2\n');
     await rm(path.join(source, 'gone.ts'));
     const verification = run('verify-checkpoint', fixture, ['--checkpoint', checkpoint.checkpointPath]);
+    assert.equal(verification.projectId, checkpoint.projectId);
     assert.deepEqual(verification.modifiedPaths, ['src/app.ts']);
     assert.deepEqual(verification.deletedPaths, ['src/gone.ts']);
     assert.deepEqual(verification.unchangedPaths, []);
     assert.equal(verification.rollbackApplied, false);
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
+
+test('checkpoint ignores an in-repo junction that resolves outside the project', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-state-junction-'));
+  const external = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-state-external-'));
+  try {
+    await writeFile(path.join(external, 'secret.txt'), 'outside data\n');
+    await symlink(external, path.join(fixture, 'link'), 'junction');
+    run('start', fixture);
+    const checkpoint = run('checkpoint', fixture, ['--label', 'junction', '--owned-paths', 'link/secret.txt']);
+    assert.equal(checkpoint.ownedPaths[0].status, 'outside-root');
+    const verification = run('verify-checkpoint', fixture, ['--checkpoint', checkpoint.checkpointPath]);
+    assert.deepEqual(verification.outsideRootPaths, ['link/secret.txt']);
+    assert.deepEqual(verification.modifiedPaths, []);
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+    await rm(external, { recursive: true, force: true });
+  }
+});
+
+test('checkpoint verification rejects a task or project identity mismatch', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-state-identity-'));
+  try {
+    run('start', fixture);
+    const checkpoint = run('checkpoint', fixture, ['--label', 'identity']);
+    assert.throws(() => runAs('verify-checkpoint', fixture, 'other-task', 'Other Project', ['--checkpoint', checkpoint.checkpointPath]), /identity mismatch/i);
   } finally {
     await rm(fixture, { recursive: true, force: true });
   }

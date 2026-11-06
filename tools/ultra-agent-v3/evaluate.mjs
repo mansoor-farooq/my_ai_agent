@@ -3,7 +3,7 @@ import path from 'node:path';
 import { createRecoveryPlan } from '../ultra-agent-v4/recovery.mjs';
 
 const passing = new Set(['pass', 'passed', 'success', 'verified', 'complete']);
-const secretPattern = /(?:AIza[0-9A-Za-z_-]{30,}|(?:sk|ghp|github_pat)_[A-Za-z0-9_-]{16,}|Bearer\s+[A-Za-z0-9._~+/=-]+|(?:password|passwd|pwd|secret|apiKey|api_key|token|authorization)\s*[:=]\s*["']?[^\s"';,}]+)/gi;
+const secretPattern = /(?:postgres(?:ql)?:\/\/[^\s"']+|AIza[0-9A-Za-z_-]{30,}|(?:sk|ghp|github_pat)(?:_|-)[A-Za-z0-9_-]{12,}|Bearer\s+[A-Za-z0-9._~+/=-]+|(?:password|passwd|pwd|secret|apiKey|api_key|token|authorization)\s*[:=]\s*["']?[^\s"';,}]+)/gi;
 const safe = (value, limit = 500) => String(value || '').replace(secretPattern, '[REDACTED_SECRET]').slice(0, limit);
 
 function evaluateCompletion(input = {}) {
@@ -20,7 +20,7 @@ function evaluateCompletion(input = {}) {
   const completedAt = input.completedAt ? new Date(input.completedAt) : null;
   const durationMs = startedAt && completedAt && !Number.isNaN(startedAt.valueOf()) && !Number.isNaN(completedAt.valueOf()) && completedAt >= startedAt
     ? completedAt - startedAt : null;
-  const acceptanceChecks = [...records.map((record) => record.status), ...commands.map((result) => result.status)].map((value) => safe(value, 50));
+  const acceptanceChecks = [...records.map((record) => record.status), ...commands.map((result) => result.status)].map((value) => safe(value, 50)).slice(0, 100);
   const benchmarkMetric = (outcome, failure = failedCommand) => ({
     schemaVersion: 1,
     taskId: safe(input.taskId, 96) || null,

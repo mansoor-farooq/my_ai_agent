@@ -101,3 +101,16 @@ test('activity summary builds a deterministic native parent timeline', async () 
     await rm(fixture, { recursive: true, force: true });
   }
 });
+
+test('activity summary uses the directory project fallback when project is omitted', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-activity-fallback-'));
+  try {
+    const common = ['--dir', fixture, '--task', 'task-4', '--worker', 'worker-1', '--role', 'qa-release-specialist'];
+    await run('activity.mjs', ['append', ...common, '--type', 'assignment', '--scope', 'Run checks', '--deliverable', 'Evidence']);
+    const summary = await run('activity.mjs', ['summary', '--dir', fixture, '--task', 'task-4']);
+    assert.equal(summary.workers.length, 1);
+    assert.equal(summary.workers[0].workerId, 'worker-1');
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
