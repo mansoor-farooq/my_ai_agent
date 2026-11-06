@@ -9,7 +9,7 @@ import { readFile } from 'node:fs/promises';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const runtime = path.join(root, 'tools', 'ultra-agent-v2', 'rag.mjs');
-const enabled = Boolean(process.env.RAG_DB_PASSWORD || process.env.PGPASSWORD);
+const enabled = process.env.RUN_RAG_TESTS === '1' || Boolean(process.env.RAG_DB_PASSWORD || process.env.PGPASSWORD);
 
 function run(dir, project, command, extra = [], overrides = {}) {
   const output = execFileSync(process.execPath, [runtime, command, '--dir', dir, '--project', project, ...extra], {
@@ -81,6 +81,9 @@ test('PostgreSQL RAG refreshes changed and deleted files deterministically', { s
     const first = run(project, 'refresh-project', 'build');
     assert.equal(first.changedFiles, 1);
 
+    const unchanged = run(project, 'refresh-project', 'build');
+    assert.equal(unchanged.changedFiles, 0);
+
     await writeFile(file, 'PostgreSQL retrieval architecture v2 with updated contracts.\\n');
     const second = run(project, 'refresh-project', 'build');
     assert.equal(second.changedFiles, 1);
@@ -94,6 +97,41 @@ test('PostgreSQL RAG refreshes changed and deleted files deterministically', { s
     const status = run(project, 'refresh-project', 'status');
     assert.equal(status.chunkCount, 0);
     assert.deepEqual(run(project, 'refresh-project', 'query', ['--q', 'updated contracts']).results, []);
+  } finally {
+    await rm(project, { recursive: true, force: true });
+  }
+});
+
+test('PostgreSQL RAG shares canonical identity and reports stale source state', { skip: !enabled }, async () => {
+  const project = await mkdtemp(path.join(os.tmpdir(), 'mansoor-rag-test-stale-'));
+  try {
+    execFileSync('git', ['init'], { cwd: project, stdio: 'ignore' });
+    execFileSync('git', ['remote', 'add', 'origin', 'https://secret-user:secret-token@example.com/owner/rag-fixture.git'], { cwd: project, stdio: 'ignore' });
+    await writeFile(path.join(project, 'README.md'), 'Stable source revision.\n');
+    const preflight = JSON.parse(execFileSync(process.execPath, [path.join(root, 'tools', 'ultra-agent-v2', 'preflight.mjs'), '--dir', project, '--project', 'RAG Identity'], { encoding: 'utf8' }));
+    const built = run(project, 'RAG Identity', 'build');
+    assert.equal(built.projectId, preflight.project.projectId);
+    assert.equal(run(project, 'RAG Identity', 'status').state, 'ready');
+    await writeFile(path.join(project, 'README.md'), 'Source changed after index build.\n');
+    assert.equal(run(project, 'RAG Identity', 'status').state, 'stale');
+  } finally {
+    await rm(project, { recursive: true, force: true });
+  }
+});
+
+test('hybrid RAG retrieves path-related evidence and reports component scores', { skip: !enabled }, async () => {
+  const project = await mkdtemp(path.join(os.tmpdir(), 'mansoor-rag-test-hybrid-'));
+  try {
+    await mkdir(path.join(project, 'docs'), { recursive: true });
+    await writeFile(path.join(project, 'docs', 'memory-compaction.md'), 'Snapshot pruning keeps the evidence lifecycle bounded.\n');
+    await writeFile(path.join(project, 'docs', 'unrelated.md'), 'Deployment release checklist and smoke verification.\n');
+    run(project, 'hybrid-project', 'build');
+    const hybrid = run(project, 'hybrid-project', 'query', ['--q', 'memory compact', '--ranking', 'hybrid', '--top', '2']);
+    assert.equal(hybrid.results[0].path, 'docs/memory-compaction.md');
+    assert.equal(hybrid.results[0].rankingMode, 'hybrid');
+    assert.equal(typeof hybrid.results[0].lexicalScore, 'number');
+    assert.equal(typeof hybrid.results[0].vectorScore, 'number');
+    assert.equal(typeof hybrid.results[0].pathScore, 'number');
   } finally {
     await rm(project, { recursive: true, force: true });
   }
