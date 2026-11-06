@@ -48,6 +48,13 @@ This private developer tool reflects Mansoor Farooq's senior engineering practic
 
 The installer verifies the package, runs Antigravity's strict plugin validation and installs or updates the team. No GitHub sign-in is required. Restart Antigravity after installation or reload its skills and agents.
 
+## Access Ultra Agent v4
+
+Open Antigravity after installation, open your project, then select the `production-orchestrator` custom agent from the agent picker. Give it the task in chat; it routes work to the relevant specialists and uses Chromium for browser-visible UI/QA when browser tooling is available. Live worker assignments, milestones and detailed worker conversations appear in the Antigravity parent chat and native sub-agent panel. No separate browser dashboard or remote telemetry service is required.
+
+Task state remains in each project's `.agents/ultra-v3/` folder for resumable execution, checkpoints and evidence; it is not a live activity feed.
+
+
 ## Complete owner setup
 
 Run this only on Mansoor Farooq's owner PC from `E:\Agents`:
@@ -124,7 +131,7 @@ cd /d E:\Agents
 npm run build
 ```
 
-Current package target: 15 agent profiles, 173 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. Ultra Agent v3 packages the V2 foundation plus automatic Fast/Premium routing, resumable task state, conflict-aware context, evidence-gated evaluation, recovery checkpoints and append-only execution traces. Runtime gateways, credentials and private chats are not distributed.
+Current package target: 15 agent profiles, 174 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. Ultra Agent v4 builds on the V3 control plane with Chromium-aware automatic UI/QA routing and an evidence-led browser verification skill. Runtime gateways, credentials and private chats are not distributed.
 
 ## Ultra Agent v2 workflow
 
@@ -143,13 +150,13 @@ The manager selects the mode automatically. Fast mode handles routine reversible
 
 V3 task state, checkpoints and traces remain local under `.agents/ultra-v3/`. A failed command is recoverable and resumable; it is never hidden by deleting state. The package records concise decisions and observable evidence, not hidden chain-of-thought or raw private chats.
 
-The installer displays a branded Mansoor Farooq Agent Team / Ultra Agent v3 safe-build banner, keeps an installer log and stages `tools` and `shared` runtime files before validation so the installed plugin retains the full V3 control plane.
+The installer displays a branded Mansoor Farooq Agent Team / Ultra Agent v4 safe-build banner, keeps an installer log and stages `tools` and `shared` runtime files before validation so the installed plugin retains the complete agent runtime.
 
 `SKILL-PROVENANCE.json` maps every bundled skill to its observed source category and explicitly marks skills whose public licence/source review is still pending. The package remains private-only until those entries are cleared; no licence or provenance is invented.
 
 ## Official plugin boundary
 
-The current owner machine exposes 266 skill names through separate official Antigravity plugins; 93 plugin-owned names are not copied into this provider-free ZIP. They remain with their official plugin because their behavior can depend on plugin MCP servers, hooks, telemetry, account consent or provider-specific runtime files. The Agent Hub records and routes its own 173 reusable skill bodies; it does not silently clone or auto-install those external plugin connections.
+The current owner machine exposes 266 skill names through separate official Antigravity plugins; 93 plugin-owned names are not copied into this provider-free ZIP. They remain with their official plugin because their behavior can depend on plugin MCP servers, hooks, telemetry, account consent or provider-specific runtime files. The Agent Hub records and routes its own 174 reusable skill bodies; it does not silently clone or auto-install those external plugin connections.
 
 ## Skill source coverage
 

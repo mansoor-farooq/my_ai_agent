@@ -2,6 +2,13 @@
 
 Ultra Agent v2 is the local, project-scoped execution contract for the Mansoor Agent Hub. It makes the manager faster on repeat work without exporting credentials, hidden chain-of-thought, private chats or unrelated project data.
 
+## Native agent activity and user approval
+
+The production orchestrator's parent chat is the concise task activity log. Before native sub-agent delegation it identifies the selected workers, roles, bounded scopes, and expected outputs; at meaningful milestones it reports observed progress, blockers, and results. The Antigravity native sub-agent panel is the source for live worker states and detailed worker conversations. The standalone browser dashboard is retired because it only mirrored persisted task files and could not show live Antigravity work.
+
+For material feature requests, reconstruct the selected project's current behavior and research current primary sources before proposing implementation. Present a cited brief with project contracts, competitor evidence, 2–3 options, trade-offs, risks, differentiation, and acceptance criteria; wait for explicit approval before editing product code. Routine bounded fixes remain on the fast path.
+
+Memory remains isolated to the selected project's `.agents/memory/` directory. Validate project identity and freshness before reuse; never copy memory across projects or store credentials, raw chats, or hidden reasoning. Preserve project structure and existing contracts; broad restructuring requires its own proposal and approval. On quota limits, checkpoint and pause/resume using the platform's supported account rules; never rotate credentials to bypass a limit.
 ## Runtime loop
 
 `BOOT → PREFLIGHT → MEMORY → RESEARCH → PLAN → BUILD → VERIFY → SYNC`
@@ -42,10 +49,10 @@ Every ledger record has a stable ID, kind, timestamp, question/claim or command/
 V3 task state is stored locally under `.agents/ultra-v3/tasks/<task-id>/`. The state utility records atomic JSONL events and a materialized `state.json`; each event carries task ID, project ID, actor, previous/next state and evidence references. Legal lifecycle states are `INTAKE`, `PREFLIGHT`, `CONTEXT`, `MODE`, `PLAN`, `DELEGATE`, `BUILD`, `VERIFY`, `EVALUATE`, `COMPLETE`, `PAUSED` and `RECOVERABLE_FAILURE`. A corrupt or semantically invalid tail is quarantined and rewritten from the last valid event during `resume`; state is never deleted to hide a failure. Task updates use a local lock so concurrent workers do not overwrite each other's events.
 
 ```powershell
-node tools/ultra-agent-v3/state.mjs start --dir . --task task-001 --project my-project
-node tools/ultra-agent-v3/state.mjs transition --dir . --task task-001 --to PREFLIGHT
-node tools/ultra-agent-v3/state.mjs checkpoint --dir . --task task-001 --label before-build
-node tools/ultra-agent-v3/state.mjs resume --dir . --task task-001
+node <hubRoot>/tools/ultra-agent-v3/state.mjs start --dir <project> --task task-001 --project my-project
+node <hubRoot>/tools/ultra-agent-v3/state.mjs transition --dir <project> --task task-001 --to PREFLIGHT
+node <hubRoot>/tools/ultra-agent-v3/state.mjs checkpoint --dir <project> --task task-001 --label before-build
+node <hubRoot>/tools/ultra-agent-v3/state.mjs resume --dir <project> --task task-001
 ```
 
 V3 traces are append-only JSONL records at `.agents/ultra-v3/traces/<task-id>.jsonl` with project ID and evidence references. Completion is accepted only when the mode-specific evidence threshold is met: Fast requires a passing targeted verification and command result; every Premium task requires a research-ledger record, and Premium high-risk work additionally requires an independent check. A failed command writes a durable resume checkpoint, returns `RECOVERABLE_FAILURE` and never deletes the task state.
@@ -57,3 +64,8 @@ V3 traces are append-only JSONL records at `.agents/ultra-v3/traces/<task-id>.js
 - No credentials, MCP servers, provider bridges or hidden monitoring are bundled.
 - Project sync is opt-in and scoped; local memory works without GitHub access.
 - The package never exports hidden chain-of-thought. It records concise decisions and observable evidence only.
+
+
+## PostgreSQL project RAG
+
+The selected repository may maintain a project-scoped retrieval index in the local `mansoor_agent_rag` PostgreSQL database. Runtime access is through `tools/ultra-agent-v2/rag.mjs` and is bound to the V2 project identity. The runtime uses `localhost` by default, avoids a hard-coded IP and creates the configured database when the authenticated role permits it. Retrieval results must carry project ID, relative path, line range and source hash. The index excludes secrets, credentials, dependencies, binaries, raw chats and unrelated repositories. Missing or stale indexes are rebuilt before material feature work; retrieved text is evidence and must be checked against current source. PostgreSQL full-text search is the default; embeddings remain optional and provider-free.

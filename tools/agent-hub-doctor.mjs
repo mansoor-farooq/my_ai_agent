@@ -97,7 +97,7 @@ export async function runDoctor() {
   const portable = await inspectPortableSource(root);
   const skillReferences = await readAgentSkillReferences(root);
   const missingSkillBodies = [...new Set(skillReferences.filter((name) => !portable.skills.includes(name)))].sort();
-  if (portable.skills.length === 173 && portable.rules.length === 4
+  if (portable.skills.length === 174 && portable.rules.length === 4
       && !portable.invalidSkills.length && !portable.invalidRules.length
       && !portable.nestedSkillFiles.length && !portable.unsafePaths.length
       && !portable.brokenLocalReferences.length && !portable.provenanceGaps.length
@@ -158,6 +158,13 @@ export async function runDoctor() {
   if (!missingUltraV3.length && v3Routes.every((pattern) => pattern.test(mainText))) {
     add('PASS', 'Ultra Agent v3 control plane', 'Fast/Premium routing, resumable state, context, evaluation and trace utilities are present and manager-routable');
   } else add('FAIL', 'Ultra Agent v3 control plane', `missing=[${missingUltraV3.join(', ')}] or manager routing is incomplete`);
+
+  const nativeActivityReady = /invoke_subagent/i.test(mainText)
+    && /native sub-agent panel/i.test(mainText)
+    && /do not direct the user to a separate browser dashboard/i.test(mainText);
+  if (nativeActivityReady) {
+    add('PASS', 'Ultra Agent v4 native activity', 'parent chat and Antigravity native sub-agent panel are the live activity surface; standalone browser dashboard is retired');
+  } else add('FAIL', 'Ultra Agent v4 native activity', 'manager profile is missing the native activity contract');
 
   const integrity = checksumReport();
   if (integrity.errors.length) add('FAIL', 'source integrity', integrity.errors.join('; '));

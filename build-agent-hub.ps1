@@ -46,6 +46,8 @@ try {
     (Join-Path $hub 'tools\tests\agent-hub-doctor.test.mjs') `
     (Join-Path $hub 'tools\tests\backend-ml-router.test.mjs') `
     (Join-Path $hub 'tools\tests\portable-plugin-contents.test.mjs') `
+    (Join-Path $hub 'tools\tests\native-agent-activity-contract.test.mjs') `
+    (Join-Path $hub 'tools\tests\project-rag.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v2.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v3-state.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v3-mode.test.mjs') `

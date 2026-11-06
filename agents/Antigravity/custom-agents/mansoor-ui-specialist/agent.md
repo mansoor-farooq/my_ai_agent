@@ -24,6 +24,7 @@ skills:
   - skills/design-reference-research
   - skills/production-code-quality
   - skills/reverse-engineering
+  - skills/chromium-browser-engineering
   - skills/reverse-deep-researcher
   - skills/autonomous-deep-researcher
   - skills/workflow-source-research

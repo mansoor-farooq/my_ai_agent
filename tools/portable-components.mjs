@@ -1,4 +1,4 @@
-import { cp, mkdir, readdir, readFile } from 'node:fs/promises';
+import { chmod, cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const validRuleTriggers = new Set(['always_on', 'model_decision', 'glob', 'manual']);
@@ -60,6 +60,24 @@ function ruleTrigger(markdown) {
   return frontmatter?.[1].match(/^trigger:\s*([^\r\n]+)\s*$/m)?.[1]?.trim();
 }
 
+
+function compactSkillRouter(markdown, name) {
+  const frontmatterMatch = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!frontmatterMatch) throw new Error('Skill has no frontmatter: ' + name);
+  const frontmatter = frontmatterMatch[1];
+  const nameMatch = frontmatter.match(/^name:\s*([^\r\n]+)$/m);
+  const licenseMatch = frontmatter.match(/^license:\s*([^\r\n]+)$/m);
+  const sourceMatch = frontmatter.match(/^(?:author|source|source_repo|source_url):\s*([^\r\n]+)$/m);
+  const descriptionMatch = frontmatter.match(/^description:\s*([\s\S]*?)(?=^[A-Za-z0-9_-]+:|^---\s*$)/m);
+  const description = (descriptionMatch?.[1] ?? name).replace(/^>[-+]?\s*/m, '').replace(/\r?\n[ \t]+/g, ' ').replace(/\r?\n/g, ' ').replace(/\s+/g, ' ').trim().replace(/^['"]|['"]$/g, '').slice(0, 60).replace(/[,:;. ]?\s*$/, '');
+  const lines = [
+    '---',
+    'name: ' + (nameMatch?.[1]?.trim() ?? name),
+    'description: ' + JSON.stringify(description + '. Use when the task matches this skill.'),
+  ];
+  lines.push('---', '', 'Read full instructions at ../skill-library/' + name + '/SKILL.md when selected.', '');
+  return lines.join('\n');
+}
 export async function inspectPortableSource(root) {
   const skillsRoot = path.join(root, 'skills');
   const rulesRoot = path.join(root, 'rules');
@@ -162,7 +180,15 @@ export async function copyPortableComponents(root, target, credentialPattern) {
   }
 
   await mkdir(target, { recursive: true });
+  await cp(path.join(root, 'skills'), path.join(target, 'skill-library'), { recursive: true, errorOnExist: true });
   await cp(path.join(root, 'skills'), path.join(target, 'skills'), { recursive: true, errorOnExist: true });
+  for (const name of inventory.skills) {
+    const source = path.join(root, 'skills', name, 'SKILL.md');
+    const destination = path.join(target, 'skills', name, 'SKILL.md');
+    const original = (await readFile(source, 'utf8')).replace(/^\uFEFF/, '');
+    await chmod(destination, 0o644);
+    await writeFile(destination, compactSkillRouter(original, name));
+  }
   await cp(path.join(root, 'rules'), path.join(target, 'rules'), { recursive: true, errorOnExist: true });
   const missingSupportFiles = [];
   for (const relative of requiredPortableSupportFiles) {

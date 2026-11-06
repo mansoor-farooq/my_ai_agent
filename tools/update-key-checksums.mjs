@@ -6,8 +6,17 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = path.join(root, 'KEY-CHECKSUMS.json');
-const records = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+let records = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 if (!Array.isArray(records)) throw new Error('KEY-CHECKSUMS.json must contain an array.');
+
+const retiredPaths = new Set([
+  'Agents/tools/ultra-agent-v4-control-panel/server.mjs',
+  'Agents/tools/ultra-agent-v4-control-panel/public/index.html',
+  'Agents/tools/ultra-agent-v4-control-panel/public/styles.css',
+  'Agents/tools/ultra-agent-v4-control-panel/public/app.js',
+  'Agents/Open-Ultra-Agent-Control-Panel.cmd',
+]);
+records = records.filter((record) => !retiredPaths.has(String(record?.Path || '').replaceAll('\\', '/')));
 
 const requiredPaths = [
   'tools/ultra-agent-v2/preflight.mjs',

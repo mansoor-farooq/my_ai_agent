@@ -17,7 +17,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 test('portable source contains the complete owned skill and rule library', async () => {
   const inventory = await inspectPortableSource(root);
 
-  assert.equal(inventory.skills.length, 173);
+  assert.equal(inventory.skills.length, 174);
   assert.equal(inventory.rules.length, 4);
   assert.deepEqual(inventory.invalidSkills, []);
   assert.deepEqual(inventory.invalidRules, []);
@@ -129,6 +129,7 @@ test('built ZIP retains the support files after archive creation', async () => {
     for (const relative of requiredPortableSupportFiles) {
       await assert.doesNotReject(access(path.join(output, relative)), relative);
     }
+    await assert.doesNotReject(access(path.join(output, 'tools', 'ultra-agent-v2', 'rag.mjs')), 'project-scoped PostgreSQL RAG runtime');
     for (const relative of [
       'tools/ultra-agent-v2/preflight.mjs',
       'tools/ultra-agent-v2/memory.mjs',
@@ -149,7 +150,7 @@ test('built ZIP retains the support files after archive creation', async () => {
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.5.0');
+    assert.equal(plugin.version, '1.7.2');
     const installer = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.ps1'), 'utf8');
     assert.match(installer, /nodejs\.org\/dist\/index\.json/);
     assert.match(installer, /SHASUMS256\.txt/);
@@ -163,13 +164,35 @@ test('built ZIP retains the support files after archive creation', async () => {
     assert.match(installer, /mansoor-agent-hub-stage-/);
     assert.match(installer, /Copy-Item -LiteralPath \$sourceItem/);
     assert.match(installer, /@\(.*'tools'.*'shared'.*\)/s);
-    assert.match(installer, /MANSOOR FAROOQ AGENT TEAM/);
-    assert.match(installer, /ULTRA AGENT v3/);
-    assert.match(installer, /plugin install \$installStage/);
+    assert.match(installer, /\[MF\]\s+MANSOOR FAROOQ/);
+    assert.match(installer, /ULTRA AGENT v4/);
+    assert.match(installer, /VALIDATED\s+\/\s+15 agents, 174 skills, 4 rules/);
+    assert.match(installer, /Invoke-AgyCaptured -CommandArguments @\("plugin", "validate"/);
+    assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$validationResult = Invoke-AgyCaptured'));
+    assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$inventoryResult = Invoke-AgyCaptured'));
+    assert.match(installer, /PACKAGE INTEGRITY/);
+    assert.match(installer, /OPTIONAL EXTENSIONS/);
+    assert.match(installer, /INSTALLATION COMPLETE/);
+    assert.match(installer, /"plugin", "install", \$installStage/);
     const launcher = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.cmd'), 'utf8');
     assert.match(launcher, /Install-Mansoor-Agent-Team\.log/);
     assert.match(launcher, /pause/);
     assert.doesNotMatch(installer, /gh auth login|github\.com\/login/);
+  } finally {
+    await rm(output, { recursive: true, force: true });
+  }
+});
+
+test('build output keeps compact routers and full skill instructions separately', async () => {
+  const output = await mkdtemp(path.join(os.tmpdir(), 'mansoor-agent-hub-router-'));
+  try {
+    await copyPortableComponents(root, output, /(?:AIza[0-9A-Za-z_-]{30,}|AQ\.[0-9A-Za-z_-]{32,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9_]{30,})/);
+    const router = await readFile(path.join(output, 'skills', 'software-architect', 'SKILL.md'), 'utf8');
+    const full = await readFile(path.join(output, 'skill-library', 'software-architect', 'SKILL.md'), 'utf8');
+    assert.match(router, /Read full instructions at \.\.\/skill-library\/software-architect\/SKILL\.md/);
+    assert.match(router, /skill-library\/software-architect\/SKILL\.md/);
+    assert.ok(router.length < 900, `router unexpectedly large: ${router.length}`);
+    assert.ok(full.length > router.length * 10, 'full instructions were not preserved separately');
   } finally {
     await rm(output, { recursive: true, force: true });
   }

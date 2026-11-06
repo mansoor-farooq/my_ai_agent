@@ -20,6 +20,7 @@ skills:
   - skills/node-testing-quality
   - skills/python-testing-quality
   - skills/webapp-testing
+  - skills/chromium-browser-engineering
   - skills/dotnet-release-readiness
   - skills/dotnet-cicd-quality-gates
   - skills/efficient-context

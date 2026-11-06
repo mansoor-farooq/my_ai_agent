@@ -59,6 +59,7 @@ const eventsPath = path.join(taskDir, 'events.jsonl');
 const statePath = path.join(taskDir, 'state.json');
 const checkpointsDir = path.join(taskDir, 'checkpoints');
 const lockPath = path.join(taskDir, '.lock');
+const lockTimeoutMs = Math.min(30000, Math.max(100, Number.parseInt(getArg('--lock-timeout-ms', '5000'), 10) || 5000));
 const secretPattern = /(?:AIza[0-9A-Za-z_-]{30,}|(?:sk|ghp|github_pat)_[A-Za-z0-9_-]{16,}|Bearer\s+[A-Za-z0-9._~+/=-]+|(?:password|passwd|pwd|secret|apiKey|api_key|token|authorization)\s*[:=]\s*["']?[^\s"';,}]+)/gi;
 const safeText = (value) => String(value || '').replace(secretPattern, '[REDACTED_SECRET]').slice(0, 1000);
 
@@ -141,17 +142,31 @@ function sleep(milliseconds) {
 
 function withTaskLock(callback) {
   fs.mkdirSync(taskDir, { recursive: true });
+  const startedAt = Date.now();
   let descriptor;
-  for (let attempt = 0; attempt < 100; attempt += 1) {
+  let attempts = 0;
+  while (descriptor === undefined) {
     try {
       descriptor = fs.openSync(lockPath, 'wx');
+      const metadata = {
+        pid: process.pid,
+        taskId,
+        projectId,
+        acquiredAt: new Date().toISOString(),
+      };
+      fs.writeFileSync(lockPath, JSON.stringify(metadata) + '\n', 'utf8');
       break;
     } catch (error) {
       if (error.code !== 'EEXIST') throw error;
-      sleep(10);
+      const waitedMs = Date.now() - startedAt;
+      if (waitedMs >= lockTimeoutMs) {
+        throw new Error('Could not acquire task state lock within ' + lockTimeoutMs + 'ms. Another manager may still be updating task ' + taskId + '; retry the task.');
+      }
+      const delayMs = Math.min(250, 10 * (2 ** Math.min(attempts, 4)));
+      sleep(Math.min(delayMs, Math.max(1, lockTimeoutMs - waitedMs)));
+      attempts += 1;
     }
   }
-  if (descriptor === undefined) throw new Error('Could not acquire task state lock. Retry the task.');
   try { return callback(); } finally {
     fs.closeSync(descriptor);
     try { fs.unlinkSync(lockPath); } catch { /* Another recovery process may have cleaned it. */ }

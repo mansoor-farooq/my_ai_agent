@@ -186,6 +186,17 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "chromium-browser-engineering",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": null,
+      "declaredSource": null,
+      "provenanceStatus": "unverified",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": true
+    },
+    {
       "name": "cinematic-ui",
       "sourceRoots": [
         "antigravity-global"
