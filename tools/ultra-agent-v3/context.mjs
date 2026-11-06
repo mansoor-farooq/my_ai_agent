@@ -1,7 +1,6 @@
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { projectIdentity } from '../ultra-agent-v2/project-identity.mjs';
 
 const secretPatterns = [
   /AIza[0-9A-Za-z_-]{30,}/g,
@@ -15,27 +14,6 @@ const sanitize = (value) => {
   for (const pattern of secretPatterns) result = result.replace(pattern, (...match) => match.length > 2 && typeof match[1] === 'string' ? `${match[1]}[REDACTED_SECRET]` : '[REDACTED_SECRET]');
   return result.slice(0, 2000);
 };
-const git = (dir, args) => {
-  const result = spawnSync('git', args, { cwd: dir, encoding: 'utf8', windowsHide: true });
-  return result.status === 0 ? result.stdout.trim() : '';
-};
-const slugify = (value) => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48) || 'project';
-function sanitizedRemote(raw) {
-  if (!raw) return null;
-  try {
-    const url = new URL(raw.replace(/^git@([^:]+):/, 'ssh://git@$1/'));
-    url.username = url.username === 'git' ? 'git' : '';
-    url.password = '';
-    return url.toString().replace(/\/$/, '');
-  } catch {
-    return String(raw).replace(/:\/\/[^@]+@/, '://');
-  }
-}
-function projectIdentity(dir, name) {
-  const gitUrl = sanitizedRemote(git(dir, ['config', '--get', 'remote.origin.url']));
-  const projectId = crypto.createHash('sha256').update(`${(gitUrl || `local:${dir}`).toLowerCase()}|${slugify(name)}`).digest('hex').slice(0, 8);
-  return { name, slug: slugify(name), projectId, directory: dir, gitUrl, branch: git(dir, ['branch', '--show-current']) || null, commit: git(dir, ['rev-parse', '--short', 'HEAD']) || null };
-}
 
 function readJsonl(file) {
   if (!fs.existsSync(file)) return { records: [], malformed: false };
@@ -67,20 +45,20 @@ function fact(record) {
 
 async function buildContextPacket({ dir = process.cwd(), project = path.basename(dir) } = {}) {
   const projectDir = path.resolve(dir);
-  const projectInfo = projectIdentity(projectDir, project);
+  const projectInfo = projectIdentity({ dir: projectDir, project });
   const memory = path.join(projectDir, '.agents', 'memory');
   const research = readJsonl(path.join(memory, 'research-ledger.jsonl'));
   const verification = readJsonl(path.join(memory, 'verification-ledger.jsonl'));
   const records = [...research.records, ...verification.records].filter((record) => relevant(record, projectInfo.projectId));
+  const supersededIds = new Set(records.flatMap((record) => Array.isArray(record.supersedes) ? record.supersedes : []));
+  const activeRecords = records.filter((record) => !supersededIds.has(record.id));
   const malformedMemory = [
     research.malformed ? 'research-ledger.jsonl' : null,
     verification.malformed ? 'verification-ledger.jsonl' : null,
   ].filter(Boolean);
-  const staleRecords = records.filter((record) => record.commit && record.commit !== projectInfo.commit);
-  const currentRecords = records.filter((record) => !staleRecords.includes(record));
-  const verifiedFacts = currentRecords
-    .filter((record) => ['verified', 'pass', 'passed', 'complete'].includes(String(record.status).toLowerCase()))
-    .map(fact);
+  const staleRecords = activeRecords.filter((record) => (record.commit && record.commit !== projectInfo.commit)
+    || (record.validUntil && Date.parse(record.validUntil) < Date.now()));
+  const currentRecords = activeRecords.filter((record) => !staleRecords.includes(record));
   const groups = new Map();
   for (const record of currentRecords.filter((candidate) => candidate.subject && candidate.claim)) {
     const key = String(record.subject).toLowerCase().trim();
@@ -101,6 +79,13 @@ async function buildContextPacket({ dir = process.cwd(), project = path.basename
       };
     })
     .filter(Boolean);
+  const conflictingSubjects = new Set(conflicts.filter((conflict) => conflict.type === 'contradictory-evidence').map((conflict) => conflict.subject));
+  const verifiedFacts = currentRecords
+    .filter((record) => ['verified', 'pass', 'passed', 'complete', 'success'].includes(String(record.status).toLowerCase()))
+    .filter((record) => !record.subject || !conflictingSubjects.has(String(record.subject).toLowerCase().trim()))
+    .sort((a, b) => String(b.recordedAt || '').localeCompare(String(a.recordedAt || '')))
+    .slice(0, 50)
+    .map(fact);
   const decisionsFile = path.join(memory, 'decisions.md');
   const decisionRecords = [];
   if (fs.existsSync(decisionsFile)) {
@@ -155,7 +140,7 @@ async function buildContextPacket({ dir = process.cwd(), project = path.basename
     decisions: readNotes(path.join(memory, 'decisions.md')),
     openQuestions: readNotes(path.join(memory, 'open-questions.md')),
     conflicts,
-    evidenceRefs: records.map((record) => sanitize(record.id)).filter(Boolean),
+    evidenceRefs: records.map((record) => sanitize(record.id)).filter(Boolean).slice(-200),
   };
 }
 

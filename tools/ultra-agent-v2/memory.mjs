@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import crypto from 'node:crypto';
+import { projectIdentity } from './project-identity.mjs';
 
 const args = process.argv.slice(2);
 const commandName = args[0] || 'status';
@@ -14,12 +14,6 @@ const projectDir = path.resolve(getArg('--dir', process.cwd()));
 if (!fs.existsSync(projectDir)) throw new Error(`Project directory does not exist: ${projectDir}`);
 
 const memoryDir = path.join(projectDir, '.agents', 'memory');
-const slugify = (value, fallback = 'project') => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48) || fallback;
-const git = (gitArgs) => { const result = spawnSync('git', gitArgs, { cwd: projectDir, encoding: 'utf8', windowsHide: true }); return result.status === 0 ? result.stdout.trim() : ''; };
-const sanitizeGitUrl = (raw) => {
-  if (!raw) return null;
-  try { const url = new URL(raw.replace(/^git@([^:]+):/, 'ssh://git@$1/')); url.username = url.username === 'git' ? 'git' : ''; url.password = ''; return url.toString().replace(/\/$/, ''); } catch { return raw.replace(/:\/\/[^@]+@/, '://'); }
-};
 const secretPatterns = [
   /AIza[0-9A-Za-z_-]{30,}/g,
   /(?:sk|ghp|github_pat)_[A-Za-z0-9_-]{16,}/g,
@@ -31,15 +25,28 @@ function sanitize(value) { let result = String(value); for (const pattern of sec
 
 function identity() {
   const name = getArg('--project', path.basename(projectDir));
-  const slug = slugify(name);
-  const gitUrl = sanitizeGitUrl(getArg('--git-url', git(['config', '--get', 'remote.origin.url'])));
-  const projectId = crypto.createHash('sha256').update(`${(gitUrl || `local:${projectDir}`).toLowerCase()}|${slug}`).digest('hex').slice(0, 8);
-  return { name, slug, projectId, gitUrl, branch: git(['branch', '--show-current']) || null, commit: git(['rev-parse', '--short', 'HEAD']) || null };
+  const explicitGitUrl = getArg('--git-url', '');
+  return projectIdentity({ dir: projectDir, project: name, gitUrl: explicitGitUrl || undefined });
 }
 
 function writeIfMissing(file, content) { if (!fs.existsSync(file)) fs.writeFileSync(file, content, 'utf8'); }
 function timestamp() { return new Date().toISOString(); }
 function safeFile(name) { return new Set(['PROJECT_MEMORY.md', 'project-map.md', 'decisions.md', 'change-log.md', 'open-questions.md']).has(name) ? name : null; }
+function readJsonl(file) {
+  if (!fs.existsSync(file)) return [];
+  return fs.readFileSync(file, 'utf8').split(/\r?\n/).filter(Boolean).flatMap((line) => {
+    try { return [JSON.parse(line)]; } catch { return []; }
+  });
+}
+function positiveInt(value, fallback, maximum = 500) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, maximum) : fallback;
+}
+function atomicWrite(file, content) {
+  const temp = `${file}.${process.pid}.${crypto.randomBytes(4).toString('hex')}.tmp`;
+  fs.writeFileSync(temp, content, 'utf8');
+  fs.renameSync(temp, file);
+}
 
 if (commandName === 'init') {
   fs.mkdirSync(memoryDir, { recursive: true });
@@ -64,7 +71,62 @@ if (commandName === 'init') {
 } else if (commandName === 'status') {
   const files = ['PROJECT_MEMORY.md', 'project-map.md', 'decisions.md', 'change-log.md', 'open-questions.md', 'research-ledger.jsonl', 'verification-ledger.jsonl'];
   console.log(JSON.stringify({ ok: true, command: 'status', memoryDir, project: identity(), files: Object.fromEntries(files.map((file) => [file, fs.existsSync(path.join(memoryDir, file))])) }, null, 2));
+} else if (commandName === 'compact') {
+  fs.mkdirSync(memoryDir, { recursive: true });
+  const project = identity();
+  const maxFacts = positiveInt(getArg('--max-facts', '50'), 50);
+  const maxNotes = positiveInt(getArg('--max-notes', '50'), 50);
+  const ledgers = ['research-ledger.jsonl', 'verification-ledger.jsonl'];
+  const records = ledgers.flatMap((file) => readJsonl(path.join(memoryDir, file)))
+    .filter((record) => record?.projectId === project.projectId);
+  const superseded = new Set(records.flatMap((record) => Array.isArray(record.supersedes) ? record.supersedes : []));
+  const active = records.filter((record) => !superseded.has(record.id));
+  const groups = new Map();
+  for (const record of active.filter((item) => item.subject && item.claim)) {
+    const key = String(record.subject).toLowerCase().trim();
+    const values = groups.get(key) || [];
+    values.push(record);
+    groups.set(key, values);
+  }
+  const conflicts = [];
+  const conflictingSubjects = new Set();
+  for (const [subject, candidates] of groups) {
+    const claims = [...new Set(candidates.map((record) => String(record.claim).trim()))];
+    if (claims.length > 1) {
+      conflictingSubjects.add(subject);
+      conflicts.push({ subject, claims: claims.map(sanitize), evidenceRefs: candidates.map((record) => record.id).filter(Boolean) });
+    }
+  }
+  const passing = new Set(['pass', 'passed', 'verified', 'complete', 'success']);
+  const currentFacts = active
+    .filter((record) => record.subject && record.claim && passing.has(String(record.status).toLowerCase()) && !conflictingSubjects.has(String(record.subject).toLowerCase().trim()))
+    .sort((a, b) => String(b.recordedAt || '').localeCompare(String(a.recordedAt || '')))
+    .slice(0, maxFacts)
+    .map((record) => ({ id: record.id, kind: record.kind, subject: sanitize(record.subject), claim: sanitize(record.claim), status: record.status, recordedAt: record.recordedAt, commit: record.commit || null }));
+  const noteFiles = ['decisions.md', 'open-questions.md'];
+  const notes = Object.fromEntries(noteFiles.map((file) => {
+    const lines = fs.existsSync(path.join(memoryDir, file)) ? fs.readFileSync(path.join(memoryDir, file), 'utf8').split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith('#')).slice(-maxNotes).map(sanitize) : [];
+    return [file, lines];
+  }));
+  const ledgerHashes = Object.fromEntries(ledgers.map((file) => {
+    const target = path.join(memoryDir, file);
+    const bytes = fs.existsSync(target) ? fs.readFileSync(target) : Buffer.alloc(0);
+    return [file, crypto.createHash('sha256').update(bytes).digest('hex')];
+  }));
+  const snapshot = {
+    schemaVersion: 1,
+    generatedAt: timestamp(),
+    project,
+    currentFacts,
+    unresolvedConflicts: conflicts.slice(0, maxFacts),
+    notes,
+    omitted: { facts: Math.max(0, active.length - currentFacts.length), conflicts: Math.max(0, conflicts.length - maxFacts) },
+    ledgerHashes,
+  };
+  const snapshotPath = path.join(memoryDir, 'context-snapshot.json');
+  atomicWrite(snapshotPath, `${JSON.stringify(snapshot, null, 2)}\n`);
+  console.log(JSON.stringify({ ok: true, command: 'compact', snapshotPath, project, counts: { records: records.length, currentFacts: currentFacts.length, conflicts: conflicts.length } }, null, 2));
 } else {
-  throw new Error('Usage: node memory.mjs init|append|status [--dir PATH]');
+  throw new Error('Usage: node memory.mjs init|append|status|compact [--dir PATH]');
 }
 

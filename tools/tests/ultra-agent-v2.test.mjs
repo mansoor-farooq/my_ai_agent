@@ -27,6 +27,23 @@ test('preflight produces stable project identity and detects manifests', async (
   }
 });
 
+test('preflight and memory share one sanitized project identity', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v2-identity-'));
+  try {
+    execFileSync('git', ['init'], { cwd: fixture, stdio: 'ignore' });
+    execFileSync('git', ['remote', 'add', 'origin', 'https://secret-user:secret-token@example.com/owner/repo.git'], { cwd: fixture, stdio: 'ignore' });
+    const preflight = JSON.parse(run('preflight.mjs', ['--dir', fixture, '--project', 'Identity Fixture']));
+    JSON.parse(run('memory.mjs', ['init', '--dir', fixture, '--project', 'Identity Fixture']));
+    const memory = JSON.parse(run('memory.mjs', ['status', '--dir', fixture, '--project', 'Identity Fixture']));
+    assert.equal(preflight.project.projectId, memory.project.projectId);
+    assert.equal(preflight.project.projectId.length, 8);
+    assert.equal(preflight.project.gitUrl, 'https://example.com/owner/repo.git');
+    assert.doesNotMatch(JSON.stringify(memory), /secret-user|secret-token/);
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
+
 test('memory initializes a project dossier and redacts secrets on append', async () => {
   const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v2-memory-'));
   try {
@@ -58,6 +75,41 @@ test('evidence ledger is idempotent and redacts secrets', async () => {
     assert.equal(ledger.trim().split(/\r?\n/).length, 1);
     assert.match(ledger, /REDACTED_SECRET/);
     assert.doesNotMatch(ledger, /secret-value/);
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
+
+test('evidence preserves fail then pass history and stable subjects', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v2-evidence-history-'));
+  try {
+    const base = ['append', '--dir', fixture, '--project', 'Evidence Fixture', '--kind', 'verification', '--subject', 'unit-tests', '--command', 'npm test'];
+    const failed = JSON.parse(run('evidence.mjs', [...base, '--result', 'one failure', '--status', 'fail']));
+    const passed = JSON.parse(run('evidence.mjs', [...base, '--result', 'all passed', '--status', 'pass']));
+    assert.notEqual(failed.id, passed.id);
+    const records = JSON.parse(run('evidence.mjs', ['list', '--dir', fixture, '--project', 'Evidence Fixture', '--kind', 'verification']));
+    assert.equal(records.length, 2);
+    assert.ok(records.every((record) => record.subject === 'unit-tests'));
+    assert.deepEqual(records.map((record) => record.status), ['fail', 'pass']);
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
+
+test('memory compaction writes a bounded conflict-aware snapshot without deleting ledgers', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v2-compact-'));
+  try {
+    JSON.parse(run('memory.mjs', ['init', '--dir', fixture, '--project', 'Compact Fixture']));
+    run('evidence.mjs', ['append', '--dir', fixture, '--project', 'Compact Fixture', '--kind', 'verification', '--subject', 'api-style', '--claim', 'REST is canonical', '--status', 'pass']);
+    run('evidence.mjs', ['append', '--dir', fixture, '--project', 'Compact Fixture', '--kind', 'verification', '--subject', 'api-style', '--claim', 'GraphQL is canonical', '--status', 'pass']);
+    const compact = JSON.parse(run('memory.mjs', ['compact', '--dir', fixture, '--project', 'Compact Fixture', '--max-facts', '1', '--max-notes', '1']));
+    assert.equal(compact.ok, true);
+    const snapshot = JSON.parse(await readFile(path.join(fixture, '.agents', 'memory', 'context-snapshot.json'), 'utf8'));
+    assert.equal(snapshot.currentFacts.length, 0);
+    assert.equal(snapshot.unresolvedConflicts.length, 1);
+    assert.equal(snapshot.unresolvedConflicts[0].subject, 'api-style');
+    const raw = await readFile(path.join(fixture, '.agents', 'memory', 'verification-ledger.jsonl'), 'utf8');
+    assert.equal(raw.trim().split(/\r?\n/).length, 2);
   } finally {
     await rm(fixture, { recursive: true, force: true });
   }

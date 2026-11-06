@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { projectIdentity } from './project-identity.mjs';
 
 const args = process.argv.slice(2);
 const getArg = (name, fallback = '') => {
@@ -16,11 +16,6 @@ if (!fs.existsSync(projectDir) || !fs.statSync(projectDir).isDirectory()) {
   throw new Error(`Project directory does not exist: ${projectDir}`);
 }
 
-const slugify = (value, fallback = 'project') => value.toLowerCase().trim()
-  .replace(/[^a-z0-9]+/g, '-')
-  .replace(/^-|-$/g, '')
-  .slice(0, 48) || fallback;
-
 function command(commandName, commandArgs = []) {
   const executable = process.platform === 'win32' ? 'where.exe' : 'which';
   const located = spawnSync(executable, [commandName], { encoding: 'utf8', windowsHide: true });
@@ -32,19 +27,6 @@ function command(commandName, commandArgs = []) {
 function git(gitArgs) {
   const result = spawnSync('git', gitArgs, { cwd: projectDir, encoding: 'utf8', windowsHide: true });
   return result.status === 0 ? result.stdout.trim() : '';
-}
-
-function sanitizeGitUrl(raw) {
-  if (!raw) return null;
-  try {
-    const normalized = raw.replace(/^git@([^:]+):/, 'ssh://git@$1/');
-    const url = new URL(normalized);
-    url.username = url.username === 'git' ? 'git' : '';
-    url.password = '';
-    return url.toString().replace(/\/$/, '');
-  } catch {
-    return raw.replace(/:\/\/[^@]+@/, '://');
-  }
 }
 
 function has(relative) { return fs.existsSync(path.join(projectDir, relative)); }
@@ -60,9 +42,7 @@ const dotnetFiles = fs.readdirSync(projectDir, { withFileTypes: true })
 packageFiles.push(...dotnetFiles);
 
 const projectName = getArg('--project', path.basename(projectDir));
-const slug = slugify(projectName);
-const gitUrl = sanitizeGitUrl(git(['config', '--get', 'remote.origin.url']));
-const projectId = crypto.createHash('sha256').update(`${(gitUrl || `local:${projectDir}`).toLowerCase()}|${slug}`).digest('hex').slice(0, 8);
+const project = projectIdentity({ dir: projectDir, project: projectName });
 const checks = {
   git: command('git', ['--version']),
   node: command('node', ['--version']),
@@ -87,7 +67,7 @@ const missing = [...required].filter((name) => !checks[name]?.available);
 const result = {
   schemaVersion: 1,
   generatedAt: new Date().toISOString(),
-  project: { name: projectName, slug, projectId, directory: projectDir, gitUrl, branch: git(['branch', '--show-current']) || null, commit: git(['rev-parse', '--short', 'HEAD']) || null },
+  project,
   manifests: [...new Set(packageFiles)].sort(),
   requiredTools: [...required].sort(),
   checks,

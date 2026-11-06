@@ -49,6 +49,7 @@ test('surfaces contradictory same-subject evidence instead of silently merging i
     assert.ok(evidenceConflict);
     assert.equal(evidenceConflict.subject, 'api-style');
     assert.deepEqual(evidenceConflict.evidenceRefs.sort(), ['graphql', 'rest']);
+    assert.ok(!packet.verifiedFacts.some((fact) => fact.subject === 'api-style'));
     assert.ok(packet.conflicts.some((conflict) => conflict.type === 'contradictory-decision'));
   } finally {
     await rm(fixture.dir, { recursive: true, force: true });
