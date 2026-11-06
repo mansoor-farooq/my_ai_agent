@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.7.2';
+const packageVersion = '1.8.0';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -56,6 +56,7 @@ const portableRuntimeFiles = [
   'tools/ultra-agent-v2/preflight.mjs',
   'tools/ultra-agent-v2/memory.mjs',
   'tools/ultra-agent-v2/evidence.mjs',
+  'tools/ultra-agent-v2/project-identity.mjs',
   'tools/ultra-agent-v2/rag.mjs',
   'tools/sync-knowledge-bank.mjs',
   'tools/validate-capability-manifest.mjs',
@@ -68,6 +69,11 @@ const portableRuntimeFiles = [
   'tools/ultra-agent-v3/context.mjs',
   'tools/ultra-agent-v3/evaluate.mjs',
   'tools/ultra-agent-v3/trace.mjs',
+  'tools/ultra-agent-v3/delegation.mjs',
+  'tools/ultra-agent-v3/policy.mjs',
+  'tools/ultra-agent-v3/activity.mjs',
+  'tools/ultra-agent-v4/benchmark.mjs',
+  'tools/ultra-agent-v4/recovery.mjs',
 ];
 for (const relativePath of portableRuntimeFiles) {
   const source = join(root, relativePath);

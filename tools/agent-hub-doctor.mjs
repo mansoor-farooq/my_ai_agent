@@ -148,6 +148,8 @@ export async function runDoctor() {
     'tools/ultra-agent-v2/preflight.mjs',
     'tools/ultra-agent-v2/memory.mjs',
     'tools/ultra-agent-v2/evidence.mjs',
+    'tools/ultra-agent-v2/project-identity.mjs',
+    'tools/ultra-agent-v2/rag.mjs',
     'shared/ULTRA_AGENT_V2_PROTOCOL.md',
   ];
   const missingUltraRuntime = ultraRuntimeFiles.filter((relative) => !fs.existsSync(path.join(root, relative)));
@@ -164,12 +166,29 @@ export async function runDoctor() {
     'tools/ultra-agent-v3/context.mjs',
     'tools/ultra-agent-v3/evaluate.mjs',
     'tools/ultra-agent-v3/trace.mjs',
+    'tools/ultra-agent-v3/delegation.mjs',
+    'tools/ultra-agent-v3/policy.mjs',
+    'tools/ultra-agent-v3/activity.mjs',
   ];
   const missingUltraV3 = ultraV3Files.filter((relative) => !fs.existsSync(path.join(root, relative)));
   const v3Routes = [/tools\/ultra-agent-v3\/mode\.mjs/, /tools\/ultra-agent-v3\/state\.mjs/, /tools\/ultra-agent-v3\/evaluate\.mjs/];
   if (!missingUltraV3.length && v3Routes.every((pattern) => pattern.test(mainText))) {
     add('PASS', 'Ultra Agent v3 control plane', 'Fast/Premium routing, resumable state, context, evaluation and trace utilities are present and manager-routable');
   } else add('FAIL', 'Ultra Agent v3 control plane', `missing=[${missingUltraV3.join(', ')}] or manager routing is incomplete`);
+
+  const ultraV4Files = [
+    'tools/ultra-agent-v4/benchmark.mjs',
+    'tools/ultra-agent-v4/recovery.mjs',
+  ];
+  const missingUltraV4 = ultraV4Files.filter((relative) => !fs.existsSync(path.join(root, relative)));
+  const v4Routes = [
+    /tools\/ultra-agent-v4\/benchmark\.mjs/,
+    /tools\/ultra-agent-v4\/recovery\.mjs/,
+    /tools\/ultra-agent-v3\/activity\.mjs/,
+  ];
+  if (!missingUltraV4.length && v4Routes.every((pattern) => pattern.test(mainText))) {
+    add('PASS', 'Ultra Agent v4 adaptive runtime', 'benchmark metrics, targeted recovery and native activity runtime are present and manager-routable');
+  } else add('FAIL', 'Ultra Agent v4 adaptive runtime', `missing=[${missingUltraV4.join(', ')}] or manager routing is incomplete`);
 
   const nativeActivityReady = /invoke_subagent/i.test(mainText)
     && /native sub-agent panel/i.test(mainText)

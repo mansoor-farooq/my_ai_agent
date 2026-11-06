@@ -16,10 +16,10 @@ The Antigravity accessibility tree was readable, but Windows screenshot capture 
 
 ## Decision
 
-Do not claim automated native-panel acceptance. The user-approved `1.7.2` release retires the standalone dashboard and launcher; native activity remains host-controlled and is reported only when observed in Antigravity.
+Do not claim automated native-panel acceptance. The user-approved `1.8.0` release retires the standalone dashboard and launcher; native activity remains host-controlled and is reported only when observed in Antigravity.
 
 ## Next check
 
 Retry the same read-only smoke on a temporary project through the Antigravity UI automation when window capture works. Verify assignment and completion messages in the parent conversation and running/completed worker details in the native panel. If the panel is unavailable, stop and propose a reviewed native fallback; do not silently reinstate a separate web dashboard as the live activity view.
 
-Context-load follow-up: the retired 1.7.2 package exposes compact skill routers and keeps full skill bodies in skill-library/; native UI acceptance remains separately blocked by the earlier capture timeout.
+Context-load follow-up: the retired 1.8.0 package exposes compact skill routers and keeps full skill bodies in skill-library/; native UI acceptance remains separately blocked by the earlier capture timeout.

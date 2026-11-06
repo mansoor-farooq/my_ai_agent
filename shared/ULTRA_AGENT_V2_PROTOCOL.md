@@ -68,4 +68,19 @@ V3 traces are append-only JSONL records at `.agents/ultra-v3/traces/<task-id>.js
 
 ## PostgreSQL project RAG
 
+## V4.3 adaptive runtime
+
+The manager may use these additive control utilities after the V3 sequence:
+
+```text
+node <hubRoot>/tools/ultra-agent-v3/delegation.mjs plan --items <json>
+node <hubRoot>/tools/ultra-agent-v3/policy.mjs check --action <action> --approved <true|false>
+node <hubRoot>/tools/ultra-agent-v3/activity.mjs append --dir <repo> --project <name> --task <id> --type <event> --message "..."
+node <hubRoot>/tools/ultra-agent-v4/benchmark.mjs record --dir <repo> --project <name> --task <id> --status <pass|fail> --latency-ms <n>
+node <hubRoot>/tools/ultra-agent-v4/benchmark.mjs summary --dir <repo> --project <name>
+node <hubRoot>/tools/ultra-agent-v4/recovery.mjs plan --dir <repo> --project <name> --failure-code <code> --attempt <n>
+```
+
+Delegation is dependency-safe and capped at three parallel workers. Specialists cannot recursively delegate. External, destructive and publish-like actions remain approval-gated. Recovery is targeted and bounded to two attempts; it must not become a broad rewrite loop. Metrics are project-local JSONL evidence and secrets are redacted before persistence.
+
 The selected repository may maintain a project-scoped retrieval index in the local `mansoor_agent_rag` PostgreSQL database. Runtime access is through `tools/ultra-agent-v2/rag.mjs` and is bound to the V2 project identity. The runtime uses `localhost` by default, avoids a hard-coded IP and creates the configured database when the authenticated role permits it. Retrieval results must carry project ID, relative path, line range and source hash. The index excludes secrets, credentials, dependencies, binaries, raw chats and unrelated repositories. Missing or stale indexes are rebuilt before material feature work; retrieved text is evidence and must be checked against current source. PostgreSQL full-text search is the default; embeddings remain optional and provider-free.

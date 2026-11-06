@@ -16,38 +16,38 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/agent-hub-maintainer/agent.md",
-    "SHA256": "6E63C825552238BC05D632F9ED3E111206F7A1F6B55372BBAB20E58CFBD24D38",
-    "Bytes": 1312
+    "SHA256": "C2C3FA1A140E89D076E9B57D34DAB0FFC75E23D3315CC03A1A351F79AD2A031E",
+    "Bytes": 1291
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/application-security-reviewer/agent.md",
-    "SHA256": "5A8E68E4C16A113E6BC2067643FE8EC976F9C8A18C76A64F7B59C54A1029A307",
-    "Bytes": 1519
+    "SHA256": "2E3051325F4B7CC4562631436BAEC8A76228561DA3B3E161122952275423D5AE",
+    "Bytes": 1498
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/cloud-data-engineer/agent.md",
-    "SHA256": "4418E3D190D5A4051EE1427688F987888BD5EEF023B5D516DFBCE7653E9EB492",
-    "Bytes": 1674
+    "SHA256": "47CBCB70906EA3A810A25B9A8DF40CB880FCF6D688321F000CEF8AA6326B02E7",
+    "Bytes": 1653
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/dotnet-backend-specialist/agent.md",
-    "SHA256": "774971162D8C20B1671923B7122A029FFE46E4DAA60226B7817709243A69B57D",
-    "Bytes": 1648
+    "SHA256": "F06362C062BB6218682E5AD5DC44DEBED5E850091F5576E5DD8A86D56E955EDE",
+    "Bytes": 1627
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/enterprise-schema-architect/agent.md",
-    "SHA256": "F8FA0D50906C98B9919B87C9468A6BD89DB8FC5F01289160D5E2E3ADAF6A22A5",
-    "Bytes": 2800
+    "SHA256": "BA74F99AA1CAFD4429D6AE86B002FD383B18311E8BF2AE393D799542342B92C1",
+    "Bytes": 2779
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/flutter-mobile-specialist/agent.md",
-    "SHA256": "1CB0421D2ED50CE1314AB428A949DD84DED416FB517ADD8FFCD421B66D2BBDBE",
-    "Bytes": 2195
+    "SHA256": "DBCB4BD0D55C4C5D05E5A44DABC1B1B7C2D47F3DA5B6502C2886A6CA6A867784",
+    "Bytes": 2174
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
-    "SHA256": "96FAC24C8E6CBF94D2B0621B2C24F8121839AD413D9965EAD336438940365784",
-    "Bytes": 5118
+    "SHA256": "80711E0FE200331228A2318D66CC165E6D92CE4F37D82B75F799883F7D1CA137",
+    "Bytes": 5097
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/gemini-cli-agent.md",
@@ -56,43 +56,43 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/ml-systems-specialist/agent.md",
-    "SHA256": "84E4734072E6767CE829BBEBFA09E1C6123A63F1844870744D518690A4F12367",
-    "Bytes": 1751
+    "SHA256": "11D728EB60935DFD4AB1E4CD92F5BF9B5D404C5B50D15794299A3E18E6A5D8C9",
+    "Bytes": 1730
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/node-backend-specialist/agent.md",
-    "SHA256": "7AB762CDF0528FCA046831BAB020CE9C4BB73447A7AFD6211889A09F5F3C62A7",
-    "Bytes": 1600
+    "SHA256": "86A499E4C9BDD180CD61A5C98182C8974FDE5C9FB4CA6D1BE521D87FE9E388AE",
+    "Bytes": 1579
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "DFFE9B315695A9EF8D470161547EBBC113F5D98410CD28ED5812C00F5825AAEC",
-    "Bytes": 14669
+    "SHA256": "1D5E7F5E2EC798E9C7299D25C30E98D3305A6B61C5E4085BF88DEE51F049F256",
+    "Bytes": 15827
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
-    "SHA256": "0668C481CF5BC9F27D33DEDFAD8605DBE0F01A639587D4BFDC55C27CF0115FFE",
-    "Bytes": 1517
+    "SHA256": "DEB8BEF6525ED1F6FB92B1470142E21185F94964152A3823EEEAE44256EB558B",
+    "Bytes": 1496
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/qa-release-specialist/agent.md",
-    "SHA256": "526C2992B46DA9643890D5CCE1C1D25AF497A74D0D25081F48037E9B739E0058",
-    "Bytes": 1420
+    "SHA256": "01D0462AEE89FD681305CB03A517234EC2B7467ED0EED51EF7BF2F9AE1174DD2",
+    "Bytes": 1399
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/research-docs-specialist/agent.md",
-    "SHA256": "2A71A4930EBC1B5213139568C22179177AF3A85C925A523F13554DD91ACD76C6",
-    "Bytes": 1571
+    "SHA256": "92EF06112D3CA59FD678BFE45819F0C872A78622A1145D91895E9651793FC7E0",
+    "Bytes": 1550
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/saas-architect/agent.md",
-    "SHA256": "CECBD500BF728D3327DC715BF34736D9563472B3849E541100EB4CD8EA9B4D81",
-    "Bytes": 3388
+    "SHA256": "40322CC8B28185AA440143CFF9111CA9C428FBB7E2B6AB5F7ECAA1E7ECAAA8FD",
+    "Bytes": 3367
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/workflow-automation-specialist/agent.md",
-    "SHA256": "5C74890434B5227C54FCAEEAC865B84BAFD5469101678754DE4007A3F9BC555D",
-    "Bytes": 1800
+    "SHA256": "74FC3848B4E09FFB662691B118D2C7874776FEC52B57D50B590966DB7611DD84",
+    "Bytes": 1779
   },
   {
     "Path": "Agents/Build-Agent-Hub.cmd",
@@ -101,8 +101,8 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "831D9509BBC8CCCDB4787077D018A7A131CA1057DA357C8243E37B4212AB3FD0",
-    "Bytes": 3235
+    "SHA256": "938D2D46DFE32C1F0242C27D137FEFD9E1A7B88395C8358492B34C7DD0E2F16C",
+    "Bytes": 3456
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "85026E4D250D3395CA3B41055356B81FA2121B98760274A4F6E76BCC8F91D4CE",
+    "SHA256": "23B433252EC2DEB4A3E398CECB98A13DE2EBD59826F74877310525DC414F597B",
     "Bytes": 342
   },
   {
@@ -2196,13 +2196,13 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "462DF9B0D0747E57A88C58D4A7260406683F53F33AC3974D3884A85C0C231CF1",
-    "Bytes": 13056
+    "SHA256": "484CACA797B613B967077FE1E0E08B6041E24A6C05F8503BE3BA1E699A609C41",
+    "Bytes": 14851
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "8B9CE67145402F149AC17CCF5BCF473ADB71C9DE58CC5AA37F7802AF09226DF7",
-    "Bytes": 31211
+    "SHA256": "12679C932F42ED28C2ADAB759DFCC57C646F0705FA2AF9C4373431E727CF84D7",
+    "Bytes": 31454
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2231,8 +2231,8 @@
   },
   {
     "Path": "Agents/tools/route-backend-ml-task.mjs",
-    "SHA256": "82830FB68F8D9809B18E4872A6AE8BDC2A555782D3ED57BE6AA5AB92B2D4B379",
-    "Bytes": 18795
+    "SHA256": "C5A46323FC9FFF6F1BD0305EB9F7CBDDB436D4ABFE74B51BB3327A0A13BD8899",
+    "Bytes": 19724
   },
   {
     "Path": "Agents/tools/snapshot-native-history.mjs",
@@ -2251,13 +2251,13 @@
   },
   {
     "Path": "Agents/tools/tests/agent-hub-doctor.test.mjs",
-    "SHA256": "8B777CC216E76128C6CD259A8CBD1E025FF187006565F9DEEEDAC1C2D387CBDC",
-    "Bytes": 1338
+    "SHA256": "9BAD8C3FD8FC19595F8D018A450D33B3352B1CD4CDAEDF93ADA353D0D9067BDF",
+    "Bytes": 1575
   },
   {
     "Path": "Agents/tools/tests/backend-ml-router.test.mjs",
-    "SHA256": "20651861EFADB390EB9F85E4649D65A7AA8E62D270D38337FFCA8795E81475A4",
-    "Bytes": 10103
+    "SHA256": "653D2F73D75208604F3580B0DEA468C0215C655562A1CCDFDC3438ABB3E806DE",
+    "Bytes": 10366
   },
   {
     "Path": "Agents/tools/tests/package-signing.test.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "A42B32952740ED839033BEA92BE2FD88D3336CB180A197AFFCFD6FA47E3F124F",
-    "Bytes": 9819
+    "SHA256": "B40A23F1706301DC3764EAB8B619E59F78B0FAC2A7305A0BC485673FC47F950F",
+    "Bytes": 10086
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
@@ -2286,28 +2286,28 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v2/preflight.mjs",
-    "SHA256": "C4FAE8EF3E69D6DD03D3864FF6CE08B1FA5068C9C622D7EB2D8BB814D9B9A0BE",
-    "Bytes": 4255
+    "SHA256": "0944C62A5E787A35F427143EC0E9B822838DC539F346B982B1B9D94B81DDF936",
+    "Bytes": 3400
   },
   {
     "Path": "Agents/tools/ultra-agent-v2/memory.mjs",
-    "SHA256": "276CA595742B54D80B23FA25D86890852DE5081045BCDC7B411AAB3F94787B99",
-    "Bytes": 5302
+    "SHA256": "B07782A5E988B742175FF20B3E7DE8F8B8D3213F5B78F08908DF2B5772152D5F",
+    "Bytes": 8311
   },
   {
     "Path": "Agents/tools/ultra-agent-v2/evidence.mjs",
-    "SHA256": "2BCC62A808986997811D8E7746A2750D7FC003EACBFC2FDEB03994E5E07C1DE3",
-    "Bytes": 4153
+    "SHA256": "02B8442A6C8DDDABC4DD25BDEA53D330A429B8B24E93EEC1CB1C74B9074AE109",
+    "Bytes": 4088
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v2.test.mjs",
-    "SHA256": "830FB53C4F2B770A18B7976D6599A9F74B0F73A6A1CAD215C6E79DB0615D892A",
-    "Bytes": 3044
+    "SHA256": "48933703AEC2B82221994DFE1B9CEFFFDD657553D35489251CB4B30E37793A87",
+    "Bytes": 6560
   },
   {
     "Path": "Agents/shared/ULTRA_AGENT_V2_PROTOCOL.md",
-    "SHA256": "D8030213EAAF099D95EBF938E67DC604B89042E9B7D416E03D67A598675F48E3",
-    "Bytes": 7506
+    "SHA256": "198A6F3C991767A169321CD48162EC467296309371438BC79D52A4EE7B83F40D",
+    "Bytes": 8619
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/state.mjs",
@@ -2316,27 +2316,77 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/mode.mjs",
-    "SHA256": "04A2F90542EDE32CC94DAA5642CE5424559F11A9D67CC0FC282811F0DEB4A301",
-    "Bytes": 2794
+    "SHA256": "814414256BCA20ED39DA4E6FAE77356B1CCB944EB9F560751F7F30E817775F1F",
+    "Bytes": 3787
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/plan.mjs",
-    "SHA256": "4B325E02D6D595335B03C17D9136D331B6AC7A50C8121C515A409FC58A63F625",
-    "Bytes": 1129
+    "SHA256": "FCD4034EAD2EAE6CDD8FDB28EC6DCD7739779BEE788F0D81CB6CA59465EDA9EA",
+    "Bytes": 1481
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/context.mjs",
-    "SHA256": "9842BDC793F0AEB478A5D06965EDCBCA000E742A6E7020C06111FEEAEFC95DAA",
-    "Bytes": 7636
+    "SHA256": "ACF090B058062DAAA3160092E8D3BBC1435A3F2E32F6F66613558704E6B4AEB3",
+    "Bytes": 7206
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/evaluate.mjs",
-    "SHA256": "F7818D6B8A4B30E3601783B2020A2B0525649E3B1F274B789DDE4736249FC0F2",
-    "Bytes": 3257
+    "SHA256": "6B635C975309FC1DEB824B96134452F5F390BF13960AAB677D39DE9014180499",
+    "Bytes": 3764
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/trace.mjs",
     "SHA256": "E73BF1E934F183344B316BEB36A4564440EDBE2EBD4F0FAADD8634FDD553EADE",
     "Bytes": 2236
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v2/project-identity.mjs",
+    "SHA256": "83B78D668C4E55561E38A4D27FCF6A67821790AACD9AECC0E0451627C459EA31",
+    "Bytes": 1580
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v2/rag.mjs",
+    "SHA256": "CA928AE0BCDB35F9B70D7A1305A759097572977C895D0DAFFE3A9C8C39FA6695",
+    "Bytes": 16486
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v3/delegation.mjs",
+    "SHA256": "BB1FE73FD86F82ECC033CF3E7FCEE9A20AA5EC362F410A48F5EDCB0CC919E793",
+    "Bytes": 3779
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v3/policy.mjs",
+    "SHA256": "01E172552487BF14C4326250A507BEC21EDB9C51882704992C7A5010AC1FE0BC",
+    "Bytes": 1993
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v3/activity.mjs",
+    "SHA256": "63F365554695E14377CE9A7D694E431D46C0FA9A59A7020A33C205380A9DC54B",
+    "Bytes": 6369
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/benchmark.mjs",
+    "SHA256": "B2507F7C8F554A7795E327F03ECCCA1CA167ECC47F25480F9C9D77EC3DA3893C",
+    "Bytes": 5228
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/recovery.mjs",
+    "SHA256": "5DFC8C2D4B538408747E7478FC8ABB28921287C53072102514DE32883679BB72",
+    "Bytes": 2473
+  },
+  {
+    "Path": "Agents/tools/tests/ultra-agent-v3-delegation.test.mjs",
+    "SHA256": "AD694BB3C3F46761D54C0F010B26694594B43DD2C8209F93801D7B330365056A",
+    "Bytes": 3115
+  },
+  {
+    "Path": "Agents/tools/tests/ultra-agent-v3-policy-activity.test.mjs",
+    "SHA256": "E85C66318F00F1FB647643822E0D49262B4E80E07B5451A71151A9A012D46889",
+    "Bytes": 5239
+  },
+  {
+    "Path": "Agents/tools/tests/ultra-agent-v4-control.test.mjs",
+    "SHA256": "D6C3DB51E0FDBB19B686FA1036BAAA6ED57AF14D34FB5E2B5D1E30B525D08C2E",
+    "Bytes": 3311
   }
 ]

@@ -52,7 +52,10 @@ try {
     (Join-Path $hub 'tools\tests\ultra-agent-v3-state.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v3-mode.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v3-context.test.mjs') `
-    (Join-Path $hub 'tools\tests\ultra-agent-v3-evaluation.test.mjs')
+    (Join-Path $hub 'tools\tests\ultra-agent-v3-evaluation.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v3-delegation.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v3-policy-activity.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v4-control.test.mjs')
   if ($LASTEXITCODE -ne 0) { throw 'Focused tests failed.' }
 
   $archive = Join-Path $hub 'dist\mansoor-agent-hub.zip'

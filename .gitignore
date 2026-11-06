@@ -30,6 +30,7 @@ shared/knowledge/readable-chat-context.zip
 *.zip
 
 # OS & Temp
+.agents/
 Thumbs.db
 [Dd]esktop.ini
 .DS_Store

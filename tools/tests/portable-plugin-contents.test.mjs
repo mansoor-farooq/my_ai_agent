@@ -134,6 +134,7 @@ test('built ZIP retains the support files after archive creation', async () => {
       'tools/ultra-agent-v2/preflight.mjs',
       'tools/ultra-agent-v2/memory.mjs',
       'tools/ultra-agent-v2/evidence.mjs',
+      'tools/ultra-agent-v2/project-identity.mjs',
       'tools/sync-knowledge-bank.mjs',
       'tools/validate-capability-manifest.mjs',
       'shared/knowledge/PROJECT_MEMORY_SCHEMA.md',
@@ -145,12 +146,17 @@ test('built ZIP retains the support files after archive creation', async () => {
       'tools/ultra-agent-v3/context.mjs',
       'tools/ultra-agent-v3/evaluate.mjs',
       'tools/ultra-agent-v3/trace.mjs',
+      'tools/ultra-agent-v3/delegation.mjs',
+      'tools/ultra-agent-v3/policy.mjs',
+      'tools/ultra-agent-v3/activity.mjs',
+      'tools/ultra-agent-v4/benchmark.mjs',
+      'tools/ultra-agent-v4/recovery.mjs',
     ]) {
       await assert.doesNotReject(access(path.join(output, relative)), relative);
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.7.2');
+    assert.equal(plugin.version, '1.8.0');
     const installer = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.ps1'), 'utf8');
     assert.match(installer, /nodejs\.org\/dist\/index\.json/);
     assert.match(installer, /SHASUMS256\.txt/);
