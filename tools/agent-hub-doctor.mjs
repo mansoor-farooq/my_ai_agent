@@ -118,6 +118,18 @@ export async function runDoctor() {
   if (!forbiddenProfiles.length) add('PASS', 'agent tool boundary', 'shipped agent profiles do not declare external connector tools');
   else add('FAIL', 'agent tool boundary', `external tool declarations found in: ${forbiddenProfiles.join(', ')}`);
 
+  const nestedDelegators = shippedAgents.filter((name) => name !== 'production-orchestrator').filter((name) => {
+    const text = fs.readFileSync(path.join(profilesRoot, name, 'agent.md'), 'utf8');
+    return /^\s*-\s*invoke_subagent\s*$/m.test(text);
+  });
+  const managerDelegates = /^\s*-\s*invoke_subagent\s*$/m.test(mainText);
+  const managerGeneratesImages = /^\s*-\s*generate_image\s*$/m.test(mainText);
+  if (managerDelegates && !managerGeneratesImages && !nestedDelegators.length) {
+    add('PASS', 'manager-only delegation policy', 'only production-orchestrator can delegate; image generation remains specialist-owned');
+  } else {
+    add('FAIL', 'manager-only delegation policy', `managerDelegates=${managerDelegates}, managerGeneratesImages=${managerGeneratesImages}, nestedDelegators=[${nestedDelegators.join(', ')}]`);
+  }
+
   const missingReverseEngineering = shippedAgents.filter((name) => {
     const text = fs.readFileSync(path.join(profilesRoot, name, 'agent.md'), 'utf8');
     return !/skills\/reverse-engineering/.test(text);

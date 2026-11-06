@@ -9,7 +9,6 @@ tools:
   - invoke_subagent
   - search_web
   - read_url_content
-  - generate_image
 mainAgent: true
 subagent: true
 model: inherit

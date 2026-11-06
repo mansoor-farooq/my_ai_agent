@@ -5,7 +5,6 @@ tools:
   - view_file
   - grep_search
   - run_command
-  - invoke_subagent
   - search_web
   - read_url_content
 mainAgent: false

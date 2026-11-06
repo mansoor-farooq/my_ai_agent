@@ -15,6 +15,7 @@ test('doctor enforces provider-free packaging and agent tool boundaries', async 
   assert.ok(report.checks.some((item) => item.name === 'self-contained package policy' && item.status === 'PASS'));
   assert.ok(report.checks.some((item) => item.name === 'portable skills and rules' && item.status === 'PASS'));
   assert.ok(report.checks.some((item) => item.name === 'agent tool boundary' && item.status === 'PASS'));
+  assert.ok(report.checks.some((item) => item.name === 'manager-only delegation policy' && item.status === 'PASS'));
   assert.ok(report.checks.some((item) => item.name === 'Ultra Agent v2 runtime' && item.status === 'PASS'));
   assert.ok(report.checks.some((item) => item.name === 'Ultra Agent v3 control plane' && item.status === 'PASS'));
 });

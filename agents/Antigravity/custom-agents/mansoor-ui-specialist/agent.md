@@ -6,7 +6,6 @@ tools:
   - grep_search
   - run_command
   - replace_file_content
-  - invoke_subagent
   - search_web
   - read_url_content
   - generate_image
