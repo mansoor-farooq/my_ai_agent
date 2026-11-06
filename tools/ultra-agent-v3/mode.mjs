@@ -15,12 +15,16 @@ function selectMode(input = {}) {
   const explicitResearch = Boolean(input.explicitResearch) || /\b(deep research|research|inspiration|compare sources|official docs)\b/i.test(request);
   const riskSignal = ['high', 'critical'].includes(risk);
   const domainSignal = premiumWords.test(request);
-  const premium = riskSignal || explicitResearch || domainSignal;
+  const previousFailureCount = Math.max(0, Number(input.previousFailureCount) || 0);
+  const uncertainScope = Boolean(input.uncertainScope);
+  const premium = riskSignal || explicitResearch || domainSignal || uncertainScope || previousFailureCount > 0;
   const mode = premium ? 'premium' : 'fast';
   const reasons = [];
   if (riskSignal) reasons.push(`risk=${risk}`);
   if (explicitResearch) reasons.push('research requested or implied');
   if (domainSignal) reasons.push('architecture/security/production-sensitive domain');
+  if (uncertainScope) reasons.push('uncertain scope requires deeper discovery');
+  if (previousFailureCount > 0) reasons.push('previous verification failure requires escalation');
   if (!reasons.length) reasons.push('routine and reversible request');
   const requiredChecks = premium
     ? ['research-ledger', 'targeted-verification', ...(riskSignal ? ['independent-check'] : [])]
@@ -30,7 +34,22 @@ function selectMode(input = {}) {
     ? input.requiredTools.map(String)
     : premium ? ['research', 'verification', ...(riskSignal ? ['independent-check'] : [])] : [];
   const blockers = available ? requiredTools.filter((tool) => !available.has(tool)) : [];
-  return { mode, reasons, requiredChecks, blockers };
+  const costPreference = String(input.costPreference || 'balanced').toLowerCase();
+  const executionProfile = mode === 'fast'
+    ? { thinking: 'low', maxSpecialists: 1, parallelism: 1, budgetClass: 'economy' }
+    : {
+      thinking: riskSignal ? 'high' : 'medium',
+      maxSpecialists: 5,
+      parallelism: 3,
+      budgetClass: costPreference === 'economy' ? 'balanced' : 'premium',
+    };
+  const escalationPolicy = {
+    maxRecoveryAttempts: 2,
+    escalateOn: ['uncertain-scope', 'verification-failure', 'risk-boundary'],
+    providerSwitch: false,
+    accountRotation: false,
+  };
+  return { mode, reasons, requiredChecks, blockers, executionProfile, escalationPolicy };
 }
 
 function cliArg(args, name, fallback = '') {

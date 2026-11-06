@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRecoveryPlan } from '../ultra-agent-v4/recovery.mjs';
 
 const passing = new Set(['pass', 'passed', 'success', 'verified', 'complete']);
 
@@ -24,6 +25,14 @@ function evaluateCompletion(input = {}) {
     if (!independent) missingEvidence.push('independent-check');
   }
   if (failedCommand) {
+    const recoveryPlan = createRecoveryPlan({
+      failureCode: failedCommand.failureCode || 'verification-failed',
+      attempt: input.attempt || 1,
+      maxAttempts: input.maxRecoveryAttempts || 2,
+      previousSignature: input.previousFailureSignature || null,
+      failedChecks: [String(failedCommand.command || 'verification')],
+      affectedPaths: input.changedPaths || [],
+    });
     const checkpoint = {
       taskId: input.taskId || null,
       projectId: input.projectId || null,
@@ -44,6 +53,7 @@ function evaluateCompletion(input = {}) {
       warnings: ['A verification command failed; state remains recoverable.'],
       nextState: 'RECOVERABLE_FAILURE',
       resumeCheckpoint: checkpoint,
+      recoveryPlan,
     };
   }
   const uniqueMissing = [...new Set(missingEvidence)];
@@ -53,6 +63,7 @@ function evaluateCompletion(input = {}) {
     warnings: uniqueMissing.length ? ['Completion is blocked until required evidence exists.'] : [],
     nextState: uniqueMissing.length ? 'VERIFY' : 'COMPLETE',
     resumeCheckpoint: null,
+    recoveryPlan: null,
   };
 }
 

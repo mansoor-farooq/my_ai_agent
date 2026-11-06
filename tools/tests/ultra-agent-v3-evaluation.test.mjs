@@ -45,6 +45,9 @@ test('premium high-risk failure becomes recoverable and preserves a resume check
     assert.equal(result.nextState, 'RECOVERABLE_FAILURE');
     assert.ok(result.resumeCheckpoint);
     assert.equal(result.resumeCheckpoint.taskId, 'task-003');
+    assert.equal(result.recoveryPlan.retry, true);
+    assert.deepEqual(result.recoveryPlan.affectedPaths, ['src/security.ts']);
+    assert.equal(result.recoveryPlan.broadRewriteAllowed, false);
     await access(result.resumeCheckpoint.checkpointPath);
     const ledger = await readFile(path.join(dir, '.agents', 'ultra-v3', 'traces', 'task-003.jsonl'), 'utf8');
     assert.match(ledger, /verification-failed/);
