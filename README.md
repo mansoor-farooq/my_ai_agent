@@ -133,6 +133,24 @@ npm run build
 
 Current package target: 15 agent profiles, 174 bundled skill bodies, 4 governed rules, zero bundled provider connectors, zero credential paths, owner-signed package metadata and strict Antigravity validation. Ultra Agent v4 builds on the V3 control plane with Chromium-aware automatic UI/QA routing and an evidence-led browser verification skill. Runtime gateways, credentials and private chats are not distributed.
 
+## Ultra Agent v4.4 enhancements
+
+The current V4.4 release is an additive hardening pass; it does not restructure a target project or change its business logic. It adds:
+
+- benchmark envelopes for acceptance, latency, p95 timing and bounded failure reasons;
+- dependency-safe parallel delegation with manager ownership and targeted recovery;
+- checkpoint drift verification that reports modified, deleted, missing and outside-root files without silently rolling back user work;
+- memory health diagnostics for stale, unversioned, malformed and conflicting project facts;
+- native Antigravity activity summaries for assignments, worker progress, blockers, handoffs and completed work;
+- Windows-safe activity locking, secret redaction and private-profile exclusion from project RAG retrieval;
+- hybrid PostgreSQL RAG with project identity and source-revision checks so answers stay tied to the selected repository.
+
+The separate browser dashboard is not required. The Antigravity parent chat and native sub-agent panel remain the live activity surface for the selected project.
+
+## Latest verified release
+
+From the owner machine, `npm run build` runs the doctor, focused tests, strict Antigravity validation, ZIP creation and Ed25519 signing as one release gate. The V4.4 verification baseline is 87 tests discovered, 81 passing, 0 failures and 6 intentional provider-free RAG skips. The generated artifact is `dist/mansoor-agent-hub.zip`; the build prints its SHA256 after every source change, so the hash is always taken from the exact package being shared.
+
 ## Ultra Agent v2 workflow
 
 For a new repository, the manager can initialize the local control plane with:
@@ -153,6 +171,12 @@ V3 task state, checkpoints and traces remain local under `.agents/ultra-v3/`. A 
 The installer displays a branded Mansoor Farooq Agent Team / Ultra Agent v4 safe-build banner, keeps an installer log and stages `tools` and `shared` runtime files before validation so the installed plugin retains the complete agent runtime.
 
 `SKILL-PROVENANCE.json` maps every bundled skill to its observed source category and explicitly marks skills whose public licence/source review is still pending. The package remains private-only until those entries are cleared; no licence or provenance is invented.
+
+## Premium capabilities and licence boundary
+
+Premium mode is a capability tier, not a claim that third-party paid services are bundled. It includes architecture and migration gates, security review, release verification, premium CRM patterns, research/documentation, UI/Flutter production QA, hybrid RAG, Fast/Premium routing and owner-signed packaging. These capabilities run locally against the selected project and do not require a paid connector or a hidden subscription.
+
+The repository's licence truth is `SKILL-PROVENANCE.json`: entries with a declared source/licence are recorded there, while private or still-unverified entries remain private-only. No proprietary vendor SDK, paid API key, private chat, credential or unverified asset is added to the ZIP. Adding a third-party premium asset requires its exact source, redistribution terms and licence review first; until then the safe release contains original owner-controlled orchestration plus explicitly tracked skill bodies.
 
 ## Official plugin boundary
 
