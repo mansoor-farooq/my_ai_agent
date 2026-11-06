@@ -44,6 +44,27 @@ test('preflight and memory share one sanitized project identity', async () => {
   }
 });
 
+test('memory status reports bounded evidence health counts', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v2-health-'));
+  try {
+    const initialized = JSON.parse(run('memory.mjs', ['init', '--dir', fixture, '--project', 'Health Fixture']));
+    const projectId = initialized.project.projectId;
+    const verification = path.join(fixture, '.agents', 'memory', 'verification-ledger.jsonl');
+    const research = path.join(fixture, '.agents', 'memory', 'research-ledger.jsonl');
+    await writeFile(verification, [
+      JSON.stringify({ id: 'unversioned', projectId, subject: 'release', claim: 'fast', status: 'pass' }),
+      JSON.stringify({ id: 'unversioned-2', projectId, subject: 'release', claim: 'slow', status: 'pass' }),
+      JSON.stringify({ id: 'stale', projectId, subject: 'stale', claim: 'old fact', status: 'pass', commit: 'old-commit' }),
+      JSON.stringify({ id: 'other', projectId, subject: 'other', claim: 'fact', status: 'pass' }),
+    ].join('\n') + '\n');
+    await writeFile(research, '{malformed\n');
+    const status = JSON.parse(run('memory.mjs', ['status', '--dir', fixture, '--project', 'Health Fixture']));
+    assert.deepEqual(status.health, { records: 4, current: 0, stale: 1, unversioned: 3, conflicts: 1, malformed: 1 });
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
+
 test('memory initializes a project dossier and redacts secrets on append', async () => {
   const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v2-memory-'));
   try {

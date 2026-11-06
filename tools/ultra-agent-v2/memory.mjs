@@ -38,6 +38,19 @@ function readJsonl(file) {
     try { return [JSON.parse(line)]; } catch { return []; }
   });
 }
+function readJsonlHealth(file, projectId) {
+  if (!fs.existsSync(file)) return { records: [], malformed: 0 };
+  const records = [];
+  let malformed = 0;
+  for (const line of fs.readFileSync(file, 'utf8').split(/\r?\n/)) {
+    if (!line.trim()) continue;
+    try {
+      const record = JSON.parse(line);
+      if (record?.projectId === projectId) records.push(record);
+    } catch { malformed += 1; }
+  }
+  return { records, malformed };
+}
 function positiveInt(value, fallback, maximum = 500) {
   const parsed = Number.parseInt(value, 10);
   return Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, maximum) : fallback;
@@ -70,7 +83,29 @@ if (commandName === 'init') {
   console.log(JSON.stringify({ ok: true, command: 'append', file: fileName, redacted: true }));
 } else if (commandName === 'status') {
   const files = ['PROJECT_MEMORY.md', 'project-map.md', 'decisions.md', 'change-log.md', 'open-questions.md', 'research-ledger.jsonl', 'verification-ledger.jsonl'];
-  console.log(JSON.stringify({ ok: true, command: 'status', memoryDir, project: identity(), files: Object.fromEntries(files.map((file) => [file, fs.existsSync(path.join(memoryDir, file))])) }, null, 2));
+  const project = identity();
+  const researchHealth = readJsonlHealth(path.join(memoryDir, 'research-ledger.jsonl'), project.projectId);
+  const verificationHealth = readJsonlHealth(path.join(memoryDir, 'verification-ledger.jsonl'), project.projectId);
+  const records = [...researchHealth.records, ...verificationHealth.records];
+  const staleRecords = records.filter((record) => (record.commit && record.commit !== project.commit) || (record.validUntil && Date.parse(record.validUntil) < Date.now()));
+  const unversionedRecords = records.filter((record) => !record.commit && !staleRecords.includes(record));
+  const conflictGroups = new Map();
+  for (const record of records.filter((item) => item.subject && item.claim && !staleRecords.includes(item))) {
+    const subject = String(record.subject).toLowerCase().trim();
+    const claims = conflictGroups.get(subject) || new Set();
+    claims.add(String(record.claim).trim());
+    conflictGroups.set(subject, claims);
+  }
+  const conflicts = [...conflictGroups.values()].filter((claims) => claims.size > 1).length;
+  const health = {
+    records: records.length,
+    current: records.length - staleRecords.length - unversionedRecords.length,
+    stale: staleRecords.length,
+    unversioned: unversionedRecords.length,
+    conflicts,
+    malformed: researchHealth.malformed + verificationHealth.malformed,
+  };
+  console.log(JSON.stringify({ ok: true, command: 'status', memoryDir, project, files: Object.fromEntries(files.map((file) => [file, fs.existsSync(path.join(memoryDir, file))])), health }, null, 2));
 } else if (commandName === 'compact') {
   fs.mkdirSync(memoryDir, { recursive: true });
   const project = identity();
