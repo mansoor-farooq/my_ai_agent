@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { appendFile, access, mkdtemp, readFile, rm } from 'node:fs/promises';
+import { appendFile, access, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -79,6 +79,39 @@ test('creates a checkpoint and resumes after a corrupted trailing event', async 
     const snapshot = JSON.parse(await readFile(path.join(fixture, '.agents', 'ultra-v3', 'tasks', 'task-001', 'state.json'), 'utf8'));
     assert.equal(snapshot.state, 'PREFLIGHT');
     assert.equal(snapshot.taskId, 'task-001');
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
+
+test('checkpoint verification detects modified and deleted owned paths without rollback', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-state-drift-'));
+  try {
+    const source = path.join(fixture, 'src');
+    await mkdir(source, { recursive: true });
+    await writeFile(path.join(source, 'app.ts'), 'v1\n');
+    await writeFile(path.join(source, 'gone.ts'), 'keep\n');
+    run('start', fixture);
+    const checkpoint = run('checkpoint', fixture, ['--label', 'drift', '--owned-paths', 'src/app.ts,src/gone.ts']);
+    await writeFile(path.join(source, 'app.ts'), 'v2\n');
+    await rm(path.join(source, 'gone.ts'));
+    const verification = run('verify-checkpoint', fixture, ['--checkpoint', checkpoint.checkpointPath]);
+    assert.deepEqual(verification.modifiedPaths, ['src/app.ts']);
+    assert.deepEqual(verification.deletedPaths, ['src/gone.ts']);
+    assert.deepEqual(verification.unchangedPaths, []);
+    assert.equal(verification.rollbackApplied, false);
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
+
+test('checkpoint verification rejects paths outside the project root', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-state-boundary-'));
+  try {
+    run('start', fixture);
+    const checkpoint = run('checkpoint', fixture, ['--label', 'boundary', '--owned-paths', '..\\outside.txt']);
+    const verification = run('verify-checkpoint', fixture, ['--checkpoint', checkpoint.checkpointPath]);
+    assert.deepEqual(verification.outsideRootPaths, ['../outside.txt']);
   } finally {
     await rm(fixture, { recursive: true, force: true });
   }

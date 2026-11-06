@@ -112,6 +112,23 @@ function atomicWrite(file, content) {
   fs.renameSync(temp, file);
 }
 
+function normalizeOwnedPath(value) {
+  return String(value || '').replaceAll('\\', '/').replace(/^\.\//, '');
+}
+
+function ownedPathManifest(values = []) {
+  return [...new Set(values.map(normalizeOwnedPath).filter(Boolean))].slice(0, 200).map((relativePath) => {
+    const absolutePath = path.resolve(projectDir, relativePath);
+    const insideRoot = absolutePath === projectDir || absolutePath.startsWith(`${projectDir}${path.sep}`);
+    if (!insideRoot) return { path: relativePath, status: 'outside-root', sha256: null, bytes: null };
+    if (!fs.existsSync(absolutePath)) return { path: relativePath, status: 'missing', sha256: null, bytes: null };
+    const stat = fs.statSync(absolutePath);
+    if (!stat.isFile()) return { path: relativePath, status: 'unsupported', sha256: null, bytes: null };
+    const bytes = fs.readFileSync(absolutePath);
+    return { path: relativePath, status: 'file', sha256: crypto.createHash('sha256').update(bytes).digest('hex'), bytes: bytes.length };
+  });
+}
+
 function materialize(events) {
   const latest = events.at(-1);
   if (!latest) return null;
@@ -242,9 +259,33 @@ function checkpoint() {
     fs.mkdirSync(checkpointsDir, { recursive: true });
     const label = slugify(getArg('--label', 'checkpoint'));
     const checkpointPath = path.join(checkpointsDir, `${Date.now()}-${label}.json`);
-    atomicWrite(checkpointPath, `${JSON.stringify({ ...snapshot, checkpointLabel: label }, null, 2)}\n`);
-    return { ok: true, action, ...snapshot, checkpointPath };
+    const ownedPaths = ownedPathManifest(getArg('--owned-paths').split(',').map((value) => value.trim()));
+    atomicWrite(checkpointPath, `${JSON.stringify({ ...snapshot, checkpointLabel: label, ownedPaths }, null, 2)}\n`);
+    return { ok: true, action, ...snapshot, checkpointPath, ownedPaths };
   });
+}
+
+function verifyCheckpoint() {
+  const checkpointPath = path.resolve(getArg('--checkpoint'));
+  if (!checkpointPath || !fs.existsSync(checkpointPath)) throw new Error('--checkpoint must point to an existing checkpoint JSON');
+  const checkpointData = JSON.parse(fs.readFileSync(checkpointPath, 'utf8'));
+  const modifiedPaths = [], deletedPaths = [], unchangedPaths = [], missingPaths = [], outsideRootPaths = [], unsupportedPaths = [];
+  for (const entry of Array.isArray(checkpointData.ownedPaths) ? checkpointData.ownedPaths : []) {
+    const relativePath = normalizeOwnedPath(entry.path);
+    const absolutePath = path.resolve(projectDir, relativePath);
+    if (entry.status === 'outside-root' || !(absolutePath === projectDir || absolutePath.startsWith(`${projectDir}${path.sep}`))) {
+      outsideRootPaths.push(relativePath);
+      continue;
+    }
+    if (!fs.existsSync(absolutePath)) {
+      if (entry.status === 'missing') missingPaths.push(relativePath); else deletedPaths.push(relativePath);
+      continue;
+    }
+    if (!fs.statSync(absolutePath).isFile()) { unsupportedPaths.push(relativePath); continue; }
+    const currentHash = crypto.createHash('sha256').update(fs.readFileSync(absolutePath)).digest('hex');
+    if (entry.status !== 'file' || currentHash !== entry.sha256) modifiedPaths.push(relativePath); else unchangedPaths.push(relativePath);
+  }
+  return { ok: true, action, taskId: checkpointData.taskId, projectId: checkpointData.projectId, checkpointPath, modifiedPaths, deletedPaths, unchangedPaths, missingPaths, outsideRootPaths, unsupportedPaths, rollbackApplied: false };
 }
 
 function resume() {
@@ -268,9 +309,10 @@ try {
   const result = action === 'start' ? start()
     : action === 'transition' ? transition()
       : action === 'checkpoint' ? checkpoint()
+        : action === 'verify-checkpoint' ? verifyCheckpoint()
         : action === 'resume' ? resume()
           : action === 'show' ? show()
-            : (() => { throw new Error('Usage: node state.mjs start|transition|checkpoint|resume|show --dir PATH --task ID --project NAME'); })();
+            : (() => { throw new Error('Usage: node state.mjs start|transition|checkpoint|verify-checkpoint|resume|show --dir PATH --task ID --project NAME'); })();
   console.log(JSON.stringify(result, null, 2));
 } catch (error) {
   console.error(`Ultra Agent v3 state: ${error.message}`);
