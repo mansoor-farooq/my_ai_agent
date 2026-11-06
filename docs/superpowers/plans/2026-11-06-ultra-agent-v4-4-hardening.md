@@ -99,3 +99,15 @@
 - [ ] Refresh checksums and build the signed ZIP.
 - [ ] Run doctor, focused build suite, full `npm test`, RAG status and hybrid query smoke.
 - [ ] Commit release wiring and push `mansoor-development`.
+
+### Task 6: RAG private-data boundary
+
+**Files:**
+- Modify: `tools/ultra-agent-v2/rag.mjs`
+- Test: `tools/tests/project-rag.test.mjs`
+
+- [ ] Add a failing source-filter test asserting `shared/native-profile` and `shared/private-backup` are ignored directories.
+- [ ] Run the focused RAG source test and observe the missing filter.
+- [ ] Add the directories to the existing local filter without changing the database contract.
+- [ ] Run the source/integration RAG tests and rebuild the selected project index.
+- [ ] Commit `Exclude private profile data from RAG`.

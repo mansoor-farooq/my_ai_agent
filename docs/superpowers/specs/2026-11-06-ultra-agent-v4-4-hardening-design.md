@@ -10,6 +10,7 @@ Upgrade the shipped V4.3 runtime into a more observable and recoverable V4.4 wit
 - Add checkpoint file-hash manifests and read-only drift verification.
 - Make memory status report useful health counts for current, stale, unversioned and conflicting evidence.
 - Add a deterministic native activity task summary for parent-chat updates.
+- Keep native Antigravity profile dumps and private backups outside project RAG retrieval.
 - Keep all new behavior local, provider-free, additive and backward-compatible.
 
 ## Non-goals and anti-goals
@@ -29,4 +30,5 @@ Use small Node.js ESM utilities and additive CLI actions. Evaluation exposes a s
 - A checkpoint with owned paths detects modified, deleted and missing paths; no source content is stored.
 - Memory status reports counts and does not promote unversioned evidence.
 - Activity summary reports assignment, latest state, blockers, changed paths and checks deterministically.
+- RAG source filters exclude native-profile/private-backup trees while preserving ordinary source files.
 - Existing V4.3 tests remain green; package remains provider-free and signed.
