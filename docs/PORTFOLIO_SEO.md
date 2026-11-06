@@ -1,6 +1,6 @@
 # Portfolio SEO Copy
 
-Use this copy for a future public GitHub profile, portfolio page or project listing. It describes the repository without claiming customers, revenue, benchmarks or public licensing that has not been verified.
+Use this copy for the public GitHub profile, portfolio page or project listing. It describes the repository without claiming customers, revenue, benchmarks or public licensing that has not been verified.
 
 ## Suggested title
 
@@ -22,7 +22,8 @@ Mansoor Farooq, Ultra Agent v4.4, Antigravity agent orchestration, Gemini agent 
 
 ## Public-release checklist
 
-- Choose and publish a licence before changing the repository to public.
+- The GitHub repository is public for discoverability; source/package redistribution remains private-only until the provenance review is complete.
+- Choose and publish a licence before advertising the bundled source or skills as publicly redistributable.
 - Remove private operational notes and review every generated package entry.
 - Confirm all portfolio and social links belong to Mansoor Farooq.
 - Rotate or replace any private release key before public distribution.
