@@ -95,7 +95,9 @@ const schema = [
 const ignoredDirectories = new Set([
   '.git', '.agents', 'node_modules', 'vendor', 'dist', 'build', 'bin', 'obj',
   '.next', '.dart_tool', '.gradle', 'coverage', '__pycache__', '.venv', 'venv',
+  'shared/native-profile', 'shared/private-backup',
 ]);
+const ignoredDirectoryPaths = new Set(['shared/native-profile', 'shared/private-backup']);
 const textExtensions = new Set([
   '', '.c', '.cc', '.cpp', '.cs', '.css', '.dart', '.go', '.html', '.ini', '.java',
   '.js', '.json', '.jsx', '.md', '.mjs', '.py', '.ps1', '.rs', '.sh', '.sql',
@@ -124,7 +126,8 @@ function walk(directory, files = []) {
     if (entry.isSymbolicLink()) continue;
     const full = path.join(directory, entry.name);
     if (entry.isDirectory()) {
-      if (!ignoredDirectories.has(entry.name.toLowerCase())) walk(full, files);
+      const relativeDirectory = path.relative(projectDir, full).replaceAll('\\', '/').toLowerCase();
+      if (!ignoredDirectories.has(entry.name.toLowerCase()) && !ignoredDirectoryPaths.has(relativeDirectory)) walk(full, files);
     } else {
       const item = safeText(full);
       if (item) files.push(item);

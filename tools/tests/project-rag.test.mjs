@@ -25,6 +25,12 @@ test('RAG uses a local hostname instead of a hard-coded loopback IP', async () =
   assert.match(source, /localhost/);
 });
 
+test('RAG excludes private native profile and backup trees', async () => {
+  const source = await readFile(runtime, 'utf8');
+  assert.match(source, /shared\/native-profile/);
+  assert.match(source, /shared\/private-backup/);
+});
+
 test('RAG bootstraps a missing local database when credentials permit it', { skip: !enabled }, async () => {
   const project = await mkdtemp(path.join(os.tmpdir(), 'mansoor-rag-test-bootstrap-'));
   const database = `mansoor_agent_rag_test_${Date.now()}_${process.pid}`;

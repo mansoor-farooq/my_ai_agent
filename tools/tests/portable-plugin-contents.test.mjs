@@ -156,7 +156,7 @@ test('built ZIP retains the support files after archive creation', async () => {
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.8.0');
+    assert.equal(plugin.version, '1.9.0');
     const installer = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.ps1'), 'utf8');
     assert.match(installer, /nodejs\.org\/dist\/index\.json/);
     assert.match(installer, /SHASUMS256\.txt/);

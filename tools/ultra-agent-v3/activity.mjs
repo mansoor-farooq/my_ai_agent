@@ -32,7 +32,7 @@ function acquireLock(lockPath, timeoutMs = 5000) {
       fs.writeFileSync(descriptor, `${JSON.stringify({ pid: process.pid, acquiredAt: new Date().toISOString() })}\n`, 'utf8');
       return descriptor;
     } catch (error) {
-      if (error.code !== 'EEXIST') throw error;
+      if (!['EEXIST', 'EPERM', 'EACCES'].includes(error.code)) throw error;
       try {
         const metadata = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
         const age = Date.now() - Date.parse(metadata.acquiredAt || 0);
