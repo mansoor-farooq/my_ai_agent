@@ -58,9 +58,11 @@ async function buildContextPacket({ dir = process.cwd(), project = path.basename
   ].filter(Boolean);
   const staleRecords = activeRecords.filter((record) => (record.commit && record.commit !== projectInfo.commit)
     || (record.validUntil && Date.parse(record.validUntil) < Date.now()));
-  const currentRecords = activeRecords.filter((record) => !staleRecords.includes(record));
+  const unversionedRecords = activeRecords.filter((record) => !record.commit && !staleRecords.includes(record));
+  const currentRecords = activeRecords.filter((record) => !staleRecords.includes(record) && !unversionedRecords.includes(record));
+  const conflictRecords = activeRecords.filter((record) => !staleRecords.includes(record));
   const groups = new Map();
-  for (const record of currentRecords.filter((candidate) => candidate.subject && candidate.claim)) {
+  for (const record of conflictRecords.filter((candidate) => candidate.subject && candidate.claim)) {
     const key = String(record.subject).toLowerCase().trim();
     const claims = groups.get(key) || [];
     claims.push(record);
@@ -120,6 +122,14 @@ async function buildContextPacket({ dir = process.cwd(), project = path.basename
       recordCommit: sanitize(record.commit),
       currentCommit: sanitize(projectInfo.commit),
     });
+  }
+  const unversionedSubjects = new Set();
+  for (const record of unversionedRecords) {
+    const subject = String(record.subject || '').toLowerCase().trim();
+    if (subject && unversionedSubjects.has(subject)) continue;
+    if (subject) unversionedSubjects.add(subject);
+    if (subject && conflicts.some((conflict) => conflict.type === 'contradictory-evidence' && conflict.subject === subject)) continue;
+    conflicts.push({ type: 'unversioned-evidence', subject: sanitize(record.subject), claim: sanitize(record.claim), evidenceRefs: [sanitize(record.id)].filter(Boolean) });
   }
   for (const source of malformedMemory) conflicts.push({ type: 'malformed-memory', source });
   const readNotes = (file) => {

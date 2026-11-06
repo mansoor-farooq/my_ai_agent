@@ -81,8 +81,12 @@ if (commandName === 'init') {
     .filter((record) => record?.projectId === project.projectId);
   const superseded = new Set(records.flatMap((record) => Array.isArray(record.supersedes) ? record.supersedes : []));
   const active = records.filter((record) => !superseded.has(record.id));
+  const staleRecords = active.filter((record) => (record.commit && record.commit !== project.commit)
+    || (record.validUntil && Date.parse(record.validUntil) < Date.now()));
+  const unversionedRecords = active.filter((record) => !record.commit && !staleRecords.includes(record));
+  const factRecords = active.filter((record) => !staleRecords.includes(record) && !unversionedRecords.includes(record));
   const groups = new Map();
-  for (const record of active.filter((item) => item.subject && item.claim)) {
+  for (const record of active.filter((item) => item.subject && item.claim && !staleRecords.includes(item))) {
     const key = String(record.subject).toLowerCase().trim();
     const values = groups.get(key) || [];
     values.push(record);
@@ -98,7 +102,7 @@ if (commandName === 'init') {
     }
   }
   const passing = new Set(['pass', 'passed', 'verified', 'complete', 'success']);
-  const currentFacts = active
+  const currentFacts = factRecords
     .filter((record) => record.subject && record.claim && passing.has(String(record.status).toLowerCase()) && !conflictingSubjects.has(String(record.subject).toLowerCase().trim()))
     .sort((a, b) => String(b.recordedAt || '').localeCompare(String(a.recordedAt || '')))
     .slice(0, maxFacts)
@@ -113,14 +117,26 @@ if (commandName === 'init') {
     const bytes = fs.existsSync(target) ? fs.readFileSync(target) : Buffer.alloc(0);
     return [file, crypto.createHash('sha256').update(bytes).digest('hex')];
   }));
+  const extraConflicts = [];
+  const unversionedSubjects = new Set();
+  for (const record of unversionedRecords) {
+    const subject = String(record.subject || '').toLowerCase().trim();
+    if (!subject || unversionedSubjects.has(subject)) continue;
+    unversionedSubjects.add(subject);
+    if (conflicts.some((conflict) => conflict.subject === subject)) continue;
+    extraConflicts.push({ type: 'unversioned-evidence', subject: sanitize(record.subject), claim: sanitize(record.claim), evidenceRefs: [record.id].filter(Boolean) });
+  }
+  for (const record of staleRecords) {
+    extraConflicts.push({ type: 'stale-evidence', subject: sanitize(record.subject), evidenceRefs: [record.id].filter(Boolean), recordCommit: sanitize(record.commit), currentCommit: sanitize(project.commit) });
+  }
   const snapshot = {
     schemaVersion: 1,
     generatedAt: timestamp(),
     project,
     currentFacts,
-    unresolvedConflicts: conflicts.slice(0, maxFacts),
+    unresolvedConflicts: [...conflicts, ...extraConflicts].slice(0, maxFacts),
     notes,
-    omitted: { facts: Math.max(0, active.length - currentFacts.length), conflicts: Math.max(0, conflicts.length - maxFacts) },
+    omitted: { facts: Math.max(0, factRecords.length - currentFacts.length), conflicts: Math.max(0, conflicts.length + extraConflicts.length - maxFacts) },
     ledgerHashes,
   };
   const snapshotPath = path.join(memoryDir, 'context-snapshot.json');

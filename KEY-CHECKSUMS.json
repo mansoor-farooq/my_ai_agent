@@ -6,8 +6,8 @@
   },
   {
     "Path": "Agents/.gitignore",
-    "SHA256": "69EE987A69F344EB4F57539C2133E6302047FEFC9A4579A390EFDA693D04C322",
-    "Bytes": 1072
+    "SHA256": "9778C9ADEB48A3E702E53E0625D95B3F203C800BC4B3A9796616F31647C76BC7",
+    "Bytes": 1082
   },
   {
     "Path": "Agents/AGENT_EXPORT_POLICY.md",
@@ -2291,8 +2291,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v2/memory.mjs",
-    "SHA256": "B07782A5E988B742175FF20B3E7DE8F8B8D3213F5B78F08908DF2B5772152D5F",
-    "Bytes": 8311
+    "SHA256": "34DF6C25B948D94D8224B5FDA32A367CD4E41FC70618D629C46799433CEFE79C",
+    "Bytes": 9596
   },
   {
     "Path": "Agents/tools/ultra-agent-v2/evidence.mjs",
@@ -2301,8 +2301,8 @@
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v2.test.mjs",
-    "SHA256": "48933703AEC2B82221994DFE1B9CEFFFDD657553D35489251CB4B30E37793A87",
-    "Bytes": 6560
+    "SHA256": "79478F8F2D27C326CA4AAC48DA255F661EAB6A21349E7C1E708DB43883F347B9",
+    "Bytes": 8044
   },
   {
     "Path": "Agents/shared/ULTRA_AGENT_V2_PROTOCOL.md",
@@ -2326,8 +2326,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/context.mjs",
-    "SHA256": "ACF090B058062DAAA3160092E8D3BBC1435A3F2E32F6F66613558704E6B4AEB3",
-    "Bytes": 7206
+    "SHA256": "2E7BB2AB8728D03E22AADAEF72327FFF2A39DC5C51744AB16C465A04D7A40362",
+    "Bytes": 8035
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/evaluate.mjs",
@@ -2351,8 +2351,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/delegation.mjs",
-    "SHA256": "BB1FE73FD86F82ECC033CF3E7FCEE9A20AA5EC362F410A48F5EDCB0CC919E793",
-    "Bytes": 3779
+    "SHA256": "429822A940584447588637C7EFA33CD19B7AC69F1F0B1C49E83EA0DA9A626030",
+    "Bytes": 3782
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/policy.mjs",
@@ -2376,8 +2376,8 @@
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v3-delegation.test.mjs",
-    "SHA256": "AD694BB3C3F46761D54C0F010B26694594B43DD2C8209F93801D7B330365056A",
-    "Bytes": 3115
+    "SHA256": "B62858EFBF4B53BA67A26057D45BCED9049E30D978CF2969AE4DC69FC43F2FF7",
+    "Bytes": 3507
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v3-policy-activity.test.mjs",

@@ -7,7 +7,7 @@ function normalizePath(value) {
 
 function pathPrefix(value) {
   const normalized = normalizePath(value);
-  const wildcard = normalized.search(/[?*]/);
+  const wildcard = normalized.search(/[?*\[{]/);
   return (wildcard >= 0 ? normalized.slice(0, wildcard) : normalized).replace(/\/$/, '');
 }
 

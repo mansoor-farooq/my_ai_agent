@@ -37,6 +37,14 @@ test('overlapping or unknown write ownership is serialized', () => {
   assert.deepEqual(result.waves.map((wave) => wave.workItemIds), [['first'], ['second'], ['unknown']]);
 });
 
+test('conservatively serializes brace globs and path aliases that may overlap', () => {
+  const result = schedule([
+    { id: 'a', role: 'builder', ownedPaths: ['./src/{ui,api}/**'], readOnly: false },
+    { id: 'b', role: 'builder', ownedPaths: ['src/ui/components/Button.tsx'], readOnly: false },
+  ]);
+  assert.deepEqual(result.waves.map((wave) => wave.workItemIds), [['a'], ['b']]);
+});
+
 test('missing and cyclic dependencies block delegation', () => {
   const missing = schedule([{ id: 'review', role: 'reviewer', readOnly: true, dependsOn: ['builder'] }]);
   assert.ok(missing.blockers.some((blocker) => blocker.code === 'missing-dependency'));

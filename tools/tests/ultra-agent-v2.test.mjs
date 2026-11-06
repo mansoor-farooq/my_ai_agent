@@ -114,3 +114,22 @@ test('memory compaction writes a bounded conflict-aware snapshot without deletin
     await rm(fixture, { recursive: true, force: true });
   }
 });
+
+test('memory compaction excludes stale and unversioned facts', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v2-compact-freshness-'));
+  try {
+    JSON.parse(run('memory.mjs', ['init', '--dir', fixture, '--project', 'Freshness Fixture']));
+    run('evidence.mjs', ['append', '--dir', fixture, '--project', 'Freshness Fixture', '--kind', 'verification', '--subject', 'unversioned', '--claim', 'should not be active', '--status', 'pass']);
+    const ledger = path.join(fixture, '.agents', 'memory', 'verification-ledger.jsonl');
+    const records = (await readFile(ledger, 'utf8')).trim().split(/\r?\n/).map((line) => JSON.parse(line));
+    records.push({ ...records[0], id: 'expired', subject: 'expired', claim: 'expired fact', commit: 'old-commit', validUntil: '2020-01-01T00:00:00.000Z' });
+    await writeFile(ledger, records.map((record) => JSON.stringify(record)).join('\n') + '\n');
+    JSON.parse(run('memory.mjs', ['compact', '--dir', fixture, '--project', 'Freshness Fixture']));
+    const snapshot = JSON.parse(await readFile(path.join(fixture, '.agents', 'memory', 'context-snapshot.json'), 'utf8'));
+    assert.equal(snapshot.currentFacts.length, 0);
+    assert.ok(snapshot.unresolvedConflicts.some((conflict) => conflict.type === 'unversioned-evidence'));
+    assert.ok(snapshot.unresolvedConflicts.some((conflict) => conflict.type === 'stale-evidence'));
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});

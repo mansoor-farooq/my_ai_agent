@@ -26,7 +26,8 @@ test('excludes evidence belonging to an unrelated project identity', async () =>
     const packet = await buildContextPacket({ dir: fixture.dir, project: 'Context Fixture' });
     assert.ok(packet.evidenceRefs.includes('same'));
     assert.ok(!packet.evidenceRefs.includes('other'));
-    assert.ok(packet.verifiedFacts.some((fact) => fact.claim === 'same project fact'));
+    assert.ok(!packet.verifiedFacts.some((fact) => fact.claim === 'same project fact'));
+    assert.ok(packet.conflicts.some((conflict) => conflict.type === 'unversioned-evidence'));
   } finally {
     await rm(fixture.dir, { recursive: true, force: true });
   }
@@ -67,6 +68,22 @@ test('surfaces stale evidence and malformed memory instead of silently trusting 
     const packet = await buildContextPacket({ dir: fixture.dir, project: 'Stale Fixture' });
     assert.ok(packet.conflicts.some((conflict) => conflict.type === 'stale-evidence'));
     assert.ok(packet.conflicts.some((conflict) => conflict.type === 'malformed-memory'));
+  } finally {
+    await rm(fixture.dir, { recursive: true, force: true });
+  }
+});
+
+test('does not promote unversioned evidence into verified facts', async () => {
+  const fixture = await memoryFixture();
+  try {
+    const initial = await buildContextPacket({ dir: fixture.dir, project: 'Unversioned Fixture' });
+    await writeFile(path.join(fixture.memory, 'verification-ledger.jsonl'), JSON.stringify({
+      id: 'unversioned', projectId: initial.project.projectId, kind: 'verification',
+      claim: 'unversioned fact', status: 'pass', recordedAt: '2026-01-01T00:00:00.000Z',
+    }) + '\n');
+    const packet = await buildContextPacket({ dir: fixture.dir, project: 'Unversioned Fixture' });
+    assert.ok(!packet.verifiedFacts.some((fact) => fact.id === 'unversioned'));
+    assert.ok(packet.conflicts.some((conflict) => conflict.type === 'unversioned-evidence'));
   } finally {
     await rm(fixture.dir, { recursive: true, force: true });
   }
