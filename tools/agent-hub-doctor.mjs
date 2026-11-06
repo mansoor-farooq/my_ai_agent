@@ -185,6 +185,7 @@ export async function runDoctor() {
     /tools\/ultra-agent-v4\/benchmark\.mjs/,
     /tools\/ultra-agent-v4\/recovery\.mjs/,
     /tools\/ultra-agent-v3\/activity\.mjs/,
+    /activity\.mjs summary/,
   ];
   if (!missingUltraV4.length && v4Routes.every((pattern) => pattern.test(mainText))) {
     add('PASS', 'Ultra Agent v4 adaptive runtime', 'benchmark metrics, targeted recovery and native activity runtime are present and manager-routable');

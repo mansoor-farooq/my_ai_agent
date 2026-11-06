@@ -62,6 +62,41 @@ function formatParentUpdate(record) {
   return `${label} ${record.type}: ${record.details || record.scope || 'Progress recorded'}.`;
 }
 
+function summarizeActivity({ dir = process.cwd(), project = path.basename(dir), taskId } = {}) {
+  const projectDir = path.resolve(dir);
+  const projectInfo = projectIdentity({ dir: projectDir, project });
+  if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,95}$/.test(String(taskId || ''))) throw new Error('taskId is required and must be safe');
+  const file = path.join(projectDir, '.agents', 'ultra-v4', 'activity', `${taskId}.jsonl`);
+  const records = readRecords(file).filter((record) => record.projectId === projectInfo.projectId && record.taskId === taskId);
+  const grouped = new Map();
+  for (const record of records) {
+    const list = grouped.get(record.workerId) || [];
+    list.push(record);
+    grouped.set(record.workerId, list);
+  }
+  const workers = [...grouped.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([workerId, workerRecords]) => {
+    const latest = workerRecords.at(-1);
+    const blocked = workerRecords.filter((record) => record.type === 'blocked').at(-1);
+    return {
+      workerId,
+      role: latest.role,
+      latestState: latest.type,
+      timeline: workerRecords.map((record) => record.type),
+      blockers: workerRecords.filter((record) => record.type === 'blocked').map((record) => safe(record.details)),
+      changedPaths: [...new Set(workerRecords.flatMap((record) => record.changedPaths || []))].sort(),
+      checks: [...new Set(workerRecords.flatMap((record) => record.checks || []))].sort(),
+      deliverable: latest.deliverable || workerRecords.find((record) => record.deliverable)?.deliverable || '',
+      latestDetails: safe(latest.details),
+      latestParentUpdate: formatParentUpdate(latest),
+      latestBlocker: blocked ? safe(blocked.details) : null,
+    };
+  });
+  const blockers = workers.filter((worker) => worker.latestState === 'blocked').map((worker) => ({ workerId: worker.workerId, details: worker.latestBlocker || 'No blocker detail supplied' }));
+  const completed = workers.filter((worker) => worker.latestState === 'completed').length;
+  const parentUpdate = `Task ${taskId}: ${workers.length} workers; ${blockers.length} blocked; ${completed} completed.`;
+  return { ok: true, projectId: projectInfo.projectId, taskId, workers, blockers, completed, parentUpdate };
+}
+
 function appendActivity(input = {}) {
   const projectDir = path.resolve(input.dir || process.cwd());
   const project = projectIdentity({ dir: projectDir, project: input.project || path.basename(projectDir) });
@@ -105,17 +140,19 @@ function appendActivity(input = {}) {
   }
 }
 
-export { appendActivity, formatParentUpdate };
+export { appendActivity, formatParentUpdate, summarizeActivity };
 
 if (process.argv[1] && path.basename(process.argv[1]) === 'activity.mjs') {
   const args = process.argv.slice(2);
   const getArg = (name, fallback = '') => { const index = args.indexOf(name); return index >= 0 && args[index + 1] ? args[index + 1] : fallback; };
-  if ((args[0] || 'append') !== 'append') throw new Error('Usage: activity.mjs append [options]');
-  const output = appendActivity({
-    dir: getArg('--dir', process.cwd()), project: getArg('--project'), taskId: getArg('--task'), workerId: getArg('--worker'), role: getArg('--role'), type: getArg('--type'),
-    scope: getArg('--scope'), deliverable: getArg('--deliverable'), details: getArg('--details'),
-    changedPaths: getArg('--changed-paths').split(',').map((value) => value.trim()).filter(Boolean),
-    checks: getArg('--checks').split(',').map((value) => value.trim()).filter(Boolean),
-  });
+  const command = args[0] || 'append';
+  const output = command === 'summary' ? summarizeActivity({ dir: getArg('--dir', process.cwd()), project: getArg('--project'), taskId: getArg('--task') })
+    : command === 'append' ? appendActivity({
+      dir: getArg('--dir', process.cwd()), project: getArg('--project'), taskId: getArg('--task'), workerId: getArg('--worker'), role: getArg('--role'), type: getArg('--type'),
+      scope: getArg('--scope'), deliverable: getArg('--deliverable'), details: getArg('--details'),
+      changedPaths: getArg('--changed-paths').split(',').map((value) => value.trim()).filter(Boolean),
+      checks: getArg('--checks').split(',').map((value) => value.trim()).filter(Boolean),
+    }) : null;
+  if (!output) throw new Error('Usage: activity.mjs append|summary [options]');
   console.log(JSON.stringify(output, null, 2));
 }

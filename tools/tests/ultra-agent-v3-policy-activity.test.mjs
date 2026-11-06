@@ -79,3 +79,25 @@ test('concurrent activity appends remain valid JSONL', async () => {
     await rm(fixture, { recursive: true, force: true });
   }
 });
+
+test('activity summary builds a deterministic native parent timeline', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-activity-summary-'));
+  try {
+    const ui = ['--dir', fixture, '--project', 'Summary Fixture', '--task', 'task-3', '--worker', 'ui-1', '--role', 'mansoor-ui-specialist'];
+    const qa = ['--dir', fixture, '--project', 'Summary Fixture', '--task', 'task-3', '--worker', 'qa-1', '--role', 'qa-release-specialist'];
+    await run('activity.mjs', ['append', ...ui, '--type', 'assignment', '--scope', 'Build UI', '--deliverable', 'UI patch']);
+    await run('activity.mjs', ['append', ...ui, '--type', 'started']);
+    await run('activity.mjs', ['append', ...ui, '--type', 'blocked', '--details', 'waiting for fixture']);
+    await run('activity.mjs', ['append', ...qa, '--type', 'assignment', '--scope', 'Run QA', '--deliverable', 'QA report']);
+    await run('activity.mjs', ['append', ...qa, '--type', 'started']);
+    await run('activity.mjs', ['append', ...qa, '--type', 'completed', '--details', 'all checks passed', '--checks', 'npm test']);
+    const summary = await run('activity.mjs', ['summary', '--dir', fixture, '--project', 'Summary Fixture', '--task', 'task-3']);
+    assert.deepEqual(summary.workers.map((worker) => worker.workerId), ['qa-1', 'ui-1']);
+    assert.equal(summary.workers.find((worker) => worker.workerId === 'ui-1').latestState, 'blocked');
+    assert.equal(summary.workers.find((worker) => worker.workerId === 'qa-1').latestState, 'completed');
+    assert.deepEqual(summary.blockers, [{ workerId: 'ui-1', details: 'waiting for fixture' }]);
+    assert.match(summary.parentUpdate, /2 workers.*1 blocked.*1 completed/i);
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
