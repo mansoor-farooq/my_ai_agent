@@ -5,6 +5,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { evaluateCompletion } from '../ultra-agent-v3/evaluate.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const runtime = path.join(root, 'tools', 'ultra-agent-v4');
@@ -33,6 +34,30 @@ test('benchmark reports observed acceptance accuracy, latency and classified fai
   } finally {
     await rm(fixture, { recursive: true, force: true });
   }
+});
+
+test('evaluation exposes a redacted benchmark envelope without changing acceptance', () => {
+  const result = evaluateCompletion({
+    taskId: 'task-telemetry', projectId: 'project-a', mode: 'fast', risk: 'low',
+    startedAt: '2026-01-01T00:00:00.000Z', completedAt: '2026-01-01T00:00:00.250Z',
+    verificationRecords: [{ kind: 'verification', status: 'pass' }],
+    commandResults: [{ command: 'npm test', status: 'pass' }],
+    changedPaths: ['src/app.ts'],
+  });
+  assert.equal(result.accepted, true);
+  assert.equal(result.benchmarkMetric.taskId, 'task-telemetry');
+  assert.equal(result.benchmarkMetric.durationMs, 250);
+  assert.equal(result.benchmarkMetric.outcome, 'pass');
+  assert.deepEqual(result.benchmarkMetric.acceptanceChecks, ['pass', 'pass']);
+
+  const failed = evaluateCompletion({
+    taskId: 'task-failed', projectId: 'project-a', mode: 'fast', risk: 'low',
+    startedAt: '2026-01-01T00:00:00.000Z', completedAt: '2026-01-01T00:00:00.100Z',
+    verificationRecords: [], commandResults: [{ command: 'npm test', status: 'fail', failureCode: 'verification-failed', reason: 'token=secret-value' }], changedPaths: ['src/app.ts'],
+  });
+  assert.equal(failed.benchmarkMetric.outcome, 'fail');
+  assert.match(failed.benchmarkMetric.failureReason, /REDACTED_SECRET/);
+  assert.doesNotMatch(failed.benchmarkMetric.failureReason, /secret-value/);
 });
 
 test('recovery retries one targeted verification then stops on repeated signature', () => {

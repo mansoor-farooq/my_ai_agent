@@ -3,6 +3,8 @@ import path from 'node:path';
 import { createRecoveryPlan } from '../ultra-agent-v4/recovery.mjs';
 
 const passing = new Set(['pass', 'passed', 'success', 'verified', 'complete']);
+const secretPattern = /(?:AIza[0-9A-Za-z_-]{30,}|(?:sk|ghp|github_pat)_[A-Za-z0-9_-]{16,}|Bearer\s+[A-Za-z0-9._~+/=-]+|(?:password|passwd|pwd|secret|apiKey|api_key|token|authorization)\s*[:=]\s*["']?[^\s"';,}]+)/gi;
+const safe = (value, limit = 500) => String(value || '').replace(secretPattern, '[REDACTED_SECRET]').slice(0, limit);
 
 function evaluateCompletion(input = {}) {
   const mode = String(input.mode || 'fast').toLowerCase();
@@ -14,6 +16,24 @@ function evaluateCompletion(input = {}) {
   const passedResearch = (Array.isArray(input.researchRecords) ? input.researchRecords : []).some((record) => passing.has(String(record.status || '').toLowerCase()) && String(record.kind || 'research').toLowerCase() === 'research');
   const passedCommand = commands.some((result) => passing.has(String(result.status || '').toLowerCase()));
   const failedCommand = commands.find((result) => ['fail', 'failed', 'error'].includes(String(result.status || '').toLowerCase()));
+  const startedAt = input.startedAt ? new Date(input.startedAt) : null;
+  const completedAt = input.completedAt ? new Date(input.completedAt) : null;
+  const durationMs = startedAt && completedAt && !Number.isNaN(startedAt.valueOf()) && !Number.isNaN(completedAt.valueOf()) && completedAt >= startedAt
+    ? completedAt - startedAt : null;
+  const acceptanceChecks = [...records.map((record) => record.status), ...commands.map((result) => result.status)].map((value) => safe(value, 50));
+  const benchmarkMetric = (outcome, failure = failedCommand) => ({
+    schemaVersion: 1,
+    taskId: safe(input.taskId, 96) || null,
+    projectId: safe(input.projectId, 100) || null,
+    mode: safe(mode, 20),
+    outcome: safe(outcome, 50),
+    startedAt: startedAt && !Number.isNaN(startedAt.valueOf()) ? startedAt.toISOString() : null,
+    completedAt: completedAt && !Number.isNaN(completedAt.valueOf()) ? completedAt.toISOString() : null,
+    durationMs,
+    failureCode: failure ? safe(failure.failureCode || 'verification-failed', 100) : null,
+    failureReason: failure ? safe(failure.reason || failure.error || failure.details || '', 500) || null : null,
+    acceptanceChecks,
+  });
   if (!passedVerification) missingEvidence.push('targeted-verification');
   if (!passedCommand) missingEvidence.push('targeted-verification-command');
   if (!Array.isArray(input.changedPaths) || !input.changedPaths.length) missingEvidence.push('changed-path-summary');
@@ -54,6 +74,7 @@ function evaluateCompletion(input = {}) {
       nextState: 'RECOVERABLE_FAILURE',
       resumeCheckpoint: checkpoint,
       recoveryPlan,
+      benchmarkMetric: benchmarkMetric('fail'),
     };
   }
   const uniqueMissing = [...new Set(missingEvidence)];
@@ -64,6 +85,7 @@ function evaluateCompletion(input = {}) {
     nextState: uniqueMissing.length ? 'VERIFY' : 'COMPLETE',
     resumeCheckpoint: null,
     recoveryPlan: null,
+    benchmarkMetric: benchmarkMetric(uniqueMissing.length ? 'blocked' : 'pass', null),
   };
 }
 
