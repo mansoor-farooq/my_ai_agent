@@ -173,4 +173,8 @@ test('project identity follows every temporary worker so parallel project memori
   assert.equal(result.project, 'Cartivo');
   assert.ok(result.taskWorkers.length > 1);
   assert.ok(result.taskWorkers.every(worker => worker.project === 'Cartivo'));
+  assert.equal(result.delegation.maxParallel, 3);
+  assert.equal(result.delegation.blockers.length, 0);
+  assert.ok(result.delegation.waves.every(wave => wave.workItemIds.length <= 3));
+  assert.ok(result.workItems.every(item => item.project === 'Cartivo'));
 });

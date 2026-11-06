@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { scheduleDelegation } from './ultra-agent-v3/delegation.mjs';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -171,6 +172,20 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   if (isWorkflow) taskWorkers.push({ role: 'workflow-automation-specialist', project, skills: skills.filter(workflowWorkerSkills) });
   const reviewRequested = /\b(review|audit|verify|security|release|production|payment|migration|authorization)\b/i.test(taskText);
   if (reviewRequested) taskWorkers.push({ role: /\b(security|authorization|payment|tenant)\b/i.test(taskText) ? 'application-security-reviewer' : 'qa-release-specialist', project, skills: skills.filter(name => ['secure-design-threat-modeling', 'production-code-quality', 'gravitas-verification', 'dotnet-testing-strategy', 'node-testing-quality', 'python-testing-quality'].includes(name)) });
+  const readOnlyRoles = new Set(['research-docs-specialist', 'application-security-reviewer', 'qa-release-specialist']);
+  const workItems = taskWorkers.map((worker, index) => ({
+    id: `${worker.role}-${index + 1}`,
+    role: worker.role,
+    project,
+    scope: `Bounded ${worker.role} assignment selected from repository evidence`,
+    deliverable: 'Observed findings, changed files if authorized, checks actually run, and blockers',
+    readOnly: readOnlyRoles.has(worker.role),
+    ownedPaths: [],
+    dependsOn: [],
+  }));
+  const builderIds = workItems.filter((item) => !item.readOnly).map((item) => item.id);
+  for (const item of workItems) if (item.readOnly && /reviewer|qa-release/.test(item.role)) item.dependsOn = builderIds;
+  const delegation = scheduleDelegation({ workItems, maxParallel: 3 });
   const routedSkills = unique(selected);
   const missingVerifierSkills = routedSkills.filter(name => !fs.existsSync(path.join(root, 'skills', name, 'SKILL.md')));
   if (missingVerifierSkills.length) throw new Error(`Routed skill files are missing: ${missingVerifierSkills.join(', ')}`);
@@ -180,6 +195,8 @@ export function routeTask({ task = '', files = [], project = null, root = projec
     project,
     supportProfiles: unique(supportProfiles),
     taskWorkers,
+    workItems,
+    delegation,
     skills: routedSkills,
     coordination: taskWorkers.length > 1
       ? 'The manager assigns one primary domain expert plus only a requested/high-risk reviewer, with disjoint file ownership.'

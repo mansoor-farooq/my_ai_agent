@@ -1,10 +1,15 @@
 import crypto from 'node:crypto';
 import { selectMode } from './mode.mjs';
+import { scheduleDelegation } from './delegation.mjs';
 
 function createPlanEnvelope(input = {}) {
   const selection = selectMode(input);
   const specialists = [...new Set((Array.isArray(input.specialists) ? input.specialists : []).map(String).filter(Boolean))];
   const selectedSpecialists = selection.mode === 'fast' ? specialists.slice(0, 1) : specialists.slice(0, 5);
+  const delegation = scheduleDelegation({
+    workItems: Array.isArray(input.workItems) ? input.workItems : [],
+    maxParallel: Math.min(selection.executionProfile?.parallelism || 1, input.maxParallel || 3),
+  });
   const phases = selection.mode === 'premium'
     ? ['PREFLIGHT', 'CONTEXT', 'MODE', 'PLAN', 'DELEGATE', 'BUILD', 'VERIFY', 'EVALUATE']
     : ['PREFLIGHT', 'CONTEXT', 'MODE', 'BUILD', 'VERIFY', 'EVALUATE'];
@@ -22,6 +27,8 @@ function createPlanEnvelope(input = {}) {
     blockers: selection.blockers,
     phases,
     specialists: selectedSpecialists,
+    parallelWaves: delegation.waves,
+    delegationBlockers: delegation.blockers,
     acceptanceEvidence: selection.requiredChecks,
   };
 }
