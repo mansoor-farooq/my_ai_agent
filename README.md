@@ -1,12 +1,24 @@
-# MANSOOR FAROOQ | PRIVATE GEMINI AGENT TEAM
+# Mansoor Farooq | Ultra Agent v4.4 Gemini Agent Team for Antigravity
 
-> Premium private engineering release · Designed and maintained by Mansoor Farooq
+> Owner-led premium engineering release for Antigravity agent orchestration, software architecture, production UI, backend services, workflow automation, security review, QA and release engineering.
 
-An Antigravity agent system for product engineering: one lead manager, focused specialists, evidence-led research, clean delivery and an owner-signed release gate.
+**Created and maintained by [Mansoor Farooq](https://github.com/mansoor-farooq)** · [Repository](https://github.com/mansoor-farooq/my_ai_agent) · [Releases](https://github.com/mansoor-farooq/my_ai_agent/releases)
+
+Ultra Agent v4.4 is a Gemini-powered Antigravity agent system for product engineering: one lead manager, focused specialist agents, evidence-led research, hybrid project memory, clean delivery and an owner-signed release gate.
+
+> **Distribution note:** This README is written for a public-facing project page, while the current source/package distribution remains private-only until every bundled skill has a verified source and redistribution licence.
 
 ## Product identity
 
-This private developer tool reflects Mansoor Farooq's senior engineering practice across architecture, UI systems, backend services, automation, security review, testing and release quality. It helps turn a product brief into a bounded implementation plan, a focused code change and a verifiable handoff.
+This developer tool reflects **Mansoor Farooq's** engineering practice across architecture, UI systems, backend services, automation, security review, testing and release quality. It helps turn a product brief into a bounded implementation plan, a focused code change and a verifiable handoff.
+
+### About Mansoor Farooq
+
+**Mansoor Farooq** is the owner and lead engineer behind this Antigravity/Gemini agent team. His work focuses on production-minded software architecture, premium product UI, Flutter and Android delivery, .NET and Node.js backends, Python and PyTorch systems, workflow automation, application security and release engineering.
+
+## Search-friendly project summary
+
+Ultra Agent v4.4 combines Antigravity agent orchestration with a Gemini specialist team for software architecture, production UI engineering, Flutter, .NET, Node.js, Python, PyTorch, MLOps, PostgreSQL RAG, workflow automation, application security, QA automation and signed release packaging. The manager keeps project memory local, delegates bounded work to the right specialist and reports observable evidence instead of invented results.
 
 ## What this system delivers
 

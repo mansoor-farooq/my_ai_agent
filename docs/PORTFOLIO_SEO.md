@@ -4,15 +4,15 @@ Use this copy for a future public GitHub profile, portfolio page or project list
 
 ## Suggested title
 
-Mansoor Farooq | Private Gemini Agent Team for Antigravity
+Mansoor Farooq | Ultra Agent v4.4 Gemini Agent Team for Antigravity
 
 ## Suggested description
 
-An owner-signed Antigravity agent team for production-minded software architecture, UI engineering, backend services, workflow automation, security review and release quality.
+Ultra Agent v4.4 is Mansoor Farooq's owner-led Gemini agent team for Antigravity: production-minded software architecture, UI engineering, Flutter, .NET, Node.js, Python, PyTorch, PostgreSQL RAG, workflow automation, application security, QA and signed release quality.
 
 ## Suggested keywords
 
-Antigravity agent orchestration, Gemini agent team, software architecture, production UI engineering, .NET, Node.js, Python, PyTorch, MLOps, workflow automation, application security, QA automation, release engineering, Mansoor Farooq.
+Mansoor Farooq, Ultra Agent v4.4, Antigravity agent orchestration, Gemini agent team, software architecture, production UI engineering, Flutter, Android, .NET, Node.js, Python, PyTorch, MLOps, PostgreSQL RAG, workflow automation, application security, QA automation, release engineering.
 
 ## Verified links
 
