@@ -122,7 +122,7 @@ Assignments, progress, blockers, handoffs and completed work appear in the Antig
 ### For a recipient
 
 1. Install Antigravity and sign in with the target user's Gemini account.
-2. Download `mansoor-agent-hub.zip` from the [GitHub releases page](https://github.com/mansoor-farooq/my_ai_agent/releases).
+2. Obtain the approved signed `mansoor-agent-hub.zip` from Mansoor Farooq's owner distribution. The [GitHub releases page](https://github.com/mansoor-farooq/my_ai_agent/releases) will be used when a public release artifact is intentionally published.
 3. Extract the ZIP and run `Install-Mansoor-Agent-Team.cmd`.
 4. Open a project, select `production-orchestrator`, and give it a task in chat.
 

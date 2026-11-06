@@ -5,7 +5,7 @@ This guide covers the two supported paths: installing a signed package as a reci
 ## Recipient install
 
 1. Install Antigravity and sign in with the target user's Gemini account.
-2. Download `mansoor-agent-hub.zip` from the [releases page](https://github.com/mansoor-farooq/my_ai_agent/releases).
+2. Obtain the approved signed `mansoor-agent-hub.zip` from Mansoor Farooq's owner distribution. The [releases page](https://github.com/mansoor-farooq/my_ai_agent/releases) is the future public-artifact location, not a promise that an artifact is published today.
 3. Extract the ZIP to a local folder.
 4. Double-click `Install-Mansoor-Agent-Team.cmd`.
 5. Restart Antigravity or reload its skills and agents.
