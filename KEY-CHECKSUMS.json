@@ -41,8 +41,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/flutter-mobile-specialist/agent.md",
-    "SHA256": "DBCB4BD0D55C4C5D05E5A44DABC1B1B7C2D47F3DA5B6502C2886A6CA6A867784",
-    "Bytes": 2174
+    "SHA256": "ABCDB7CD7C00DFAEBE33A98509E1155B2BAB9B4F5DDA0D3B58BA4E6862F19D45",
+    "Bytes": 4188
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "E7E67F6A3F4F8E971DFE6652B30CC35B50C1A961F8ADDC2CF2F8F888CBF5FE4A",
-    "Bytes": 12521
+    "SHA256": "93BB7F312F9F62C7B70168EC94E5770E4B9BFD7990F3E39030CEA2B27F1C0F27",
+    "Bytes": 13102
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2196,8 +2196,8 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "024D847DF02BB18E045D843AFB0EFBF7D18A87E997CCF857349B522CC322B287",
-    "Bytes": 16338
+    "SHA256": "49A36BFC38D1BED1C388643BE6D7CCFBE8223937950E82E78DD80C7B5D7ACA15",
+    "Bytes": 17181
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
@@ -2251,8 +2251,8 @@
   },
   {
     "Path": "Agents/tools/tests/agent-hub-doctor.test.mjs",
-    "SHA256": "8272C4F1911E5E6EDE064FF714CE5CBBCD7F67B39321EE6FF0A55B37952D97AB",
-    "Bytes": 2174
+    "SHA256": "C722AD484CCDA5E863F7BB5251F7DB4CEEC1185FFFFAD7626C3B22045A277BC1",
+    "Bytes": 2420
   },
   {
     "Path": "Agents/tools/tests/backend-ml-router.test.mjs",

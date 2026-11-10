@@ -26,6 +26,11 @@ test('doctor enforces the project contract kernel', async () => {
   assert.ok(report.checks.some((item) => item.name === 'Ultra Agent v2 runtime' && item.detail.includes('contract kernel')));
 });
 
+test('doctor enforces expert Flutter and Android capability', async () => {
+  const report = await runDoctor();
+  assert.ok(report.checks.some((item) => item.name === 'Flutter/Android specialist capability' && item.status === 'PASS'));
+});
+
 test('doctor enforces the specialist quality contract and UI layout gate', async () => {
   const report = await runDoctor();
   assert.ok(report.checks.some((item) => item.name === 'specialist quality contract' && item.status === 'PASS'));

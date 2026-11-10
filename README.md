@@ -109,6 +109,10 @@ Assignments, progress, blockers, handoffs and completed work appear in the Antig
 
 `mansoor-ui-specialist` is the priority web-interface specialist and now treats layout integrity as a release gate, not a styling preference. Before handoff it checks real component/state evidence, text wrapping and shrink rules, long-content and empty/error states, keyboard focus, 200% zoom, responsive breakpoints, and light/dark theme contrast. Fixed-height text boxes, clipped copy and inaccessible truncation are blockers. The specialist reuses the project’s existing routes, data contracts, permissions, tokens and primitives, then requires a rendered browser or project-preview inspection before calling the UI complete.
 
+### Flutter/Android specialist release gate
+
+`flutter-mobile-specialist` is the expert mobile UI/Android worker for adaptive Flutter products. It now requires a UI decision brief, compact-phone/standard-phone/tablet coverage, safe-area and keyboard handling, loading/empty/error/offline/permission states, text scaling and semantics, 60fps motion discipline, and focused analyzer/widget/golden/integration verification. It preserves existing navigation, API/database contracts, IDs, validation and permissions; arbitrary state-management or folder rewrites are outside a UI task.
+
 ## Capability map
 
 | Product area | Built-in capability | Primary specialists |

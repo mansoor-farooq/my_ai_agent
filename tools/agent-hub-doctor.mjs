@@ -152,6 +152,22 @@ export async function runDoctor() {
     add('PASS', 'research and UI capability', 'UI and research specialists expose bounded reference research; UI exposes approved image generation');
   } else add('FAIL', 'research and UI capability', 'required research/image tools are missing from the specialist contracts');
 
+  const flutterText = fs.readFileSync(path.join(profilesRoot, 'flutter-mobile-specialist', 'agent.md'), 'utf8');
+  const flutterGate = [
+    /flutter-ui-ux/i,
+    /flutter-production-layout-qa/i,
+    /android-design/i,
+    /60fps/i,
+    /text scaling/i,
+    /compact-phone.*standard-phone.*tablet/i,
+    /loading\/error.*permission/i,
+    /golden|widget.*integration/i,
+    /preserve existing business logic/i,
+  ];
+  if (flutterGate.every((pattern) => pattern.test(flutterText))) {
+    add('PASS', 'Flutter/Android specialist capability', 'Flutter specialist covers adaptive UI, 60fps performance, accessibility, state coverage and regression-safe implementation');
+  } else add('FAIL', 'Flutter/Android specialist capability', 'Flutter specialist is missing one or more expert UI, performance, accessibility or verification requirements');
+
   const uiLayoutGate = [
     /Layout integrity acceptance gate/i,
     /fixed heights on text-bearing containers/i,
