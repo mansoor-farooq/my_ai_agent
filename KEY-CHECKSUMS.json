@@ -46,8 +46,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
-    "SHA256": "80711E0FE200331228A2318D66CC165E6D92CE4F37D82B75F799883F7D1CA137",
-    "Bytes": 5097
+    "SHA256": "87F41EBFD1C8954F79363C8097DC054BB5095143D0A88A98987BE56290F45DD2",
+    "Bytes": 5777
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/gemini-cli-agent.md",
@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "160FEFE141C1B156CF9808F2A2B576193C0BA7214BAE1C6730DE2A6F76488718",
-    "Bytes": 16050
+    "SHA256": "9FC1C633A1892AD9327E03BDE93ADE7E573832EB56E9C496B5F242964AC9DE5D",
+    "Bytes": 16306
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "097B62C9E6D93458113B84A9EE849B325BADF9F29BADCA451866E99E6DA1DEC6",
-    "Bytes": 11046
+    "SHA256": "AA6268DF866AF511050F1F41CAD830A9E8F37346141DE9B723B793C9111FF395",
+    "Bytes": 11076
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -201,8 +201,8 @@
   },
   {
     "Path": "Agents/SKILL-PROVENANCE.json",
-    "SHA256": "E51DEC2452D82C1C22089DABFA7F53AB1BD6CCA15DD2AC4A00916F3B628DAEE5",
-    "Bytes": 53454
+    "SHA256": "9C93BE0F955F126CB0A282EC4A547F81F8C5C54872455A2933C8B76E5A4FD75B",
+    "Bytes": 55076
   },
   {
     "Path": "Agents/skills/accidental-data-loss-prevention/SKILL.md",
@@ -2196,13 +2196,13 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "CEF0C3B7CD4950D976176C8479438759355A413706D5EC2B7D3B54789C986554",
+    "SHA256": "51CC354202E8FB7FDA68D52BFED1D09A126D39583AFD0B96315A90F13A559C21",
     "Bytes": 14880
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "2E8EFEB3E92A7C9F600715541D2D1143A353C6EE0212179694172DC272D0899F",
-    "Bytes": 31454
+    "SHA256": "A9EF04B03EF0F9A3EEC57154D2D6A4033B173D14B4E1B77D54A954DE473290D7",
+    "Bytes": 31486
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2231,8 +2231,8 @@
   },
   {
     "Path": "Agents/tools/route-backend-ml-task.mjs",
-    "SHA256": "C5A46323FC9FFF6F1BD0305EB9F7CBDDB436D4ABFE74B51BB3327A0A13BD8899",
-    "Bytes": 19724
+    "SHA256": "D602D581049F455E52DA482459DF15B5E320C4BD3E71785C865DC5A31DD2A9D6",
+    "Bytes": 19944
   },
   {
     "Path": "Agents/tools/snapshot-native-history.mjs",
@@ -2256,8 +2256,8 @@
   },
   {
     "Path": "Agents/tools/tests/backend-ml-router.test.mjs",
-    "SHA256": "653D2F73D75208604F3580B0DEA468C0215C655562A1CCDFDC3438ABB3E806DE",
-    "Bytes": 10366
+    "SHA256": "31B3911C1A19AF4B17A017A6626F2AE843A1C6D6C411574CA596E409E0A51B4D",
+    "Bytes": 10998
   },
   {
     "Path": "Agents/tools/tests/package-signing.test.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "C03461E86C561375DBFD300770CCDADD3E963590A95D7AD32569C8F3F59EC0DC",
-    "Bytes": 10086
+    "SHA256": "284FA2EE43FBFFB7BD8D49BCAD08B20CD01AE7700E6C260B0BBD5FEE5C8C7A59",
+    "Bytes": 10466
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

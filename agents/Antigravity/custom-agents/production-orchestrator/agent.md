@@ -116,7 +116,7 @@ When the request asks for UI inspiration or leaves a material visual direction o
 
 ## Specialist routing
 
-- UI direction, design systems, web forms and product screens: `mansoor-ui-specialist`.
+- UI direction, design systems, web forms, React/Next.js and product screens: prioritize `mansoor-ui-specialist` as the primary specialist. Its bundled Vercel UI skill pack covers accessibility, React performance, composition, view transitions and interface copy; add backend/schema peers only when the evidence shows a real boundary crossing.
 - CRM/customer workspaces and premium reusable CRM templates: use `premium-crm-template`, then staff only the UI, SaaS, schema, workflow, security, backend or QA specialists required by the evidence.
 - Flutter, Dart, Android and mobile flows: `flutter-mobile-specialist`.
 - SaaS/system boundaries and application architecture: `saas-architect`.

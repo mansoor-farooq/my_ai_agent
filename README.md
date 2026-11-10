@@ -31,7 +31,7 @@ Mansoor Farooq built this system for production-minded software architecture, pr
 | --- | --- |
 | **1 manager** | `production-orchestrator` owns intake, planning, delegation and final verification. |
 | **14 specialists** | UI, Flutter, SaaS, ERP/schema, .NET, Node.js, Python, ML, cloud data, workflows, security, QA, research and hub operations. |
-| **174 skills** | A portable, deduplicated skill library with explicit provenance tracking. |
+| **179 skills** | A portable, deduplicated skill library with explicit provenance tracking, including the Vercel UI pack. |
 | **4 governed rules** | Shared safety, quality and release contracts apply across the team. |
 | **Local-first memory** | Project identity, decisions, evidence, conflicts and checkpoints stay scoped to the selected repository. |
 | **Provider-free package** | No bundled MCP connectors, provider credentials or remote telemetry service. |
@@ -152,8 +152,8 @@ The build refreshes source checksums, signs the portable ZIP, runs the doctor, v
 
 The V4.4 release gate currently verifies:
 
-- 87 discovered tests: **81 passing**, **0 failures**, 6 intentional provider-free RAG skips;
-- 15 packaged agent profiles, 174 skills, 4 governed rules and zero provider connectors;
+- 89 discovered tests: **83 passing**, **0 failures**, 6 intentional provider-free RAG skips;
+- 15 packaged agent profiles, 179 skills, 4 governed rules and zero provider connectors;
 - owner-signed package checksums, strict Antigravity plugin validation and source integrity checks;
 - benchmark envelopes for acceptance, latency, p95 timing and bounded failure reasons;
 - checkpoint drift reporting, memory health diagnostics, activity summaries and expanded secret redaction.

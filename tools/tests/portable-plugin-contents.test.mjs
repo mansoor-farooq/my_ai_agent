@@ -17,7 +17,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 test('portable source contains the complete owned skill and rule library', async () => {
   const inventory = await inspectPortableSource(root);
 
-  assert.equal(inventory.skills.length, 174);
+  assert.equal(inventory.skills.length, 179);
   assert.equal(inventory.rules.length, 4);
   assert.deepEqual(inventory.invalidSkills, []);
   assert.deepEqual(inventory.invalidRules, []);
@@ -45,6 +45,17 @@ test('portable source includes every unique Antigravity global skill', async () 
   ];
 
   assert.deepEqual(requiredGlobalSkills.filter((name) => !inventory.skills.includes(name)), []);
+});
+
+test('portable source includes the official Vercel UI skill pack', async () => {
+  const inventory = await inspectPortableSource(root);
+  for (const name of [
+    'web-design-guidelines',
+    'vercel-react-best-practices',
+    'vercel-composition-patterns',
+    'vercel-react-view-transitions',
+    'writing-guidelines'
+  ]) assert.ok(inventory.skills.includes(name), name);
 });
 
 test('imported mobile skills carry redistribution provenance', async () => {
@@ -172,7 +183,7 @@ test('built ZIP retains the support files after archive creation', async () => {
     assert.match(installer, /@\(.*'tools'.*'shared'.*\)/s);
     assert.match(installer, /\[MF\]\s+MANSOOR FAROOQ/);
     assert.match(installer, /ULTRA AGENT v4/);
-    assert.match(installer, /VALIDATED\s+\/\s+15 agents, 174 skills, 4 rules/);
+    assert.match(installer, /VALIDATED\s+\/\s+15 agents, 179 skills, 4 rules/);
     assert.match(installer, /Invoke-AgyCaptured -CommandArguments @\("plugin", "validate"/);
     assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$validationResult = Invoke-AgyCaptured'));
     assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$inventoryResult = Invoke-AgyCaptured'));

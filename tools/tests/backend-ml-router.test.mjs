@@ -46,6 +46,22 @@ test('routes modern UI design to the UI specialist without enabling image connec
   assert.ok(result.skills.includes('production-image-generation'));
 });
 
+test('gives the UI specialist priority and loads official Vercel UI guidance', () => {
+  const result = routeTask({
+    task: 'Build a polished React dashboard with accessible responsive interactions',
+    files: ['package.json', 'src/app/page.tsx'],
+    root
+  });
+  assert.equal(result.primarySpecialist, 'mansoor-ui-specialist');
+  assert.equal(result.supportProfiles[0], 'mansoor-ui-specialist');
+  for (const name of [
+    'web-design-guidelines',
+    'vercel-react-best-practices',
+    'vercel-composition-patterns',
+    'vercel-react-view-transitions'
+  ]) assert.ok(result.skills.includes(name), name);
+});
+
 test('does not configure external image generation for standalone asset requests', () => {
   const result = routeTask({ task: 'Generate a realistic product photo for a catalog listing', root });
   assert.ok(!result.skills.includes('production-image-generation'));

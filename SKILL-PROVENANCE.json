@@ -1668,6 +1668,50 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "vercel-composition-patterns",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "vercel-labs/agent-skills",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "vercel-react-best-practices",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "vercel-labs/agent-skills",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "vercel-react-view-transitions",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "vercel-labs/agent-skills",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "web-design-guidelines",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "vercel-labs/agent-skills",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "webapp-testing",
       "sourceRoots": [
         "antigravity-global"
@@ -1941,6 +1985,17 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "writing-guidelines",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "vercel-labs/agent-skills",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     }
   ]
 }

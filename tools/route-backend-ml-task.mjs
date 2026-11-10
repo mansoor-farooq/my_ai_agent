@@ -108,7 +108,15 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   if (isPython) selected.push('python-security');
   if (isNode && isMl) selected.push('backend-ml-integration');
   if (isUi && /\b(model|inference|prediction)\b/i.test(taskText)) selected.push('ml-model-serving', 'backend-ml-integration');
-  if (isUi) selected.push('modern-ui-art-direction', 'design-reference-research', 'production-code-quality');
+  if (isUi) selected.push(
+    'modern-ui-art-direction',
+    'design-reference-research',
+    'production-code-quality',
+    'web-design-guidelines',
+    'vercel-react-best-practices',
+    'vercel-composition-patterns',
+    'vercel-react-view-transitions'
+  );
   const isDeepUi = isUi && /\b(inspiration|reference|visual direction|design system|redesign|research|brand direction|benchmark)\b/i.test(text);
   if (isResearch || groups.length || isDotnet || isCloudData || isWorkflow || isDeepUi) selected.push('reverse-engineering', 'reverse-deep-researcher', 'feature-documentation');
   if (isResearch || isDeepUi) selected.push('autonomous-deep-researcher');
@@ -152,9 +160,9 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   if (missing.length) throw new Error(`Routed skill files are missing: ${missing.join(', ')}`);
 
   const supportProfiles = [];
+  if (isUi) supportProfiles.push('mansoor-ui-specialist');
   if (groups.length || isDotnet) supportProfiles.push('saas-architect');
   if (/\b(database|schema|sql|postgres|mysql|ledger|sap|erp|migration)\b/i.test(text)) supportProfiles.push('enterprise-schema-architect');
-  if (isUi) supportProfiles.push('mansoor-ui-specialist');
   if (isMobile) supportProfiles.push('flutter-mobile-specialist');
   if (isCloudData) supportProfiles.push('cloud-data-engineer');
   if (isWorkflow) supportProfiles.push('workflow-automation-specialist');
@@ -193,6 +201,7 @@ export function routeTask({ task = '', files = [], project = null, root = projec
   return {
     manager: 'production-orchestrator',
     project,
+    primarySpecialist: unique(supportProfiles)[0] ?? null,
     supportProfiles: unique(supportProfiles),
     taskWorkers,
     workItems,

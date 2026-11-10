@@ -290,7 +290,7 @@ const signedInstaller = [
   '  }',
   '  $validationResult = Invoke-AgyCaptured -CommandArguments @("plugin", "validate", "--strict", $installStage)',
   '  if ($validationResult.ExitCode -ne 0) { if ($validationResult.StdOut) { Write-Host $validationResult.StdOut.TrimEnd() -ForegroundColor Yellow }; if ($validationResult.StdErr) { Write-Host $validationResult.StdErr.TrimEnd() -ForegroundColor Yellow }; throw "Antigravity plugin validation failed (exit $($validationResult.ExitCode)). See installer log." }',
-  "  Write-Host '      VALIDATED  /  15 agents, 174 skills, 4 rules' -ForegroundColor Green",
+  `  Write-Host '      VALIDATED  /  ${agentCount} agents, ${skillCount} skills, ${ruleCount} rules' -ForegroundColor Green`,
   '  $installResult = Invoke-AgyCaptured -CommandArguments @("plugin", "install", $installStage)',
   '  if ($installResult.ExitCode -ne 0) { if ($installResult.StdOut) { Write-Host $installResult.StdOut.TrimEnd() -ForegroundColor Yellow }; if ($installResult.StdErr) { Write-Host $installResult.StdErr.TrimEnd() -ForegroundColor Yellow }; throw "Mansoor Agent Hub installation failed (exit $($installResult.ExitCode)). See installer log." }',
   "  Write-Host '      INSTALLED  /  Agent Hub is ready' -ForegroundColor Green",
