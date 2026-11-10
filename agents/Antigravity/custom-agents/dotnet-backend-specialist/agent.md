@@ -22,6 +22,7 @@ skills:
   - skills/dotnet-testing-strategy
   - skills/dotnet-resilience-observability
   - skills/production-code-quality
+  - skills/claude-style-response-quality
   - skills/reverse-engineering
   - skills/reverse-deep-researcher
   - skills/open-source-architecture-research

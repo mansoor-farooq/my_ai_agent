@@ -16,28 +16,28 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/agent-hub-maintainer/agent.md",
-    "SHA256": "C2C3FA1A140E89D076E9B57D34DAB0FFC75E23D3315CC03A1A351F79AD2A031E",
-    "Bytes": 1291
+    "SHA256": "B185F14E95A53E06C8E4B660C8A2DA539703266923470FDB911F68F79AE1F9BD",
+    "Bytes": 1333
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/application-security-reviewer/agent.md",
-    "SHA256": "2E3051325F4B7CC4562631436BAEC8A76228561DA3B3E161122952275423D5AE",
-    "Bytes": 1498
+    "SHA256": "882FB413783E4ACB60E3D8D920FAB5533AF4E128C23B839F86FFA3135F0D0644",
+    "Bytes": 1576
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/cloud-data-engineer/agent.md",
-    "SHA256": "47CBCB70906EA3A810A25B9A8DF40CB880FCF6D688321F000CEF8AA6326B02E7",
-    "Bytes": 1653
+    "SHA256": "3771D77E87A735CB635628FE4A8A34747304129E28E310CE5F184C14175B5AF1",
+    "Bytes": 1731
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/dotnet-backend-specialist/agent.md",
-    "SHA256": "F06362C062BB6218682E5AD5DC44DEBED5E850091F5576E5DD8A86D56E955EDE",
-    "Bytes": 1627
+    "SHA256": "3026D41512264C9F5921D8E7E5371D1076B77F33167CCE4F9591E2F15006F6DC",
+    "Bytes": 1669
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/enterprise-schema-architect/agent.md",
-    "SHA256": "BA74F99AA1CAFD4429D6AE86B002FD383B18311E8BF2AE393D799542342B92C1",
-    "Bytes": 2779
+    "SHA256": "1307A3295B051DC1A01085CB1F4CC1B7D0AB01402714E84FD7FB1D134989FB20",
+    "Bytes": 2857
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/flutter-mobile-specialist/agent.md",
@@ -46,8 +46,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
-    "SHA256": "87F41EBFD1C8954F79363C8097DC054BB5095143D0A88A98987BE56290F45DD2",
-    "Bytes": 5777
+    "SHA256": "143494B4B49CECACD53021252B2059EFB004BBD58E03A65434EFF0A581AB54EC",
+    "Bytes": 7125
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/gemini-cli-agent.md",
@@ -56,13 +56,13 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/ml-systems-specialist/agent.md",
-    "SHA256": "11D728EB60935DFD4AB1E4CD92F5BF9B5D404C5B50D15794299A3E18E6A5D8C9",
-    "Bytes": 1730
+    "SHA256": "AF3ED4E99E5E9C5AE25761BDEC7FDFDEB1F0FC1AC621A20B840CF5FAD4BEB5B3",
+    "Bytes": 1808
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/node-backend-specialist/agent.md",
-    "SHA256": "86A499E4C9BDD180CD61A5C98182C8974FDE5C9FB4CA6D1BE521D87FE9E388AE",
-    "Bytes": 1579
+    "SHA256": "A42FB76894B219825874CE8DF2CAAA9E2AA00E2F967FE6FA46FA0F65DFD010A8",
+    "Bytes": 1657
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
@@ -71,28 +71,28 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
-    "SHA256": "DEB8BEF6525ED1F6FB92B1470142E21185F94964152A3823EEEAE44256EB558B",
-    "Bytes": 1496
+    "SHA256": "359DF7CBB056C1DC547D626A5FC43F443AFF63DEA3F78D6972AE996E4624B530",
+    "Bytes": 1574
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/qa-release-specialist/agent.md",
-    "SHA256": "01D0462AEE89FD681305CB03A517234EC2B7467ED0EED51EF7BF2F9AE1174DD2",
-    "Bytes": 1399
+    "SHA256": "62C3C543B85B680A248D253C60E3F7B37FB5279B765EC35BF60AF5E3E330E2E7",
+    "Bytes": 1441
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/research-docs-specialist/agent.md",
-    "SHA256": "92EF06112D3CA59FD678BFE45819F0C872A78622A1145D91895E9651793FC7E0",
-    "Bytes": 1550
+    "SHA256": "29FDAE981A4E087ADB98CBE0CB6D33888F2F5396B65519BD9F1FF5B5ACD49530",
+    "Bytes": 1628
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/saas-architect/agent.md",
-    "SHA256": "40322CC8B28185AA440143CFF9111CA9C428FBB7E2B6AB5F7ECAA1E7ECAAA8FD",
-    "Bytes": 3367
+    "SHA256": "8FB8959BBB0E6A0C9FDDC41C014A178F6681EBD483A59C356BAC54EA923FAE73",
+    "Bytes": 3445
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/workflow-automation-specialist/agent.md",
-    "SHA256": "74FC3848B4E09FFB662691B118D2C7874776FEC52B57D50B590966DB7611DD84",
-    "Bytes": 1779
+    "SHA256": "5944D3CEF73CF84AD16377F022481DBC8370B4A427E6A3E6FD6399210DFB016D",
+    "Bytes": 1857
   },
   {
     "Path": "Agents/Build-Agent-Hub.cmd",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "AA6268DF866AF511050F1F41CAD830A9E8F37346141DE9B723B793C9111FF395",
-    "Bytes": 11076
+    "SHA256": "B489ECBAE76FE0A9CE2B1880913B92F9F1B69B4C844C96E484532ADAEF751429",
+    "Bytes": 11740
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2196,8 +2196,8 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "51CC354202E8FB7FDA68D52BFED1D09A126D39583AFD0B96315A90F13A559C21",
-    "Bytes": 14880
+    "SHA256": "D290BADEF0479CB2CAFD0E8449DBBAB8DB6526107B0A4B0CD500C6E1EE368E3C",
+    "Bytes": 16087
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
@@ -2251,8 +2251,8 @@
   },
   {
     "Path": "Agents/tools/tests/agent-hub-doctor.test.mjs",
-    "SHA256": "9BAD8C3FD8FC19595F8D018A450D33B3352B1CD4CDAEDF93ADA353D0D9067BDF",
-    "Bytes": 1575
+    "SHA256": "01F083551F10FBA0F4EB2B3386A9BF2E154916B7AA78887A976E6F1AC75262A7",
+    "Bytes": 1936
   },
   {
     "Path": "Agents/tools/tests/backend-ml-router.test.mjs",

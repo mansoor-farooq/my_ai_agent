@@ -15,6 +15,7 @@ skills:
   - skills/pre-implementation-evidence-gate
   - skills/reverse-engineering
   - skills/production-code-quality
+  - skills/claude-style-response-quality
   - skills/dotnet-testing-strategy
   - skills/node-testing-quality
   - skills/python-testing-quality

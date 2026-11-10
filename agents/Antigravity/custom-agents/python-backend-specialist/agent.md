@@ -14,6 +14,8 @@ model: inherit
 commandExecutionPolicy: sandbox
 skills:
   - skills/pre-implementation-evidence-gate
+  - skills/production-code-quality
+  - skills/claude-style-response-quality
   - skills/python-backend-architecture
   - skills/python-fastapi-services
   - skills/python-django-api

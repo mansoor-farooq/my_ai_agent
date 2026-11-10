@@ -13,6 +13,8 @@ model: inherit
 commandExecutionPolicy: sandbox
 skills:
   - skills/pre-implementation-evidence-gate
+  - skills/production-code-quality
+  - skills/claude-style-response-quality
   - skills/secure-design-threat-modeling
   - skills/node-auth-security
   - skills/python-security

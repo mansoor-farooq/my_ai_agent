@@ -13,6 +13,8 @@ model: inherit
 commandExecutionPolicy: sandbox
 skills:
   - skills/pre-implementation-evidence-gate
+  - skills/production-code-quality
+  - skills/claude-style-response-quality
   - skills/enterprise-erp-reverse-engineering
   - skills/premium-crm-template
   - skills/reverse-engineering

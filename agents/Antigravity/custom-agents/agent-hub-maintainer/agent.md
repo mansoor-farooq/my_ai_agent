@@ -19,6 +19,7 @@ skills:
   - skills/skill-repair
   - skills/project-context-orchestrator
   - skills/production-code-quality
+  - skills/claude-style-response-quality
   - skills/reverse-engineering
   - skills/reverse-deep-researcher
   - skills/feature-documentation

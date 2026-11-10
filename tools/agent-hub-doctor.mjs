@@ -137,12 +137,33 @@ export async function runDoctor() {
   if (!missingReverseEngineering.length) add('PASS', 'reverse-engineering gate', 'every shipped manager/specialist declares the reverse-engineering skill');
   else add('FAIL', 'reverse-engineering gate', `missing from: ${missingReverseEngineering.join(', ')}`);
 
+  const missingQualityContract = shippedAgents.filter((name) => {
+    const text = fs.readFileSync(path.join(profilesRoot, name, 'agent.md'), 'utf8');
+    return !/skills\/production-code-quality/.test(text) || !/skills\/claude-style-response-quality/.test(text);
+  });
+  if (!missingQualityContract.length) {
+    add('PASS', 'specialist quality contract', 'every shipped manager/specialist loads production-code-quality and claude-style-response-quality');
+  } else add('FAIL', 'specialist quality contract', `missing from: ${missingQualityContract.join(', ')}`);
+
   const uiText = fs.readFileSync(path.join(profilesRoot, 'mansoor-ui-specialist', 'agent.md'), 'utf8');
   const researchText = fs.readFileSync(path.join(profilesRoot, 'research-docs-specialist', 'agent.md'), 'utf8');
   if (/search_web/.test(uiText) && /read_url_content/.test(uiText) && /generate_image/.test(uiText)
       && /search_web/.test(researchText) && /read_url_content/.test(researchText)) {
     add('PASS', 'research and UI capability', 'UI and research specialists expose bounded reference research; UI exposes approved image generation');
   } else add('FAIL', 'research and UI capability', 'required research/image tools are missing from the specialist contracts');
+
+  const uiLayoutGate = [
+    /Layout integrity acceptance gate/i,
+    /fixed heights on text-bearing containers/i,
+    /min-width: `?0/i,
+    /overflow-wrap: `?anywhere/i,
+    /200% zoom/i,
+    /light and dark themes independently/i,
+    /real browser or equivalent project preview/i,
+  ];
+  if (uiLayoutGate.every((pattern) => pattern.test(uiText))) {
+    add('PASS', 'UI layout integrity gate', 'UI specialist enforces overflow, responsive, theme and rendered-browser acceptance checks');
+  } else add('FAIL', 'UI layout integrity gate', 'UI specialist is missing one or more clipping, responsive, theme or rendered-verification rules');
 
   const ultraRuntimeFiles = [
     'tools/ultra-agent-v2/preflight.mjs',

@@ -49,6 +49,12 @@ For React, Next.js or web-interface tasks, the manager should prioritize this sp
 
 For a small, already-specified UI fix, use the fast path: inspect the target component and its direct state/API callers, use the existing design tokens, make the narrow edit and run a focused check. Trigger web research, a multi-option blueprint or image generation only when the direction is materially open or the user explicitly requests references/assets.
 
+## Layout integrity acceptance gate
+
+Before editing, inspect the rendered component structure, computed layout constraints and the state/data path that supplies visible text. Never use fixed heights on text-bearing containers unless the product explicitly defines a tested clamp; allow flex/grid children to shrink with `min-width: 0` and `min-height: 0`, wrap long content with `overflow-wrap: anywhere`, and use truncation only when the full value remains discoverable through an accessible label or tooltip. Test short and long labels, two-to-three-line copy, empty/loading/error/denied states, keyboard focus, 200% zoom and narrow/standard/wide breakpoints. Verify light and dark themes independently for contrast, borders, surfaces and disabled states. Do not report a UI as complete until the rendered result has been inspected in a real browser or equivalent project preview; if that surface is unavailable, explicitly mark visual verification as pending.
+
+For every component change, preserve existing routes, API/database contracts, IDs, validation and permissions. Reuse the project design tokens and component primitives; do not introduce a parallel visual system merely to hide a layout defect. A box or text clipping defect is a release blocker until the affected state and at least one adjacent responsive state pass the gate.
+
 1. **Research-first design work**:
    - Read project instructions, memory and current UI flow first. Use `search_web` and `read_url_content` for bounded reference research, prioritizing official design systems and real product documentation. Use `modern-ui-art-direction`, `design-reference-research`, and existing components/assets.
    - Adapt known principles into an original product-specific interface. Distinguish repository evidence from general design judgment; do not imply external research was performed.
