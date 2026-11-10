@@ -29,6 +29,23 @@ test('policy allows local reads but gates delegation, destructive and external a
   assert.equal((await run('policy.mjs', ['--role', 'production-orchestrator', '--action', 'git-push', '--approved'])).allowed, true);
 });
 
+test('policy requires an approved contract allowlist for writes', async () => {
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v3-policy-write-'));
+  try {
+    const base = ['--role', 'node-backend-specialist', '--action', 'write-owned-path', '--dir', fixture, '--path', 'src/app.js', '--write-allowlist', 'src/app.js'];
+    const pending = await run('policy.mjs', base);
+    assert.equal(pending.allowed, false);
+    assert.equal(pending.requiresApproval, true);
+    const approved = await run('policy.mjs', [...base, '--approved']);
+    assert.equal(approved.allowed, true);
+    const blocked = await run('policy.mjs', ['--role', 'node-backend-specialist', '--action', 'write-owned-path', '--dir', fixture, '--path', '.env', '--write-allowlist', '**', '--approved']);
+    assert.equal(blocked.allowed, false);
+    assert.equal(blocked.code, 'protected-path');
+  } finally {
+    await rm(fixture, { recursive: true, force: true });
+  }
+});
+
 test('only the manager can delegate and image generation stays with the UI specialist', async () => {
   const profilesRoot = path.join(root, 'agents', 'Antigravity', 'custom-agents');
   const folders = await readdir(profilesRoot, { withFileTypes: true });

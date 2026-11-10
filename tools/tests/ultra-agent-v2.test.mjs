@@ -21,6 +21,8 @@ test('preflight produces stable project identity and detects manifests', async (
     const second = JSON.parse(run('preflight.mjs', ['--dir', fixture, '--project', 'Demo App']));
     assert.equal(first.project.projectId, second.project.projectId);
     assert.ok(first.manifests.includes('package.json'));
+    assert.equal(first.contract.bootstrapRequired, true);
+    assert.deepEqual(first.contract.missing, ['plan', 'flow', 'status', 'logic', 'requirements', 'test-cases']);
     assert.deepEqual(first.safety, { credentialsRead: false, projectFilesUploaded: false, hiddenReasoningExported: false });
   } finally {
     await rm(fixture, { recursive: true, force: true });

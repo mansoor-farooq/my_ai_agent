@@ -42,13 +42,22 @@ Apply `claude-style-response-quality` to every user-facing answer and specialist
 ## Local-first operating loop
 
 1. Read the target repository's `AGENTS.md`/`README.md`, relevant plan/progress and `.agents/memory/PROJECT_MEMORY.md` when present. Inspect only files needed to understand the assigned change.
-2. Ask only if a material decision blocks safe progress. Record a short scope, constraints and success evidence; do not create a generic RFC for a routine fix.
-3. Load only the few matching Antigravity skills. Never paste the full library, project transcript or unrelated memory into a worker prompt.
-4. For unfamiliar or architecture-sensitive work, use reverse engineering plus targeted official/open-source research. Record URLs and claims in a research ledger.
-5. Delegate one bounded implementation task to the best-fit expert. Add one reviewer only when a security, data, payment, release or cross-domain risk justifies it. Give disjoint paths for parallel work.
-6. Preserve existing project contracts, routes, APIs, data ownership, validation and security unless the task explicitly changes them.
-7. Run only the narrowest useful local checks allowed by the task. Report exactly what ran; separate observed facts, assumptions and unknowns.
-8. Record a per-feature document and shared project-memory update when the feature is material. Never store hidden chain-of-thought, secrets, credentials, raw customer data or unrelated transcripts.
+2. Run the read-only contract audit through `tools/ultra-agent-v2/contract.mjs audit`. Every target project uses the root contract folders `plan/`, `flow/`, `status/`, `logic/`, `requirements/` and `test-cases/`. If any are missing, return a bootstrap proposal and wait for owner approval before creating them.
+3. Ask only if a material decision blocks safe progress. Record a short scope, constraints and success evidence; do not create a generic RFC for a routine fix.
+4. Load only the few matching Antigravity skills. Never paste the full library, project transcript or unrelated memory into a worker prompt.
+5. For unfamiliar or architecture-sensitive work, use reverse engineering plus targeted official/open-source research. Record URLs and claims in a research ledger.
+6. Delegate one bounded implementation task to the best-fit expert. Add one reviewer only when a security, data, payment, release or cross-domain risk justifies it. Give disjoint paths for parallel work.
+7. Preserve existing project contracts, routes, APIs, data ownership, validation and security unless the task explicitly changes them.
+8. Run only the narrowest useful local checks allowed by the task. Report exactly what ran; separate observed facts, assumptions and unknowns.
+9. Record a per-feature document and shared project-memory update when the feature is material. Never store hidden chain-of-thought, secrets, credentials, raw customer data or unrelated transcripts.
+
+## Contract-first architecture governance
+
+- Requirements are owner-approved and append-only. Never rewrite or delete an accepted requirement; create a superseding version with an approval record.
+- Architecture work is read-only discovery → requirement proposal → owner approval → plan → owner plan approval → dependency-ordered tasks → implementation → independent verification → convergence → status closeout.
+- A plan must list exact existing paths, exact proposed paths, write allowlists, forbidden paths, allowed commands, rollback and acceptance-test mappings. A specialist may propose scope expansion but cannot authorize it.
+- Use `tools/ultra-agent-v2/contract.mjs` for contract audit, bootstrap proposal, requirement creation and delegation-envelope validation. Use `tools/ultra-agent-v3/policy.mjs` with a concrete path and approval before any owned write.
+- Unexpected files, folders, path traversal, protected-file access, missing evidence or unapproved contract drift immediately block completion; do not repair by broad rewrite.
 
 ## Native agent activity in parent chat
 

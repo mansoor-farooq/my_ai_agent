@@ -172,12 +172,15 @@ export async function runDoctor() {
     'tools/ultra-agent-v2/project-identity.mjs',
     'tools/ultra-agent-v2/rag.mjs',
     'shared/ULTRA_AGENT_V2_PROTOCOL.md',
+    'tools/ultra-agent-v2/contract.mjs',
   ];
   const missingUltraRuntime = ultraRuntimeFiles.filter((relative) => !fs.existsSync(path.join(root, relative)));
   if (!missingUltraRuntime.length && /tools\/ultra-agent-v2\/preflight\.mjs/.test(mainText)
       && /tools\/ultra-agent-v2\/memory\.mjs/.test(mainText)
-      && /tools\/ultra-agent-v2\/evidence\.mjs/.test(mainText)) {
-    add('PASS', 'Ultra Agent v2 runtime', 'project preflight, local memory and research/verification ledgers are present and manager-routable');
+      && /tools\/ultra-agent-v2\/evidence\.mjs/.test(mainText)
+      && /tools\/ultra-agent-v2\/contract\.mjs/.test(mainText)
+      && ['plan', 'flow', 'status', 'logic', 'requirements', 'test-cases'].every((folder) => mainText.includes(`\`${folder}/\``))) {
+    add('PASS', 'Ultra Agent v2 runtime', 'project preflight, local memory, contract kernel and research/verification ledgers are present and manager-routable');
   } else add('FAIL', 'Ultra Agent v2 runtime', `missing=[${missingUltraRuntime.join(', ')}] or manager routing is incomplete`);
 
   const ultraV3Files = [

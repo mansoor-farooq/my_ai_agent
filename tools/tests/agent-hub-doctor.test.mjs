@@ -21,6 +21,11 @@ test('doctor enforces provider-free packaging and agent tool boundaries', async 
   assert.ok(report.checks.some((item) => item.name === 'Ultra Agent v4 adaptive runtime' && item.status === 'PASS'));
 });
 
+test('doctor enforces the project contract kernel', async () => {
+  const report = await runDoctor();
+  assert.ok(report.checks.some((item) => item.name === 'Ultra Agent v2 runtime' && item.detail.includes('contract kernel')));
+});
+
 test('doctor enforces the specialist quality contract and UI layout gate', async () => {
   const report = await runDoctor();
   assert.ok(report.checks.some((item) => item.name === 'specialist quality contract' && item.status === 'PASS'));

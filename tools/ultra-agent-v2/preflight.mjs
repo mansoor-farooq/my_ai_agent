@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { projectIdentity } from './project-identity.mjs';
+import { auditContract } from './contract.mjs';
 
 const args = process.argv.slice(2);
 const getArg = (name, fallback = '') => {
@@ -72,6 +73,7 @@ const result = {
   requiredTools: [...required].sort(),
   checks,
   missing,
+  contract: await auditContract({ dir: projectDir, project: projectName }),
   status: missing.length ? 'needs-setup' : 'ready',
   safety: { credentialsRead: false, projectFilesUploaded: false, hiddenReasoningExported: false },
 };
