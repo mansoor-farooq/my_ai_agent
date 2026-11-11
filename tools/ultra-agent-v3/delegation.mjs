@@ -73,6 +73,18 @@ function scheduleDelegation({ workItems = [], maxParallel = 3 } = {}) {
   return { maxParallel: cap, waves, blockers };
 }
 
+export function mergeWaveResults(results = []) {
+  const normalized = [...results].sort((a, b) => String(a?.workItemId || '').localeCompare(String(b?.workItemId || '')));
+  return {
+    schema: 'mansoor.delegation-wave-result/v1',
+    workItemIds: normalized.map((result) => String(result?.workItemId || '')).filter(Boolean),
+    changedPaths: [...new Set(normalized.flatMap((result) => Array.isArray(result?.changedPaths) ? result.changedPaths.map(String) : []))].sort(),
+    blockers: normalized.flatMap((result) => Array.isArray(result?.blockers) ? result.blockers : []),
+    results: normalized,
+    status: normalized.some((result) => result?.status === 'blocked' || result?.status === 'failed') ? 'blocked' : normalized.every((result) => result?.status === 'complete') ? 'complete' : 'partial',
+  };
+}
+
 export { scheduleDelegation };
 
 if (process.argv[1] && path.basename(process.argv[1]) === 'delegation.mjs') {

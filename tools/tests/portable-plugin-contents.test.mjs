@@ -134,7 +134,7 @@ test('built ZIP retains the support files after archive creation', async () => {
     execFileSync('powershell.exe', [
       '-NoProfile',
       '-Command',
-      `Expand-Archive -LiteralPath ${quotePowerShell(archive)} -DestinationPath ${quotePowerShell(output)} -Force`,
+      `$ProgressPreference = 'SilentlyContinue'; Expand-Archive -LiteralPath ${quotePowerShell(archive)} -DestinationPath ${quotePowerShell(output)} -Force`,
     ], { stdio: 'pipe' });
 
     for (const relative of requiredPortableSupportFiles) {
@@ -162,12 +162,27 @@ test('built ZIP retains the support files after archive creation', async () => {
       'tools/ultra-agent-v3/activity.mjs',
       'tools/ultra-agent-v4/benchmark.mjs',
       'tools/ultra-agent-v4/recovery.mjs',
+      'tools/ultra-agent-v4/effects.mjs',
+      'tools/ultra-agent-v4/approvals.mjs',
+      'tools/ultra-agent-v4/core-loop.mjs',
+      'tools/ultra-agent-v4/stages/context.mjs',
+      'tools/ultra-agent-v4/stages/plan.mjs',
+      'tools/ultra-agent-v4/stages/reference.mjs',
+      'tools/ultra-agent-v4/stages/act.mjs',
+      'tools/ultra-agent-v4/stages/verify.mjs',
+      'tools/ultra-agent-v4/stages/repair.mjs',
+      'tools/ultra-agent-v4/stages/answer.mjs',
+      'tools/ultra-agent-v4/stages/remember.mjs',
+      'tools/ultra-agent-v2/memory-provenance.mjs',
+      'tools/repository-map.mjs',
+      'tools/benchmark-corpus.mjs',
+      'tools/mobile-ui-flow-gate.mjs',
     ]) {
       await assert.doesNotReject(access(path.join(output, relative)), relative);
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.9.0');
+    assert.equal(plugin.version, '1.9.3');
     const installer = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.ps1'), 'utf8');
     assert.match(installer, /nodejs\.org\/dist\/index\.json/);
     assert.match(installer, /SHASUMS256\.txt/);
@@ -191,6 +206,13 @@ test('built ZIP retains the support files after archive creation', async () => {
     assert.match(installer, /OPTIONAL EXTENSIONS/);
     assert.match(installer, /INSTALLATION COMPLETE/);
     assert.match(installer, /"plugin", "install", \$installStage/);
+    assert.match(installer, /MANSOOR_AGENT_ROOT/);
+    assert.match(installer, /installed plugin config/);
+    assert.match(installer, /Agent profile verification failed/);
+    assert.match(installer, /UPDATE PLAN/);
+    assert.match(installer, /Get-TreeDrift/);
+    assert.match(installer, /ACTIVE PACKAGE/);
+    assert.match(installer, /UPDATED  \/ version/);
     const launcher = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.cmd'), 'utf8');
     assert.match(launcher, /Install-Mansoor-Agent-Team\.log/);
     assert.match(launcher, /pause/);

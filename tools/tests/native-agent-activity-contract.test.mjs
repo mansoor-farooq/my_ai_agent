@@ -35,6 +35,12 @@ test('manager makes native subagent assignments and meaningful status visible in
   assert.match(managerProfile, /You are the only manager/i);
 });
 
+test('manager exposes the Mansoor AI Team Manager display name while preserving its routing id', () => {
+  assert.match(managerProfile, /^name: Mansoor AI Team Manager$/m);
+  assert.match(managerProfile, /# Mansoor AI Team Manager/);
+  assert.match(managerProfile, /internal routing id: `production-orchestrator`/i);
+});
+
 test('manager validates selected-project memory and researches features before approval-gated edits', () => {
   assert.match(memoryResearchSection, /selected project's `\.agents\/memory\//i);
   assert.match(memoryResearchSection, /project identity and freshness/i);

@@ -41,8 +41,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/flutter-mobile-specialist/agent.md",
-    "SHA256": "ABCDB7CD7C00DFAEBE33A98509E1155B2BAB9B4F5DDA0D3B58BA4E6862F19D45",
-    "Bytes": 4188
+    "SHA256": "1633CC11FEC7DA4E6C607A1178D46D94E76ACF330E81FAB748FB9D7A3404055D",
+    "Bytes": 9175
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "6014200C7F5738907689EB41D1F1EA90852068D16F7792B0A026EB8FCD7FC33E",
-    "Bytes": 17681
+    "SHA256": "59F18750545347CD3E6642065C26C76FC8C9F4C899E2DA2CE79F9077A9FDD23F",
+    "Bytes": 19503
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -141,8 +141,8 @@
   },
   {
     "Path": "Agents/install-antigravity-portable.ps1",
-    "SHA256": "F15F559E85E8778A1B7883DE5924EF810CC446CC8783D8061210E7DC7230B7C4",
-    "Bytes": 3494
+    "SHA256": "2C4BB03E5802564155F701FC056DB9486FA869FD09E718AB2F45991330A639F7",
+    "Bytes": 4996
   },
   {
     "Path": "Agents/install.ps1",
@@ -151,8 +151,8 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "98F11E37DA98C822EDA8D29B9D75F9D0D88D84C0E4D943B6E6D88F6CD7F3599C",
-    "Bytes": 342
+    "SHA256": "2C7CA6A1BACB9610D30B8963067682A44476488F2A7F76B44FEA8CF3488E1760",
+    "Bytes": 490
   },
   {
     "Path": "Agents/Push-All-Branches.cmd",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "93BB7F312F9F62C7B70168EC94E5770E4B9BFD7990F3E39030CEA2B27F1C0F27",
-    "Bytes": 13102
+    "SHA256": "58B7B5EAE4D824849616FC782421435335F6E3599F9C7C22AAC0BF06985D2CE3",
+    "Bytes": 15207
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -1666,8 +1666,8 @@
   },
   {
     "Path": "Agents/skills/mobile-ui-ux-designer/SKILL.md",
-    "SHA256": "6667DF8C2FAED88A067B9F77887AD498CFCA93E2227BA3360925BBFD8F86599A",
-    "Bytes": 2456
+    "SHA256": "47503E219BA3530C77894A0F167471FB118F622EAF58AD82EE9EAAB67C3A9DDD",
+    "Bytes": 6272
   },
   {
     "Path": "Agents/skills/modern-ui-art-direction/SKILL.md",
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "A9EF04B03EF0F9A3EEC57154D2D6A4033B173D14B4E1B77D54A954DE473290D7",
-    "Bytes": 31486
+    "SHA256": "DBC1A2DDC6FE550C3A04A9B5A40B7DA5C3C668ADD115AB7D466E6543D1A8B9C5",
+    "Bytes": 40384
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "284FA2EE43FBFFB7BD8D49BCAD08B20CD01AE7700E6C260B0BBD5FEE5C8C7A59",
-    "Bytes": 10466
+    "SHA256": "209B98EE50A2F337E06968649F894A1EFC0F95EFDAB46B0CA2842858DD8D5D45",
+    "Bytes": 11546
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
@@ -2336,8 +2336,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/trace.mjs",
-    "SHA256": "E73BF1E934F183344B316BEB36A4564440EDBE2EBD4F0FAADD8634FDD553EADE",
-    "Bytes": 2236
+    "SHA256": "72255B572F6013C35DD1ADF77D555F902DB5D32D5E57AFB2EBC90E8F00FD98AE",
+    "Bytes": 3737
   },
   {
     "Path": "Agents/tools/ultra-agent-v2/project-identity.mjs",
@@ -2351,8 +2351,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/delegation.mjs",
-    "SHA256": "429822A940584447588637C7EFA33CD19B7AC69F1F0B1C49E83EA0DA9A626030",
-    "Bytes": 3782
+    "SHA256": "6D9225BF68CA876A0EDD788370BE309D2FDA25CFC0DD6920F0AEA0D38257EC9E",
+    "Bytes": 4591
   },
   {
     "Path": "Agents/tools/ultra-agent-v3/policy.mjs",
@@ -2371,8 +2371,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/recovery.mjs",
-    "SHA256": "5DFC8C2D4B538408747E7478FC8ABB28921287C53072102514DE32883679BB72",
-    "Bytes": 2473
+    "SHA256": "A7AC07D0DC9DC5C6A036E927F582E29FA5297D0591563E2EFE72797C1DD04F9F",
+    "Bytes": 3664
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v3-delegation.test.mjs",
@@ -2388,5 +2388,55 @@
     "Path": "Agents/tools/tests/ultra-agent-v4-control.test.mjs",
     "SHA256": "C93607CD3C2B394D6586B8DEB0CAB19A7C447650FA1D7463D40BEE2E2B8EF9E2",
     "Bytes": 4905
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/core-loop.mjs",
+    "SHA256": "97214526CF0DC3890B3539F164802D3A9B8A42CBED3DF2962E26FA8D7830A531",
+    "Bytes": 8716
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/stages/context.mjs",
+    "SHA256": "605105C865E6BE4A40126E9C10F2BAB235431C2C043F23C0810BEBC90B41CE81",
+    "Bytes": 908
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/stages/plan.mjs",
+    "SHA256": "F00522350CF4548D09107707B21544A88BF65F0B00A2CBA4B35354702603C98F",
+    "Bytes": 715
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/stages/reference.mjs",
+    "SHA256": "DCFBB2B56C98A9E7B53EAA4095B3148857039FE700E99FE7F811E3CE6345AD22",
+    "Bytes": 537
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/stages/act.mjs",
+    "SHA256": "BB3FAC5AB89DB9EF0DA3C0E54D8844C21EFAA82505693F2FA0F5E3E3B1DBF1E8",
+    "Bytes": 5123
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/stages/verify.mjs",
+    "SHA256": "B716CAAD12614B551D0B45057A85FB161C58728AB637EA20A43D31F14A43E923",
+    "Bytes": 3802
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/stages/repair.mjs",
+    "SHA256": "423179CC6C01D3B29D9366ADC579033AA2C9306053156D6B741E14BC0C85042B",
+    "Bytes": 1025
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/stages/answer.mjs",
+    "SHA256": "DD1ACAA4F248747396D565ED814CC3438B19A3ECAF39240924854B7F2DAE7213",
+    "Bytes": 900
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/stages/remember.mjs",
+    "SHA256": "95E8EC06D1FAB360D29BD4B878BCC7017CBFFBDDF921E156AFD6183A883735E1",
+    "Bytes": 925
+  },
+  {
+    "Path": "Agents/tools/tests/ultra-agent-v4-core-loop.test.mjs",
+    "SHA256": "5BEA217B4449E0F038CE7E887090D7B19D3452F24B59E44D36F791763153008A",
+    "Bytes": 9017
   }
 ]

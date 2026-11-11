@@ -29,7 +29,7 @@ Mansoor Farooq built this system for production-minded software architecture, pr
 
 | Signal | What it means |
 | --- | --- |
-| **1 manager** | `production-orchestrator` owns intake, planning, delegation and final verification. |
+| **1 manager** | **Mansoor AI Team Manager** (`production-orchestrator` internal id) owns intake, planning, delegation and final verification. |
 | **14 specialists** | UI, Flutter, SaaS, ERP/schema, .NET, Node.js, Python, ML, cloud data, workflows, security, QA, research and hub operations. |
 | **179 skills** | A portable, deduplicated skill library with explicit provenance tracking, including the Vercel UI pack. |
 | **4 governed rules** | Shared safety, quality and release contracts apply across the team. |
@@ -41,7 +41,7 @@ Mansoor Farooq built this system for production-minded software architecture, pr
 ```mermaid
 flowchart LR
     U[Owner prompt] --> I[Intake + project identity]
-    I --> M[production-orchestrator]
+    I --> M[Mansoor AI Team Manager]
     M --> P{Fast or Premium route}
     P --> D[Dependency-safe delegation]
     D --> S1[UI / Flutter]
@@ -65,7 +65,7 @@ flowchart LR
 ```mermaid
 sequenceDiagram
     participant You as Owner
-    participant Manager as production-orchestrator
+    participant Manager as Mansoor AI Team Manager
     participant Team as Specialist team
     participant Memory as Project memory / RAG
     participant Verify as Verification gate
@@ -111,7 +111,24 @@ Assignments, progress, blockers, handoffs and completed work appear in the Antig
 
 ### Flutter/Android specialist release gate
 
-`flutter-mobile-specialist` is the expert mobile UI/Android worker for adaptive Flutter products. It now requires a UI decision brief, compact-phone/standard-phone/tablet coverage, safe-area and keyboard handling, loading/empty/error/offline/permission states, text scaling and semantics, 60fps motion discipline, and focused analyzer/widget/golden/integration verification. It preserves existing navigation, API/database contracts, IDs, validation and permissions; arbitrary state-management or folder rewrites are outside a UI task.
+`flutter-mobile-specialist` is the expert mobile UI/Android worker for adaptive Flutter and native Compose products. It requires a UI decision brief, compact-phone/standard-phone/tablet coverage, safe-area and keyboard handling, loading/empty/error/offline/permission states, text scaling and semantics, 60fps motion discipline, native capability probes, OEM compatibility evidence and focused analyzer/widget/golden/integration verification. It preserves existing navigation, API/database contracts, IDs, validation and permissions; arbitrary state-management or folder rewrites are outside a UI task.
+
+### Release-quality gates
+
+The hub includes reusable gates for real projects:
+
+- Android runtime smoke: `node tools/android-runtime-smoke.mjs --package <application-id> --require-device --out <project>/.agents/android-runtime-smoke.json` (install, launch, back and optional deep-link evidence; offline/API-failure states remain explicit until an app-owned test hook exists).
+- Flutter release gate: `node tools/flutter-release-gate.mjs --project <flutter-project> --out <project>/.agents/flutter-release-gate.json` (analyze, tests, APK build, size and measured-performance placeholders).
+- Capability and manifest drift: `node tools/mobile-capability-preflight.mjs --project <project> --package <application-id> --capabilities auto --previous-report <old-report> --require-device`.
+- Secret scan: `node tools/secret-scan.mjs <project>` (redacted findings only; values are never printed).
+- Dedicated RAG CI: set `RAG_DB_NAME=mansoor_agent_rag_test` and `RAG_DB_PASSWORD`/`PGPASSWORD`, then run `node tools/rag-ci-gate.mjs`.
+- Specialist benchmark: `node tools/agent-benchmark.mjs <records.json>` for acceptance, accuracy, p95 latency, regression and unsafe-action metrics.
+
+The recommended device matrix is Samsung, Pixel and Xiaomi across Android 13, 14 and 16. A missing device or expired evidence stays `unverified` and blocks release claims.
+
+### Capability wave
+
+The current release also includes additive reliability adapters: idempotent effect receipts, payload-bound resumable approvals, a ranked repository map, provenance-aware memory facts, private benchmark-corpus replay, bounded verifier convergence, redacted local traces and optional Flutter/Android Patrol/Maestro flow gates. These preserve existing project business logic and remain fail-closed when a device, runner or provider is unavailable.
 
 ## Capability map
 
@@ -138,7 +155,7 @@ Assignments, progress, blockers, handoffs and completed work appear in the Antig
 1. Install Antigravity and sign in with the target user's Gemini account.
 2. Obtain the approved signed `mansoor-agent-hub.zip` from Mansoor Farooq's owner distribution. The [GitHub releases page](https://github.com/mansoor-farooq/my_ai_agent/releases) will be used when a public release artifact is intentionally published.
 3. Extract the ZIP and run `Install-Mansoor-Agent-Team.cmd`.
-4. Open a project, select `production-orchestrator`, and give it a task in chat.
+4. Open a project, select **Mansoor AI Team Manager** (internal id `production-orchestrator`), and give it a task in chat.
 
 The installer verifies the signed package and runs strict Antigravity validation before installing or updating the team. See the [recipient quickstart](docs/quickstart.md) for the full flow.
 
@@ -166,11 +183,11 @@ The build refreshes source checksums, signs the portable ZIP, runs the doctor, v
 
 The V4.4 release gate currently verifies:
 
-- 89 discovered tests: **83 passing**, **0 failures**, 6 intentional provider-free RAG skips;
+- `npm test`: **112 tests**, **106 passing**, **0 failures**, 6 intentional provider-free RAG skips (the dedicated RAG CI gate runs all 8 RAG tests against `mansoor_agent_rag_test`);
 - 15 packaged agent profiles, 179 skills, 4 governed rules and zero provider connectors;
 - owner-signed package checksums, strict Antigravity plugin validation and source integrity checks;
 - benchmark envelopes for acceptance, latency, p95 timing and bounded failure reasons;
-- checkpoint drift reporting, memory health diagnostics, activity summaries and expanded secret redaction.
+- checkpoint drift reporting, memory health diagnostics, activity summaries, capability probes, manifest drift, runtime smoke and expanded secret redaction.
 
 The generated artifact is `dist/mansoor-agent-hub.zip`. Every build prints the exact SHA256 for the package that was produced.
 

@@ -29,6 +29,23 @@ function createRecoveryPlan(input = {}) {
   };
 }
 
+export async function runConvergence({ checks, repair = async () => ({}), maxAttempts = 2 } = {}) {
+  if (typeof checks !== 'function') throw new Error('checks function is required');
+  const bound = Math.max(1, Math.min(Number(maxAttempts) || 2, 3));
+  const repairs = [];
+  const nonRetryableCodes = new Set(['destructive-action', 'permission-denied', 'quota-exhausted', 'security-policy', 'authorization-failed']);
+  let last = null;
+  for (let attempt = 1; attempt <= bound; attempt += 1) {
+    last = await checks({ attempt });
+    if (last?.ok === true) return { ok: true, attempts: attempt, repairs, last, stopReason: null };
+    const failureCode = String(last?.failureCode || 'verification-failed').toLowerCase();
+    if (nonRetryableCodes.has(failureCode)) return { ok: false, attempts: attempt, repairs, last, stopReason: failureCode };
+    if (attempt >= bound) return { ok: false, attempts: attempt, repairs, last, stopReason: 'attempt-limit' };
+    repairs.push(await repair({ attempt, failureCode, failedChecks: last?.failedChecks || [], affectedPaths: last?.affectedPaths || [] }));
+  }
+  return { ok: false, attempts: bound, repairs, last, stopReason: 'attempt-limit' };
+}
+
 export { createRecoveryPlan };
 
 if (process.argv[1] && path.basename(process.argv[1]) === 'recovery.mjs') {
