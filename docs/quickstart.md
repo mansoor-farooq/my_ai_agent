@@ -36,8 +36,11 @@ The build:
 - builds and signs the portable ZIP;
 - validates the Antigravity plugin;
 - runs the agent-hub doctor;
-- runs the focused test suite; and
-- prints the exact ZIP path and SHA256 hash.
+- runs the focused test suite;
+- prints the exact ZIP path and SHA256 hash; and
+- automatically runs the signed installer when an existing local Mansoor Agent Hub installation is detected. The installer prints `UPDATE PLAN`, `UPDATED`, the synchronized profile roots and hash verification. If no local installation exists, it leaves the ZIP ready for the first manual install.
+
+For a package-only build that must not touch the local installation, run `npm run build:package`.
 
 Share only `E:\Agents\dist\mansoor-agent-hub.zip`. Keep `.env` files, the private signing key and the full source folder private.
 

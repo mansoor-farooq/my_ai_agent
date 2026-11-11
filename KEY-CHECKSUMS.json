@@ -101,8 +101,8 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "938D2D46DFE32C1F0242C27D137FEFD9E1A7B88395C8358492B34C7DD0E2F16C",
-    "Bytes": 3456
+    "SHA256": "FBCDFBA9FC0B1C40AA66A822588D6DE330293AE19C06F25735269DA8A98CA01D",
+    "Bytes": 5439
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
@@ -141,8 +141,8 @@
   },
   {
     "Path": "Agents/install-antigravity-portable.ps1",
-    "SHA256": "2C4BB03E5802564155F701FC056DB9486FA869FD09E718AB2F45991330A639F7",
-    "Bytes": 4996
+    "SHA256": "64D980B76E32D7675B8F23DCE15FDB686F273AA81D77E983F8E3B6289904B929",
+    "Bytes": 5042
   },
   {
     "Path": "Agents/install.ps1",
@@ -151,8 +151,8 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "2C7CA6A1BACB9610D30B8963067682A44476488F2A7F76B44FEA8CF3488E1760",
-    "Bytes": 490
+    "SHA256": "69D268B9FFB000C21EC2D5768B2B11A18F3415FE3DD54EA84604F3D994428D5C",
+    "Bytes": 610
   },
   {
     "Path": "Agents/Push-All-Branches.cmd",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "58B7B5EAE4D824849616FC782421435335F6E3599F9C7C22AAC0BF06985D2CE3",
-    "Bytes": 15207
+    "SHA256": "F9DE3BC464CF71B2E9010AB90D9B89FF77283A4685DBBEA6778C09841CD4F5B0",
+    "Bytes": 15480
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "DBC1A2DDC6FE550C3A04A9B5A40B7DA5C3C668ADD115AB7D466E6543D1A8B9C5",
-    "Bytes": 40384
+    "SHA256": "8BC2D13BAE9309D8C78FAA1C9776F79ACEC2967A71C8564FE26C314061751C43",
+    "Bytes": 40655
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",

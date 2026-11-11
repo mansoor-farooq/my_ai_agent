@@ -1,7 +1,11 @@
-param()
+param(
+  [switch]$SkipAutoInstall
+)
 
 $ErrorActionPreference = 'Stop'
 $hub = Split-Path -Parent $MyInvocation.MyCommand.Path
+$dist = Join-Path $hub 'dist'
+$buildOutput = Join-Path $dist ('build-staging-' + [guid]::NewGuid().ToString('N'))
 $previousLocation = Get-Location
 
 try {
@@ -32,7 +36,7 @@ try {
 
   Write-Host ''
   Write-Host 'Step 1/3: Building and signing the portable ZIP...'
-  & (Join-Path $hub 'install-antigravity-portable.ps1')
+  & (Join-Path $hub 'install-antigravity-portable.ps1') -OutputDirectory $buildOutput -KeepOutput
 
   Write-Host ''
   Write-Host 'Step 2/3: Running the agent-hub doctor...'
@@ -72,6 +76,35 @@ try {
   Write-Host 'BUILD COMPLETE' -ForegroundColor Green
   Write-Host "Share this file: $archive"
   Write-Host "SHA256: $hash"
+
+  if (-not $SkipAutoInstall) {
+    $agyForUpdate = Get-Command agy -ErrorAction SilentlyContinue
+    if (-not $agyForUpdate) {
+      Write-Host 'AUTO UPDATE SKIPPED / Antigravity CLI (agy) is not available; the ZIP was built successfully.' -ForegroundColor Yellow
+    } else {
+      $inventoryJson = & $agyForUpdate.Source plugin list --json 2>$null
+      $installedHub = $null
+      try {
+        $installedHub = @((ConvertFrom-Json -InputObject ($inventoryJson -join "`n")) | Where-Object { $_.name -eq 'mansoor-agent-hub' } | Select-Object -First 1)
+      } catch {
+        $installedHub = $null
+      }
+
+      if (-not $installedHub -or [string]::IsNullOrWhiteSpace([string]$installedHub.path)) {
+        Write-Host 'AUTO UPDATE SKIPPED / no existing Mansoor Agent Hub installation was detected; run the bundled installer once.' -ForegroundColor Yellow
+      } else {
+        Write-Host ''
+        Write-Host 'AUTO UPDATE / existing Mansoor Agent Hub detected; applying this build to the active installation...' -ForegroundColor Cyan
+        $autoInstaller = Join-Path $buildOutput 'Install-Mansoor-Agent-Team.ps1'
+        & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $autoInstaller
+        if ($LASTEXITCODE -ne 0) { throw "Automatic Mansoor Agent Hub update failed (exit $LASTEXITCODE)." }
+        Write-Host 'AUTO UPDATE COMPLETE / active plugin and profile roots were synchronized and hash-verified.' -ForegroundColor Green
+      }
+    }
+  } else {
+    Write-Host 'AUTO UPDATE DISABLED / package-only build requested with -SkipAutoInstall.' -ForegroundColor DarkGray
+  }
 } finally {
+  if ($buildOutput -and (Test-Path -LiteralPath $buildOutput)) { Remove-Item -LiteralPath $buildOutput -Recurse -Force -ErrorAction SilentlyContinue }
   Set-Location -LiteralPath $previousLocation
 }

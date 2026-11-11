@@ -166,7 +166,7 @@ cd /d E:\Agents
 npm run build
 ```
 
-The build refreshes source checksums, signs the portable ZIP, runs the doctor, validates the plugin and executes the focused test suite. See [owner setup](docs/quickstart.md#owner-build-and-release).
+The build refreshes source checksums, signs the portable ZIP, runs the doctor, validates the plugin and executes the focused test suite. If a Mansoor Agent Hub installation already exists on that PC, it also runs the signed installer automatically, reports the update plan and verifies active-plugin/profile hashes. Use `npm run build:package` when you only want a ZIP without touching the local installation. See [owner setup](docs/quickstart.md#owner-build-and-release).
 
 ## Deep documentation
 

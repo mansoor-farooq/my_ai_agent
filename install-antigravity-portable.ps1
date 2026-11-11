@@ -1,6 +1,7 @@
 param(
   [string]$OutputDirectory,
-  [string]$ArchivePath
+  [string]$ArchivePath,
+  [switch]$KeepOutput
 )
 
 $ErrorActionPreference = 'Stop'
@@ -87,7 +88,7 @@ try {
   Write-Output "Self-contained Mansoor Agent Hub ZIP: $archive"
 } finally {
   $resolvedOutput = [IO.Path]::GetFullPath($output)
-  if ($resolvedOutput.StartsWith($hubPrefix, [StringComparison]::OrdinalIgnoreCase) -and
+  if (-not $KeepOutput -and $resolvedOutput.StartsWith($hubPrefix, [StringComparison]::OrdinalIgnoreCase) -and
       (Split-Path -Leaf $resolvedOutput).StartsWith('build-staging-', [StringComparison]::OrdinalIgnoreCase) -and
       (Test-Path -LiteralPath $resolvedOutput)) {
     Remove-Item -LiteralPath $resolvedOutput -Recurse -Force
