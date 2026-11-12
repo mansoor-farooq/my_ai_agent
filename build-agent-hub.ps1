@@ -61,6 +61,9 @@ try {
     (Join-Path $hub 'tools\tests\ultra-agent-v3-delegation.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v3-policy-activity.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v4-control.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v4-core-loop.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v4-task-workspaces.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v4-managed-mcp.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v4-managed-runtime.test.mjs') `
     (Join-Path $hub 'tools\tests\agent-security-fixtures.test.mjs') `
     (Join-Path $hub 'tools\tests\content-hash.test.mjs') `

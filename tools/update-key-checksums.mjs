@@ -47,7 +47,10 @@ const requiredPaths = [
   'tools/ultra-agent-v4/stages/repair.mjs',
   'tools/ultra-agent-v4/stages/answer.mjs',
   'tools/ultra-agent-v4/stages/remember.mjs',
+  'tools/ultra-agent-v4/task-workspaces.mjs',
+  'tools/ultra-agent-v4/mcp-server.mjs',
   'tools/ultra-agent-v4/managed-runtime.mjs',
+  'tools/start-managed-mcp.ps1',
   'tools/content-hash.mjs',
   'tools/rule-governance.mjs',
   'tools/antigravity-pretool-guard.mjs',
@@ -64,6 +67,9 @@ const requiredPaths = [
   'tools/tests/ultra-agent-v3-policy-activity.test.mjs',
   'tools/tests/ultra-agent-v4-control.test.mjs',
   'tools/tests/ultra-agent-v4-core-loop.test.mjs',
+  'tools/tests/ultra-agent-v4-task-workspaces.test.mjs',
+  'tools/tests/ultra-agent-v4-managed-mcp.test.mjs',
+  'tools/tests/ultra-agent-v4-managed-runtime.test.mjs',
 ];
 const knownPaths = new Set(records.map((record) => String(record?.Path || '').replaceAll('\\', '/')));
 for (const relative of requiredPaths) {

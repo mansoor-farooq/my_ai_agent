@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "84892DEDA839DFF848E671129001C02D86A4AA76309C589BE646E7EDFBCB707E",
-    "Bytes": 21180
+    "SHA256": "7DD58827E021298987101DE1EDFC1287D6D4D3158495A7A9CF7667EAC7E6D937",
+    "Bytes": 22415
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -101,8 +101,8 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "E2CFDFCCE54E038F541F6FB66A68C4A55044682C8D4ED7963B8551FDE365E206",
-    "Bytes": 6107
+    "SHA256": "F0177DA2FA24CFE75C9D896F157E5C87BEC82CB9EBA0548E3B6CF13D1899755D",
+    "Bytes": 6328
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
@@ -141,8 +141,8 @@
   },
   {
     "Path": "Agents/install-antigravity-portable.ps1",
-    "SHA256": "DB0F73288CC451710ED3B235C1B056A85EB9C21407DEE834BBD74321D94748DE",
-    "Bytes": 4940
+    "SHA256": "510C00795594F108E73816A2640922D3CA5FD54B92CA730704ADFD1B0B357F23",
+    "Bytes": 5035
   },
   {
     "Path": "Agents/install.ps1",
@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "B63BD1AE0C4202722EB7774C44079E9E1851C2872DAF0EA7F625D8A5950410BD",
+    "SHA256": "2A6E73838E1BDAE8E5AD3A80023FDC3418CEC78745225FC89D8DCE55B6809F58",
     "Bytes": 610
   },
   {
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "C2FBF6E2CF4DDC8802CEA3DFBB9240DE30552E4393254C00450468051064F4A8",
-    "Bytes": 16557
+    "SHA256": "DC11BA0E93D32AB9CDDF0B6803C4654B9B31293A4D9074F23B8B166E39856E13",
+    "Bytes": 17830
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2196,13 +2196,13 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "7FD557BA1C6ED7A3B38C6283FE3139616B4A4D8EBA9F92981A4046DA3D113882",
-    "Bytes": 19298
+    "SHA256": "C11E0771C8B6F8CA9629856522AD96EE91999A4A59C4E205E4DD70F2B9E6152F",
+    "Bytes": 20365
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "9561451AFFF2C1DE7C2A91E7AC8C0391E09CF92EC41809B33C7FEE5DE604C430",
-    "Bytes": 41989
+    "SHA256": "04896EE98C3D2A321BEE9D009146FD82198637A731A430C71261A56A3772D505",
+    "Bytes": 44506
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2251,8 +2251,8 @@
   },
   {
     "Path": "Agents/tools/tests/agent-hub-doctor.test.mjs",
-    "SHA256": "4352F56B00DDF061C4DA3C4D35C5E043F1B1C2470E37B505DC3C435BC611C12F",
-    "Bytes": 2382
+    "SHA256": "64296FC483CF907A13805304A644105B8E0A5E7043CA2DCE2B4CD559BF93A7EE",
+    "Bytes": 2506
   },
   {
     "Path": "Agents/tools/tests/backend-ml-router.test.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "11B3B4CB5586700471C1BB43A488C8882F0198771107594057D78ED601B5C3C0",
-    "Bytes": 13373
+    "SHA256": "67F4861905D72BCFE515218FB7F47DDAFD803BB87EF82D8B71DB80477EE1AC8C",
+    "Bytes": 14695
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
@@ -2441,8 +2441,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/managed-runtime.mjs",
-    "SHA256": "6D4DCDDEC7BFD66CD6E0D5C8BA6B572DEAFEAB2D667CA83D7EF01491F1979A0D",
-    "Bytes": 15838
+    "SHA256": "A6190B446DDB3FE200886BDD2BE9D4E0376EA7D3845D7191FE9E3A388128AA7A",
+    "Bytes": 20369
   },
   {
     "Path": "Agents/tools/content-hash.mjs",
@@ -2456,8 +2456,8 @@
   },
   {
     "Path": "Agents/tools/antigravity-pretool-guard.mjs",
-    "SHA256": "E5BA5DB68495196454E461AC049A8BA41753666B197793C7A71BCBF5C72272E3",
-    "Bytes": 4503
+    "SHA256": "C1A8060D5418DDBDC6183F061C5070E93C26A9ED9127A65D66C587AE3E43B3DD",
+    "Bytes": 5943
   },
   {
     "Path": "Agents/tools/antigravity-pretool-guard.ps1",
@@ -2503,5 +2503,35 @@
     "Path": "Agents/.github/workflows/quality.yml",
     "SHA256": "10B9B90A02F252C96A7AAE1C3937C18CC065526B727D4CEDD0742D4F6A4084FF",
     "Bytes": 2105
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/task-workspaces.mjs",
+    "SHA256": "3FAB6A4963AB619643515F3D2D1F8589A81C0B842D194D7DC390F2ACE6F17517",
+    "Bytes": 18428
+  },
+  {
+    "Path": "Agents/tools/tests/ultra-agent-v4-task-workspaces.test.mjs",
+    "SHA256": "D64B1313EC6BC4475901C315F65D17D5D365B437C9CE858E6543897401A972C4",
+    "Bytes": 9146
+  },
+  {
+    "Path": "Agents/tools/tests/ultra-agent-v4-managed-runtime.test.mjs",
+    "SHA256": "459593F76527972A89391A99FE4915EEB02284A3C1E5D36BA408A923E3ABD839",
+    "Bytes": 8233
+  },
+  {
+    "Path": "Agents/tools/ultra-agent-v4/mcp-server.mjs",
+    "SHA256": "716E1222EF7F9D7728932DD73C678E39A005561E1A354C232B0E87CDADFF01C6",
+    "Bytes": 9698
+  },
+  {
+    "Path": "Agents/tools/start-managed-mcp.ps1",
+    "SHA256": "EE556A494CFE91F314DE7815117E928453DA5380CB1E8E3B7CA29DA0397362C5",
+    "Bytes": 1627
+  },
+  {
+    "Path": "Agents/tools/tests/ultra-agent-v4-managed-mcp.test.mjs",
+    "SHA256": "06ADF8881176E52C15BB25A10690B0815EB0921D38807145FC027B7B17D270D9",
+    "Bytes": 6171
   }
 ]

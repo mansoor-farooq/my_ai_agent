@@ -191,7 +191,10 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
       'tools/repository-map.mjs',
       'tools/benchmark-corpus.mjs',
       'tools/mobile-ui-flow-gate.mjs',
+      'tools/ultra-agent-v4/task-workspaces.mjs',
+      'tools/ultra-agent-v4/mcp-server.mjs',
       'tools/ultra-agent-v4/managed-runtime.mjs',
+      'tools/start-managed-mcp.ps1',
       'tools/run-agent-security-fixtures.mjs',
       'tools/security-agent-fixtures.json',
       'tools/antigravity-runtime-preflight.mjs',
@@ -205,7 +208,20 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.11.0');
+    assert.equal(plugin.version, '1.13.0');
+    const mcpConfig = JSON.parse(await readFile(path.join(output, 'mcp_config.json'), 'utf8'));
+    const managedMcp = mcpConfig.mcpServers['mansoor-managed-runtime'];
+    assert.ok(managedMcp, 'the managed runtime MCP server must be bundled with the plugin');
+    assert.equal(managedMcp.command, 'powershell.exe');
+    assert.ok(managedMcp.args.some((argument) => argument.includes('${PLUGIN_ROOT}')));
+    assert.ok(managedMcp.env.MANSOOR_WORKSPACE_ROOT.includes('${PLUGIN_DATA}'));
+    assert.equal(managedMcp.timeoutSeconds, 900);
+    assert.deepEqual(Object.keys(managedMcp.tools).sort(), ['discard_task_workspace', 'get_review_patch', 'inspect_task_workspace', 'promote_reviewed_patch', 'run_managed_task'].sort());
+    assert.equal(Object.hasOwn(managedMcp, 'variables'), false, 'portable local MCP must not require per-machine credential setup');
+    const packagedReadme = await readFile(path.join(output, 'README.md'), 'utf8');
+    assert.match(packagedReadme, /no per-project MCP config/i);
+    assert.match(packagedReadme, /Windows 10\/11/);
+    assert.match(packagedReadme, /fresh approval/i);
     const hooks = JSON.parse(await readFile(path.join(output, 'hooks.json'), 'utf8'));
     assert.ok(hooks['mansoor-native-write-guard'].PreToolUse.some((entry) => entry.matcher === '*' && entry.hooks.some((handler) => handler.command.includes('antigravity-pretool-guard.ps1'))));
     await assert.doesNotReject(access(path.join(output, 'tools', 'antigravity-pretool-guard.ps1')));
@@ -216,6 +232,7 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.match(installer, /antigravity\.google\/cli\/install\.ps1/);
     assert.match(installer, /antigravity-plugins-official/);
     assert.match(installer, /"plugin", "list", "--json"/);
+    assert.match(installer, /'plugin\.json', 'mcp_config\.json', 'hooks\.json'/);
     assert.match(installer, /Already installed; leaving the active package untouched/);
     assert.match(installer, /Start-Process/);
     assert.match(installer, /Start-Transcript/);

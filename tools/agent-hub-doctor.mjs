@@ -92,10 +92,13 @@ export async function runDoctor() {
 
   const packer = fs.readFileSync(path.join(root, 'tools', 'build-antigravity-plugin.mjs'), 'utf8');
   const excluded = excludedAgents.filter((name) => !packer.includes(name));
-  const forbiddenDefinitions = /mcpServers|oauthClients|"type"\s*:\s*"mcp"/i.test(packer);
-  if (!excluded.length && !forbiddenDefinitions && /copyPortableComponents/.test(packer)) {
-    add('PASS', 'self-contained package policy', 'packer excludes provider connectors and bundles the approved local skill/rule library');
-  } else add('FAIL', 'self-contained package policy', `excluded rules missing=[${excluded.join(', ')}], connector definitions present=${forbiddenDefinitions}`);
+  const localManagedMcp = /mcpServers\s*:\s*\{[\s\S]*?'mansoor-managed-runtime'/.test(packer)
+    && /PLUGIN_ROOT/.test(packer) && /PLUGIN_DATA/.test(packer)
+    && /tools\/start-managed-mcp\.ps1/.test(packer);
+  const remoteConnectorDefinitions = /oauthClients|serverUrl|"type"\s*:\s*"(?:oauth|remote-mcp)"/i.test(packer);
+  if (!excluded.length && !remoteConnectorDefinitions && localManagedMcp && /copyPortableComponents/.test(packer)) {
+    add('PASS', 'self-contained package policy', 'packer bundles the approved skills/rules and a plugin-local managed MCP server; no remote/provider connectors or credentials are configured');
+  } else add('FAIL', 'self-contained package policy', `excluded rules missing=[${excluded.join(', ')}], local managed MCP configured=${localManagedMcp}, remote connector definitions present=${remoteConnectorDefinitions}`);
 
   const portable = await inspectPortableSource(root);
   const ruleRegistry = JSON.parse(fs.readFileSync(path.join(root, 'shared', 'control-plane', 'rule-registry.json'), 'utf8'));
@@ -240,6 +243,9 @@ export async function runDoctor() {
 
   const managedRuntimeFiles = [
     'tools/ultra-agent-v4/managed-runtime.mjs',
+    'tools/ultra-agent-v4/task-workspaces.mjs',
+    'tools/ultra-agent-v4/mcp-server.mjs',
+    'tools/start-managed-mcp.ps1',
     'tools/antigravity-runtime-preflight.mjs',
     'tools/antigravity-pretool-guard.ps1',
     'tools/content-hash.mjs',
@@ -250,16 +256,25 @@ export async function runDoctor() {
   ];
   const missingManagedRuntime = managedRuntimeFiles.filter((relative) => !fs.existsSync(path.join(root, relative)));
   const managedRuntimeRoutes = [
-    /managed-runtime\.mjs/,
-    /trusted `approvePlan` callback/,
+    /mansoor-managed-runtime/,
+    /run_managed_task/,
+    /promote_reviewed_patch/,
+    /get_review_patch/,
+    /no per-project MCP config/i,
+    /clean Git (?:working tree|checkout)/i,
+    /Windows 10\/11/,
     /PreToolUse hook/i,
     /native IDE changes do not enter the Node effect ledger/i,
     /antigravity-runtime-preflight\.mjs/,
   ];
   const buildScript = fs.readFileSync(path.join(root, 'tools', 'build-antigravity-plugin.mjs'), 'utf8');
-  if (!missingManagedRuntime.length && managedRuntimeRoutes.every((pattern) => pattern.test(mainText)) && /PreToolUse/.test(buildScript) && /hooks\.json/.test(buildScript)) {
-    add('PASS', 'managed runtime and native host guard', 'managed executor, packaged PreToolUse guard, host preflight, security fixtures and CI are present; native side effects remain outside the Node ledger');
-  } else add('FAIL', 'managed runtime and honest host boundary', `missing=[${missingManagedRuntime.join(', ')}] or manager host-boundary routing is incomplete`);
+  const portableManagedAdapter = /tools\/ultra-agent-v4\/mcp-server\.mjs/.test(buildScript)
+    && /tools\/start-managed-mcp\.ps1/.test(buildScript)
+    && /mcp_config\.json/.test(buildScript);
+  const missingManagedRoutes = managedRuntimeRoutes.filter((pattern) => !pattern.test(mainText)).map(String);
+  if (!missingManagedRuntime.length && !missingManagedRoutes.length && portableManagedAdapter && /PreToolUse/.test(buildScript) && /hooks\.json/.test(buildScript)) {
+    add('PASS', 'managed runtime and native host guard', 'plugin-local MCP adapter, managed executor, PreToolUse approval hook, host preflight, security fixtures and CI are packaged; native IDE side effects remain outside the Node ledger');
+  } else add('FAIL', 'managed runtime and honest host boundary', `missingFiles=[${missingManagedRuntime.join(', ')}], missingRoutes=[${missingManagedRoutes.join(', ')}], portable managed adapter=${portableManagedAdapter} or host hook packaging is incomplete`);
 
   const nativeActivityReady = /invoke_subagent/i.test(mainText)
     && /native sub-agent panel/i.test(mainText)

@@ -34,6 +34,9 @@ if (-not $node) { throw 'Node.js is required to assemble the local agent-team pl
 if ($LASTEXITCODE -ne 0) { throw 'Plugin packaging stopped. Review the diagnostic above.' }
 
 $requiredSupportFiles = @(
+  'mcp_config.json',
+  'tools\ultra-agent-v4\mcp-server.mjs',
+  'tools\start-managed-mcp.ps1',
   'skills\impeccable\agents\impeccable_asset_producer.toml',
   'skills\impeccable\agents\impeccable_documenter.toml',
   'skills\impeccable\agents\impeccable_finish_reviewer.toml',

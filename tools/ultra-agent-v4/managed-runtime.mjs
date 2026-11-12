@@ -9,6 +9,7 @@ import { guardWritePath } from './stages/act.mjs';
 import { runChecks } from './stages/verify.mjs';
 import { resolveRules, validateRuleRegistry } from '../rule-governance.mjs';
 import { startTrace, recordSpan, finishTrace, redactTrace } from '../ultra-agent-v3/trace.mjs';
+import { inspectTaskWorkspace, createOrResumeTaskWorkspace, prepareTaskWorkspaceReview, promoteTaskWorkspace, discardTaskWorkspace } from './task-workspaces.mjs';
 
 const HUB_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const DEFAULT_REGISTRY_PATH = path.join(HUB_ROOT, 'shared', 'control-plane', 'rule-registry.json');
@@ -64,6 +65,17 @@ function validateCheckRegistry(checks, projectDir) {
   return { ok: true };
 }
 
+function normalizePlanChecks(checks, projectRoot) {
+  return (Array.isArray(checks) ? checks : []).map((check) => {
+    const cwd = String(check.cwd || '.');
+    if (!path.isAbsolute(cwd)) return { ...check, cwd };
+    const absolute = path.resolve(cwd);
+    return within(projectRoot, absolute)
+      ? { ...check, cwd: path.relative(projectRoot, absolute) || '.' }
+      : { ...check, cwd };
+  });
+}
+
 export async function createManagedPolicy({ task, plan, approval, ruleRegistry, hubRoot = HUB_ROOT } = {}) {
   if (approval?.approved !== true || !String(approval.actor || '').trim()) return { ok: false, reason: 'owner-plan-approval-required' };
   if (!task?.projectId || !task?.taskId || !task?.projectDir) return { ok: false, reason: 'task-identity-required' };
@@ -97,18 +109,63 @@ export function authorizeManagedAction(policy, action = {}) {
 }
 
 function acquireTaskLock(projectDir, taskId) {
+  const lockError = (code) => Object.assign(new Error(code), { code });
   const lockDir = path.join(projectDir, '.agents', 'ultra-v4', 'locks');
   fs.mkdirSync(lockDir, { recursive: true });
   const lockPath = path.join(lockDir, `${taskId}.lock`);
-  let fd;
-  try {
-    fd = fs.openSync(lockPath, 'wx', 0o600);
-    fs.writeFileSync(fd, JSON.stringify({ taskId, pid: process.pid, acquiredAt: new Date().toISOString() }));
-  } catch (error) {
-    if (error.code === 'EEXIST') throw new Error('task-already-running');
-    throw error;
+  const token = crypto.randomUUID();
+  const lockRecord = JSON.stringify({ taskId, pid: process.pid, token, acquiredAt: new Date().toISOString() });
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    let fd;
+    try {
+      fd = fs.openSync(lockPath, 'wx', 0o600);
+      fs.writeFileSync(fd, lockRecord);
+      fs.fsyncSync(fd);
+      return () => {
+        try { fs.closeSync(fd); } catch {}
+        try {
+          const current = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
+          if (current.token === token && current.pid === process.pid) fs.unlinkSync(lockPath);
+        } catch {}
+      };
+    } catch (error) {
+      if (fd !== undefined) { try { fs.closeSync(fd); } catch {} }
+      if (error.code !== 'EEXIST') throw error;
+    }
+
+    let existingText;
+    let existingStat;
+    let existing;
+    try {
+      existingText = fs.readFileSync(lockPath, 'utf8');
+      existingStat = fs.statSync(lockPath);
+      existing = JSON.parse(existingText);
+    } catch {
+      throw lockError('task-lock-unreadable');
+    }
+    if (existing.taskId !== taskId || !Number.isSafeInteger(existing.pid) || existing.pid < 1 || typeof existing.token !== 'string') {
+      throw lockError('task-lock-unreadable');
+    }
+    let processExists = true;
+    try { process.kill(existing.pid, 0); }
+    catch (error) {
+      if (error.code === 'ESRCH') processExists = false;
+      else if (error.code !== 'EPERM') throw error;
+    }
+    if (processExists) throw lockError('task-already-running');
+
+    // Recheck the exact lock contents and file identity before removing a stale lock.
+    try {
+      const currentStat = fs.statSync(lockPath);
+      const currentText = fs.readFileSync(lockPath, 'utf8');
+      if (currentText !== existingText || currentStat.mtimeMs !== existingStat.mtimeMs || currentStat.size !== existingStat.size) continue;
+      fs.unlinkSync(lockPath);
+    } catch (error) {
+      if (error.code === 'ENOENT') continue;
+      throw error;
+    }
   }
-  return () => { try { fs.closeSync(fd); } catch {} try { fs.unlinkSync(lockPath); } catch {} };
+  throw lockError('task-lock-acquire-race');
 }
 
 function appendCheckpoint(filePath, event) {
@@ -184,51 +241,74 @@ export async function runManagedTask(input = {}, deps = {}) {
   let trace;
   let checkpointFile;
   let policy;
+  let workspace;
+  let projectRoot;
   try {
     const taskId = safeTaskId(input.task?.taskId);
-    const projectDir = path.resolve(String(input.task?.projectDir || ''));
-    if (!fs.existsSync(projectDir) || !fs.statSync(projectDir).isDirectory()) return blocked('project-directory-required');
+    projectRoot = path.resolve(String(input.task?.projectDir || ''));
+    if (!fs.existsSync(projectRoot) || !fs.statSync(projectRoot).isDirectory()) return blocked('project-directory-required');
     if (typeof deps.approvePlan !== 'function') return blocked('host-approval-adapter-required');
     const plan = { ...(input.plan || {}) };
+    const identity = { projectId: String(input.task?.projectId || ''), taskId };
+    const workspaceInspection = inspectTaskWorkspace({ projectDir: projectRoot, ...identity, workspaceRoot: deps.workspaceRoot });
+    if (!workspaceInspection.ok) return blocked(workspaceInspection.reason || 'workspace-inspection-failed');
     const requiredApproval = {
       taskId,
-      projectId: String(input.task?.projectId || ''),
+      projectId: identity.projectId,
       objective: String(input.task?.objective || ''),
       scope: input.task?.scope || [],
       acceptance: input.task?.acceptance || [],
+      repositoryRoot: workspaceInspection.repoRoot,
+      baseRevision: workspaceInspection.baseRevision,
+      workspaceId: workspaceInspection.workspaceId,
       affectedPaths: plan.affectedPaths || [],
       steps: plan.steps || [],
+      assumptions: plan.assumptions || [],
+      rollback: plan.rollback || null,
       checks: (plan.checks || []).map((check) => ({ id: check.id, tool: check.tool, args: check.args, cwd: check.cwd })),
     };
     const approvalResult = await deps.approvePlan({ ...requiredApproval, planHash: jsonHash(requiredApproval) });
     if (approvalResult !== true && approvalResult?.approved !== true) return blocked('owner-plan-approval-required');
     const approval = approvalResult === true ? { approved: true, actor: 'host-approval-adapter' } : approvalResult;
-    policy = await createManagedPolicy({ task: { ...input.task, taskId, projectDir }, plan, approval, ruleRegistry: deps.ruleRegistry, hubRoot: deps.hubRoot || HUB_ROOT });
+    const approvalPayloadHash = jsonHash(requiredApproval);
+    const forbiddenPaths = input.task.forbiddenPaths || input.task.forbidden_paths || [];
+    workspace = createOrResumeTaskWorkspace({
+      projectDir: projectRoot,
+      ...identity,
+      planHash: approvalPayloadHash,
+      allowedPaths: plan.affectedPaths || [],
+      forbiddenPaths,
+      workspaceRoot: deps.workspaceRoot,
+      expectedBaseRevision: requiredApproval.baseRevision,
+    });
+    releaseLock = acquireTaskLock(projectRoot, taskId);
+    const executionTask = { ...input.task, taskId, projectDir: workspace.workspaceDir };
+    const executionPlan = { ...plan, checks: normalizePlanChecks(plan.checks, projectRoot) };
+    policy = await createManagedPolicy({ task: executionTask, plan: executionPlan, approval, ruleRegistry: deps.ruleRegistry, hubRoot: deps.hubRoot || HUB_ROOT });
     if (!policy.ok) return blocked(policy.reason, { policyErrors: policy.errors || [] });
-    releaseLock = acquireTaskLock(projectDir, taskId);
-    trace = await startTrace({ dir: projectDir, taskId, projectId: input.task.projectId });
-    const runDir = path.join(projectDir, '.agents', 'ultra-v4', 'managed-runs', taskId);
+    trace = await startTrace({ dir: projectRoot, taskId, projectId: input.task.projectId });
+    const runDir = path.join(projectRoot, '.agents', 'ultra-v4', 'managed-runs', taskId);
     checkpointFile = path.join(runDir, 'events.jsonl');
     const ledgerPath = path.join(runDir, 'effects.jsonl');
     const ledger = deps.effectStore || new EffectLedger(ledgerPath);
     const events = [];
     let replayedWrites = 0;
     const checkpoint = async (event) => {
-      const record = { taskId, projectId: input.task.projectId, planHash: policy.approval.planHash, traceId: trace.traceId, ...event };
+      const record = { taskId, projectId: input.task.projectId, workspaceId: workspace.workspaceId, baseRevision: workspace.baseRevision, planHash: policy.approval.planHash, traceId: trace.traceId, ...event };
       appendCheckpoint(checkpointFile, record);
       events.push(record);
       await recordSpan(trace, { kind: event.phase || 'checkpoint', name: event.to || event.phase || '', status: 'observed', details: JSON.stringify({ attempt: event.attempt, reason: event.reason, changedPaths: event.changedPaths }) });
       if (typeof deps.checkpoint === 'function') await deps.checkpoint(record);
     };
-    const checkRegistry = plan.checks || [];
+    const checkRegistry = executionPlan.checks || [];
     const result = await runCoreLoop({
-      ...input.task,
+      ...executionTask,
       taskId,
       projectId: input.task.projectId,
-      projectDir,
+      projectDir: workspace.workspaceDir,
       requiredEvidence: policy.requiredEvidence,
     }, {
-      planInput: { ...plan, approved: true },
+      planInput: { ...executionPlan, approved: true },
       checkRegistry,
       actionProvider: async ({ attempt }) => attempt === 1 ? (input.actions || []) : (input.repairActions?.[attempt] || []),
       checkpoint,
@@ -254,18 +334,34 @@ export async function runManagedTask(input = {}, deps = {}) {
     if (Array.isArray(plan.affectedPaths) && plan.affectedPaths.length) evidence.push('affected-paths');
     if (result.verification?.allPassed === true) evidence.push('verification-results');
     const missingEvidence = policy.requiredEvidence.filter((required) => !evidence.some((item) => item === required || item.startsWith(`${required}:`)));
-    let final = { ...result, evidence: [...new Set(evidence)], policy: { ruleIds: policy.ruleIds }, traceId: trace.traceId, tracePath: trace.path, checkpointPath: checkpointFile, replayedWrites };
+    let delivery = { status: 'in-progress', workspaceId: workspace.workspaceId, baseRevision: workspace.baseRevision, workspaceDir: workspace.workspaceDir };
+    if (result.status === 'complete') {
+      const review = prepareTaskWorkspaceReview(workspace);
+      workspace = review;
+      delivery = {
+        status: review.status,
+        workspaceId: review.workspaceId,
+        baseRevision: review.baseRevision,
+        workspaceDir: review.workspaceDir,
+        changedPaths: review.changedPaths,
+        patchPath: review.patchPath,
+        patchHash: review.patchHash,
+        nextAction: review.status === 'review-required' ? 'inspect-patch-and-explicitly-promote' : null,
+      };
+    }
+    let final = { ...result, evidence: [...new Set(evidence)], policy: { ruleIds: policy.ruleIds }, traceId: trace.traceId, tracePath: trace.path, checkpointPath: checkpointFile, replayedWrites, workspace, delivery };
     if (result.status === 'complete' && missingEvidence.length) final = { ...final, status: 'unverified', blockers: [...(final.blockers || []), ...missingEvidence.map((item) => `required-evidence-missing:${item}`)], nextAction: 'collect-required-evidence' };
-    await finishTrace(trace, { status: final.status, details: JSON.stringify({ taskId, changedPaths: final.changes, blockers: final.blockers }) });
+    await finishTrace(trace, { status: final.status, details: JSON.stringify({ taskId, workspaceId: workspace.workspaceId, deliveryStatus: delivery.status, changedPaths: delivery.changedPaths || final.changes, blockers: final.blockers }) });
     return final;
   } catch (error) {
     if (trace) {
       try { await recordSpan(trace, { kind: 'managed-runtime-error', status: 'blocked', details: error.message }); await finishTrace(trace, { status: 'blocked', details: error.message }); } catch {}
     }
-    return blocked(error.message === 'task-already-running' ? error.message : 'managed-runtime-failed', { error: redactTrace(error.message), traceId: trace?.traceId || null, tracePath: trace?.path || null });
+    const reason = error.code || (error.message === 'task-already-running' ? error.message : 'managed-runtime-failed');
+    return blocked(reason, { error: redactTrace(error.message), traceId: trace?.traceId || null, tracePath: trace?.path || null, workspace: workspace || null });
   } finally {
     releaseLock?.();
   }
 }
 
-export { jsonHash, validateCheckRegistry };
+export { jsonHash, validateCheckRegistry, promoteTaskWorkspace, discardTaskWorkspace };

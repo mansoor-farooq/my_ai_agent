@@ -34,7 +34,7 @@ Mansoor Farooq built this system for production-minded software architecture, pr
 | **179 skills** | A portable, deduplicated skill library with explicit provenance tracking, including the Vercel UI pack. |
 | **4 governed rules** | A signed metadata registry versions scope, precedence, evidence and verification; the installer reports drift and preserves locally customized rules. |
 | **Local-first memory** | Project identity, decisions, evidence, conflicts and checkpoints stay scoped to the selected repository. |
-| **Provider-free package** | No bundled MCP connectors, provider credentials or remote telemetry service. |
+| **Local managed MCP** | The installed Antigravity plugin bundles its own managed-task MCP server; no per-project MCP config, provider key or remote telemetry service is required. |
 
 ## Architecture at a glance
 
@@ -96,6 +96,12 @@ Canonical project identity keeps temporary workers, evidence, checkpoints and Po
 Every target project has a visible, root-level contract made of `plan/`, `flow/`, `status/`, `logic/`, `requirements/` and `test-cases/`. The manager audits these folders read-only first; missing folders require owner approval before bootstrap. Accepted requirements and architecture decisions are append-only and versioned. The managed Node executor enforces typed write scopes and protected paths for actions routed through it. The bundled Antigravity PreToolUse hook blocks protected or out-of-workspace native file mutations and forces fresh owner review for in-workspace writes and shell commands. Native changes remain outside the Node executor's effect ledger and idempotency guarantees.
 
 The contract kernel is available through `node <hubRoot>/tools/ultra-agent-v2/contract.mjs audit|bootstrap` and is included in the portable package. `preflight.mjs` reports contract readiness without mutating the target project.
+
+### Isolated task workspaces and reviewable delivery
+
+The managed V4 runtime can pin a task to a detached Git worktree, resume only the same approved task/plan/base revision, and keep the owner checkout untouched while writes and registered checks run. Passing work produces a patch with a SHA-256 review ID; a trusted owner approval for that exact patch stages it in the main checkout. It never commits, pushes, or deploys automatically. This lane requires a trusted host adapter that calls the managed runtime; Antigravity's native editor is not automatically redirected into the worktree, and the package reports that boundary explicitly.
+
+The Antigravity plugin bundles that host adapter as a local `mansoor-managed-runtime` MCP server. Antigravity loads it from the installed plugin's `mcp_config.json`; there is no per-project MCP file or separate MCP credential to configure. The manager passes the current project path to each tool call, while resumable worktrees live in plugin-specific local data. The Windows 10/11 launcher uses the Node runtime prepared by the installer. The feature is available when the plugin is installed and enabled; restart or reload Antigravity after upgrading.
 
 ### Speed without unsafe parallelism
 
