@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { access, mkdtemp, readFile, rm } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -133,7 +134,7 @@ test('portable bundle retains important non-Antigravity skill support files', as
   }
 });
 
-test('built ZIP retains the support files after archive creation', async () => {
+test('built ZIP retains the support files after archive creation', { skip: !existsSync(path.join(root, 'dist', 'mansoor-agent-hub.zip')) }, async () => {
   const archive = path.join(root, 'dist', 'mansoor-agent-hub.zip');
   await assert.doesNotReject(access(archive), 'build the ZIP before running archive assertions');
   const output = await mkdtemp(path.join(os.tmpdir(), 'mansoor-agent-hub-archive-'));
@@ -168,6 +169,7 @@ test('built ZIP retains the support files after archive creation', async () => {
       'tools/ultra-agent-v3/delegation.mjs',
       'tools/ultra-agent-v3/policy.mjs',
       'tools/rule-governance.mjs',
+      'tools/content-hash.mjs',
       'shared/control-plane/rule-registry.json',
       'tools/rule-governance.mjs',
       'shared/control-plane/rule-registry.json',

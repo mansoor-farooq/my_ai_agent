@@ -3,6 +3,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { canonicalContentBytes } from './content-hash.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = path.join(root, 'KEY-CHECKSUMS.json');
@@ -46,6 +47,19 @@ const requiredPaths = [
   'tools/ultra-agent-v4/stages/repair.mjs',
   'tools/ultra-agent-v4/stages/answer.mjs',
   'tools/ultra-agent-v4/stages/remember.mjs',
+  'tools/ultra-agent-v4/managed-runtime.mjs',
+  'tools/content-hash.mjs',
+  'tools/rule-governance.mjs',
+  'tools/antigravity-pretool-guard.mjs',
+  'tools/antigravity-pretool-guard.ps1',
+  'tools/antigravity-runtime-preflight.mjs',
+  'tools/sync-global-rules.ps1',
+  'tools/benchmark-schema.json',
+  'tools/run-agent-security-fixtures.mjs',
+  'tools/security-agent-fixtures.json',
+  'shared/control-plane/rule-registry.json',
+  'benchmarks/README.md',
+  '.github/workflows/quality.yml',
   'tools/tests/ultra-agent-v3-delegation.test.mjs',
   'tools/tests/ultra-agent-v3-policy-activity.test.mjs',
   'tools/tests/ultra-agent-v4-control.test.mjs',
@@ -67,7 +81,7 @@ for (const record of records) {
   const file = path.resolve(root, relative);
   if (!file.startsWith(`${root}${path.sep}`)) throw new Error(`Checksum path escapes the repository: ${record.Path}`);
   if (/(?:^|\/)(?:shared\/native-profile|shared\/private-backup|shared\/knowledge\/readable-chat-context)(?:\/|$)|\.(?:db|sqlite|zip)$/i.test(relative)) continue;
-  const bytes = fs.readFileSync(file);
+  const bytes = canonicalContentBytes(fs.readFileSync(file), relative);
   record.SHA256 = crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase();
   record.Bytes = bytes.length;
   refreshed += 1;

@@ -1,6 +1,6 @@
-import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { contentSha256 } from './content-hash.mjs';
 
 const requiredFields = ['id', 'version', 'priority', 'scope', 'owner', 'category', 'agents', 'tasks', 'file', 'contentHash', 'requiredEvidence', 'verification'];
 const precedence = { security: 0, project: 1, global: 2 };
@@ -24,7 +24,7 @@ async function validateRuleRegistry(registry, { root } = {}) {
       if (relative.startsWith('..') || path.isAbsolute(relative)) errors.push(`${rule.id} file escapes root`);
       else try {
         const bytes = await readFile(filePath);
-        const hash = `sha256:${createHash('sha256').update(bytes).digest('hex')}`;
+        const hash = `sha256:${contentSha256(bytes, rule.file)}`;
         if (hash.toLowerCase() !== String(rule.contentHash).toLowerCase()) hashMismatches.push(rule.file);
       } catch { errors.push(`${rule.id} rule file is missing or unreadable`); }
     }

@@ -5,6 +5,7 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { inspectPortableSource, readAgentSkillReferences } from './portable-components.mjs';
 import { validateRuleRegistry } from './rule-governance.mjs';
+import { canonicalContentBytes } from './content-hash.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const shippedAgents = [
@@ -41,8 +42,9 @@ function checksumReport() {
       errors.push(`Manifest file is missing: ${record.Path}`);
       continue;
     }
-    const hash = crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase();
-    if (hash !== record.SHA256 || bytes.length !== record.Bytes) errors.push(`Manifest mismatch: ${record.Path}`);
+    const canonical = canonicalContentBytes(bytes, relative);
+    const hash = crypto.createHash('sha256').update(canonical).digest('hex').toUpperCase();
+    if (hash !== record.SHA256 || canonical.length !== record.Bytes) errors.push(`Manifest mismatch: ${record.Path}`);
     checked += 1;
   }
   return { errors, checked, skipped };
@@ -240,6 +242,7 @@ export async function runDoctor() {
     'tools/ultra-agent-v4/managed-runtime.mjs',
     'tools/antigravity-runtime-preflight.mjs',
     'tools/antigravity-pretool-guard.ps1',
+    'tools/content-hash.mjs',
     'tools/run-agent-security-fixtures.mjs',
     'tools/security-agent-fixtures.json',
     'tools/sync-global-rules.ps1',

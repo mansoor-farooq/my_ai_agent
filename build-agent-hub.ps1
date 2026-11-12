@@ -63,6 +63,7 @@ try {
     (Join-Path $hub 'tools\tests\ultra-agent-v4-control.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v4-managed-runtime.test.mjs') `
     (Join-Path $hub 'tools\tests\agent-security-fixtures.test.mjs') `
+    (Join-Path $hub 'tools\tests\content-hash.test.mjs') `
     (Join-Path $hub 'tools\tests\global-rule-sync.test.mjs') `
     (Join-Path $hub 'tools\tests\antigravity-runtime-preflight.test.mjs') `
     (Join-Path $hub 'tools\tests\antigravity-pretool-guard.test.mjs') `

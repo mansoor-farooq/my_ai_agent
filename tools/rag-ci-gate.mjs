@@ -4,6 +4,10 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
+export function shouldRunRagIntegrationTests(env = process.env) {
+  return env.RUN_RAG_TESTS === '1';
+}
+
 export function validateRagCiConfig(env = process.env) {
   const name = env.RAG_DB_NAME || 'mansoor_agent_rag';
   const password = env.RAG_DB_PASSWORD || env.PGPASSWORD;

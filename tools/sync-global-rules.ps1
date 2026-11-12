@@ -6,9 +6,12 @@ param(
 $ErrorActionPreference = 'Stop'
 $sha256 = [System.Security.Cryptography.SHA256]::Create()
 function Get-Sha256Hash([string]$Path) {
-  $stream = [System.IO.File]::OpenRead($Path)
-  try { return ([System.BitConverter]::ToString($sha256.ComputeHash($stream))).Replace('-', '').ToLowerInvariant() }
-  finally { $stream.Dispose() }
+  $bytes = [System.IO.File]::ReadAllBytes($Path)
+  if ([IO.Path]::GetExtension($Path) -ieq '.md') {
+    $text = [Text.Encoding]::UTF8.GetString($bytes).Replace("`r`n", "`n").Replace("`r", "`n")
+    $bytes = [Text.Encoding]::UTF8.GetBytes($text)
+  }
+  return ([System.BitConverter]::ToString($sha256.ComputeHash($bytes))).Replace('-', '').ToLowerInvariant()
 }
 $sourcePath = (Resolve-Path -LiteralPath $SourceRoot).Path
 $destinationRoot = Join-Path $ConfigRoot 'rules'

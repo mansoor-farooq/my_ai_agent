@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseRagTestSummary, validateRagCiConfig, validateRagTestSummary } from '../rag-ci-gate.mjs';
+import { parseRagTestSummary, shouldRunRagIntegrationTests, validateRagCiConfig, validateRagTestSummary } from '../rag-ci-gate.mjs';
 
 test('RAG CI requires the dedicated database and credentials', () => {
   assert.throws(() => validateRagCiConfig({ RAG_DB_NAME: 'mansoor_agent_rag', PGPASSWORD: 'x' }), /dedicated/);
@@ -12,6 +12,12 @@ test('RAG CI permits explicitly opted-in localhost trust auth only for localhost
   assert.throws(() => validateRagCiConfig({ RAG_DB_NAME: 'mansoor_agent_rag_test', RAG_DB_TRUST_AUTH: '1' }), /password/);
   assert.doesNotThrow(() => validateRagCiConfig({ RAG_DB_NAME: 'mansoor_agent_rag_test', RAG_DB_TRUST_AUTH: '1', RAG_DB_HOST: 'localhost' }));
   assert.throws(() => validateRagCiConfig({ RAG_DB_NAME: 'mansoor_agent_rag_test', RAG_DB_TRUST_AUTH: '1', RAG_DB_HOST: 'db.example.com' }), /password/);
+});
+
+test('RAG integration tests require explicit gate opt-in even if a password happens to exist', () => {
+  assert.equal(shouldRunRagIntegrationTests({ PGPASSWORD: 'present' }), false);
+  assert.equal(shouldRunRagIntegrationTests({ RAG_DB_PASSWORD: 'present' }), false);
+  assert.equal(shouldRunRagIntegrationTests({ RUN_RAG_TESTS: '1' }), true);
 });
 
 test('RAG release gate rejects skipped or missing integration tests', () => {

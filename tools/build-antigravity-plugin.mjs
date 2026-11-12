@@ -72,6 +72,7 @@ const portableRuntimeFiles = [
   'tools/ultra-agent-v3/delegation.mjs',
   'tools/ultra-agent-v3/policy.mjs',
   'tools/rule-governance.mjs',
+  'tools/content-hash.mjs',
   'shared/control-plane/rule-registry.json',
   'tools/ultra-agent-v3/activity.mjs',
   'tools/ultra-agent-v4/benchmark.mjs',

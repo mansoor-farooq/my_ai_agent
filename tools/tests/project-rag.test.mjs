@@ -6,10 +6,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
+import { shouldRunRagIntegrationTests } from '../rag-ci-gate.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const runtime = path.join(root, 'tools', 'ultra-agent-v2', 'rag.mjs');
-const enabled = process.env.RUN_RAG_TESTS === '1' || Boolean(process.env.RAG_DB_PASSWORD || process.env.PGPASSWORD);
+const enabled = shouldRunRagIntegrationTests(process.env);
 
 function run(dir, project, command, extra = [], overrides = {}) {
   const output = execFileSync(process.execPath, [runtime, command, '--dir', dir, '--project', project, ...extra], {
