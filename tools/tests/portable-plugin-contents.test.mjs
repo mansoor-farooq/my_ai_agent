@@ -11,6 +11,7 @@ import {
   requiredPortableSupportFiles,
   readAgentSkillReferences,
 } from '../portable-components.mjs';
+import { validateRuleRegistry } from '../rule-governance.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -25,6 +26,13 @@ test('portable source contains the complete owned skill and rule library', async
   assert.deepEqual(inventory.unsafePaths, []);
   assert.deepEqual(inventory.brokenLocalReferences, []);
   assert.deepEqual(inventory.provenanceGaps, []);
+});
+
+test('governed rule registry is valid and matches bundled rule hashes', async () => {
+  const registry = JSON.parse(await readFile(path.join(root, 'shared', 'control-plane', 'rule-registry.json'), 'utf8'));
+  const result = await validateRuleRegistry(registry, { root });
+  assert.equal(result.valid, true, JSON.stringify(result));
+  assert.equal(registry.rules.length, 4);
 });
 
 test('portable source includes every unique Antigravity global skill', async () => {
@@ -159,6 +167,10 @@ test('built ZIP retains the support files after archive creation', async () => {
       'tools/ultra-agent-v3/trace.mjs',
       'tools/ultra-agent-v3/delegation.mjs',
       'tools/ultra-agent-v3/policy.mjs',
+      'tools/rule-governance.mjs',
+      'shared/control-plane/rule-registry.json',
+      'tools/rule-governance.mjs',
+      'shared/control-plane/rule-registry.json',
       'tools/ultra-agent-v3/activity.mjs',
       'tools/ultra-agent-v4/benchmark.mjs',
       'tools/ultra-agent-v4/recovery.mjs',
@@ -177,13 +189,26 @@ test('built ZIP retains the support files after archive creation', async () => {
       'tools/repository-map.mjs',
       'tools/benchmark-corpus.mjs',
       'tools/mobile-ui-flow-gate.mjs',
+      'tools/ultra-agent-v4/managed-runtime.mjs',
+      'tools/run-agent-security-fixtures.mjs',
+      'tools/security-agent-fixtures.json',
+      'tools/antigravity-runtime-preflight.mjs',
+      'tools/antigravity-pretool-guard.mjs',
+      'tools/antigravity-pretool-guard.ps1',
+      'tools/sync-global-rules.ps1',
+      'tools/benchmark-schema.json',
+      'benchmarks/README.md',
     ]) {
       await assert.doesNotReject(access(path.join(output, relative)), relative);
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.9.3');
+    assert.equal(plugin.version, '1.11.0');
+    const hooks = JSON.parse(await readFile(path.join(output, 'hooks.json'), 'utf8'));
+    assert.ok(hooks['mansoor-native-write-guard'].PreToolUse.some((entry) => entry.matcher === '*' && entry.hooks.some((handler) => handler.command.includes('antigravity-pretool-guard.ps1'))));
+    await assert.doesNotReject(access(path.join(output, 'tools', 'antigravity-pretool-guard.ps1')));
     const installer = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.ps1'), 'utf8');
+    const ruleSync = await readFile(path.join(output, 'tools', 'sync-global-rules.ps1'), 'utf8');
     assert.match(installer, /nodejs\.org\/dist\/index\.json/);
     assert.match(installer, /SHASUMS256\.txt/);
     assert.match(installer, /antigravity\.google\/cli\/install\.ps1/);
@@ -198,7 +223,7 @@ test('built ZIP retains the support files after archive creation', async () => {
     assert.match(installer, /@\(.*'tools'.*'shared'.*\)/s);
     assert.match(installer, /\[MF\]\s+MANSOOR FAROOQ/);
     assert.match(installer, /ULTRA AGENT v4/);
-    assert.match(installer, /VALIDATED\s+\/\s+15 agents, 179 skills, 4 rules/);
+    assert.match(installer, /VALIDATED\s+\/\s+15 agents, 179 skills, 4 rules, 1 hook/);
     assert.match(installer, /Invoke-AgyCaptured -CommandArguments @\("plugin", "validate"/);
     assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$validationResult = Invoke-AgyCaptured'));
     assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$inventoryResult = Invoke-AgyCaptured'));
@@ -209,10 +234,14 @@ test('built ZIP retains the support files after archive creation', async () => {
     assert.match(installer, /MANSOOR_AGENT_ROOT/);
     assert.match(installer, /installed plugin config/);
     assert.match(installer, /Agent profile verification failed/);
+    assert.match(installer, /sync-global-rules\.ps1/);
     assert.match(installer, /UPDATE PLAN/);
     assert.match(installer, /Get-TreeDrift/);
     assert.match(installer, /ACTIVE PACKAGE/);
     assert.match(installer, /UPDATED  \/ version/);
+    assert.match(ruleSync, /RULE PRESERVED/);
+    assert.match(ruleSync, /RULE UPDATED/);
+    assert.match(ruleSync, /\.mansoor-rule-state\.json/);
     const launcher = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.cmd'), 'utf8');
     assert.match(launcher, /Install-Mansoor-Agent-Team\.log/);
     assert.match(launcher, /pause/);

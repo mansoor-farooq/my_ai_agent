@@ -1,0 +1,69 @@
+name: Agent Hub Quality
+
+on:
+  push:
+    branches: [main, development, mansoor-development]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-quality:
+    name: Windows unit, policy, package, and doctor checks
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.21.0
+      - name: Run test suite
+        run: npm test
+      - name: Run adversarial agent fixtures
+        run: node tools/run-agent-security-fixtures.mjs
+      - name: Run agent hub doctor
+        run: node tools/agent-hub-doctor.mjs --format json
+      - name: Scan for secrets
+        run: npm run secret-scan
+
+  postgres-rag:
+    name: Required PostgreSQL RAG integration tests
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: test-only-integration-password
+          POSTGRES_DB: mansoor_agent_rag_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d mansoor_agent_rag_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      RAG_DB_NAME: mansoor_agent_rag_test
+      RAG_DB_USER: postgres
+      RAG_DB_HOST: localhost
+      RAG_DB_PORT: 5432
+      RAG_DB_PASSWORD: test-only-integration-password
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.21.0
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Run mandatory RAG integration gate
+        run: npm run test:rag

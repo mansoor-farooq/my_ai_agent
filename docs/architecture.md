@@ -18,6 +18,7 @@ flowchart TB
         V2[Project runtime\npreflight · memory · evidence]
         V3[V3 control plane\nstate · plan · policy · trace]
         V4[V4 adaptive runtime\nbenchmark · activity · recovery]
+        Managed[Managed executor\nrule policy · approval · scoped write · verify]
     end
 
     subgraph Project[Selected project]
@@ -35,6 +36,7 @@ flowchart TB
     Manager --> V2
     Manager --> V3
     Manager --> V4
+    Manager --> Managed
     V2 --> Identity
     Identity --> Memory
     Identity --> State
@@ -56,6 +58,7 @@ flowchart TB
 | V2 runtime | Project identity, memory dossier, research/verification ledgers and retrieval | It does not store credentials, raw private chats or hidden reasoning. |
 | V3 control plane | Task lifecycle, dependency-safe waves, policy checks, checkpoints and traces | It never hides a failed task by deleting state. |
 | V4 adaptive runtime | Benchmark envelopes, native activity summaries and targeted recovery | It does not create broad rewrite loops or silently downgrade Premium work. |
+| Managed executor + host hook | Governed rules, trusted approval callback, scoped atomic writes and idempotency receipts for managed writes; Antigravity PreToolUse hook blocks protected/out-of-workspace native mutations and forces fresh review for in-workspace writes and shell commands | Native changes remain outside the Node effect ledger/idempotency receipts; verify hook is active in Antigravity. |
 | PostgreSQL RAG | Project-scoped lexical retrieval with source hashes and line ranges | It is not a cross-project memory store and does not replace source verification. |
 
 ## Runtime lifecycle
@@ -79,6 +82,8 @@ stateDiagram-v2
 ```
 
 The lifecycle is durable and project-scoped. Each state event carries task identity, project identity, actor, transition and evidence references. Corrupt trailing events are quarantined during resume; valid history is preserved.
+
+The additive managed executor composes the V4 lifecycle with the governed rule registry and effect ledger. It fails closed without a trusted approval adapter and only authorizes writes submitted through that adapter. The packaged PreToolUse hook separately gates native Antigravity tools: protected/out-of-workspace mutations are denied, and in-workspace writes and shell commands require fresh review. Native tool effects are not entered into the Node effect ledger. `node tools/antigravity-runtime-preflight.mjs` reports platform support separately from sandbox state; Windows 10 is review-required, Windows 11 is supported but sandbox remains unknown until probed. A platform build detection alone never counts as proof that sandboxing is active.
 
 ## Memory and RAG path
 

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mansoorfarooq.dev/schemas/agent-benchmark-record-v1.json",
+  "title": "Mansoor Agent Benchmark Observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "caseId", "agentId", "taskType", "profileVersion", "modelId", "configHash",
+    "baseRevision", "repeatIndex", "reviewStatus", "reviewedBy", "expectedAccepted", "accepted",
+    "firstPass", "regression", "unsafeAction", "latencyMs", "failureReason", "costUsd"
+  ],
+  "properties": {
+    "caseId": { "type": "string", "minLength": 1 },
+    "agentId": { "type": "string", "minLength": 1 },
+    "taskType": { "type": "string", "minLength": 1 },
+    "profileVersion": { "type": "string", "minLength": 1 },
+    "modelId": { "type": "string", "minLength": 1 },
+    "configHash": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$" },
+    "baseRevision": { "type": "string", "pattern": "^[a-fA-F0-9]{40}([a-fA-F0-9]{24})?$" },
+    "repeatIndex": { "type": "integer", "minimum": 1 },
+    "reviewStatus": { "const": "approved" },
+    "reviewedBy": { "type": "string", "minLength": 1 },
+    "expectedAccepted": { "type": "boolean" },
+    "accepted": { "type": "boolean" },
+    "firstPass": { "type": "boolean" },
+    "regression": { "type": "boolean" },
+    "unsafeAction": { "type": "boolean" },
+    "latencyMs": { "type": "number", "minimum": 0 },
+    "failureReason": { "type": ["string", "null"] },
+    "costUsd": { "type": ["number", "null"], "minimum": 0 },
+    "repairAttempted": { "type": "boolean" },
+    "repairAccepted": { "type": ["boolean", "null"] },
+    "humanReworkMinutes": { "type": ["number", "null"], "minimum": 0 },
+    "evidenceRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  }
+}

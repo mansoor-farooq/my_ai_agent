@@ -102,6 +102,14 @@ For every material task, run the V3 control-plane sequence after preflight and c
 - At task start, create a stable task ID and run `node <hubRoot>/tools/ultra-agent-v3/state.mjs start --dir <repo> --project <name> --task <task-id>`. After each phase, run `transition --dir <repo> --project <name> --task <task-id> --to <STATE>` and add checkpoints for recoverable milestones. Build context with `<hubRoot>/tools/ultra-agent-v3/context.mjs`, record traces with `<hubRoot>/tools/ultra-agent-v3/trace.mjs`, and accept completion only when `<hubRoot>/tools/ultra-agent-v3/evaluate.mjs` reports the required evidence. Always pass the actual project path with `--dir`; this keeps resumable task state under `<repo>/.agents/ultra-v3/tasks/` for recovery and verification.
 - On a failed command, preserve the checkpoint and mark the task recoverable. Do not delete state or claim completion.
 
+## Managed execution and host boundaries
+
+- Before a material write task, inspect the host capability with `node <hubRoot>/tools/antigravity-runtime-preflight.mjs`. `review-required` means the OS/host did not prove sandbox availability; do not label the run sandboxed.
+- The Node managed executor at `<hubRoot>/tools/ultra-agent-v4/managed-runtime.mjs` validates plan approval, governed rules, write scope, effects, registered checks and trace evidence. Use it only through a host integration that supplies a trusted `approvePlan` callback. A model-authored approval value or an in-band shell answer is not an owner approval.
+- The installed plugin includes an Antigravity PreToolUse hook. It hard-denies protected/out-of-workspace file mutations and forces a fresh owner review for in-workspace writes and every shell command. This host hook is separate from the Node managed executor: native IDE changes do not enter the Node effect ledger or get Node executor idempotency guarantees. If the hook is absent, disabled, errors, or is not observed in Antigravity, stop writes and report native coverage unverified; rely on host review settings.
+- On Windows 10, CLI sandboxing is unavailable according to Antigravity documentation; use review-required execution. Windows 11 is a supported host platform, but sandbox availability stays unknown until the actual host reports/probes it. Never silently switch to unrestricted/Turbo execution.
+- Do not present benchmark readiness as a benchmark result. Only owner-approved cases with pinned repository revision, agent/profile/model/config and repeated runs count; the repository currently has no populated owner-approved live corpus.
+
 ## Fast execution policy
 
 Use a fast path by default for routine, clearly scoped work:

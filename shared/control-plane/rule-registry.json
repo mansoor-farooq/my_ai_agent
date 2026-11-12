@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "precedence": ["security", "project", "global"],
+  "rules": [
+    {
+      "id": "ARCH-GOV-001",
+      "version": 2,
+      "priority": 70,
+      "scope": ["global"],
+      "owner": "Mansoor Farooq",
+      "supersedes": "ARCH-GOV-000",
+      "category": "architecture",
+      "agents": ["*"],
+      "tasks": ["architecture", "refactor", "cross-cutting", "cloud-data"],
+      "file": "rules/architecture-governance.md",
+      "contentHash": "sha256:20efeb54f63492e019d0593db6f24df1ee452c64d541f4acd1124809f6c1dc6b",
+      "requiredEvidence": ["repository-findings", "affected-paths", "verification-results"],
+      "verification": ["focused-tests", "architecture-invariant-check"]
+    },
+    {
+      "id": "FLUTTER-MOB-001",
+      "version": 2,
+      "priority": 75,
+      "scope": ["global"],
+      "owner": "Mansoor Farooq",
+      "supersedes": "FLUTTER-MOB-000",
+      "category": "mobile",
+      "projectTypes": ["flutter", "android"],
+      "agents": ["flutter-mobile-specialist"],
+      "tasks": ["ui", "state", "navigation", "api", "performance", "responsive"],
+      "file": "rules/flutter-mobile-standards.md",
+      "contentHash": "sha256:29801c0163d0bc5b6ecdc5d456537773218c1d8c6500cd8f352124b1804a6c64",
+      "requiredEvidence": ["changed-paths", "flutter-analyze", "focused-test-results", "layout-evidence"],
+      "verification": ["flutter analyze", "flutter test"]
+    },
+    {
+      "id": "LIVE-TEST-001",
+      "version": 2,
+      "priority": 80,
+      "scope": ["global"],
+      "owner": "Mansoor Farooq",
+      "supersedes": "LIVE-TEST-000",
+      "category": "testing",
+      "agents": ["qa-release-specialist"],
+      "tasks": ["test", "audit", "validate", "reproduce", "user-flow"],
+      "file": "rules/live-testing-governance.md",
+      "contentHash": "sha256:5fdf8d88411159b0aba035cf23f14e8e53fae0a6fe3c83bb1f1e8aac69367306",
+      "requiredEvidence": ["environment", "tested-coverage", "observed-results", "limitations"],
+      "verification": ["test-artifact-review"]
+    },
+    {
+      "id": "SAAS-GOV-001",
+      "version": 2,
+      "priority": 75,
+      "scope": ["global"],
+      "owner": "Mansoor Farooq",
+      "supersedes": "SAAS-GOV-000",
+      "category": "saas-security",
+      "projectTypes": ["saas", "commerce", "multi-tenant"],
+      "agents": ["saas-architect", "enterprise-schema-architect", "application-security-reviewer"],
+      "tasks": ["architecture", "tenant", "rbac", "catalog", "inventory", "pricing", "orders", "billing", "api"],
+      "file": "rules/saas-architecture-governance.md",
+      "contentHash": "sha256:7e3d61a04431485d5479bf05df093a8f52e701ed047e8b8a699eff08f9bd0e86",
+      "requiredEvidence": ["tenant-scope", "authorization-tests", "migration-plan", "rollback-plan"],
+      "verification": ["tenant-isolation-tests", "rbac-tests", "idempotency-tests"]
+    }
+  ]
+}

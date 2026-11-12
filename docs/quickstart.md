@@ -13,6 +13,8 @@ This guide covers the two supported paths: installing a signed package as a reci
 
 The installer checks the trusted owner signature, verifies package checksums, runs strict Antigravity validation and stops on an integrity failure. The recipient does not need the source repository, GitHub login, private signing key or build tools.
 
+Governed global rules are synchronized into the detected Antigravity `config/rules` directory. Unchanged managed rules update automatically; locally edited rules are preserved and reported with their local and package hashes. Rule precedence, scope, required evidence and verification checks are recorded in `shared/control-plane/rule-registry.json`.
+
 ## First task
 
 Use a task with a clear outcome and project scope, for example:

@@ -4,6 +4,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { inspectPortableSource, readAgentSkillReferences } from './portable-components.mjs';
+import { validateRuleRegistry } from './rule-governance.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const shippedAgents = [
@@ -95,6 +96,10 @@ export async function runDoctor() {
   } else add('FAIL', 'self-contained package policy', `excluded rules missing=[${excluded.join(', ')}], connector definitions present=${forbiddenDefinitions}`);
 
   const portable = await inspectPortableSource(root);
+  const ruleRegistry = JSON.parse(fs.readFileSync(path.join(root, 'shared', 'control-plane', 'rule-registry.json'), 'utf8'));
+  const ruleRegistryReport = await validateRuleRegistry(ruleRegistry, { root });
+  if (ruleRegistryReport.valid) add('PASS', 'governed rule registry', `${ruleRegistry.rules.length} versioned rules have valid metadata and matching SHA-256 content hashes`);
+  else add('FAIL', 'governed rule registry', [...ruleRegistryReport.errors, ...ruleRegistryReport.hashMismatches.map((file) => `content hash mismatch: ${file}`)].join('; '));
   const skillReferences = await readAgentSkillReferences(root);
   const missingSkillBodies = [...new Set(skillReferences.filter((name) => !portable.skills.includes(name)))].sort();
   if (portable.skills.length === 179 && portable.rules.length === 4
@@ -230,6 +235,28 @@ export async function runDoctor() {
   if (!missingUltraV4.length && v4Routes.every((pattern) => pattern.test(mainText))) {
     add('PASS', 'Ultra Agent v4 adaptive runtime', 'benchmark metrics, targeted recovery and native activity runtime are present and manager-routable');
   } else add('FAIL', 'Ultra Agent v4 adaptive runtime', `missing=[${missingUltraV4.join(', ')}] or manager routing is incomplete`);
+
+  const managedRuntimeFiles = [
+    'tools/ultra-agent-v4/managed-runtime.mjs',
+    'tools/antigravity-runtime-preflight.mjs',
+    'tools/antigravity-pretool-guard.ps1',
+    'tools/run-agent-security-fixtures.mjs',
+    'tools/security-agent-fixtures.json',
+    'tools/sync-global-rules.ps1',
+    '.github/workflows/quality.yml',
+  ];
+  const missingManagedRuntime = managedRuntimeFiles.filter((relative) => !fs.existsSync(path.join(root, relative)));
+  const managedRuntimeRoutes = [
+    /managed-runtime\.mjs/,
+    /trusted `approvePlan` callback/,
+    /PreToolUse hook/i,
+    /native IDE changes do not enter the Node effect ledger/i,
+    /antigravity-runtime-preflight\.mjs/,
+  ];
+  const buildScript = fs.readFileSync(path.join(root, 'tools', 'build-antigravity-plugin.mjs'), 'utf8');
+  if (!missingManagedRuntime.length && managedRuntimeRoutes.every((pattern) => pattern.test(mainText)) && /PreToolUse/.test(buildScript) && /hooks\.json/.test(buildScript)) {
+    add('PASS', 'managed runtime and native host guard', 'managed executor, packaged PreToolUse guard, host preflight, security fixtures and CI are present; native side effects remain outside the Node ledger');
+  } else add('FAIL', 'managed runtime and honest host boundary', `missing=[${missingManagedRuntime.join(', ')}] or manager host-boundary routing is incomplete`);
 
   const nativeActivityReady = /invoke_subagent/i.test(mainText)
     && /native sub-agent panel/i.test(mainText)

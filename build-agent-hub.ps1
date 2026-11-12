@@ -50,6 +50,7 @@ try {
     (Join-Path $hub 'tools\tests\agent-hub-doctor.test.mjs') `
     (Join-Path $hub 'tools\tests\backend-ml-router.test.mjs') `
     (Join-Path $hub 'tools\tests\portable-plugin-contents.test.mjs') `
+    (Join-Path $hub 'tools\tests\rule-governance.test.mjs') `
     (Join-Path $hub 'tools\tests\native-agent-activity-contract.test.mjs') `
     (Join-Path $hub 'tools\tests\project-rag.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v2.test.mjs') `
@@ -59,7 +60,17 @@ try {
     (Join-Path $hub 'tools\tests\ultra-agent-v3-evaluation.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v3-delegation.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v3-policy-activity.test.mjs') `
-    (Join-Path $hub 'tools\tests\ultra-agent-v4-control.test.mjs')
+    (Join-Path $hub 'tools\tests\ultra-agent-v4-control.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v4-managed-runtime.test.mjs') `
+    (Join-Path $hub 'tools\tests\agent-security-fixtures.test.mjs') `
+    (Join-Path $hub 'tools\tests\global-rule-sync.test.mjs') `
+    (Join-Path $hub 'tools\tests\antigravity-runtime-preflight.test.mjs') `
+    (Join-Path $hub 'tools\tests\antigravity-pretool-guard.test.mjs') `
+    (Join-Path $hub 'tools\tests\agent-benchmark.test.mjs') `
+    (Join-Path $hub 'tools\tests\benchmark-corpus.test.mjs') `
+    (Join-Path $hub 'tools\tests\secret-scan.test.mjs') `
+    (Join-Path $hub 'tools\tests\rag-ci-gate.test.mjs') `
+    (Join-Path $hub 'tools\tests\ci-workflow.test.mjs')
   if ($LASTEXITCODE -ne 0) { throw 'Focused tests failed.' }
 
   $archive = Join-Path $hub 'dist\mansoor-agent-hub.zip'

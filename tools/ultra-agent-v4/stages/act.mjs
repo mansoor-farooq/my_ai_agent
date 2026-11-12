@@ -92,7 +92,7 @@ export function actStage(task = {}, plan = {}, actions = [], options = {}) {
   for (const action of normalizedActions) {
     const type = String(action?.type || 'write').toLowerCase();
     if (type !== 'write') {
-      allowedActions.push({ ...action, type });
+      violations.push({ path: String(action?.path || ''), code: 'unsupported-action-type', action: { ...action, type } });
       continue;
     }
     const result = guardWritePath(task, action?.path, options);

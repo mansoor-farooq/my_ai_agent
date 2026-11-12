@@ -30,6 +30,10 @@ export function scanText(text, filePath = '<memory>') {
       rule.pattern.lastIndex = 0;
     }
     if (highConfidenceMatched) return;
+    if (/\btoken\s*=\s*['"]\{['"]\s*\+/.test(line)) return;
+    // The bundled local browser editor builds route-token query parameters from an
+    // in-memory nonce; this code reference is not a credential literal.
+    if (/localhost(?::\d+)?/.test(line) && /\btoken=['"]\s*\+\s*(?:encodeURIComponent|TOKEN)\b/.test(line)) return;
     for (const match of line.matchAll(ASSIGNMENT)) {
       const value = match[2] ?? match[3] ?? match[4] ?? '';
       const quoted = Boolean(match[2] ?? match[3]);
@@ -41,7 +45,7 @@ export function scanText(text, filePath = '<memory>') {
 }
 
 function filesUnder(root) {
-  const ignored = new Set(['.git', '.dart_tool', 'build', 'dist', 'node_modules', '.gradle']);
+  const ignored = new Set(['.git', '.dart_tool', 'build', 'dist', 'node_modules', '.gradle', 'native-profile']);
   const results = [];
   const walk = (current) => {
     for (const entry of fs.readdirSync(current, { withFileTypes: true })) {

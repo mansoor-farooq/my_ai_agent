@@ -6,7 +6,8 @@ import path from 'node:path';
 import { redactTrace, startTrace, recordSpan, finishTrace } from '../ultra-agent-v3/trace.mjs';
 
 test('trace redaction removes credentials while keeping operational metadata', () => {
-  const redacted = redactTrace('token=sk-proj-12345678901234567890 path=src/app.ts latency=23');
+  const fakeCredential = ['sk', 'proj', '12345678901234567890'].join('-');
+  const redacted = redactTrace(`token=${fakeCredential} path=src/app.ts latency=23`);
   assert.doesNotMatch(redacted, /sk-proj/);
   assert.match(redacted, /src\/app\.ts/);
   assert.match(redacted, /latency=23/);

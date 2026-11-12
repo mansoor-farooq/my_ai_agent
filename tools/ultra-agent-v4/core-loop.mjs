@@ -134,6 +134,7 @@ export async function runCoreLoop(inputTask, deps = {}) {
     state.act = stages.act(task, state.plan, proposedActions, { projectDir: task.projectDir });
     if (state.act.scopeViolation) return escalate('scope-violation', { scopeViolation: true, changes: [] });
     const executed = await executeAction({ task, plan: state.plan, act: state.act, attempt });
+    if (executed?.scopeViolation) return escalate('scope-violation', { scopeViolation: true, violations: executed.violations || [], changes: [] });
     state.changes = list(executed?.changedPaths ?? state.act.changes);
     state.evidence = list(executed?.evidence);
     await checkpoint({ phase: 'after-act', taskId: task.taskId, attempt, changedPaths: state.changes });

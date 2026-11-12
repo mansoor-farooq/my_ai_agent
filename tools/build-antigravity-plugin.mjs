@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.9.3';
+const packageVersion = '1.11.0';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -71,6 +71,8 @@ const portableRuntimeFiles = [
   'tools/ultra-agent-v3/trace.mjs',
   'tools/ultra-agent-v3/delegation.mjs',
   'tools/ultra-agent-v3/policy.mjs',
+  'tools/rule-governance.mjs',
+  'shared/control-plane/rule-registry.json',
   'tools/ultra-agent-v3/activity.mjs',
   'tools/ultra-agent-v4/benchmark.mjs',
   'tools/ultra-agent-v4/recovery.mjs',
@@ -89,6 +91,15 @@ const portableRuntimeFiles = [
   'tools/repository-map.mjs',
   'tools/benchmark-corpus.mjs',
   'tools/mobile-ui-flow-gate.mjs',
+  'tools/ultra-agent-v4/managed-runtime.mjs',
+  'tools/run-agent-security-fixtures.mjs',
+  'tools/security-agent-fixtures.json',
+  'tools/antigravity-runtime-preflight.mjs',
+  'tools/antigravity-pretool-guard.mjs',
+  'tools/antigravity-pretool-guard.ps1',
+  'tools/sync-global-rules.ps1',
+  'tools/benchmark-schema.json',
+  'benchmarks/README.md',
 ];
 for (const relativePath of portableRuntimeFiles) {
   const source = join(root, relativePath);
@@ -123,6 +134,12 @@ const manifest = {
   author: { name: 'Mansoor Farooq' }
 };
 await writeFile(join(target, 'plugin.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+await writeFile(join(target, 'hooks.json'), `${JSON.stringify({
+  'mansoor-native-write-guard': {
+    enabled: true,
+    PreToolUse: [{ matcher: '*', hooks: [{ type: 'command', command: 'powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File ./tools/antigravity-pretool-guard.ps1', timeout: 10 }] }],
+  },
+}, null, 2)}\n`);
 await mkdir(join(target, 'assets'), { recursive: true });
 await writeFile(join(target, 'assets', 'logo.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><rect width="128" height="128" rx="28" fill="#123B35"/><path d="M28 91V37h14l22 29 22-29h14v54H85V61L64 88 43 61v30z" fill="#F1F5E9"/><circle cx="100" cy="99" r="8" fill="#24B47E"/></svg>\n');
 await writeFile(join(target, 'README.md'), `# MANSOOR FAROOQ | GEMINI AGENT TEAM\n\nA private, portable expert-agent system for Antigravity. One lead manager routes work to focused specialists, preserves project context and returns evidence-backed engineering decisions.\n\n## Install\n\n1. Install Antigravity and sign in with the target user's Gemini account.\n2. Extract this ZIP.\n3. Double-click \`Install-Mansoor-Agent-Team.cmd\`.\n\nThe installer verifies package integrity, validates the Antigravity plugin and installs or updates it. No GitHub sign-in is required.\n\n## Integrity and ownership\n\nThis package is published by Mansoor Farooq. Every package file is recorded in \`PACKAGE-CHECKSUMS.json\`. If a file is changed after packaging, the installer stops with an integrity error before installation. This is tamper detection and fail-closed installation; it is not a claim that a person with filesystem access cannot inspect or replace files. Stronger protection requires a privately held signing key, access control or encryption.\n\n## Team model\n\n\`production-orchestrator\` is the only manager. It selects one domain specialist and the smallest relevant host skill set. The package ships 15 agent profiles and compact skill routers plus an on-demand skill library, MCP servers, provider bridges, OAuth configuration or API keys.\n\n## Fast and professional responses\n\nUse \`Gemini 3.8 Flash\` with \`Low\` thinking for quick fixes. Use \`Medium\` or \`High\` for architecture, security, migration, ML or explicit research. All agents follow a Claude-style response contract: result first, concise rationale, clear evidence and assumptions, professional handoffs, Roman Urdu when appropriate and no invented tool results or hidden chain-of-thought.\n\n## Model and keys\n\nWithout API keys, all agents use the signed-in Antigravity/Gemini session through \`model: inherit\`. Optional integration keys belong in a local ignored \`.env\`; this portable package does not route them automatically.\n\n## Security boundary\n\nThe package does not collect project files, private chats, customer data, credentials or hidden reasoning. Research and image tools are bounded by the target Antigravity runtime.\n\n— Mansoor Farooq\n`);
@@ -194,7 +211,7 @@ const premiumPackageReadme = [
   '',
   '## Security boundary',
   '',
-  `The package contains ${agentCount} agent profiles, ${skillCount} portable skills and ${ruleCount} governed rules. It does not include MCP servers, hooks, sidecars, provider credentials, private chats or native-profile data.`,
+  `The package contains ${agentCount} agent profiles, ${skillCount} portable skills, ${ruleCount} governed rules and a PreToolUse security hook. The hook blocks protected/out-of-workspace writes and requires fresh review for in-workspace writes and shell commands. It does not include MCP servers, sidecars, provider credentials, private chats or native-profile data.`,
   '',
   'The package does not collect project files, private chats, customer data, credentials or hidden reasoning. Signature verification detects ordinary unauthorized changes and fails closed. It is not unbreakable DRM against a local administrator; stronger secrecy requires a signed runtime or private hosted execution.',
   '',
@@ -310,7 +327,7 @@ const signedInstaller = [
   '$installStage = Join-Path ([IO.Path]::GetTempPath()) ("mansoor-agent-hub-stage-" + [guid]::NewGuid().ToString("N"))',
   'New-Item -ItemType Directory -Path $installStage | Out-Null',
   'try {',
-  "  foreach ($item in @('plugin.json', 'README.md', 'assets', 'agents', 'skills', 'rules', 'tools', 'shared')) {",
+  "  foreach ($item in @('plugin.json', 'hooks.json', 'README.md', 'assets', 'agents', 'skills', 'rules', 'tools', 'shared')) {",
   '    $sourceItem = Join-Path $pluginRoot $item',
   '    if (Test-Path -LiteralPath $sourceItem) { Copy-Item -LiteralPath $sourceItem -Destination $installStage -Recurse -Force }',
   '  }',
@@ -338,7 +355,7 @@ const signedInstaller = [
   '  Write-Host ("      UPDATE PLAN / version " + $packageVersion + " / " + $preInstallDrift.Changed + " files require refresh") -ForegroundColor Cyan',
   '  $validationResult = Invoke-AgyCaptured -CommandArguments @("plugin", "validate", "--strict", $installStage)',
   '  if ($validationResult.ExitCode -ne 0) { if ($validationResult.StdOut) { Write-Host $validationResult.StdOut.TrimEnd() -ForegroundColor Yellow }; if ($validationResult.StdErr) { Write-Host $validationResult.StdErr.TrimEnd() -ForegroundColor Yellow }; throw "Antigravity plugin validation failed (exit $($validationResult.ExitCode)). See installer log." }',
-  `  Write-Host '      VALIDATED  /  ${agentCount} agents, ${skillCount} skills, ${ruleCount} rules' -ForegroundColor Green`,
+  `  Write-Host '      VALIDATED  /  ${agentCount} agents, ${skillCount} skills, ${ruleCount} rules, 1 hook' -ForegroundColor Green`,
   '  $installResult = Invoke-AgyCaptured -CommandArguments @("plugin", "install", $installStage)',
   '  if ($installResult.ExitCode -ne 0) { if ($installResult.StdOut) { Write-Host $installResult.StdOut.TrimEnd() -ForegroundColor Yellow }; if ($installResult.StdErr) { Write-Host $installResult.StdErr.TrimEnd() -ForegroundColor Yellow }; throw "Mansoor Agent Hub installation failed (exit $($installResult.ExitCode)). See installer log." }',
   '  $inventoryAfter = Invoke-AgyCaptured -CommandArguments @("plugin", "list", "--json")',
@@ -396,6 +413,11 @@ const signedInstaller = [
   '      $actual = Get-Sha256Hash (Join-Path $agentDestination "agent.md")',
   '      if ($expected -ne $actual) { throw "Agent profile verification failed: $($agentDestination)" }',
   '    }',
+  '  }',
+  '  foreach ($agentRoot in $agentRoots) {',
+  '    if ((Split-Path -Leaf $agentRoot) -ne "agents" -or (Split-Path -Leaf (Split-Path -Parent $agentRoot)) -ne "config") { continue }',
+  '    $configRoot = Split-Path -Parent $agentRoot',
+  '    & (Join-Path $pluginRoot "tools\\sync-global-rules.ps1") -SourceRoot (Join-Path $pluginRoot "rules") -ConfigRoot $configRoot',
   '  }',
   '  Write-Host ("      INSTALLED  /  " + $agentSources.Count + " profiles synchronized to " + $agentRoots.Count + " config root(s)") -ForegroundColor Green',
   '} finally { if (Test-Path -LiteralPath $installStage) { Remove-Item -LiteralPath $installStage -Recurse -Force -ErrorAction SilentlyContinue } }',

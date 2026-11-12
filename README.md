@@ -32,7 +32,7 @@ Mansoor Farooq built this system for production-minded software architecture, pr
 | **1 manager** | **Mansoor AI Team Manager** (`production-orchestrator` internal id) owns intake, planning, delegation and final verification. |
 | **14 specialists** | UI, Flutter, SaaS, ERP/schema, .NET, Node.js, Python, ML, cloud data, workflows, security, QA, research and hub operations. |
 | **179 skills** | A portable, deduplicated skill library with explicit provenance tracking, including the Vercel UI pack. |
-| **4 governed rules** | Shared safety, quality and release contracts apply across the team. |
+| **4 governed rules** | A signed metadata registry versions scope, precedence, evidence and verification; the installer reports drift and preserves locally customized rules. |
 | **Local-first memory** | Project identity, decisions, evidence, conflicts and checkpoints stay scoped to the selected repository. |
 | **Provider-free package** | No bundled MCP connectors, provider credentials or remote telemetry service. |
 
@@ -93,7 +93,7 @@ Canonical project identity keeps temporary workers, evidence, checkpoints and Po
 
 ### Contract-first execution
 
-Every target project has a visible, root-level contract made of `plan/`, `flow/`, `status/`, `logic/`, `requirements/` and `test-cases/`. The manager audits these folders read-only first; missing folders require owner approval before bootstrap. Accepted requirements and architecture decisions are append-only and versioned. Specialists receive typed read/write allowlists, protected paths and required evidence, so arbitrary folders, silent requirement rewrites and unverified completion are blocked by runtime policy.
+Every target project has a visible, root-level contract made of `plan/`, `flow/`, `status/`, `logic/`, `requirements/` and `test-cases/`. The manager audits these folders read-only first; missing folders require owner approval before bootstrap. Accepted requirements and architecture decisions are append-only and versioned. The managed Node executor enforces typed write scopes and protected paths for actions routed through it. The bundled Antigravity PreToolUse hook blocks protected or out-of-workspace native file mutations and forces fresh owner review for in-workspace writes and shell commands. Native changes remain outside the Node executor's effect ledger and idempotency guarantees.
 
 The contract kernel is available through `node <hubRoot>/tools/ultra-agent-v2/contract.mjs audit|bootstrap` and is included in the portable package. `preflight.mjs` reports contract readiness without mutating the target project.
 
@@ -121,14 +121,15 @@ The hub includes reusable gates for real projects:
 - Flutter release gate: `node tools/flutter-release-gate.mjs --project <flutter-project> --out <project>/.agents/flutter-release-gate.json` (analyze, tests, APK build, size and measured-performance placeholders).
 - Capability and manifest drift: `node tools/mobile-capability-preflight.mjs --project <project> --package <application-id> --capabilities auto --previous-report <old-report> --require-device`.
 - Secret scan: `node tools/secret-scan.mjs <project>` (redacted findings only; values are never printed).
-- Dedicated RAG CI: set `RAG_DB_NAME=mansoor_agent_rag_test` and `RAG_DB_PASSWORD`/`PGPASSWORD`, then run `node tools/rag-ci-gate.mjs`.
+- Dedicated RAG CI: set `RAG_DB_NAME=mansoor_agent_rag_test` and `RAG_DB_PASSWORD`/`PGPASSWORD`, then run `node tools/rag-ci-gate.mjs`. A local PostgreSQL instance using trusted localhost authentication may be opted in with `RAG_DB_TRUST_AUTH=1` and an explicit loopback `RAG_DB_HOST`; the gate probes credentials before tests.
 - Specialist benchmark: `node tools/agent-benchmark.mjs <records.json>` for acceptance, accuracy, p95 latency, regression and unsafe-action metrics.
+- Antigravity supports Windows 10 and Windows 11. Host preflight reports platform support separately from sandbox status; Windows 10 is review-required and Windows 11 sandbox status remains unknown until the host probes it. The terminal sandbox specifically requires Windows 11 24H2+ with the August 2026 update.
 
 The recommended device matrix is Samsung, Pixel and Xiaomi across Android 13, 14 and 16. A missing device or expired evidence stays `unverified` and blocks release claims.
 
 ### Capability wave
 
-The current release also includes additive reliability adapters: idempotent effect receipts, payload-bound resumable approvals, a ranked repository map, provenance-aware memory facts, private benchmark-corpus replay, bounded verifier convergence, redacted local traces and optional Flutter/Android Patrol/Maestro flow gates. These preserve existing project business logic and remain fail-closed when a device, runner or provider is unavailable.
+The reliability layer includes an idempotent managed-write adapter, ranked repository map, provenance-aware memory, bounded verifier convergence, redacted local traces, security fixtures and optional Flutter/Android Patrol/Maestro flow gates. The benchmark evaluator is ready, but no owner-approved live task corpus is bundled yet; no agent accuracy or competitor superiority claim is made. Native IDE tools are gated by the packaged PreToolUse hook, but the Node adapter does not track those native effects. On Windows 10, the CLI sandbox is unavailable, so host permission review remains required. Windows 11 is supported; sandbox capability must be probed on that machine.
 
 ## Capability map
 
@@ -183,7 +184,7 @@ The build refreshes source checksums, signs the portable ZIP, runs the doctor, v
 
 The V4.4 release gate currently verifies:
 
-- `npm test`: **112 tests**, **106 passing**, **0 failures**, 6 intentional provider-free RAG skips (the dedicated RAG CI gate runs all 8 RAG tests against `mansoor_agent_rag_test`);
+- `npm test`: test totals are generated from the current run; the ordinary suite may skip six PostgreSQL-backed checks without a dedicated test database. CI runs the full eight-case RAG file against the isolated `mansoor_agent_rag_test` service and rejects any skip.
 - 15 packaged agent profiles, 179 skills, 4 governed rules and zero provider connectors;
 - owner-signed package checksums, strict Antigravity plugin validation and source integrity checks;
 - benchmark envelopes for acceptance, latency, p95 timing and bounded failure reasons;

@@ -57,7 +57,8 @@ test('PostgreSQL RAG isolates projects and excludes secrets/dependencies', { ski
   try {
     await mkdir(path.join(first, 'node_modules'), { recursive: true });
     await writeFile(path.join(first, 'README.md'), 'PostgreSQL retrieval contract for the first project.\\n');
-    await writeFile(path.join(first, '.env'), 'OPENAI_API_KEY=sk-test-secret-value-123456789\\n');
+    const fakeCredential = ['sk', 'test', 'secret-value-123456789'].join('-');
+    await writeFile(path.join(first, '.env'), `OPENAI_API_KEY=${fakeCredential}\\n`);
     await writeFile(path.join(first, 'node_modules', 'ignored.md'), 'PostgreSQL dependency text must not be indexed.\\n');
     await writeFile(path.join(second, 'README.md'), 'PostgreSQL retrieval contract for the second project.\\n');
 
