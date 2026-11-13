@@ -1,8 +1,8 @@
-# Mansoor Farooq · Ultra Agent v4.4
+# Mansoor Farooq | Ultra Agent v4.4 Gemini Antigravity Multi-Agent Team
 
 <div align="center">
 
-### Gemini-powered Antigravity agent orchestration for serious product engineering
+### Gemini-powered Antigravity agent orchestration for production software engineering
 
 **Plan clearly. Delegate safely. Verify everything. Ship with evidence.**
 
@@ -16,6 +16,10 @@
 </div>
 
 > **Ultra Agent v4.4** is Mansoor Farooq's owner-led Gemini agent team for Antigravity: one manager, 14 focused specialists, local project memory, PostgreSQL RAG, evidence-gated verification and an owner-signed release path.
+
+Ultra Agent helps you plan, delegate and verify work across software architecture, production UI, Flutter, Android, .NET, Node.js, Python, PyTorch, PostgreSQL RAG, security, QA and release engineering.
+
+**Start with:** [quickstart](docs/quickstart.md) · [architecture](docs/architecture.md) · [use cases](docs/use-cases.md) · [releases](https://github.com/mansoor-farooq/my_ai_agent/releases)
 
 > **Distribution note:** This repository is public for product discovery. The source/package distribution remains private-only until every bundled skill has a verified source and redistribution licence. No credentials, private chats or hidden reasoning are shipped.
 
@@ -37,6 +41,8 @@ Mansoor Farooq built this system for production-minded software architecture, pr
 | **Local managed MCP** | The installed Antigravity plugin bundles its own managed-task MCP server; no per-project MCP config, provider key or remote telemetry service is required. |
 
 ## Architecture at a glance
+
+![Ultra Agent v4.4 Gemini Antigravity multi-agent engineering](docs/assets/github-social-preview.png)
 
 ```mermaid
 flowchart LR
