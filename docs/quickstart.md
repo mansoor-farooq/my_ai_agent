@@ -1,6 +1,16 @@
 # Ultra Agent v4.4 Quickstart
 
-This guide covers the two supported paths: installing a signed package as a recipient and building a release on Mansoor Farooq's owner machine.
+This guide covers URL bootstrap installation, signed package installation and owner release builds.
+
+## URL bootstrap install
+
+After an approved signed GitHub release exists, run:
+
+```cmd
+Install-Ultra-Agent.cmd https://github.com/mansoor-farooq/my_ai_agent
+```
+
+The bootstrap downloads the signed package from the latest release, verifies its checksum when available and runs the package installer. It stops safely when no signed release asset exists.
 
 ## Recipient install
 

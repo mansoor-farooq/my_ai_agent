@@ -163,6 +163,16 @@ The reliability layer includes an idempotent managed-write adapter, ranked repos
 
 ## Start here
 
+### Install from the repository URL
+
+After an approved signed GitHub release is published, run the repository bootstrap with the repository URL. It downloads the signed package, verifies it and starts the installer:
+
+```cmd
+Install-Ultra-Agent.cmd https://github.com/mansoor-farooq/my_ai_agent
+```
+
+The bootstrap accepts HTTPS GitHub URLs only. It stops when no signed release asset exists and never executes arbitrary repository source.
+
 ### For a recipient
 
 1. Install Antigravity and sign in with the target user's Gemini account.
