@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If Ultra Agent supports your research or engineering work, cite this repository."
 title: "Ultra Agent v4.4 Gemini Antigravity Multi-Agent Team"
 type: software
-version: "1.18.0"
+version: "1.19.0"
 date-released: 2026-11-13
 abstract: "A Gemini-powered Antigravity agent team for software architecture, production UI, Flutter, Android, backend engineering, PostgreSQL RAG, security, QA and signed release workflows."
 repository-code: "https://github.com/mansoor-farooq/my_ai_agent"

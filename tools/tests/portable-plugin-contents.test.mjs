@@ -194,6 +194,8 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
       'tools/ultra-agent-v4/task-workspaces.mjs',
       'tools/ultra-agent-v4/mcp-server.mjs',
       'tools/ultra-agent-v4/managed-runtime.mjs',
+      'tools/ultra-agent-v5/action-manifest.mjs',
+      'tools/ultra-agent-v5/durable-ledger.mjs',
       'tools/start-managed-mcp.ps1',
       'tools/run-agent-security-fixtures.mjs',
       'tools/security-agent-fixtures.json',
@@ -208,7 +210,7 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.13.0');
+    assert.equal(plugin.version, '1.19.0');
     const mcpConfig = JSON.parse(await readFile(path.join(output, 'mcp_config.json'), 'utf8'));
     const managedMcp = mcpConfig.mcpServers['mansoor-managed-runtime'];
     assert.ok(managedMcp, 'the managed runtime MCP server must be bundled with the plugin');
@@ -216,12 +218,12 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.ok(managedMcp.args.some((argument) => argument.includes('${PLUGIN_ROOT}')));
     assert.ok(managedMcp.env.MANSOOR_WORKSPACE_ROOT.includes('${PLUGIN_DATA}'));
     assert.equal(managedMcp.timeoutSeconds, 900);
-    assert.deepEqual(Object.keys(managedMcp.tools).sort(), ['discard_task_workspace', 'get_review_patch', 'inspect_task_workspace', 'promote_reviewed_patch', 'run_managed_task'].sort());
+    assert.deepEqual(Object.keys(managedMcp.tools).sort(), ['discard_task_workspace', 'get_review_patch', 'inspect_task_workspace', 'prepare_managed_action', 'promote_reviewed_patch', 'run_managed_task'].sort());
     assert.equal(Object.hasOwn(managedMcp, 'variables'), false, 'portable local MCP must not require per-machine credential setup');
     const packagedReadme = await readFile(path.join(output, 'README.md'), 'utf8');
     assert.match(packagedReadme, /no per-project MCP config/i);
     assert.match(packagedReadme, /Windows 10\/11/);
-    assert.match(packagedReadme, /fresh approval/i);
+    assert.match(packagedReadme, /fresh host review/i);
     const hooks = JSON.parse(await readFile(path.join(output, 'hooks.json'), 'utf8'));
     assert.ok(hooks['mansoor-native-write-guard'].PreToolUse.some((entry) => entry.matcher === '*' && entry.hooks.some((handler) => handler.command.includes('antigravity-pretool-guard.ps1'))));
     await assert.doesNotReject(access(path.join(output, 'tools', 'antigravity-pretool-guard.ps1')));
@@ -235,6 +237,9 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.match(installer, /'plugin\.json', 'mcp_config\.json', 'hooks\.json'/);
     assert.match(installer, /Already installed; leaving the active package untouched/);
     assert.match(installer, /Start-Process/);
+    assert.match(installer, /WindowsBuiltInRole.*Administrator/);
+    assert.match(installer, /Verb RunAs/);
+    assert.match(installer, /Administrator permission is required/i);
     assert.match(installer, /Start-Transcript/);
     assert.match(installer, /INSTALLER ERROR:/);
     assert.match(installer, /mansoor-agent-hub-stage-/);
@@ -283,4 +288,17 @@ test('build output keeps compact routers and full skill instructions separately'
   } finally {
     await rm(output, { recursive: true, force: true });
   }
+});
+
+test('owner build detects installed global Mansoor profiles when plugin inventory omits the team', async () => {
+  const buildScript = await readFile(path.join(root, 'build-agent-hub.ps1'), 'utf8');
+  assert.match(buildScript, /production-orchestrator\\agent\.md/);
+  assert.match(buildScript, /mansoor-ui-specialist\\agent\.md/);
+  assert.match(buildScript, /flutter-mobile-specialist\\agent\.md/);
+  assert.ok(buildScript.includes('internal routing id:') && buildScript.includes('production-orchestrator'));
+  assert.match(buildScript, /MANSOOR_AGENT_ROOT/);
+  assert.match(buildScript, /AGY_CONFIG_DIR/);
+  assert.match(buildScript, /ANTIGRAVITY_CONFIG_DIR/);
+  assert.match(buildScript, /GEMINI_CONFIG_DIR/);
+  assert.match(buildScript, /no Mansoor plugin or installed agent-profile roots were detected/i);
 });

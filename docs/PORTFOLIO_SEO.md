@@ -14,12 +14,12 @@ Ultra Agent v4.4 is Mansoor Farooq's owner-led Gemini agent team for Antigravity
 
 - **What it is:** a provider-free Antigravity/Gemini multi-agent engineering system.
 - **Who it is for:** founders, senior engineers and teams maintaining long-lived repositories.
-- **What makes it different:** project-scoped memory, safe delegation, evidence-gated verification, native activity and owner-signed packaging.
+- **What makes it different:** project-scoped memory, safe delegation, evidence-gated verification, native activity, owner-signed packaging and a guarded GitHub URL bootstrap.
 - **Where to learn more:** [architecture](architecture.md), [quickstart](quickstart.md), [use cases](use-cases.md) and the [main README](../README.md).
 
 ## Suggested keywords
 
-Mansoor Farooq, Ultra Agent v4.4, Antigravity agent orchestration, Gemini multi-agent system, AI coding agent, software architecture, production UI engineering, Flutter, Android, .NET, Node.js, Python, PyTorch, MLOps, PostgreSQL RAG, workflow automation, application security, QA automation, release engineering.
+Mansoor Farooq, Ultra Agent v4.4, Antigravity agent orchestration, Gemini multi-agent system, AI coding agent, one-click GitHub installer, software architecture, production UI engineering, Flutter, Android, .NET, Node.js, Python, PyTorch, MLOps, PostgreSQL RAG, workflow automation, application security, QA automation, release engineering.
 
 ## Verified links
 

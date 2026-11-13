@@ -163,6 +163,16 @@ The reliability layer includes an idempotent managed-write adapter, ranked repos
 
 ## Start here
 
+### Install from the repository URL
+
+Once an approved signed GitHub release is published, Antigravity can use the repository URL as the install source. The bootstrap downloads the latest `mansoor-agent-hub.zip`, verifies its checksum and signed manifest, requests Windows administrator approval when needed and runs the packaged installer:
+
+```cmd
+Install-Ultra-Agent.cmd https://github.com/mansoor-farooq/my_ai_agent
+```
+
+The bootstrap accepts HTTPS GitHub URLs only. It does not execute arbitrary repository source, build an untrusted package or bypass the owner signature. If the repository has no signed release asset yet, it stops and reports that requirement.
+
 ### For a recipient
 
 1. Install Antigravity and sign in with the target user's Gemini account.
