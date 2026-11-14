@@ -51,6 +51,8 @@ const requiredPaths = [
   'tools/ultra-agent-v4/task-workspaces.mjs',
   'tools/ultra-agent-v4/mcp-server.mjs',
   'tools/ultra-agent-v4/managed-runtime.mjs',
+  'tools/ultra-agent-v5/approval-broker.mjs',
+  'tools/ultra-agent-v5/readiness-gate.mjs',
   'tools/start-managed-mcp.ps1',
   'tools/content-hash.mjs',
   'tools/rule-governance.mjs',

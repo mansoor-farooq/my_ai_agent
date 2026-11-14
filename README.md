@@ -99,7 +99,7 @@ Canonical project identity keeps temporary workers, evidence, checkpoints and Po
 
 ### Contract-first execution
 
-Every target project has a visible, root-level contract made of `plan/`, `flow/`, `status/`, `logic/`, `requirements/` and `test-cases/`. The manager audits these folders read-only first; missing folders require owner approval before bootstrap. Accepted requirements and architecture decisions are append-only and versioned. The managed Node executor enforces typed write scopes and protected paths for actions routed through it. The bundled Antigravity PreToolUse hook blocks protected or out-of-workspace native file mutations and forces fresh owner review for in-workspace writes and shell commands. Native changes remain outside the Node executor's effect ledger and idempotency guarantees.
+Every target project has a visible, root-level contract made of `plan/`, `flow/`, `status/`, `logic/`, `requirements/` and `test-cases/`. The manager audits these folders read-only first; missing folders require owner approval before bootstrap. Accepted requirements and architecture decisions are append-only and versioned. The managed Node executor enforces typed write scopes and protected paths for actions routed through it. The bundled Antigravity PreToolUse hook blocks protected or out-of-workspace native file mutations, allows manifest-bound Tier 0/1 managed runs after the manager broker has issued its receipt, and forces fresh owner review for promotion, discard, shell and Tier 2/3 effects. Native changes remain outside the Node executor's effect ledger and idempotency guarantees.
 
 The contract kernel is available through `node <hubRoot>/tools/ultra-agent-v2/contract.mjs audit|bootstrap` and is included in the portable package. `preflight.mjs` reports contract readiness without mutating the target project.
 
@@ -224,6 +224,19 @@ The V4.4 release gate currently verifies:
 
 The generated artifact is `dist/mansoor-agent-hub.zip`. Every build prints the exact SHA256 for the package that was produced.
 
+## V5 trust and recovery hardening
+
+The V5 lane adds provider-free controls that are testable on the local machine:
+
+- verification commands run with a minimal allowlisted environment; provider tokens and secret-shaped variables are not inherited by default;
+- queue and action-ledger state use cross-process locks, idempotency keys and bounded stale-lock recovery;
+- capability preflight reports `available`, `enabled`, `verified-by-probe`, `unsupported` or `unknown` instead of guessing about Windows isolation;
+- staged promotion receipts bind the exact manifest hash, approval receipt and observed file hashes;
+- the risk-based Approval Broker records manager auto-approval for bounded work and blocks Tier 3 self-approval;
+- installer journals, transactional active-package backup/rollback, release manifests, redacted local telemetry, benchmark manifests and Android evidence records are packaged for portable use.
+
+These controls do not turn Antigravity hooks into an OS sandbox. Native editor writes remain host-controlled and must use the managed staged-promotion path for trusted evidence. Windows isolation, model selection, local-LLM fallback, physical Android coverage and public redistribution licensing are capability-gated; the kit reports `unknown`, `not-run` or `review-required` when the host, account, hardware or rights are not present. No human-level, device-matrix or automatic model-routing claim is made without captured evidence.
+
 ## Fast and Premium modes
 
 The manager selects the mode automatically. Fast mode handles routine reversible work with cached context and targeted verification. Premium mode handles architecture, security, production, release, payment, ML, migration and explicit research with planning, bounded research, specialist delegation, independent verification and evaluation. Missing Premium tools block the task instead of silently downgrading it.
@@ -231,6 +244,16 @@ The manager selects the mode automatically. Fast mode handles routine reversible
 ## Trust, provenance and public boundaries
 
 The public repository is a product showcase and discovery surface. The portable package remains private-only until the bundled skill inventory has complete source and redistribution review. `SKILL-PROVENANCE.json` is the source of truth; no licence or provenance is invented.
+
+## Risk-adaptive autonomy (V5 production lane)
+
+`tools/ultra-agent-v5/approval-broker.mjs` is the single deterministic approval boundary for managed work. It classifies the exact task, plan, actions and manifest into four tiers: Tier 0 bounded local work is auto-approved by **Mansoor AI Team Manager**; Tier 1 reversible draft/notification work is manager-approved with a trace; Tier 2 exceptions require an explicit allowlist or owner review; Tier 3 production, protected-branch, secret/signing, IAM, billing, destructive and external-communication actions always require owner approval. The model cannot select a lower tier and an approval receipt is bound to the manifest hash, nonce, policy version and expiry.
+
+Native shell commands use `tools/ultra-agent-v5/command-approval-policy.mjs`. The hook auto-allows exact read-only probes plus routine verification commands such as `npm test`, approved lint/typecheck/analyze scripts, `flutter analyze/test`, `dotnet test` and `python -m pytest`. Unknown, chained, redirected, network, install, maintenance and destructive commands still receive owner review; for example, `Clear-RecycleBin -Force` and `Remove-Item -Recurse -Force` are never auto-approved. This reduces repeated questions without turning the manager into an unrestricted shell authority.
+
+The installer also merges a per-user Antigravity CLI `agentMode: auto` policy and protected desktop grant rules. Existing user settings are preserved and the merge is idempotent; deny rules protect `.env*`, `.git`, SSH keys, network egress and destructive shell patterns. A native “always allow” click is host-owned and is not inferred from chat history. For delete/recreate work, the manager prepares one exact manifest (paths, pre-change hashes, replacement content, rollback and checks), obtains one review, then runs the complete bounded batch through the managed MCP lane so internal steps do not create a new prompt for every command.
+
+`tools/ultra-agent-v5/readiness-gate.mjs` calculates the weighted production-readiness score, but hard safety failures cannot be averaged away. A 99% score is only `ready` when all mandatory release, audit, rollback, secret and unauthorized-Tier-3 gates pass; missing host/device/RAG evidence stays `unverified`. `evaluateMemoryEvidence` also rejects cross-project facts, stale evidence, missing citations, invalid hashes and contradictory records before they can be promoted to memory.
 
 The package never includes provider credentials, customer data, private chats, hidden chain-of-thought or the private signing key. Tamper detection protects against accidental or ordinary unauthorized modification, but it is not unbreakable DRM.
 

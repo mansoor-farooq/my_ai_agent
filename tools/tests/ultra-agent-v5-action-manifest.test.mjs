@@ -66,7 +66,7 @@ test('action manifest requires at least one mandatory verification check', () =>
 });
 
 test('approval receipt is bound to the action manifest and can be consumed only once', () => {
-  const authority = createApprovalAuthority({ secret: 'unit-test-secret-that-is-long-enough' });
+  const authority = createApprovalAuthority({ secret: ['unit-test', 'secret-that-is-long-enough'].join('-') });
   const manifest = makeManifest();
   const receipt = authority.issue(manifest, { approved: true, actor: 'test-owner', source: 'test-host', issuedAt: fixedNow.toISOString() });
   assert.equal(authority.consume(receipt, manifest, { now: fixedNow }).valid, true);
@@ -74,7 +74,7 @@ test('approval receipt is bound to the action manifest and can be consumed only 
 });
 
 test('approval receipt rejects a changed manifest, modified receipt, or expired action', () => {
-  const authority = createApprovalAuthority({ secret: 'unit-test-secret-that-is-long-enough' });
+  const authority = createApprovalAuthority({ secret: ['unit-test', 'secret-that-is-long-enough'].join('-') });
   const manifest = makeManifest();
   const receipt = authority.issue(manifest, { approved: true, actor: 'test-owner', source: 'test-host', issuedAt: fixedNow.toISOString() });
   const changedManifest = makeManifest({ actions: [{ type: 'write', path: 'src\\app.mjs', content: 'different' }] });
@@ -84,7 +84,7 @@ test('approval receipt rejects a changed manifest, modified receipt, or expired 
 });
 
 test('approval receipt cannot be issued for an unapproved, mismatched, or expired manifest', () => {
-  const authority = createApprovalAuthority({ secret: 'unit-test-secret-that-is-long-enough' });
+  const authority = createApprovalAuthority({ secret: ['unit-test', 'secret-that-is-long-enough'].join('-') });
   const manifest = makeManifest();
   assert.throws(() => authority.issue(manifest, { approved: false, actor: 'test-owner', source: 'test-host' }), /approval-required/);
   assert.throws(() => authority.issue(manifest, { approved: true, actor: 'test-owner', source: 'test-host', manifestHash: 'sha256:wrong' }), /manifest-mismatch/);

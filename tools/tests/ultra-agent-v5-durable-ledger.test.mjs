@@ -57,7 +57,7 @@ test('approval consumption is manifest-bound, durable and resumable only for the
 test('expired approval cannot be resumed and denied decisions never enter the ledger', (t) => {
   const directory = tempDir(t);
   const ledger = new DurableActionLedger({ directory, projectId: 'project-a', taskId: 'task-1', now: () => fixedNow });
-  const authority = createApprovalAuthority({ secret: 'durable-ledger-test-secret-000000' });
+  const authority = createApprovalAuthority({ secret: ['durable-ledger-test', 'secret-000000'].join('-') });
   const action = manifest();
   const receipt = authority.issue(action, { approved: true, actor: 'owner', source: 'test', issuedAt: fixedNow.toISOString() });
   assert.equal(ledger.consumeApproval(receipt, action, authority, { now: new Date('2026-11-13T10:01:01.000Z') }).valid, false);

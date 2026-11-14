@@ -9,6 +9,7 @@ import { inspectTaskWorkspace } from '../ultra-agent-v4/task-workspaces.mjs';
 import { promoteManagedTaskWorkspace, runManagedTask } from '../ultra-agent-v4/managed-runtime.mjs';
 import { canonicalHash, createActionManifest, createApprovalAuthority } from '../ultra-agent-v5/action-manifest.mjs';
 import { createFileBackedApprovalAuthority } from '../ultra-agent-v5/durable-ledger.mjs';
+import { createApprovalBroker } from '../ultra-agent-v5/approval-broker.mjs';
 
 const HUB_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const ruleRegistry = JSON.parse(fs.readFileSync(path.join(HUB_ROOT, 'shared', 'control-plane', 'rule-registry.json'), 'utf8'));
@@ -93,6 +94,23 @@ test('managed runtime refuses to execute without a host approval callback', asyn
   });
   assert.equal(result.status, 'blocked');
   assert.equal(writes, 0);
+});
+
+test('managed runtime can auto-authorize bounded work through the manager approval broker', async () => {
+  const { projectDir, task, plan } = fixture();
+  try {
+    const input = withActionManifest({ task, plan, actions: [{ type: 'write', path: 'src/hello.txt', content: 'hello' }] });
+    const result = await runManagedTask(input, {
+      approvalBroker: createApprovalBroker(),
+      approvalAuthorityFactory: async (_manifest, ledger) => createFileBackedApprovalAuthority(ledger.directory),
+    });
+    assert.equal(result.status, 'complete', JSON.stringify(result));
+    assert.equal(result.approval.source, 'manager-policy-auto-approval');
+    assert.equal(result.riskTier, 0);
+    assert.equal(result.approvalMode, 'auto_approve');
+  } finally {
+    fs.rmSync(projectDir, { recursive: true, force: true });
+  }
 });
 
 test('managed runtime requires a local approval authority before inspecting or changing the project', async () => {

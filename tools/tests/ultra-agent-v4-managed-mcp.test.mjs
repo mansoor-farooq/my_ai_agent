@@ -58,6 +58,25 @@ test('Antigravity MCP task execution and promotion calls always require fresh ow
   }
 });
 
+test('bounded managed runs use the manager broker without a repeated host prompt', () => {
+  const result = evaluatePreToolUse({
+    toolCall: {
+      name: 'call_mcp_tool',
+      args: {
+        ServerName: 'mansoor-managed-runtime',
+        ToolName: 'run_managed_task',
+        Arguments: {
+          actionManifest: { manifestHash: 'sha256:prepared' },
+          task: { objective: 'Update one bounded source file', scope: ['src/**'], taskType: 'implementation' },
+          plan: { affectedPaths: ['src/app.js'], rollback: 'discard worktree', steps: ['write'], checks: [] },
+          actions: [{ type: 'write', path: 'src/app.js' }],
+        },
+      },
+    },
+  });
+  assert.equal(result.decision, 'allow');
+});
+
 test('MCP server negotiates the protocol and lists the portable managed tools', async () => {
   const server = createManagedMcpServer({ workspaceRoot: 'C:/test/workspaces' });
   const initialized = await server.handleRequest({
@@ -79,6 +98,9 @@ test('MCP execution creates a reviewable patch and promotion requires the exact 
     const prepared = await server.handleRequest({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'prepare_managed_action', arguments: args } });
     assert.equal(prepared.result.isError, false, JSON.stringify(prepared));
     const manifest = JSON.parse(prepared.result.content[0].text).actionManifest;
+    const preparedPayload = JSON.parse(prepared.result.content[0].text);
+    assert.equal(preparedPayload.approvalPolicy.riskTier, 0);
+    assert.equal(preparedPayload.approvalPolicy.decision, 'auto_approve');
     assert.ok(manifest.manifestHash);
     assert.equal(manifest.actions[0].contentHash.startsWith('sha256:'), true);
     const changedAction = { ...args, actions: [{ type: 'write', path: 'src/hello.txt', content: 'changed\n' }], actionManifest: manifest };
@@ -90,6 +112,9 @@ test('MCP execution creates a reviewable patch and promotion requires the exact 
     assert.equal(run.result.isError, false, JSON.stringify(run));
     const result = JSON.parse(run.result.content[0].text);
     assert.equal(result.status, 'complete');
+    assert.equal(result.approval.source, 'manager-policy-auto-approval');
+    assert.equal(result.riskTier, 0);
+    assert.equal(result.approvalMode, 'auto_approve');
     assert.equal(result.delivery.status, 'review-required');
     assert.equal(fs.existsSync(path.join(fixture.projectDir, 'src', 'hello.txt')), false);
 

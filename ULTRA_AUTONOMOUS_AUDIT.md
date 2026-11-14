@@ -268,3 +268,14 @@ The hub now has five additional reusable skills: `modern-ui-art-direction`, `des
 
 Image generation remains provider-dependent: the skill checks the active runtime and local secret configuration, uses current official provider docs when available, and falls back to a ready-to-run prompt without claiming an image was created. The portable pack contains no added image API key. The README records the updated skill inventory and the routing tests cover UI, standalone image and backend-security cases.
 
+## Addendum — V5 production hardening (2026-11-14)
+
+The first V5 hardening lane is now implemented as provider-free local modules and regression tests:
+
+- `tools/ultra-agent-v4/stages/verify.mjs` no longer inherits the full parent environment; checks receive only safe defaults plus explicit allowlisted variables.
+- `tools/ultra-agent-v4/daemon/queue.mjs` and `tools/ultra-agent-v5/durable-ledger.mjs` use a bounded cross-process lock and preserve idempotent transitions.
+- V5 capability preflight and promotion receipts distinguish platform eligibility from verified isolation and bind promotion to exact hashes.
+- Install journals, release manifests, redacted offline telemetry, benchmark manifests and Android evidence records are portable and testable.
+
+This does not claim host-proof native writes, a real OS sandbox on every Windows machine, automatic model switching, physical Android coverage, public redistribution rights or benchmark superiority. Those remain explicit `unknown`, `not-run`, `review-required` or private-only states until the required host, hardware, provider, corpus or rights evidence exists.
+

@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { appendRuntimeEvent } from './events.mjs';
+import { withProcessLockSync } from '../../ultra-agent-v5/process-lock.mjs';
 
 function hash(value) { return crypto.createHash('sha256').update(value).digest('hex'); }
 function atomicWrite(file, value) {
@@ -41,24 +42,26 @@ export function enqueueRun({ runsDir, input, now = new Date().toISOString() }) {
   const projectId = safe(input.projectId, 'projectId');
   const taskId = safe(input.taskId, 'taskId');
   fs.mkdirSync(runsDir, { recursive: true });
-  const idempotencyKey = `sha256:${hash(JSON.stringify({ projectDir, projectId, objective, scope, acceptance, contractVersion: String(input.contractVersion || '1') }))}`;
-  const existing = allRuns(runsDir).find((run) => run.idempotencyKey === idempotencyKey);
-  if (existing) return { ...existing, idempotentReplay: true };
-  const runId = createRunId();
-  const run = {
-    schema: 'mansoor.runtime-run/v1', runId, projectId, taskId, projectDir, objective,
-    scope, acceptance, forbiddenPaths: Array.isArray(input.forbiddenPaths) ? input.forbiddenPaths.map(String) : [],
-    mode: input.mode === 'premium' ? 'premium' : 'fast',
-    agent: String(input.agent || 'Mansoor AI Team Manager'),
-    contractVersion: String(input.contractVersion || '1'),
-    idempotencyKey, status: 'queued-host-unavailable', createdAt: now, updatedAt: now,
-    attempts: 0, blockers: [], evidenceIds: [],
-  };
-  const { dir, file } = runFiles(runsDir, runId);
-  fs.mkdirSync(dir, { recursive: true });
-  atomicWrite(file, run);
-  appendRuntimeEvent({ runsDir, runId, now, event: { kind: 'queued', status: run.status, agent: run.agent, message: 'Task queued; waiting for Antigravity host session.' } });
-  return run;
+  return withProcessLockSync(path.join(runsDir, '.queue.lock'), () => {
+    const idempotencyKey = `sha256:${hash(JSON.stringify({ projectDir, projectId, objective, scope, acceptance, contractVersion: String(input.contractVersion || '1') }))}`;
+    const existing = allRuns(runsDir).find((run) => run.idempotencyKey === idempotencyKey);
+    if (existing) return { ...existing, idempotentReplay: true };
+    const runId = createRunId();
+    const run = {
+      schema: 'mansoor.runtime-run/v1', runId, projectId, taskId, projectDir, objective,
+      scope, acceptance, forbiddenPaths: Array.isArray(input.forbiddenPaths) ? input.forbiddenPaths.map(String) : [],
+      mode: input.mode === 'premium' ? 'premium' : 'fast',
+      agent: String(input.agent || 'Mansoor AI Team Manager'),
+      contractVersion: String(input.contractVersion || '1'),
+      idempotencyKey, status: 'queued-host-unavailable', createdAt: now, updatedAt: now,
+      attempts: 0, blockers: [], evidenceIds: [],
+    };
+    const { dir, file } = runFiles(runsDir, runId);
+    fs.mkdirSync(dir, { recursive: true });
+    atomicWrite(file, run);
+    appendRuntimeEvent({ runsDir, runId, now, event: { kind: 'queued', status: run.status, agent: run.agent, message: 'Task queued; waiting for Antigravity host session.' } });
+    return run;
+  });
 }
 
 export function getRun({ runsDir, runId }) {
@@ -67,9 +70,11 @@ export function getRun({ runsDir, runId }) {
 }
 
 export function updateRun({ runsDir, runId, patch, now = new Date().toISOString() }) {
-  const current = getRun({ runsDir, runId });
-  if (!current) throw new Error('run not found');
-  const next = { ...current, ...patch, runId: current.runId, updatedAt: now };
-  atomicWrite(runFiles(runsDir, runId).file, next);
-  return next;
+  return withProcessLockSync(path.join(runsDir, '.queue.lock'), () => {
+    const current = getRun({ runsDir, runId });
+    if (!current) throw new Error('run not found');
+    const next = { ...current, ...patch, runId: current.runId, updatedAt: now };
+    atomicWrite(runFiles(runsDir, runId).file, next);
+    return next;
+  });
 }

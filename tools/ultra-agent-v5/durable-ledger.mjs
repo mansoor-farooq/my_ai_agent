@@ -3,6 +3,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createApprovalAuthority } from './action-manifest.mjs';
+import { withProcessLockSync } from './process-lock.mjs';
 
 const LEDGER_SCHEMA = 'mansoor.action-ledger-event/v1';
 const LEDGER_FILE = 'actions.jsonl';
@@ -114,6 +115,8 @@ export class DurableActionLedger {
     this.taskId = String(taskId);
     this.now = now;
     this.filePath = path.join(this.directory, LEDGER_FILE);
+    this.lockPath = path.join(this.directory, `${LEDGER_FILE}.lock`);
+    this.lockHeld = false;
     this.events();
   }
 
@@ -124,48 +127,58 @@ export class DurableActionLedger {
     return current ? { status: current.to, details: current.details, event: current } : null;
   }
 
+  withLedgerLock(fn) {
+    if (this.lockHeld) return fn();
+    return withProcessLockSync(this.lockPath, () => {
+      this.lockHeld = true;
+      try { return fn(); } finally { this.lockHeld = false; }
+    });
+  }
+
   transition(subjectType, subjectId, to, details = {}) {
-    const type = String(subjectType);
-    const id = String(subjectId);
-    if (!transitions[type] || !id || !transitions[type][String(to)]) fail('action-ledger-transition-invalid');
-    const events = this.events();
-    const current = currentFor(events, type, id);
-    const from = current?.to ?? null;
-    const next = String(to);
-    if (from === next) {
-      if (type === 'effect' && current.details?.payloadHash !== details?.payloadHash) fail('ledger-idempotency-payload-mismatch');
-      if (hash(current.details || {}) === hash(details || {})) return { ...current, idempotent: true };
-      fail('action-ledger-duplicate-state-conflict');
-    }
-    if (from === null ? next !== 'prepared' && !(type === 'approval' && next === 'awaiting_approval') : !transitions[type][from]?.includes(next)) {
-      fail('illegal-ledger-transition');
-    }
-    if (type === 'effect' && current?.details?.payloadHash && details?.payloadHash
-      && current.details.payloadHash !== details.payloadHash) fail('ledger-idempotency-payload-mismatch');
-    const event = {
-      schema: LEDGER_SCHEMA,
-      sequence: events.length + 1,
-      previousHash: events.at(-1)?.eventHash || null,
-      occurredAt: new Date(this.now()).toISOString(),
-      projectId: this.projectId,
-      taskId: this.taskId,
-      subjectType: type,
-      subjectId: id,
-      from,
-      to: next,
-      details: normalize(details || {}),
-    };
-    const record = { ...event, eventHash: hash(event) };
-    let fd;
-    try {
-      fd = fs.openSync(this.filePath, 'a', 0o600);
-      const bytes = Buffer.from(`${JSON.stringify(record)}\n`, 'utf8');
-      let offset = 0;
-      while (offset < bytes.byteLength) offset += fs.writeSync(fd, bytes, offset, bytes.byteLength - offset);
-      fs.fsyncSync(fd);
-    } catch { fail('action-ledger-persist-failed'); }
-    finally { if (fd !== undefined) fs.closeSync(fd); }
-    return record;
+    return this.withLedgerLock(() => {
+      const type = String(subjectType);
+      const id = String(subjectId);
+      if (!transitions[type] || !id || !transitions[type][String(to)]) fail('action-ledger-transition-invalid');
+      const events = this.events();
+      const current = currentFor(events, type, id);
+      const from = current?.to ?? null;
+      const next = String(to);
+      if (from === next) {
+        if (type === 'effect' && current.details?.payloadHash !== details?.payloadHash) fail('ledger-idempotency-payload-mismatch');
+        if (hash(current.details || {}) === hash(details || {})) return { ...current, idempotent: true };
+        fail('action-ledger-duplicate-state-conflict');
+      }
+      if (from === null ? next !== 'prepared' && !(type === 'approval' && next === 'awaiting_approval') : !transitions[type][from]?.includes(next)) {
+        fail('illegal-ledger-transition');
+      }
+      if (type === 'effect' && current?.details?.payloadHash && details?.payloadHash
+        && current.details.payloadHash !== details.payloadHash) fail('ledger-idempotency-payload-mismatch');
+      const event = {
+        schema: LEDGER_SCHEMA,
+        sequence: events.length + 1,
+        previousHash: events.at(-1)?.eventHash || null,
+        occurredAt: new Date(this.now()).toISOString(),
+        projectId: this.projectId,
+        taskId: this.taskId,
+        subjectType: type,
+        subjectId: id,
+        from,
+        to: next,
+        details: normalize(details || {}),
+      };
+      const record = { ...event, eventHash: hash(event) };
+      let fd;
+      try {
+        fd = fs.openSync(this.filePath, 'a', 0o600);
+        const bytes = Buffer.from(`${JSON.stringify(record)}\n`, 'utf8');
+        let offset = 0;
+        while (offset < bytes.byteLength) offset += fs.writeSync(fd, bytes, offset, bytes.byteLength - offset);
+        fs.fsyncSync(fd);
+      } catch { fail('action-ledger-persist-failed'); }
+      finally { if (fd !== undefined) fs.closeSync(fd); }
+      return record;
+    });
   }
 
   findApproval(nonce) {
@@ -175,23 +188,25 @@ export class DurableActionLedger {
   }
 
   consumeApproval(receipt, manifest, authority, { now = this.now() } = {}) {
-    const validity = authority?.verify?.(receipt, manifest, { now });
-    if (!validity?.valid) return { valid: false, reason: validity?.reason || 'approval-authority-invalid' };
-    const prior = this.findApproval(manifest.nonce);
-    if (prior) {
-      if (prior.receipt?.receiptId !== receipt.receiptId || prior.receipt?.manifestHash !== manifest.manifestHash) {
-        return { valid: false, reason: 'approval-receipt-replayed' };
+    return this.withLedgerLock(() => {
+      const validity = authority?.verify?.(receipt, manifest, { now });
+      if (!validity?.valid) return { valid: false, reason: validity?.reason || 'approval-authority-invalid' };
+      const prior = this.findApproval(manifest.nonce);
+      if (prior) {
+        if (prior.receipt?.receiptId !== receipt.receiptId || prior.receipt?.manifestHash !== manifest.manifestHash) {
+          return { valid: false, reason: 'approval-receipt-replayed' };
+        }
+        if (prior.current?.to === 'approved') this.transition('approval', manifest.nonce, 'consumed', { manifestHash: manifest.manifestHash, receiptId: receipt.receiptId });
+        return { valid: true, resumed: true, receiptId: receipt.receiptId, manifestHash: manifest.manifestHash };
       }
-      if (prior.current?.to === 'approved') this.transition('approval', manifest.nonce, 'consumed', { manifestHash: manifest.manifestHash, receiptId: receipt.receiptId });
-      return { valid: true, resumed: true, receiptId: receipt.receiptId, manifestHash: manifest.manifestHash };
-    }
-    const requested = this.state('approval', manifest.nonce);
-    if (requested?.status !== 'awaiting_approval' || requested.details?.manifestHash !== manifest.manifestHash) {
-      return { valid: false, reason: 'approval-request-not-pending' };
-    }
-    this.transition('approval', manifest.nonce, 'approved', { manifestHash: manifest.manifestHash, receipt });
-    this.transition('approval', manifest.nonce, 'consumed', { manifestHash: manifest.manifestHash, receiptId: receipt.receiptId });
-    return { valid: true, resumed: false, receiptId: receipt.receiptId, manifestHash: manifest.manifestHash };
+      const requested = this.state('approval', manifest.nonce);
+      if (requested?.status !== 'awaiting_approval' || requested.details?.manifestHash !== manifest.manifestHash) {
+        return { valid: false, reason: 'approval-request-not-pending' };
+      }
+      this.transition('approval', manifest.nonce, 'approved', { manifestHash: manifest.manifestHash, receipt });
+      this.transition('approval', manifest.nonce, 'consumed', { manifestHash: manifest.manifestHash, receiptId: receipt.receiptId });
+      return { valid: true, resumed: false, receiptId: receipt.receiptId, manifestHash: manifest.manifestHash };
+    });
   }
 }
 

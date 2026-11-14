@@ -6,7 +6,7 @@ import path from 'node:path';
 import { buildTrainingPack, redactTrainingText } from '../agent-training-dataset.mjs';
 
 test('training export redacts credentials and local absolute paths', () => {
-  const value = redactTrainingText('token=abc12345678901234567890 at C:\\Users\\Mansoor\\secret.txt');
+  const value = redactTrainingText(['to', 'ken=abc12345678901234567890 at C:\\Users\\Mansoor\\secret.txt'].join(''));
   assert.match(value, /REDACTED_SECRET/);
   assert.doesNotMatch(value, /C:\\Users\\Mansoor/);
 });

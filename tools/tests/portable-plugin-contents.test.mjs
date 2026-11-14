@@ -195,7 +195,10 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
       'tools/ultra-agent-v4/mcp-server.mjs',
       'tools/ultra-agent-v4/managed-runtime.mjs',
       'tools/ultra-agent-v5/action-manifest.mjs',
+      'tools/ultra-agent-v5/approval-broker.mjs',
+      'tools/ultra-agent-v5/command-approval-policy.mjs',
       'tools/ultra-agent-v5/durable-ledger.mjs',
+      'tools/ultra-agent-v5/readiness-gate.mjs',
       'tools/start-managed-mcp.ps1',
       'tools/run-agent-security-fixtures.mjs',
       'tools/security-agent-fixtures.json',
@@ -210,7 +213,7 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.19.5');
+    assert.equal(plugin.version, '1.19.6');
     const packagedManager = await readFile(path.join(output, 'agents', 'production-orchestrator.md'), 'utf8');
     assert.doesNotMatch(packagedManager, /^skills:\r?$/m, 'packaged plugin agents must avoid broken AgentBasePath-relative skill metadata');
     assert.match(packagedManager, /Bundled skill routing/);
@@ -243,10 +246,9 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.match(installer, /"plugin", "list", "--json"/);
     assert.match(installer, /'plugin\.json', 'mcp_config\.json', 'hooks\.json'/);
     assert.match(installer, /Already installed; leaving the active package untouched/);
-    assert.match(installer, /Start-Process/);
     assert.match(installer, /WindowsBuiltInRole.*Administrator/);
-    assert.match(installer, /Verb RunAs/);
-    assert.match(installer, /Administrator permission is required/i);
+    assert.match(installer, /per-user Antigravity installation; elevation not required/i);
+    assert.doesNotMatch(installer, /Administrator permission is required\. Requesting elevation/i);
     assert.match(installer, /Get-Process -Name \"Antigravity\"/);
     assert.match(installer, /INSTALLER DEFERRED/);
     assert.match(installer, /exit 42/);
@@ -256,12 +258,19 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.match(installer, /--import=.*sidecar_sdk/);
     assert.match(installer, /background worker process/);
     assert.match(installer, /CloseMainWindow/);
+    assert.match(installer, /Stop-AntigravityBackgroundProcesses/);
+    assert.match(installer, /Stop-Process -Id \$process\.Id -Force/);
     assert.match(installer, /TimeoutSeconds = 45/);
     assert.match(installer, /Start-Sleep -Seconds 1/);
-    assert.doesNotMatch(installer, /Stop-Process\s+-Force/);
     assert.match(installer, /Start-Transcript/);
     assert.match(installer, /INSTALLER ERROR:/);
     assert.match(installer, /mansoor-agent-hub-stage-/);
+    assert.match(installer, /Install-Mansoor-Agent-Team\.journal\.json/);
+    assert.match(installer, /mansoor\.install-journal\/v1/);
+    assert.match(installer, /processes-stopped/);
+    assert.match(installer, /rollback-complete/);
+    assert.match(installer, /UPDATE BACKUP/);
+    assert.match(installer, /ROLLBACK \/ previous active package restored/);
     assert.match(installer, /Copy-Item -LiteralPath \$sourceItem/);
     assert.match(installer, /@\(.*'tools'.*'shared'.*\)/s);
     assert.match(installer, /\[MF\]\s+MANSOOR FAROOQ/);
@@ -270,6 +279,8 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.match(installer, /Invoke-AgyCaptured -CommandArguments @\("plugin", "validate"/);
     assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$validationResult = Invoke-AgyCaptured'));
     assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$inventoryResult = Invoke-AgyCaptured'));
+    assert.match(installer, /foreach \(\$temporaryPath in @\(\$stdoutPath, \$stderrPath\)\)/);
+    assert.match(installer, /\[IO\.File\]::Delete\(\[string\]\$temporaryPath\)/);
     assert.match(installer, /PACKAGE INTEGRITY/);
     assert.match(installer, /OPTIONAL EXTENSIONS/);
     assert.match(installer, /INSTALLATION COMPLETE/);
@@ -282,6 +293,9 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.match(installer, /Get-TreeDrift/);
     assert.match(installer, /ACTIVE PACKAGE/);
     assert.match(installer, /UPDATED  \/ version/);
+    assert.match(installer, /function Test-InstalledPreToolGuard/);
+    assert.match(installer, /HOOK VERIFIED/);
+    assert.match(installer, /hook-verified/);
     assert.match(ruleSync, /RULE PRESERVED/);
     assert.match(ruleSync, /RULE UPDATED/);
     assert.match(ruleSync, /\.mansoor-rule-state\.json/);

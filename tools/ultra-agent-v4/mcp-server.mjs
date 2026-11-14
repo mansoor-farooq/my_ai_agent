@@ -7,6 +7,7 @@ import { runManagedTask, promoteManagedTaskWorkspace, discardManagedTaskWorkspac
 import { inspectTaskWorkspace, readTaskWorkspacePatch } from './task-workspaces.mjs';
 import { canonicalHash, createActionManifest } from '../ultra-agent-v5/action-manifest.mjs';
 import { createFileBackedApprovalAuthority } from '../ultra-agent-v5/durable-ledger.mjs';
+import { createApprovalBroker } from '../ultra-agent-v5/approval-broker.mjs';
 import { connectRuntimeClient } from './daemon/daemon.mjs';
 
 const SUPPORTED_PROTOCOLS = ['2025-06-18', '2025-03-26'];
@@ -96,7 +97,7 @@ const tools = [
   },
   {
     name: 'run_managed_task',
-    description: 'Execute a prepared action manifest in a detached Git worktree (workspace separation, not an OS sandbox). The durable local ledger binds the receipt, policy, effects and verification to this exact manifest. The host may request fresh review, but no host-signed human identity attestation is available; hook failure behavior is not guaranteed by the public contract.',
+    description: 'Execute a prepared action manifest in a detached Git worktree (workspace separation, not an OS sandbox). The deterministic Approval Broker auto-authorizes bounded Tier 0/1 work as Mansoor AI Team Manager, while Tier 2/3 effects remain owner-review gated. The durable local ledger binds the receipt, policy, effects and verification to this exact manifest; no host-signed human identity attestation or OS sandbox claim is implied.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -145,9 +146,10 @@ const tools = [
   },
 ];
 
-export function createManagedMcpServer({ workspaceRoot = process.env.MANSOOR_WORKSPACE_ROOT, hubRoot, daemonClientFactory = async () => connectRuntimeClient() } = {}) {
+export function createManagedMcpServer({ workspaceRoot = process.env.MANSOOR_WORKSPACE_ROOT, hubRoot, daemonClientFactory = async () => connectRuntimeClient(), approvalBroker = createApprovalBroker() } = {}) {
   const runtimeDeps = {
     workspaceRoot,
+    approvalBroker,
     approvalAuthorityFactory: async (_manifest, ledger) => createFileBackedApprovalAuthority(ledger.directory),
     ...(hubRoot ? { hubRoot } : {}),
   };
@@ -171,7 +173,8 @@ export function createManagedMcpServer({ workspaceRoot = process.env.MANSOOR_WOR
       }
       if (name === 'prepare_managed_action') {
         const manifest = prepareActionManifest(args, { workspaceRoot, hubRoot: runtimeDeps.hubRoot });
-        return toolText({ status: 'ready', actionManifest: manifest, nextAction: 'pass-this-manifest-unchanged-to-run_managed_task' });
+        const approvalPolicy = approvalBroker.evaluate({ task: args.task, plan: args.plan, actions: args.actions, manifest });
+        return toolText({ status: 'ready', actionManifest: manifest, approvalPolicy, nextAction: 'pass-this-manifest-unchanged-to-run_managed_task' });
       }
       if (name === 'run_managed_task') {
         if (!args.actionManifest || typeof args.actionManifest !== 'object' || Array.isArray(args.actionManifest)) {
@@ -179,16 +182,9 @@ export function createManagedMcpServer({ workspaceRoot = process.env.MANSOOR_WOR
         }
         const result = await runManagedTask(args, {
           ...runtimeDeps,
-          // The PreToolUse hook requests a fresh review of this exact tool call.
-          // This receipt binds the accepted invocation; it is not a host-signed
-          // assertion of a human identity or of OS-level containment.
-          approvePlan: async (manifest, authority) => authority.issue(manifest, {
-            approved: true,
-            actor: 'host-invocation',
-            source: 'antigravity-tool-call-host-review-unattested',
-            manifestHash: manifest.manifestHash,
-            nonce: manifest.nonce,
-          }),
+          ownerApprove: async (manifest, approval, authority) => {
+            return authority.issue(manifest, { ...approval, actor: 'host-invocation', source: 'antigravity-tool-call-host-review-unattested' });
+          },
         });
         return toolText(result, { isError: result.status === 'blocked' || result.status === 'escalated' });
       }

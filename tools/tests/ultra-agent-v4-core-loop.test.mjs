@@ -176,6 +176,32 @@ test('verify runner returns unverified for missing tools and hashes output', asy
   assert.equal(failing.checks[0].exit_code, 2);
 });
 
+test('verify runner uses a minimal allowlisted environment and never inherits secrets', async () => {
+  const secretKey = 'MANSOOR_VERIFY_TEST_SECRET';
+  const safeKey = 'MANSOOR_VERIFY_SAFE_VALUE';
+  const previousSecret = process.env[secretKey];
+  const previousSafe = process.env[safeKey];
+  process.env[secretKey] = 'must-not-reach-child';
+  delete process.env[safeKey];
+  try {
+    const report = await runChecks([{
+      id: 'env-policy',
+      tool: process.execPath,
+      args: ['-e', 'process.stdout.write(process.env.MANSOOR_VERIFY_TEST_SECRET ? "leak" : (process.env.MANSOOR_VERIFY_SAFE_VALUE === "allowed-value" ? "clean" : "missing-safe"))'],
+      cwd: process.cwd(),
+      env: { [safeKey]: 'allowed-value' },
+      envAllowlist: [safeKey],
+      timeoutMs: 10000,
+    }], {});
+    assert.equal(report.allPassed, true);
+    assert.equal(report.checks[0].status, 'pass');
+    assert.equal(report.checks[0].stdout_hash, 'sha256:3b066804f6d1d077173cfe4d06002e6a61e6f21c2b2e648417962115f1afcd8e');
+  } finally {
+    if (previousSecret === undefined) delete process.env[secretKey]; else process.env[secretKey] = previousSecret;
+    if (previousSafe === undefined) delete process.env[safeKey]; else process.env[safeKey] = previousSafe;
+  }
+});
+
 test('remember rejects unverified facts and answer includes evidence/blockers', () => {
   assert.equal(rememberStage({ verification: { allPassed: false }, facts: ['guess'] }).status, 'skipped');
   const answer = answerStage({ status: 'blocked', facts: ['fact'], evidence: ['EV-1'], blockers: ['scope-violation'], verification: { allPassed: false } });

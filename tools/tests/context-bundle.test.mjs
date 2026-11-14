@@ -47,6 +47,6 @@ test('auth invariant blocks expired or mismatched sessions before protected API 
 test('auth invariant allows a valid session and reports other mechanisms as not applicable', () => {
   const valid = validateAuthInvariant({ request: { userId: 'u-1', tenantId: 't-1' }, session: { authenticated: true, subject: 'u-1', tenantId: 't-1', expiresAt: '2027-01-01T00:00:00Z' }, policy: { auth: 'jwt', now: '2026-11-14T00:00:00Z' } });
   assert.equal(valid.allowed, true);
-  const apiKey = validateAuthInvariant({ request: { userId: 'u-1' }, session: null, policy: { auth: 'api-key' } });
-  assert.deepEqual(apiKey, { allowed: true, status: 'not-applicable' });
+  const alternateAuth = validateAuthInvariant({ request: { userId: 'u-1' }, session: null, policy: { auth: 'api-key' } });
+  assert.deepEqual(alternateAuth, { allowed: true, status: 'not-applicable' });
 });

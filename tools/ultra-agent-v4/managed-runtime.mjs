@@ -303,10 +303,11 @@ export async function runManagedTask(input = {}, deps = {}) {
   let projectRoot;
   let actionManifest;
   let approvalReceipt;
+  let policyDecision;
   let actionLedger;
   let ledgerRunId;
   try {
-    if (typeof deps.approvePlan !== 'function' && typeof deps.approvalAuthorityFactory !== 'function') return blocked('host-approval-adapter-required');
+    if (typeof deps.approvePlan !== 'function' && typeof deps.approvalBroker?.authorize !== 'function' && typeof deps.approvalAuthorityFactory !== 'function') return blocked('host-approval-adapter-required');
     if (typeof deps.approvalAuthority?.verify !== 'function' && typeof deps.approvalAuthorityFactory !== 'function') return blocked('approval-authority-required');
     if (input.actionManifest === undefined) return blocked('action-manifest-required');
     const taskId = safeTaskId(input.task?.taskId);
@@ -363,8 +364,22 @@ export async function runManagedTask(input = {}, deps = {}) {
       if (existingRun.status === 'prepared') actionLedger.transition('run', ledgerRunId, 'awaiting_approval', { manifestHash: actionManifest.manifestHash });
       const approvalState = actionLedger.state('approval', actionManifest.nonce);
       if (!approvalState) actionLedger.transition('approval', actionManifest.nonce, 'awaiting_approval', { manifestHash: actionManifest.manifestHash });
-      if (typeof deps.approvePlan !== 'function') return blocked('host-approval-adapter-required');
-      try { approvalReceipt = await deps.approvePlan(actionManifest, authority); }
+      if (typeof deps.approvePlan !== 'function' && typeof deps.approvalBroker?.authorize !== 'function') return blocked('host-approval-adapter-required');
+      try {
+        if (typeof deps.approvePlan === 'function') approvalReceipt = await deps.approvePlan(actionManifest, authority);
+        else {
+          policyDecision = await deps.approvalBroker.authorize(actionManifest, authority, {
+            task: input.task,
+            plan,
+            actions: input.actions || [],
+            ownerApprove: typeof deps.ownerApprove === 'function'
+              ? (manifest, approval) => deps.ownerApprove(manifest, approval, authority)
+              : undefined,
+          });
+          if (policyDecision.status !== 'approved') throw Object.assign(new Error(policyDecision.reason || policyDecision.status), { code: policyDecision.status });
+          approvalReceipt = policyDecision.receipt;
+        }
+      }
       catch (error) {
         actionLedger.transition('approval', actionManifest.nonce, 'rejected', { manifestHash: actionManifest.manifestHash, reason: error.code || 'host-approval-failed' });
         actionLedger.transition('run', ledgerRunId, 'rejected', { manifestHash: actionManifest.manifestHash, reason: error.code || 'host-approval-failed' });
@@ -379,7 +394,16 @@ export async function runManagedTask(input = {}, deps = {}) {
       return blocked(`approval-${receiptStatus.reason}`, { actionManifestHash: actionManifest.manifestHash });
     }
     let runState = actionLedger.state('run', ledgerRunId);
-    if (runState?.status === 'awaiting_approval') actionLedger.transition('run', ledgerRunId, 'approved', { manifestHash: actionManifest.manifestHash, receiptId: approvalReceipt.receiptId });
+    if (runState?.status === 'awaiting_approval') actionLedger.transition('run', ledgerRunId, 'approved', {
+      manifestHash: actionManifest.manifestHash,
+      receiptId: approvalReceipt.receiptId,
+      ...(policyDecision ? {
+        riskTier: policyDecision.decision?.riskTier,
+        approvalMode: policyDecision.approvalMode,
+        policyDecision: policyDecision.decision?.decision,
+        policyHash: policyDecision.decision?.policyHash,
+      } : {}),
+    });
     else if (!['approved', 'executing', 'verified', 'review-required'].includes(runState?.status)) return blocked(`action-ledger-run-${runState?.status || 'missing'}`);
     const approvalPayloadHash = approvalPlanHash;
     const approval = {
@@ -489,6 +513,7 @@ export async function runManagedTask(input = {}, deps = {}) {
       evidence: [...new Set(evidence)],
       policy: { ruleIds: policy.ruleIds },
       approval: { receiptId: approvalReceipt.receiptId, source: approvalReceipt.source, issuedAt: approvalReceipt.issuedAt, expiresAt: approvalReceipt.expiresAt, manifestHash: actionManifest.manifestHash },
+      ...(policyDecision ? { policyDecision: policyDecision.decision, riskTier: policyDecision.decision?.riskTier, approvalMode: policyDecision.approvalMode } : {}),
       traceId: trace.traceId,
       tracePath: trace.path,
       checkpointPath: checkpointFile,

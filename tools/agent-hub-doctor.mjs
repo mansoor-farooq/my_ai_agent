@@ -241,6 +241,24 @@ export async function runDoctor() {
     add('PASS', 'Ultra Agent v4 adaptive runtime', 'benchmark metrics, targeted recovery and native activity runtime are present and manager-routable');
   } else add('FAIL', 'Ultra Agent v4 adaptive runtime', `missing=[${missingUltraV4.join(', ')}] or manager routing is incomplete`);
 
+  const v5HardeningFiles = [
+    'tools/ultra-agent-v5/approval-broker.mjs',
+    'tools/ultra-agent-v5/readiness-gate.mjs',
+    'tools/ultra-agent-v5/process-lock.mjs',
+    'tools/ultra-agent-v5/capability-preflight.mjs',
+    'tools/ultra-agent-v5/promotion-receipt.mjs',
+    'tools/ultra-agent-v5/install-journal.mjs',
+    'tools/ultra-agent-v5/release-manifest.mjs',
+    'tools/ultra-agent-v5/telemetry.mjs',
+    'tools/ultra-agent-v5/benchmark-manifest.mjs',
+    'tools/ultra-agent-v5/android-evidence.mjs',
+  ];
+  const missingV5Hardening = v5HardeningFiles.filter((relative) => !fs.existsSync(path.join(root, relative)));
+  const verifySource = fs.readFileSync(path.join(root, 'tools', 'ultra-agent-v4', 'stages', 'verify.mjs'), 'utf8');
+  if (!missingV5Hardening.length && !/env:\s*check\.env\s*\?\s*\{\s*\.\.\.process\.env/.test(verifySource) && /approval-broker/i.test(mainText)) {
+    add('PASS', 'V5 trust/recovery hardening', 'risk-based approval broker, provider-free capability, promotion, lock, installer journal, release identity, telemetry and evidence modules are present; verifier no longer inherits the full parent environment');
+  } else add('FAIL', 'V5 trust/recovery hardening', `missing=[${missingV5Hardening.join(', ')}] or verifier environment isolation is incomplete`);
+
   const managedRuntimeFiles = [
     'tools/ultra-agent-v4/managed-runtime.mjs',
     'tools/ultra-agent-v4/task-workspaces.mjs',

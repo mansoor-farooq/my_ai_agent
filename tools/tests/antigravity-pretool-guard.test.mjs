@@ -3,7 +3,7 @@ import test from 'node:test';
 import { mkdtempSync, rmSync, symlinkSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { evaluatePreToolUse } from '../antigravity-pretool-guard.mjs';
+import { evaluatePreToolUse, parsePreToolInput } from '../antigravity-pretool-guard.mjs';
 
 test('native in-workspace file writes always require a fresh owner review', () => {
   const workspace = mkdtempSync(path.join(os.tmpdir(), 'agy-hook-'));
@@ -18,6 +18,21 @@ test('native in-workspace file writes always require a fresh owner review', () =
 
 test('native shell commands always require fresh owner review', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'echo safe' } } });
+  assert.equal(result.decision, 'force_ask');
+});
+
+test('manager-approved read-only shell probes are allowed without a repeated host prompt', () => {
+  const result = evaluatePreToolUse({
+    toolCall: { name: 'run_command', args: { CommandLine: `$drive = (Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace` } },
+  });
+  assert.equal(result.decision, 'allow');
+  assert.match(result.reason, /manager auto-approved|read-only/i);
+});
+
+test('manager does not auto-approve a destructive storage purge', () => {
+  const result = evaluatePreToolUse({
+    toolCall: { name: 'run_command', args: { CommandLine: 'Clear-RecycleBin -Force; Remove-Item -Recurse -Force C:\\Windows\\Temp' } },
+  });
   assert.equal(result.decision, 'force_ask');
 });
 
@@ -64,6 +79,25 @@ test('native writes through symlink escapes are denied', () => {
 test('malformed or unscoped mutating calls fail closed', () => {
   assert.equal(evaluatePreToolUse({ toolCall: { name: 'write_to_file', args: { TargetFile: 'src/a.js' } } }).decision, 'deny');
   assert.equal(evaluatePreToolUse({}).decision, 'deny');
+});
+
+test('hook parser accepts Antigravity payloads with UTF-8 BOM and trailing framing whitespace', () => {
+  const parsed = parsePreToolInput('\uFEFF {"toolCall":{"name":"view_file","args":{}},"workspacePaths":[]}\n');
+  assert.equal(parsed?.toolCall?.name, 'view_file');
+  assert.deepEqual(evaluatePreToolUse(parsed), { decision: 'allow' });
+});
+
+test('hook parser accepts a single valid JSON payload embedded in line framing', () => {
+  const parsed = parsePreToolInput('hook-start\n{"toolCall":{"name":"view_file","args":{}},"workspacePaths":[]}\nhook-end');
+  assert.equal(parsed?.toolCall?.name, 'view_file');
+  assert.deepEqual(evaluatePreToolUse(parsed), { decision: 'allow' });
+});
+
+test('hook parser normalizes equivalent camelCase tool envelopes without weakening fail-closed behavior', () => {
+  const parsed = parsePreToolInput(JSON.stringify({ toolName: 'view_file', arguments: {}, workspace_paths: [] }));
+  assert.equal(parsed?.toolCall?.name, 'view_file');
+  assert.deepEqual(evaluatePreToolUse(parsed), { decision: 'allow' });
+  assert.equal(parsePreToolInput('not-json'), null);
 });
 
 test('read-only tools are allowed through to normal Antigravity permissions', () => {
