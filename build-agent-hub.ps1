@@ -65,6 +65,9 @@ try {
     (Join-Path $hub 'tools\tests\ultra-agent-v4-task-workspaces.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v4-managed-mcp.test.mjs') `
     (Join-Path $hub 'tools\tests\ultra-agent-v4-managed-runtime.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v5-action-manifest.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v5-durable-ledger.test.mjs') `
+    (Join-Path $hub 'tools\tests\ultra-agent-v5-managed-mcp-approval.test.mjs') `
     (Join-Path $hub 'tools\tests\agent-security-fixtures.test.mjs') `
     (Join-Path $hub 'tools\tests\content-hash.test.mjs') `
     (Join-Path $hub 'tools\tests\global-rule-sync.test.mjs') `
@@ -87,6 +90,44 @@ try {
     $sha256.Dispose()
   }
 
+  $packageVersion = [string](Get-Content -LiteralPath (Join-Path $buildOutput 'plugin.json') -Raw | ConvertFrom-Json).version
+  $versionedPackage = Join-Path $dist ("mansoor-agent-hub-" + $packageVersion)
+  if (Test-Path -LiteralPath $versionedPackage -PathType Container) { Remove-Item -LiteralPath $versionedPackage -Recurse -Force }
+  Expand-Archive -LiteralPath $archive -DestinationPath $versionedPackage -Force
+  if (-not (Test-Path -LiteralPath (Join-Path $versionedPackage 'Install-Mansoor-Agent-Team.ps1') -PathType Leaf)) {
+    throw "Versioned extracted package is incomplete: $versionedPackage"
+  }
+  Write-Host "VERSIONED PACKAGE REFRESHED / $versionedPackage" -ForegroundColor Green
+
+  $extractedPackage = Join-Path $dist 'mansoor-agent-hub'
+  $extractedPluginMarker = Join-Path $extractedPackage 'plugin.json'
+  $extractedInstallerMarker = Join-Path $extractedPackage 'Install-Mansoor-Agent-Team.cmd'
+  $aliasStage = Join-Path $dist ('mansoor-agent-hub-refresh-' + [guid]::NewGuid().ToString('N'))
+  $aliasBackup = Join-Path $dist ('mansoor-agent-hub-backup-' + [guid]::NewGuid().ToString('N'))
+  try {
+    Expand-Archive -LiteralPath $archive -DestinationPath $aliasStage -Force
+    if (Test-Path -LiteralPath $extractedPackage -PathType Container) {
+      $existingPackageEntries = @(Get-ChildItem -LiteralPath $extractedPackage -Force -ErrorAction SilentlyContinue)
+      if ($existingPackageEntries.Count -gt 0 -and (-not (Test-Path -LiteralPath $extractedPluginMarker -PathType Leaf) -or -not (Test-Path -LiteralPath $extractedInstallerMarker -PathType Leaf))) {
+        throw "Refusing to replace non-package distribution folder: $extractedPackage"
+      }
+      Move-Item -LiteralPath $extractedPackage -Destination $aliasBackup
+    }
+    Move-Item -LiteralPath $aliasStage -Destination $extractedPackage
+    if (-not (Test-Path -LiteralPath (Join-Path $extractedPackage 'Install-Mansoor-Agent-Team.ps1') -PathType Leaf)) {
+      throw "Extracted distribution package is incomplete: $extractedPackage"
+    }
+    if (Test-Path -LiteralPath $aliasBackup -PathType Container) { Remove-Item -LiteralPath $aliasBackup -Recurse -Force }
+    Write-Host "EXTRACTED PACKAGE REFRESHED / $extractedPackage" -ForegroundColor Green
+  } catch {
+    if (Test-Path -LiteralPath $aliasStage -PathType Container) { Remove-Item -LiteralPath $aliasStage -Recurse -Force -ErrorAction SilentlyContinue }
+    if ((-not (Test-Path -LiteralPath $extractedPackage -PathType Container)) -and (Test-Path -LiteralPath $aliasBackup -PathType Container)) {
+      Move-Item -LiteralPath $aliasBackup -Destination $extractedPackage -ErrorAction SilentlyContinue
+    }
+    Write-Host ("EXTRACTED PACKAGE REFRESH DEFERRED / " + $_.Exception.Message) -ForegroundColor Yellow
+    Write-Host "Use the versioned package until the old installer window is closed: $versionedPackage" -ForegroundColor Yellow
+  }
+
   Write-Host ''
   Write-Host 'BUILD COMPLETE' -ForegroundColor Green
   Write-Host "Share this file: $archive"
@@ -105,15 +146,62 @@ try {
         $installedHub = $null
       }
 
-      if (-not $installedHub -or [string]::IsNullOrWhiteSpace([string]$installedHub.path)) {
-        Write-Host 'AUTO UPDATE SKIPPED / no existing Mansoor Agent Hub installation was detected; run the bundled installer once.' -ForegroundColor Yellow
+      $profileRootCandidates = [System.Collections.Generic.List[string]]::new()
+      function Add-ProfileRootCandidate([string]$Path, [bool]$IsAgentRoot = $false) {
+        if ([string]::IsNullOrWhiteSpace($Path)) { return }
+        $expanded = [Environment]::ExpandEnvironmentVariables($Path.Trim())
+        if (-not [IO.Path]::IsPathRooted($expanded)) { return }
+        $resolved = [IO.Path]::GetFullPath($expanded).TrimEnd([IO.Path]::DirectorySeparatorChar)
+        if (-not $IsAgentRoot -and $resolved -notmatch '[\\/]agents$') { $resolved = Join-Path $resolved 'agents' }
+        if (-not ($profileRootCandidates | Where-Object { $_ -ieq $resolved })) { $profileRootCandidates.Add($resolved) }
+      }
+      Add-ProfileRootCandidate (Join-Path $env:USERPROFILE '.gemini\config\agents') $true
+      foreach ($name in @('MANSOOR_AGENT_ROOT', 'AGY_CONFIG_DIR', 'ANTIGRAVITY_CONFIG_DIR', 'GEMINI_CONFIG_DIR')) {
+        $value = [Environment]::GetEnvironmentVariable($name)
+        if ($value) { Add-ProfileRootCandidate $value ($name -eq 'MANSOOR_AGENT_ROOT') }
+      }
+      $geminiHome = [Environment]::GetEnvironmentVariable('GEMINI_HOME')
+      if ($geminiHome) { Add-ProfileRootCandidate (Join-Path $geminiHome 'config') }
+      Add-ProfileRootCandidate (Join-Path $env:USERPROFILE '.geminiconfigagents') $true
+      if ($installedHub -and -not [string]::IsNullOrWhiteSpace([string]$installedHub.path)) {
+        $pluginConfigRoot = Split-Path -Parent (Split-Path -Parent ([string]$installedHub.path))
+        Add-ProfileRootCandidate (Join-Path $pluginConfigRoot 'agents') $true
+      }
+
+      $installedProfileRoot = $null
+      foreach ($candidate in $profileRootCandidates) {
+        $managerProfile = Join-Path $candidate 'production-orchestrator\agent.md'
+        $uiProfile = Join-Path $candidate 'mansoor-ui-specialist\agent.md'
+        $flutterProfile = Join-Path $candidate 'flutter-mobile-specialist\agent.md'
+        if (-not (Test-Path -LiteralPath $managerProfile -PathType Leaf) -or -not (Test-Path -LiteralPath $uiProfile -PathType Leaf) -or -not (Test-Path -LiteralPath $flutterProfile -PathType Leaf)) { continue }
+        $managerText = Get-Content -LiteralPath $managerProfile -Raw
+        if ($managerText -match '(?im)^\s*internal routing id:\s*.?production-orchestrator') {
+          $installedProfileRoot = $candidate
+          break
+        }
+      }
+
+      $pluginDetected = $installedHub -and -not [string]::IsNullOrWhiteSpace([string]$installedHub.path)
+      if (-not $pluginDetected -and -not $installedProfileRoot) {
+        Write-Host 'AUTO UPDATE SKIPPED / no Mansoor plugin or installed agent-profile roots were detected; run the bundled installer once.' -ForegroundColor Yellow
       } else {
         Write-Host ''
-        Write-Host 'AUTO UPDATE / existing Mansoor Agent Hub detected; applying this build to the active installation...' -ForegroundColor Cyan
+        $targetSummary = if ($pluginDetected) { [string]$installedHub.path } else { $installedProfileRoot }
+        $runningAntigravity = @(Get-Process -Name 'Antigravity' -ErrorAction SilentlyContinue)
+        if ($runningAntigravity.Count -gt 0) {
+          Write-Host "AUTO UPDATE / Antigravity is running ($($runningAntigravity.Count) process(es)); the installer will request a graceful close before updating." -ForegroundColor Cyan
+        }
+        Write-Host "AUTO UPDATE / existing Mansoor installation detected at $targetSummary; applying this build..." -ForegroundColor Cyan
         $autoInstaller = Join-Path $buildOutput 'Install-Mansoor-Agent-Team.ps1'
         & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $autoInstaller
-        if ($LASTEXITCODE -ne 0) { throw "Automatic Mansoor Agent Hub update failed (exit $LASTEXITCODE)." }
-        Write-Host 'AUTO UPDATE COMPLETE / active plugin and profile roots were synchronized and hash-verified.' -ForegroundColor Green
+        $autoInstallExit = $LASTEXITCODE
+        if ($autoInstallExit -eq 42) {
+          Write-Host 'AUTO UPDATE DEFERRED / Antigravity did not close within the safe timeout; ZIP remains ready and the active installation was not changed.' -ForegroundColor Yellow
+        } elseif ($autoInstallExit -ne 0) {
+          throw "Automatic Mansoor Agent Hub update failed (exit $autoInstallExit)."
+        } else {
+          Write-Host 'AUTO UPDATE COMPLETE / active plugin and profile roots were synchronized and hash-verified.' -ForegroundColor Green
+        }
       }
     }
   } else {

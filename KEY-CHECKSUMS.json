@@ -151,8 +151,8 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "A9C68C24F90A1E9F2EF2233D2BC54FC41AC5CA5DD34C61B9AE1F29BDF8A23356",
-    "Bytes": 610
+    "SHA256": "8BD0A42C52C77E6E32701BB1C1ABD753DD45F66899AAF5C3A1A9D191E07BD5FF",
+    "Bytes": 673
   },
   {
     "Path": "Agents/Push-All-Branches.cmd",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "245EA44E9BD5D03690B067BBC97B02A17043673B5D4D7E328D5EF8DA3339F103",
-    "Bytes": 19036
+    "SHA256": "464B4558E34E3C7D73057349F0F73536DC792B779A016949CE6B4369D23E1105",
+    "Bytes": 20748
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "F92A0A3D15C17B10A15508A6FBE33B74A072221D69333F7422EDA705380EFAED",
-    "Bytes": 50031
+    "SHA256": "9D30817EF7CB2E570A84B78A969085C4C02D6728BDC0E91A97ABE48856D4BFAA",
+    "Bytes": 51959
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2533,5 +2533,10 @@
     "Path": "Agents/tools/tests/ultra-agent-v4-managed-mcp.test.mjs",
     "SHA256": "C77EF0E7F8828F689E0FDFC535045EA8302D7E807ECBD09E31A2E0FAE4C02C20",
     "Bytes": 7286
+  },
+  {
+    "Path": "Agents/tools/agent-training-dataset.mjs",
+    "SHA256": "0787DF57DE0D2CCF1BFA12A7FF723FEE2B01F32B71DE6EEA601FC7D96B491699",
+    "Bytes": 10217
   }
 ]

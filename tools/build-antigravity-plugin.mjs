@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.19.0';
+const packageVersion = '1.19.5';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -43,16 +43,37 @@ for (const entry of await readdir(sourceAgents, { withFileTypes: true })) {
   try { text = await readFile(source, 'utf8'); } catch { continue; }
   if (secretPattern.test(text)) throw new Error(`Credential-like value detected in agent profile: ${entry.name}`);
 
-  text += responsePolicy;
+  const skillRefs = [...text.matchAll(/^\s+-\s+skills\/([^\s]+)\s*$/gm)].map((match) => match[1]);
+  // Antigravity 2.32.x can discover plugin skills globally, but its plugin
+  // agent loader currently emits `AgentBasePath is not set` for agent-level
+  // `skills:` paths. Keep the source profiles authoritative while shipping a
+  // host-safe profile that routes to the same names on demand.
+  const packagedText = text
+    .replace(/^skills:\r?\n(?:[ \t]+-[^\r\n]*\r?\n?)+/m, '')
+    + `\n\n## Bundled skill routing\n\nThis profile uses the plugin's namespaced skills on demand. Relevant bundled skill names: ${skillRefs.join(', ')}. Do not invent a provider bridge or copy skill bodies into the prompt.\n`;
 
-  const destination = join(target, 'agents', entry.name);
-  await mkdir(destination, { recursive: true });
-  await writeFile(join(destination, 'agent.md'), text);
+  // Keep bundled agents as direct files. Antigravity supports both layouts,
+  // but the flat form gives the host an unambiguous agent base path when it
+  // resolves the agent's `skills:` entries on Windows.
+  const destination = join(target, 'agents', `${entry.name}.md`);
+  await mkdir(dirname(destination), { recursive: true });
+  await writeFile(destination, packagedText + responsePolicy);
   agentCount += 1;
 }
 
 const { skillCount, ruleCount } = await copyPortableComponents(root, target, secretPattern);
 const portableRuntimeFiles = [
+  'tools/agent-training-dataset.mjs',
+  'tools/ultra-agent-cli.mjs',
+  'tools/ultra-agent-v4/daemon/paths.mjs',
+  'tools/ultra-agent-v4/daemon/events.mjs',
+  'tools/ultra-agent-v4/daemon/queue.mjs',
+  'tools/ultra-agent-v4/daemon/protocol.mjs',
+  'tools/ultra-agent-v4/daemon/daemon.mjs',
+  'tools/ultra-agent-v4/agy-session.mjs',
+  'tools/ultra-agent-v4/context-bundle.mjs',
+  'tools/ultra-agent-v4/android-preview.mjs',
+  'shared/control-plane/default-engineering-policies.json',
   'tools/ultra-agent-v2/preflight.mjs',
   'tools/ultra-agent-v2/memory.mjs',
   'tools/ultra-agent-v2/evidence.mjs',
@@ -143,7 +164,9 @@ const manifest = {
 await writeFile(join(target, 'plugin.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 await writeFile(join(target, 'mcp_config.json'), `${JSON.stringify({
   mcpServers: {
-    'mansoor-managed-runtime': {
+    // Keep the generated Antigravity tool namespace below its 64-character
+    // limit: mcp_<plugin>_<server>_<tool>.
+    runtime: {
       command: 'powershell.exe',
       args: ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', '\${PLUGIN_ROOT}/tools/start-managed-mcp.ps1'],
       env: { MANSOOR_WORKSPACE_ROOT: '\${PLUGIN_DATA}/workspaces' },
@@ -169,7 +192,7 @@ await mkdir(join(target, 'assets'), { recursive: true });
 await writeFile(join(target, 'assets', 'logo.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><rect width="128" height="128" rx="28" fill="#123B35"/><path d="M28 91V37h14l22 29 22-29h14v54H85V61L64 88 43 61v30z" fill="#F1F5E9"/><circle cx="100" cy="99" r="8" fill="#24B47E"/></svg>\n');
 await writeFile(join(target, 'README.md'), `# MANSOOR FAROOQ | GEMINI AGENT TEAM\n\nA private, portable expert-agent system for Antigravity. One lead manager routes work to focused specialists, preserves project context and returns evidence-backed engineering decisions.\n\n## Install\n\n1. Install Antigravity and sign in with the target user's Gemini account.\n2. Extract this ZIP.\n3. Double-click \`Install-Mansoor-Agent-Team.cmd\`.\n\nThe installer verifies package integrity, validates the Antigravity plugin and installs or updates it. No GitHub sign-in is required.\n\n## Integrity and ownership\n\nThis package is published by Mansoor Farooq. Every package file is recorded in \`PACKAGE-CHECKSUMS.json\`. If a file is changed after packaging, the installer stops with an integrity error before installation. This is tamper detection and fail-closed installation; it is not a claim that a person with filesystem access cannot inspect or replace files. Stronger protection requires a privately held signing key, access control or encryption.\n\n## Team model\n\n\`production-orchestrator\` is the only manager. It selects one domain specialist and the smallest relevant host skill set. The package ships 15 agent profiles and compact skill routers plus an on-demand skill library, one local managed-runtime MCP server. It does not bundle remote/provider MCP connectors, OAuth configuration or API keys.\n\n## Isolated managed task lane
 
-The plugin bundles a local \`mansoor-managed-runtime\` MCP server and its Windows launcher. Once this plugin is installed and enabled in Antigravity, the host loads that MCP configuration automatically; there is no per-project MCP config to create or maintain, and no separate MCP credentials to enter. The currently open project is passed to the managed tool when a task starts. Work runs in a detached Git worktree under Antigravity plugin data (workspace separation, not an OS security sandbox), returns a hash-bound patch for review, and reaches the project checkout only after fresh host review of that exact patch. This lane requires a clean Git checkout and an installed Node.js runtime; the installer prepares Node.js when needed. Windows 10/11 is the supported host for this bundled launcher.
+The plugin bundles a local managed-runtime MCP server (configuration key: \`runtime\`) and its Windows launcher. The short key keeps Antigravity's generated MCP tool names within its 64-character limit. Once this plugin is installed and enabled in Antigravity, the host loads that MCP configuration automatically; there is no per-project MCP config to create or maintain, and no separate MCP credentials to enter. The currently open project is passed to the managed tool when a task starts. Work runs in a detached Git worktree under Antigravity plugin data (workspace separation, not an OS security sandbox), returns a hash-bound patch for review, and reaches the project checkout only after fresh host review of that exact patch. This lane requires a clean Git checkout and an installed Node.js runtime; the installer prepares Node.js when needed. Windows 10/11 is the supported host for this bundled launcher.
 
 ## Fast and professional responses\n\nUse \`Gemini 3.8 Flash\` with \`Low\` thinking for quick fixes. Use \`Medium\` or \`High\` for architecture, security, migration, ML or explicit research. All agents follow a Claude-style response contract: result first, concise rationale, clear evidence and assumptions, professional handoffs, Roman Urdu when appropriate and no invented tool results or hidden chain-of-thought.\n\n## Model and keys\n\nWithout API keys, all agents use the signed-in Antigravity/Gemini session through \`model: inherit\`. Optional integration keys belong in a local ignored \`.env\`; this portable package does not route them automatically.\n\n## Security boundary\n\nThe package does not collect project files, private chats, customer data, credentials or hidden reasoning. Research and image tools are bounded by the target Antigravity runtime.\n\n— Mansoor Farooq\n`);
 await writeFile(join(target, '.env.example'), `# Optional local integration settings.\n# Leave blank when using the Antigravity account session.\n# The portable plugin does not read these automatically; only an explicitly\n# configured project/provider integration may use its matching variable.\n\n# OPENAI_API_KEY=\n# GEMINI_API_KEY=\n# DEEPSEEK_API_KEY=\n# GITHUB_TOKEN=\n`);
@@ -198,7 +221,7 @@ const verifierSource = [
 ].join('\n') + '\n';
 await writeFile(join(target, 'verify-package-signature.mjs'), verifierSource);
 await writeFile(join(target, 'Install-Mansoor-Agent-Team.ps1'), `param()\n$ErrorActionPreference = 'Stop'\n$pluginRoot = Split-Path -Parent $MyInvocation.MyCommand.Path\n$manifestPath = Join-Path $pluginRoot '${packageManifestName}'\nif (-not (Test-Path -LiteralPath $manifestPath)) { throw 'Package integrity manifest is missing. Installation stopped.' }\n$records = @(Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json)\n$rootPath = [IO.Path]::GetFullPath($pluginRoot).TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar\nforeach ($record in $records) {\n  $relative = ([string]$record.Path).Replace('/', [IO.Path]::DirectorySeparatorChar)\n  $file = [IO.Path]::GetFullPath((Join-Path $pluginRoot $relative))\n  if (-not $file.StartsWith($rootPath, [StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $file -PathType Leaf)) { throw \"Package integrity check failed: $($record.Path)\" }\n  $hash = (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash\n  $bytes = (Get-Item -LiteralPath $file).Length\n  if ($hash -ne $record.SHA256 -or $bytes -ne $record.Bytes) { throw \"Package integrity check failed: $($record.Path)\" }\n}\n$agy = Get-Command agy -ErrorAction SilentlyContinue\nif (-not $agy) { throw 'Antigravity CLI (agy) was not found. Install Antigravity first, then run this installer again.' }\n& $agy.Source plugin validate --strict $pluginRoot\nif ($LASTEXITCODE -ne 0) { throw 'Antigravity plugin validation failed.' }\n& $agy.Source plugin install $pluginRoot\nif ($LASTEXITCODE -ne 0) { throw 'Antigravity plugin installation failed.' }\nWrite-Host 'Mansoor Gemini Agent Team installed successfully.'\nWrite-Host 'Restart Antigravity, or reload its skills/agents if the app is already open.'\n`);
-await writeFile(join(target, 'Install-Mansoor-Agent-Team.cmd'), `@echo off\nsetlocal\nset "LOGFILE=%~dp0Install-Mansoor-Agent-Team.log"\necho Installer log: "%LOGFILE%"\necho.\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Install-Mansoor-Agent-Team.ps1"\nset "INSTALL_EXIT=%ERRORLEVEL%"\necho.\nif not "%INSTALL_EXIT%"=="0" echo Installer exited with code %INSTALL_EXIT%.\necho Full output is saved in: "%LOGFILE%"\necho.\npause\nexit /b %INSTALL_EXIT%\n`);
+await writeFile(join(target, 'Install-Mansoor-Agent-Team.cmd'), `@echo off\nsetlocal\nset "LOGFILE=%~dp0Install-Mansoor-Agent-Team.log"\necho Installer log: "%LOGFILE%"\necho.\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Install-Mansoor-Agent-Team.ps1"\nset "INSTALL_EXIT=%ERRORLEVEL%"\necho.\nif not "%INSTALL_EXIT%"=="0" echo Installer exited with code %INSTALL_EXIT%.\necho Full output is saved in: "%LOGFILE%"\necho.\nexit /b %INSTALL_EXIT%\n`);
 const premiumPackageReadme = [
   '# MANSOOR FAROOQ | PRIVATE GEMINI AGENT TEAM',
   '',
@@ -230,9 +253,19 @@ const premiumPackageReadme = [
   '',
   '## Isolated managed task lane',
   '',
-  'The plugin bundles a local `mansoor-managed-runtime` MCP server and its Windows launcher. Once installed and enabled in Antigravity, the host loads that MCP configuration automatically; there is no per-project MCP config or separate MCP credential to enter. Managed work runs in a detached Git worktree (workspace separation, not an OS sandbox) and returns a hash-bound patch. A project-local ignored V5 ledger at `.agents/ultra-v4/managed-runs/<taskId>/` records manifest approval, effect hashes, verification and promotion; interrupted exact writes can be reconciled without repeating changed payloads. The local receipt proves only that the local runtime recorded the grant; Antigravity does not expose a signed human-identity receipt, and its published hook contract does not guarantee fail-closed behavior for every hook failure. Native editor writes stay outside this managed ledger. The patch reaches the checkout only through fresh host review of the exact patch hash using the separate patch-review tool. This lane requires a clean Git checkout and Node.js; the installer prepares Node.js when needed. Windows 10/11 is the supported host for this bundled launcher.',
+  'The plugin bundles a local managed-runtime MCP server (configuration key `runtime`) and its Windows launcher. The short key keeps Antigravity generated tool names below its 64-character limit. Once installed and enabled in Antigravity, the host loads that MCP configuration automatically; there is no per-project MCP config or separate MCP credential to enter. Managed work runs in a detached Git worktree (workspace separation, not an OS sandbox) and returns a hash-bound patch. A project-local ignored V5 ledger at `.agents/ultra-v4/managed-runs/<taskId>/` records manifest approval, effect hashes, verification and promotion; interrupted exact writes can be reconciled without repeating changed payloads. The local receipt proves only that the local runtime recorded the grant; Antigravity does not expose a signed human-identity receipt, and its published hook contract does not guarantee fail-closed behavior for every hook failure. Native editor writes stay outside this managed ledger. The patch reaches the checkout only through fresh host review of the exact patch hash using the separate patch-review tool. This lane requires a clean Git checkout and Node.js; the installer prepares Node.js when needed. Windows 10/11 is the supported host for this bundled launcher.',
   '',
   'The installer opens with a branded Mansoor Farooq Agent Team / Ultra Agent v4 safe-build banner, records a local installer log and stages the complete runtime before Antigravity validation.',
+  '',
+  '## Persistent CLI and Android preview',
+  '',
+  'The portable runtime includes `tools/ultra-agent-cli.mjs` and the lock-protected daemon under `tools/ultra-agent-v4/daemon/`. Run `node tools/ultra-agent-cli.mjs start` to keep one local queue alive, then use `submit`, `status`, `events`, `resume`, `stop` and `doctor` from another terminal. The queue shares project context and redacted activity with the Antigravity MCP lane, reports `queued-host-unavailable` when the host is closed, and never switches providers or bypasses the signed-in Gemini session.',
+  '',
+  'The Android preview adapter detects `adb` and optional `scrcpy`, requires an explicit serial when multiple devices are online, starts only a Mansoor-owned mirror window and emits fail-closed `mansoor.android-preview/v1` evidence. `scrcpy` is a host prerequisite and is not bundled, downloaded or treated as proof that build/tests passed. Missing devices, mirrors or checks remain `unverified`.',
+  '',
+  '## Ready-to-use local-LLM datasets',
+  '',
+  'Run `node tools/agent-training-dataset.mjs export --dir <project> --out <folder>` after approved work. The pack writes owner-approved SFT examples, all-observation evaluation records, hard cases, sanitized research/verification evidence and a hash manifest. Credentials, absolute local paths, raw chats and hidden reasoning are excluded. The exporter prepares data only; it never uploads or silently trains a model.',
   '',
   '## Private ownership',
   '',
@@ -266,6 +299,44 @@ const signedInstaller = [
   '  $elevated = Start-Process -FilePath $powershell -Verb RunAs -Wait -PassThru -ArgumentList @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $MyInvocation.MyCommand.Path)',
   '  exit $elevated.ExitCode',
   '}',
+  'function Get-AntigravityUiProcesses {',
+  '  $all = @(Get-Process -Name "Antigravity" -ErrorAction SilentlyContinue)',
+  '  if ($all.Count -eq 0) { return @() }',
+  '  $commandLines = @{}',
+  '  try {',
+  "    foreach (\$record in @(Get-CimInstance Win32_Process -Filter \"Name='Antigravity.exe'\" -ErrorAction Stop)) {",
+  '      $commandLines[[int]$record.ProcessId] = [string]$record.CommandLine',
+  '    }',
+  '  } catch { Write-Host ("INSTALLER / process metadata unavailable; treating windowless Antigravity workers as background worker processes: " + $_.Exception.Message) -ForegroundColor DarkYellow }',
+  '  $ui = @()',
+  '  $workerCount = 0',
+  '  foreach ($process in $all) {',
+  '    $commandLine = [string]$commandLines[[int]$process.Id]',
+  '    $hasWindow = $process.MainWindowHandle -ne 0',
+  "    \$isBackgroundWorker = (-not \$hasWindow) -and ([string]::IsNullOrWhiteSpace(\$commandLine) -or \$commandLine -match '--import=.*sidecar_sdk')",
+  '    if ($isBackgroundWorker) { $workerCount++; continue }',
+  '    $ui += $process',
+  '  }',
+  '  if ($workerCount -gt 0) { Write-Host ("INSTALLER / ignoring " + $workerCount + " background worker process(es); only the Antigravity UI is closeable.") -ForegroundColor DarkGray }',
+  '  return @($ui)',
+  '}',
+  'function Request-AntigravityGracefulClose([int]$TimeoutSeconds = 45) {',
+  '  $running = @(Get-AntigravityUiProcesses)',
+  '  if ($running.Count -eq 0) { return $true }',
+  '  Write-Host ("INSTALLER / requesting graceful Antigravity UI close (" + $running.Count + " process(es)); waiting up to " + $TimeoutSeconds + " seconds...") -ForegroundColor Yellow',
+  '  foreach ($process in $running) {',
+  '    try { if ($process.MainWindowHandle -ne 0) { [void]$process.CloseMainWindow() } } catch { Write-Host ("INSTALLER / close request skipped for process " + $process.Id + ": " + $_.Exception.Message) -ForegroundColor DarkYellow }',
+  '  }',
+  '  $deadline = (Get-Date).AddSeconds($TimeoutSeconds)',
+  '  do {',
+  '    Start-Sleep -Seconds 1',
+  '    $remaining = @(Get-AntigravityUiProcesses)',
+  '    if ($remaining.Count -eq 0) { return $true }',
+  '  } while ((Get-Date) -lt $deadline)',
+  '  Write-Host ("INSTALLER DEFERRED / Antigravity UI still has " + $remaining.Count + " closeable process(es). Save work, close Antigravity completely, then rerun this installer.") -ForegroundColor Yellow',
+  '  return $false',
+  '}',
+  'if (-not (Request-AntigravityGracefulClose)) { exit 42 }',
   'function Get-Sha256Hash([string]$Path) {',
   '  $sha = [Security.Cryptography.SHA256]::Create()',
   "  try { return (-join (\$sha.ComputeHash([IO.File]::ReadAllBytes(\$Path)) | ForEach-Object { \$_.ToString('X2') })) } finally { \$sha.Dispose() }",
@@ -443,14 +514,17 @@ const signedInstaller = [
   '  }',
   '  $legacyRoot = Join-Path $env:USERPROFILE ".geminiconfigagents"',
   '  if (Test-Path -LiteralPath $legacyRoot -PathType Container) { Add-AgentRoot $legacyRoot "legacy profile root" $true }',
-  '  $agentSources = @(Get-ChildItem -LiteralPath (Join-Path $pluginRoot "agents") -Directory)',
+  '  $agentSourceRoot = Join-Path $pluginRoot "agents"',
+  '  $agentSources = @()',
+  '  foreach ($file in @(Get-ChildItem -LiteralPath $agentSourceRoot -File -Filter "*.md")) { $agentSources += [pscustomobject]@{ Name = $file.BaseName; File = $file.FullName } }',
+  '  foreach ($folder in @(Get-ChildItem -LiteralPath $agentSourceRoot -Directory)) { $file = Join-Path $folder.FullName "agent.md"; if (Test-Path -LiteralPath $file -PathType Leaf) { $agentSources += [pscustomobject]@{ Name = $folder.Name; File = $file } } }',
   '  foreach ($userAgentRoot in $agentRoots) {',
   '    New-Item -ItemType Directory -Path $userAgentRoot -Force | Out-Null',
   '    foreach ($agentSource in $agentSources) {',
   '      $agentDestination = Join-Path $userAgentRoot $agentSource.Name',
   '      New-Item -ItemType Directory -Path $agentDestination -Force | Out-Null',
-  '      Copy-Item -LiteralPath (Join-Path $agentSource.FullName "agent.md") -Destination (Join-Path $agentDestination "agent.md") -Force',
-  '      $expected = Get-Sha256Hash (Join-Path $agentSource.FullName "agent.md")',
+  '      Copy-Item -LiteralPath $agentSource.File -Destination (Join-Path $agentDestination "agent.md") -Force',
+  '      $expected = Get-Sha256Hash $agentSource.File',
   '      $actual = Get-Sha256Hash (Join-Path $agentDestination "agent.md")',
   '      if ($expected -ne $actual) { throw "Agent profile verification failed: $($agentDestination)" }',
   '    }',

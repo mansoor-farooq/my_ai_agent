@@ -20,6 +20,7 @@ const retiredPaths = new Set([
 records = records.filter((record) => !retiredPaths.has(String(record?.Path || '').replaceAll('\\', '/')));
 
 const requiredPaths = [
+  'tools/agent-training-dataset.mjs',
   'tools/ultra-agent-v2/preflight.mjs',
   'tools/ultra-agent-v2/memory.mjs',
   'tools/ultra-agent-v2/evidence.mjs',

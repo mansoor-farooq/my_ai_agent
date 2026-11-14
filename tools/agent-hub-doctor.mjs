@@ -92,7 +92,7 @@ export async function runDoctor() {
 
   const packer = fs.readFileSync(path.join(root, 'tools', 'build-antigravity-plugin.mjs'), 'utf8');
   const excluded = excludedAgents.filter((name) => !packer.includes(name));
-  const localManagedMcp = /mcpServers\s*:\s*\{[\s\S]*?'mansoor-managed-runtime'/.test(packer)
+  const localManagedMcp = /mcpServers\s*:\s*\{[\s\S]*?(?:['"]runtime['"]|runtime\s*:|['"]mansoor-managed-runtime['"])/.test(packer)
     && /PLUGIN_ROOT/.test(packer) && /PLUGIN_DATA/.test(packer)
     && /tools\/start-managed-mcp\.ps1/.test(packer);
   const remoteConnectorDefinitions = /oauthClients|serverUrl|"type"\s*:\s*"(?:oauth|remote-mcp)"/i.test(packer);
@@ -264,7 +264,7 @@ export async function runDoctor() {
     /clean Git (?:working tree|checkout)/i,
     /Windows 10\/11/,
     /PreToolUse hook/i,
-    /native IDE changes do not enter the Node effect ledger/i,
+    /native IDE changes do not enter the managed effect ledger/i,
     /antigravity-runtime-preflight\.mjs/,
   ];
   const buildScript = fs.readFileSync(path.join(root, 'tools', 'build-antigravity-plugin.mjs'), 'utf8');

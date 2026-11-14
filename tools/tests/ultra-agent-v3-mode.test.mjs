@@ -17,6 +17,16 @@ test('routine reversible work selects fast mode with one specialist and targeted
   assert.deepEqual(result.blockers, []);
   assert.deepEqual(result.executionProfile, { thinking: 'low', maxSpecialists: 1, parallelism: 1, budgetClass: 'economy' });
   assert.equal(result.escalationPolicy.maxRecoveryAttempts, 2);
+  assert.deepEqual(result.budgets, {
+    maxContextFiles: 12,
+    maxSkillBodies: 6,
+    maxToolCalls: 12,
+    maxWebQueries: 0,
+    maxVerificationCommands: 1,
+    maxRecoveryAttempts: 1,
+    maxUnresolvedImageCalls: 1,
+    maxIdlePolls: 0,
+  });
 
   const plan = createPlanEnvelope({
     request: 'Fix the button label on the settings page',
@@ -82,4 +92,74 @@ test('premium work reports missing tools instead of silently downgrading to fast
   });
   assert.equal(plan.mode, 'premium');
   assert.deepEqual(plan.blockers, ['research', 'independent-check']);
+});
+
+test('explicit independent sub-agent work stays Fast and exposes a three-worker wave', () => {
+  const request = 'Use parallel sub-agents on independent chunks to fix the mobile banner';
+  const plan = createPlanEnvelope({
+    request,
+    specialists: ['research-docs-specialist', 'flutter-mobile-specialist', 'mansoor-ui-specialist', 'qa-release-specialist'],
+    workItems: [
+      { id: 'source-audit', role: 'research-docs-specialist', readOnly: true, ownedPaths: ['assets/reference/**'] },
+      { id: 'layout-audit', role: 'flutter-mobile-specialist', readOnly: true, ownedPaths: ['lib/widgets/**'] },
+      { id: 'acceptance-audit', role: 'mansoor-ui-specialist', readOnly: true, ownedPaths: ['test-cases/ui/**'] },
+    ],
+  });
+  assert.equal(plan.mode, 'fast');
+  assert.deepEqual(plan.specialists, ['research-docs-specialist', 'flutter-mobile-specialist', 'mansoor-ui-specialist']);
+  assert.deepEqual(plan.parallelWaves.map((wave) => wave.workItemIds), [['acceptance-audit', 'layout-audit', 'source-audit']]);
+  assert.deepEqual(plan.parallelPlan, { requested: true, status: 'parallel', maxConcurrent: 3, workItemCount: 3, reason: null });
+  assert.ok(plan.phases.includes('DELEGATE'));
+});
+
+test('parallel request falls back to one specialist when no independent work is planned', () => {
+  const plan = createPlanEnvelope({
+    request: 'Run parallel sub-agents to resize this one icon',
+    specialists: ['mansoor-ui-specialist', 'flutter-mobile-specialist'],
+    workItems: [],
+  });
+  assert.deepEqual(plan.specialists, ['mansoor-ui-specialist']);
+  assert.deepEqual(plan.parallelPlan, { requested: true, status: 'single-owner', maxConcurrent: 1, workItemCount: 0, reason: 'no-independent-work-items' });
+  assert.ok(!plan.phases.includes('DELEGATE'));
+});
+
+test('multiple independent planned work items enable parallel capacity without prompt keywords', () => {
+  const plan = createPlanEnvelope({
+    request: 'Update the banner and its app integration',
+    specialists: ['asset-owner', 'app-integrator'],
+    workItems: [
+      { id: 'asset', ownedPaths: ['assets/banner.png'] },
+      { id: 'app', ownedPaths: ['lib/widgets/banner.dart'] },
+    ],
+  });
+  assert.equal(plan.mode, 'fast');
+  assert.equal(plan.parallelPlan.status, 'parallel');
+  assert.equal(plan.parallelPlan.maxConcurrent, 2);
+  assert.equal(plan.parallelPlan.workItemCount, 2);
+});
+
+test('parallel Fast work raises only the bounded worker/tool budget and keeps Low thinking', () => {
+  const result = selectMode({
+    request: 'Use parallel sub-agents for independent banner and widget chunks',
+    parallelize: true,
+  });
+  assert.equal(result.mode, 'fast');
+  assert.equal(result.executionProfile.thinking, 'low');
+  assert.equal(result.executionProfile.maxSpecialists, 3);
+  assert.equal(result.budgets.maxToolCalls, 18);
+  assert.equal(result.budgets.maxSkillBodies, 6);
+  assert.equal(result.budgets.maxWebQueries, 0);
+  assert.equal(result.budgets.maxIdlePolls, 0);
+});
+
+test('premium work keeps research budget and never inherits the Fast no-research cap', () => {
+  const result = selectMode({
+    request: 'Research a secure production architecture from official docs',
+    explicitResearch: true,
+    risk: 'high',
+  });
+  assert.equal(result.mode, 'premium');
+  assert.equal(result.budgets.maxWebQueries, 4);
+  assert.equal(result.budgets.maxRecoveryAttempts, 2);
+  assert.equal(result.budgets.maxIdlePolls, 1);
 });

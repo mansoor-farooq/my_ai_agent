@@ -1,6 +1,6 @@
 {
   "name": "mansoor-agent-hub",
-  "version": "1.19.0",
+  "version": "1.19.5",
   "private": true,
   "description": "Owner build entrypoint for the Mansoor Farooq private Antigravity agent team.",
   "scripts": {
@@ -9,6 +9,7 @@
     "test": "node --test \"tools/tests/*.test.mjs\"",
     "test:rag": "node tools/rag-ci-gate.mjs",
     "secret-scan": "node tools/secret-scan.mjs .",
-    "benchmark": "node tools/agent-benchmark.mjs"
+    "benchmark": "node tools/agent-benchmark.mjs",
+    "dataset": "node tools/agent-training-dataset.mjs export"
   }
 }

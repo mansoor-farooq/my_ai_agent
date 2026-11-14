@@ -302,22 +302,41 @@ export function readTaskWorkspacePatch(workspaceInput) {
 export function promoteTaskWorkspace(workspaceInput, approval = {}) {
   if (approval.approved !== true || !String(approval.actor || '').trim()) fail('owner-promotion-approval-required');
   const { root, paths, manifest } = manifestFor(workspaceInput);
-  if (manifest.status !== 'review-required' || !manifest.patchHash) fail('workspace-not-reviewable');
+  if (!manifest.patchHash || !['review-required', 'promoted'].includes(manifest.status)) fail('workspace-not-reviewable');
   if (String(approval.patchHash || '') !== manifest.patchHash || String(workspaceInput?.patchHash || '') !== manifest.patchHash) fail('promotion-patch-mismatch');
+  if (manifest.status === 'promoted') {
+    if (currentRevision(manifest.repoRoot) !== manifest.baseRevision) fail('workspace-base-mismatch');
+    validatePaths(manifest, manifest.changedPaths || []);
+    if (!registeredWorktree(manifest.repoRoot, manifest.workspaceDir) || !fs.existsSync(manifest.workspaceDir)) fail('workspace-registration-mismatch');
+    const patch = fs.readFileSync(paths.patchPath);
+    if (`sha256:${digest(patch)}` !== manifest.patchHash) fail('promotion-patch-integrity-failed');
+    const stagedPatch = git(manifest.repoRoot, ['diff', '--cached', '--binary', '--no-ext-diff', manifest.baseRevision, '--'], { binary: true });
+    const stagedPaths = git(manifest.repoRoot, ['diff', '--cached', '--name-only', '-z', manifest.baseRevision, '--']).toString('utf8').split('\0').filter(Boolean);
+    if (`sha256:${digest(stagedPatch)}` !== manifest.patchHash
+      || JSON.stringify([...new Set(stagedPaths)].sort()) !== JSON.stringify([...new Set(manifest.changedPaths || [])].sort())) fail('promoted-patch-drifted');
+    return { ...publicWorkspace(manifest, root, paths, 'promoted'), stagedPaths, committed: false, pushed: false, replayed: true };
+  }
   ensureCurrentBase(manifest);
   validatePaths(manifest, manifest.changedPaths || []);
   if (!registeredWorktree(manifest.repoRoot, manifest.workspaceDir) || !fs.existsSync(manifest.workspaceDir)) fail('workspace-registration-mismatch');
+  const patch = fs.readFileSync(paths.patchPath);
+  if (`sha256:${digest(patch)}` !== manifest.patchHash) fail('promotion-patch-integrity-failed');
+  const stagedPatch = git(manifest.repoRoot, ['diff', '--cached', '--binary', '--no-ext-diff', manifest.baseRevision, '--'], { binary: true });
+  const stagedPaths = git(manifest.repoRoot, ['diff', '--cached', '--name-only', '-z', manifest.baseRevision, '--']).toString('utf8').split('\0').filter(Boolean);
   const currentWorkspacePaths = git(manifest.workspaceDir, ['diff', '--name-only', '-z', manifest.baseRevision, '--']).toString('utf8').split('\0').filter(Boolean).sort();
   const approvedWorkspacePaths = [...new Set(manifest.changedPaths || [])].sort();
   if (JSON.stringify(currentWorkspacePaths) !== JSON.stringify(approvedWorkspacePaths)) fail('workspace-changed-after-review');
-  const patch = fs.readFileSync(paths.patchPath);
-  if (`sha256:${digest(patch)}` !== manifest.patchHash) fail('promotion-patch-integrity-failed');
   const currentPatch = git(manifest.workspaceDir, ['diff', '--binary', '--no-ext-diff', manifest.baseRevision, '--'], { binary: true });
   if (`sha256:${digest(currentPatch)}` !== manifest.patchHash) fail('workspace-changed-after-review');
-  git(manifest.repoRoot, ['apply', '--index', '--binary', '--check', paths.patchPath]);
-  git(manifest.repoRoot, ['apply', '--index', '--binary', paths.patchPath]);
-  const stagedPaths = git(manifest.repoRoot, ['diff', '--cached', '--name-only', '-z']).toString('utf8').split('\0').filter(Boolean);
-  if (JSON.stringify([...new Set(stagedPaths)].sort()) !== JSON.stringify([...new Set(manifest.changedPaths)].sort())) fail('promotion-path-set-mismatch');
+  const alreadyPromoted = `sha256:${digest(stagedPatch)}` === manifest.patchHash
+    && JSON.stringify([...new Set(stagedPaths)].sort()) === JSON.stringify(approvedWorkspacePaths);
+  if (!alreadyPromoted) {
+    if (stagedPaths.length) fail('promotion-index-not-clean');
+    git(manifest.repoRoot, ['apply', '--index', '--binary', '--check', paths.patchPath]);
+    git(manifest.repoRoot, ['apply', '--index', '--binary', paths.patchPath]);
+  }
+  const promotedPaths = git(manifest.repoRoot, ['diff', '--cached', '--name-only', '-z']).toString('utf8').split('\0').filter(Boolean);
+  if (JSON.stringify([...new Set(promotedPaths)].sort()) !== JSON.stringify([...new Set(manifest.changedPaths)].sort())) fail('promotion-path-set-mismatch');
   const next = writeManifest(paths.manifestPath, {
     ...manifest,
     status: 'promoted',
@@ -325,7 +344,7 @@ export function promoteTaskWorkspace(workspaceInput, approval = {}) {
     promotedAt: new Date().toISOString(),
     promotedBy: String(approval.actor),
   });
-  return { ...publicWorkspace(next, root, paths, 'promoted'), stagedPaths, committed: false, pushed: false };
+  return { ...publicWorkspace(next, root, paths, 'promoted'), stagedPaths: promotedPaths, committed: false, pushed: false, replayed: alreadyPromoted };
 }
 
 export function discardTaskWorkspace(workspaceInput, approval = {}) {

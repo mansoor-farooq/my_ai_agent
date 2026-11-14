@@ -15,6 +15,7 @@ const portableTextExtensions = new Set([
 ]);
 
 export const requiredPortableSupportFiles = [
+  'tools/image-asset-workflow.mjs',
   'skills/impeccable/agents/impeccable_asset_producer.toml',
   'skills/impeccable/agents/impeccable_documenter.toml',
   'skills/impeccable/agents/impeccable_finish_reviewer.toml',
@@ -190,6 +191,12 @@ export async function copyPortableComponents(root, target, credentialPattern) {
     await writeFile(destination, compactSkillRouter(original, name));
   }
   await cp(path.join(root, 'rules'), path.join(target, 'rules'), { recursive: true, errorOnExist: true });
+  for (const relative of requiredPortableSupportFiles.filter((file) => file.startsWith('tools/'))) {
+    const source = path.join(root, relative);
+    const destination = path.join(target, relative);
+    await mkdir(path.dirname(destination), { recursive: true });
+    await cp(source, destination);
+  }
   const missingSupportFiles = [];
   for (const relative of requiredPortableSupportFiles) {
     try { await readFile(path.join(target, relative)); } catch { missingSupportFiles.push(relative); }

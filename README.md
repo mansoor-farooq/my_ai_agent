@@ -109,6 +109,16 @@ The managed V4 runtime can pin a task to a detached Git worktree, resume only th
 
 The Antigravity plugin bundles that host adapter as a local `mansoor-managed-runtime` MCP server. Antigravity loads it from the installed plugin's `mcp_config.json`; there is no per-project MCP file or separate MCP credential to configure. The manager passes the current project path to each tool call, while resumable worktrees live in plugin-specific local data. The Windows 10/11 launcher uses the Node runtime prepared by the installer. The feature is available when the plugin is installed and enabled; restart or reload Antigravity after upgrading.
 
+### Persistent CLI and Android preview lane
+
+The same local runtime can stay available outside the editor through `tools/ultra-agent-cli.mjs`. Start it once with `node tools/ultra-agent-cli.mjs start`; submit bounded work with `submit`, inspect `events`, resume or stop a run, and call `doctor` without creating a second memory system. The daemon stores queue state and redacted activity under the user's local application data, uses idempotency keys and reports `queued-host-unavailable` when Antigravity is closed. It never switches providers or bypasses the signed-in host session.
+
+For Flutter/Android projects, the mobile lane detects `adb` and optional `scrcpy`, requires an explicit device serial when more than one device is online, starts only a Mansoor-owned mirror window, and emits a fail-closed evidence report. `scrcpy` is detected from the host; its binary is not bundled. A missing device, mirror or check remains `unverified`, never a false pass. This makes Android preview repeatable on Windows 10/11 while keeping host permissions and real-device evidence visible.
+
+### Ready-to-use agent datasets
+
+After approved or difficult work, export a sanitized training/evaluation pack with `node tools/agent-training-dataset.mjs export --dir <project> --out <folder>`. The pack contains owner-approved successful `sft.jsonl` examples, all-observation `evaluation.jsonl`, `hard-cases.jsonl` for hurdles and failures, sanitized research/verification evidence, and a hash manifest. Credentials, absolute local paths, raw chats and hidden reasoning are excluded. The SFT file is suitable for local instruction-tuning pipelines; the evaluation and hard-case files must remain held out for honest testing.
+
 ### Speed without unsafe parallelism
 
 Routine reversible tasks use Fast mode and a focused specialist. Architecture, security, migration, release and explicit research use Premium mode with planning, bounded research, independent verification and targeted recovery. Independent writes can run in safe waves; overlapping ownership is serialized.

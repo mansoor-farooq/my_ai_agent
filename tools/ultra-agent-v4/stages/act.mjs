@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const ALWAYS_FORBIDDEN = ['.env*', '.git/**', 'requirements/**', '**/*.pem', '**/*.key', '**/*.p12', '**/*.pfx', '**/id_rsa', '**/id_ed25519'];
+const ALWAYS_FORBIDDEN = ['.env*', '**/.env*', '.git/**', '**/.git/**', 'requirements/**', '**/requirements/**', '**/*.pem', '**/*.key', '**/*.p12', '**/*.pfx', '**/id_rsa', '**/id_ed25519'];
 
 function normalized(value) {
   return String(value || '').replaceAll('\\', '/').replace(/^\.\//, '');

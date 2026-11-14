@@ -7,7 +7,7 @@ const mutatingTool = /(?:write|edit|replace|patch|delete|remove|move|rename|mkdi
 const readOnlyTool = /^(?:view_file|list_dir|find_by_name|grep_search|search_web|read_url_content|browser_.*)$/i;
 const pathKeys = new Set(['targetfile', 'path', 'filepath', 'file_path', 'targetpath', 'target_path', 'absolutepath', 'directorypath', 'directory_path', 'file', 'filename']);
 const privateFile = /^(?:\.env(?:\..*)?|\.git|id_rsa(?:\.pub)?|id_ed25519(?:\.pub)?|.*\.(?:pem|key|p12|pfx|keystore))$/i;
-const managedMcpReadTools = new Set(['inspect_task_workspace', 'get_review_patch']);
+const managedMcpReadTools = new Set(['inspect_task_workspace', 'prepare_managed_action', 'get_review_patch']);
 const managedMcpApprovalTools = new Set(['run_managed_task', 'promote_reviewed_patch', 'discard_task_workspace']);
 
 function response(decision, reason) {
@@ -60,14 +60,14 @@ function managedMcpTool(name, args) {
   const serverName = String(args?.ServerName ?? args?.serverName ?? args?.server_name ?? '').toLowerCase();
   const toolName = String(args?.ToolName ?? args?.toolName ?? args?.tool_name ?? '').toLowerCase();
   if (/^call_mcp_tool$/i.test(name)) {
-    return serverName === 'mansoor-managed-runtime' ? toolName : null;
+    return ['mansoor-managed-runtime', 'runtime'].includes(serverName) ? toolName : null;
   }
-  if (normalizedName.startsWith('mcp_') && normalizedName.includes('mansoor') && normalizedName.includes('managed')) {
+  if (normalizedName.startsWith('mcp_') && normalizedName.includes('mansoor-agent-hub') && (normalizedName.includes('_runtime_') || normalizedName.includes('managed-runtime'))) {
     for (const candidate of [...managedMcpReadTools, ...managedMcpApprovalTools]) {
       if (normalizedName.endsWith(candidate)) return candidate;
     }
   }
-  if (/^mcp:/i.test(name) && normalizedName.includes('mansoor-managed-runtime')) {
+  if (/^mcp:/i.test(name) && (normalizedName.includes('mansoor-managed-runtime') || normalizedName.includes('mansoor-agent-hub/runtime'))) {
     const candidate = normalizedName.split(/[/:]/).at(-1);
     if ([...managedMcpReadTools, ...managedMcpApprovalTools].includes(candidate)) return candidate;
   }

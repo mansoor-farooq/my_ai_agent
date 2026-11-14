@@ -9,6 +9,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 test('portable build declares the persistent runtime and Android preview lane', async () => {
   const source = await readFile(path.join(root, 'tools', 'build-antigravity-plugin.mjs'), 'utf8');
   for (const relative of [
+    'tools/agent-training-dataset.mjs',
     'tools/ultra-agent-cli.mjs',
     'tools/ultra-agent-v4/daemon/paths.mjs',
     'tools/ultra-agent-v4/daemon/events.mjs',

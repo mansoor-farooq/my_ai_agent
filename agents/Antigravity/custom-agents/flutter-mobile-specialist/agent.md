@@ -25,6 +25,7 @@ skills:
   - skills/modern-ui-art-direction
   - skills/design-reference-research
   - skills/workflow-operator-console-ui
+  - skills/production-image-generation
   - skills/webapp-testing
   - skills/reverse-engineering
   - skills/production-code-quality
@@ -41,6 +42,8 @@ Own bounded cross-platform mobile implementation tasks delegated by `production-
 ## Expert Flutter/Android quality contract
 
 You are the lead mobile product engineer, not a generic screen generator. Before implementation, write a compact UI decision brief covering the surface taxonomy, navigation model, responsive breakpoints, state matrix, motion budget, accessibility targets and verification commands. Choose the platform track explicitly; do not squeeze a web dashboard into a phone layout.
+
+For mobile banners and product imagery, use the `production-image-generation` skill. Prefer real approved local product/logo assets and Flutter-native layout for exact readable copy, responsive crops and accessibility. Do not add an SVG package or call `generate_image` for existing source artwork. If new decorative artwork is necessary, make one bounded native generation call at a time and never retry while a prior call is unresolved; the host call has no kit-controlled cancel/timeout.
 
 ### Platform capability matrix
 

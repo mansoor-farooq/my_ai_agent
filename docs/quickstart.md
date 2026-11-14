@@ -68,6 +68,47 @@ node <hubRoot>/tools/ultra-agent-v2/memory.mjs status --dir . --project my-proje
 
 The local runtime stores project memory under `.agents/memory/` and V3 task state under `.agents/ultra-v3/`. It never needs to export credentials or raw conversations.
 
+## Persistent CLI runtime
+
+From the hub root, start the local daemon in a dedicated terminal:
+
+```powershell
+node tools/ultra-agent-cli.mjs start
+```
+
+In another terminal, submit a bounded task. Repeat `--scope` and `--acceptance` for each path/criterion:
+
+```powershell
+node tools/ultra-agent-cli.mjs submit `
+  --project D:\Work\Youngs_bazar `
+  --project-id youngs-bazar `
+  --objective "Inspect the catalog image loading path and report the smallest safe fix" `
+  --scope lib `
+  --scope test `
+  --acceptance "No API contract changes" `
+  --acceptance "Run the focused Flutter checks" `
+  --mode fast
+```
+
+Use `node tools/ultra-agent-cli.mjs events --run <run-id>` for activity, `resume` after interruption, `stop` to request a stop, and `doctor` to inspect the local runtime. If Antigravity is closed, the run remains queued instead of silently using another provider.
+
+## Android live preview
+
+Install `adb` and `scrcpy` separately on the target Windows machine. The lane detects them automatically; it does not ship either binary. With one online device, the selected serial is automatic. With multiple devices, pass the serial explicitly through the mobile task so the agent never mirrors the wrong phone. The evidence report is written to the project `.agents` area by the host integration and remains `unverified` until a real device and required checks are present.
+
+## Export a local-LLM dataset pack
+
+After a run has produced benchmark metrics, traces or research evidence, create a redacted pack:
+
+```powershell
+node tools/agent-training-dataset.mjs export `
+  --dir D:\Work\Youngs_bazar `
+  --project-id youngs-bazar `
+  --out D:\Work\Youngs_bazar\.agents\training-pack
+```
+
+Use `sft.jsonl` only for owner-approved successful outcomes. Keep `evaluation.jsonl` and `hard-cases.jsonl` separate as held-out evaluation data; they capture blockers such as scope drift, failed checks and difficult UI/runtime work. `manifest.json` records source hashes and the redaction policy. This exporter prepares data; it does not silently train or upload a local model.
+
 ## Fast vs Premium
 
 - **Fast:** routine, reversible work with cached context, one relevant specialist and targeted verification.

@@ -210,10 +210,17 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.19.0');
+    assert.equal(plugin.version, '1.19.5');
+    const packagedManager = await readFile(path.join(output, 'agents', 'production-orchestrator.md'), 'utf8');
+    assert.doesNotMatch(packagedManager, /^skills:\r?$/m, 'packaged plugin agents must avoid broken AgentBasePath-relative skill metadata');
+    assert.match(packagedManager, /Bundled skill routing/);
     const mcpConfig = JSON.parse(await readFile(path.join(output, 'mcp_config.json'), 'utf8'));
-    const managedMcp = mcpConfig.mcpServers['mansoor-managed-runtime'];
+    const managedMcp = mcpConfig.mcpServers.runtime;
     assert.ok(managedMcp, 'the managed runtime MCP server must be bundled with the plugin');
+    for (const toolName of Object.keys(managedMcp.tools)) {
+      const generatedName = `mcp_mansoor-agent-hub_runtime_${toolName}`;
+      assert.ok(generatedName.length <= 64, `${generatedName} must fit Antigravity MCP tool-name limit`);
+    }
     assert.equal(managedMcp.command, 'powershell.exe');
     assert.ok(managedMcp.args.some((argument) => argument.includes('${PLUGIN_ROOT}')));
     assert.ok(managedMcp.env.MANSOOR_WORKSPACE_ROOT.includes('${PLUGIN_DATA}'));
@@ -240,6 +247,18 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.match(installer, /WindowsBuiltInRole.*Administrator/);
     assert.match(installer, /Verb RunAs/);
     assert.match(installer, /Administrator permission is required/i);
+    assert.match(installer, /Get-Process -Name \"Antigravity\"/);
+    assert.match(installer, /INSTALLER DEFERRED/);
+    assert.match(installer, /exit 42/);
+    assert.match(installer, /function Request-AntigravityGracefulClose/);
+    assert.match(installer, /function Get-AntigravityUiProcesses/);
+    assert.match(installer, /Win32_Process/);
+    assert.match(installer, /--import=.*sidecar_sdk/);
+    assert.match(installer, /background worker process/);
+    assert.match(installer, /CloseMainWindow/);
+    assert.match(installer, /TimeoutSeconds = 45/);
+    assert.match(installer, /Start-Sleep -Seconds 1/);
+    assert.doesNotMatch(installer, /Stop-Process\s+-Force/);
     assert.match(installer, /Start-Transcript/);
     assert.match(installer, /INSTALLER ERROR:/);
     assert.match(installer, /mansoor-agent-hub-stage-/);
@@ -268,7 +287,8 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.match(ruleSync, /\.mansoor-rule-state\.json/);
     const launcher = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.cmd'), 'utf8');
     assert.match(launcher, /Install-Mansoor-Agent-Team\.log/);
-    assert.match(launcher, /pause/);
+    assert.doesNotMatch(launcher, /pause/);
+    assert.match(launcher, /exit \/b %INSTALL_EXIT%/);
     assert.doesNotMatch(installer, /gh auth login|github\.com\/login/);
   } finally {
     await rm(output, { recursive: true, force: true });
@@ -301,4 +321,17 @@ test('owner build detects installed global Mansoor profiles when plugin inventor
   assert.match(buildScript, /ANTIGRAVITY_CONFIG_DIR/);
   assert.match(buildScript, /GEMINI_CONFIG_DIR/);
   assert.match(buildScript, /no Mansoor plugin or installed agent-profile roots were detected/i);
+  assert.match(buildScript, /Get-Process -Name 'Antigravity'/);
+  assert.match(buildScript, /AUTO UPDATE DEFERRED/);
+  assert.match(buildScript, /autoInstallExit -eq 42/);
+});
+
+test('owner build refreshes the extracted distribution folder from the signed ZIP', async () => {
+  const buildScript = await readFile(path.join(root, 'build-agent-hub.ps1'), 'utf8');
+  assert.match(buildScript, /VERSIONED PACKAGE REFRESHED/);
+  assert.match(buildScript, /EXTRACTED PACKAGE REFRESHED/);
+  assert.match(buildScript, /EXTRACTED PACKAGE REFRESH DEFERRED/);
+  assert.match(buildScript, /mansoor-agent-hub-refresh-/);
+  assert.match(buildScript, /Expand-Archive/);
+  assert.match(buildScript, /dist\\mansoor-agent-hub/);
 });

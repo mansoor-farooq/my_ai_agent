@@ -24,7 +24,7 @@ test('native shell commands always require fresh owner review', () => {
 test('native writes to protected files or paths are denied', () => {
   const workspace = mkdtempSync(path.join(os.tmpdir(), 'agy-hook-'));
   try {
-    for (const relative of ['.env.local', '.git/config', 'requirements/REQ-1.md', 'server.key']) {
+    for (const relative of ['.env.local', 'config/.env.production', '.git/config', 'src/.git/config', 'requirements/REQ-1.md', 'vendor/requirements/REQ-1.md', 'server.key']) {
       const result = evaluatePreToolUse({
         toolCall: { name: 'write_to_file', args: { TargetFile: path.join(workspace, relative) } },
         workspacePaths: [workspace],

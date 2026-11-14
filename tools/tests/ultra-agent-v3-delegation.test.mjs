@@ -70,3 +70,24 @@ test('plan envelope adds parallel waves while retaining specialist compatibility
   assert.deepEqual(plan.parallelWaves.map((wave) => wave.workItemIds), [['api', 'ui'], ['qa']]);
   assert.deepEqual(plan.delegationBlockers, []);
 });
+
+test('parallel plan serializes conflicting writes and reports why it did not fan out', () => {
+  const plan = createPlanEnvelope({
+    request: 'Parallelize these independent chunks',
+    specialists: ['builder-a', 'builder-b'],
+    workItems: [
+      { id: 'banner-copy', role: 'builder-a', ownedPaths: ['assets/home-banner.png'] },
+      { id: 'banner-crop', role: 'builder-b', ownedPaths: ['assets/home-banner.png'] },
+    ],
+  });
+  assert.deepEqual(plan.parallelWaves.map((wave) => wave.workItemIds), [['banner-copy'], ['banner-crop']]);
+  assert.deepEqual(plan.parallelPlan, {
+    requested: true,
+    status: 'serialized',
+    maxConcurrent: 1,
+    workItemCount: 2,
+    reason: 'dependencies-or-path-overlap',
+  });
+  assert.equal(plan.executionProfile.parallelism, 1);
+  assert.ok(!plan.phases.includes('DELEGATE'));
+});
