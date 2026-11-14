@@ -50,7 +50,7 @@ test('Antigravity MCP task execution and promotion calls always require fresh ow
     });
     assert.equal(result.decision, 'force_ask', toolName);
   }
-  for (const toolName of ['inspect_task_workspace', 'get_review_patch']) {
+  for (const toolName of ['inspect_task_workspace', 'prepare_managed_action', 'get_review_patch']) {
     const result = evaluatePreToolUse({
       toolCall: { name: 'call_mcp_tool', args: { ServerName: 'mansoor-managed-runtime', ToolName: toolName, Arguments: {} } },
     });
@@ -68,7 +68,7 @@ test('MCP server negotiates the protocol and lists the portable managed tools', 
   assert.equal(initialized.result.capabilities.tools.listChanged, false);
   const listed = await server.handleRequest({ jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} });
   const names = listed.result.tools.map((tool) => tool.name);
-  assert.deepEqual(names, ['inspect_task_workspace', 'run_managed_task', 'get_review_patch', 'promote_reviewed_patch', 'discard_task_workspace']);
+  assert.deepEqual(names, ['submit_task', 'get_run_status', 'follow_run_events', 'stop_run', 'inspect_task_workspace', 'prepare_managed_action', 'run_managed_task', 'get_review_patch', 'promote_reviewed_patch', 'discard_task_workspace']);
 });
 
 test('MCP execution creates a reviewable patch and promotion requires the exact reviewed patch body', async () => {
@@ -76,23 +76,33 @@ test('MCP execution creates a reviewable patch and promotion requires the exact 
   try {
     const server = createManagedMcpServer({ workspaceRoot: fixture.workspaceRoot });
     const args = taskAndPlan(fixture.projectDir);
-    const run = await server.handleRequest({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'run_managed_task', arguments: args } });
+    const prepared = await server.handleRequest({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'prepare_managed_action', arguments: args } });
+    assert.equal(prepared.result.isError, false, JSON.stringify(prepared));
+    const manifest = JSON.parse(prepared.result.content[0].text).actionManifest;
+    assert.ok(manifest.manifestHash);
+    assert.equal(manifest.actions[0].contentHash.startsWith('sha256:'), true);
+    const changedAction = { ...args, actions: [{ type: 'write', path: 'src/hello.txt', content: 'changed\n' }], actionManifest: manifest };
+    const mismatch = await server.handleRequest({ jsonrpc: '2.0', id: 4, method: 'tools/call', params: { name: 'run_managed_task', arguments: changedAction } });
+    assert.equal(mismatch.result.isError, true);
+    assert.match(mismatch.result.content[0].text, /action-manifest-mismatch/);
+    assert.equal(fs.existsSync(path.join(fixture.projectDir, 'src', 'hello.txt')), false);
+    const run = await server.handleRequest({ jsonrpc: '2.0', id: 5, method: 'tools/call', params: { name: 'run_managed_task', arguments: { ...args, actionManifest: manifest } } });
     assert.equal(run.result.isError, false, JSON.stringify(run));
     const result = JSON.parse(run.result.content[0].text);
     assert.equal(result.status, 'complete');
     assert.equal(result.delivery.status, 'review-required');
     assert.equal(fs.existsSync(path.join(fixture.projectDir, 'src', 'hello.txt')), false);
 
-    const review = await server.handleRequest({ jsonrpc: '2.0', id: 4, method: 'tools/call', params: { name: 'get_review_patch', arguments: { workspace: result.workspace } } });
+    const review = await server.handleRequest({ jsonrpc: '2.0', id: 6, method: 'tools/call', params: { name: 'get_review_patch', arguments: { workspace: result.workspace } } });
     const patch = JSON.parse(review.result.content[0].text);
     assert.equal(patch.patchHash, result.delivery.patchHash);
     assert.match(patch.patchText, /hello/);
 
-    const mismatch = await server.handleRequest({ jsonrpc: '2.0', id: 5, method: 'tools/call', params: { name: 'promote_reviewed_patch', arguments: { workspace: result.workspace, patchHash: patch.patchHash, ownerReviewedPatch: 'different patch' } } });
-    assert.equal(mismatch.result.isError, true);
+    const patchMismatch = await server.handleRequest({ jsonrpc: '2.0', id: 7, method: 'tools/call', params: { name: 'promote_reviewed_patch', arguments: { workspace: result.workspace, patchHash: patch.patchHash, ownerReviewedPatch: 'different patch' } } });
+    assert.equal(patchMismatch.result.isError, true);
     assert.equal(fs.existsSync(path.join(fixture.projectDir, 'src', 'hello.txt')), false);
 
-    const promoted = await server.handleRequest({ jsonrpc: '2.0', id: 6, method: 'tools/call', params: { name: 'promote_reviewed_patch', arguments: { workspace: result.workspace, patchHash: patch.patchHash, ownerReviewedPatch: patch.patchText } } });
+    const promoted = await server.handleRequest({ jsonrpc: '2.0', id: 8, method: 'tools/call', params: { name: 'promote_reviewed_patch', arguments: { workspace: result.workspace, patchHash: patch.patchHash, ownerReviewedPatch: patch.patchText } } });
     const promotion = JSON.parse(promoted.result.content[0].text);
     assert.equal(promotion.status, 'promoted');
     assert.equal(promotion.committed, false);

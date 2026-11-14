@@ -1,14 +1,29 @@
 #!/usr/bin/env node
 import readline from 'node:readline';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runManagedTask, promoteTaskWorkspace, discardTaskWorkspace } from './managed-runtime.mjs';
+import { runManagedTask, promoteManagedTaskWorkspace, discardManagedTaskWorkspace } from './managed-runtime.mjs';
 import { inspectTaskWorkspace, readTaskWorkspacePatch } from './task-workspaces.mjs';
+import { canonicalHash, createActionManifest } from '../ultra-agent-v5/action-manifest.mjs';
+import { createFileBackedApprovalAuthority } from '../ultra-agent-v5/durable-ledger.mjs';
+import { connectRuntimeClient } from './daemon/daemon.mjs';
 
 const SUPPORTED_PROTOCOLS = ['2025-06-18', '2025-03-26'];
 const SERVER_NAME = 'mansoor-managed-runtime';
 const SERVER_VERSION = '1.0.0';
-const REVIEW_ONLY_TOOLS = new Set(['inspect_task_workspace', 'get_review_patch']);
+const HUB_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+
+const queueTools = [
+  {
+    name: 'submit_task',
+    description: 'Queue a task in the persistent Mansoor CLI runtime. The same run is visible from CLI and Antigravity; execution waits for host session and approval.',
+    inputSchema: { type: 'object', properties: { projectDir: { type: 'string' }, projectId: { type: 'string' }, taskId: { type: 'string' }, objective: { type: 'string' }, scope: { type: 'array', items: { type: 'string' } }, acceptance: { type: 'array', items: { type: 'string' } }, mode: { type: 'string', enum: ['fast', 'premium'] } }, required: ['projectDir', 'objective', 'scope', 'acceptance'], additionalProperties: true },
+  },
+  { name: 'get_run_status', description: 'Read a persistent Mansoor CLI run status.', inputSchema: { type: 'object', properties: { runId: { type: 'string' } }, required: ['runId'], additionalProperties: false } },
+  { name: 'follow_run_events', description: 'Read redacted progress, blocker, verification and handoff events from a persistent run.', inputSchema: { type: 'object', properties: { runId: { type: 'string' }, after: { type: 'integer' }, limit: { type: 'integer' } }, required: ['runId'], additionalProperties: false } },
+  { name: 'stop_run', description: 'Request cooperative stop for a persistent Mansoor CLI run.', inputSchema: { type: 'object', properties: { runId: { type: 'string' } }, required: ['runId'], additionalProperties: false } },
+];
 
 function errorText(error) {
   return String(error?.code || 'managed-mcp-operation-failed');
@@ -16,6 +31,27 @@ function errorText(error) {
 
 function toolText(value, { isError = false } = {}) {
   return { content: [{ type: 'text', text: JSON.stringify(value) }], isError };
+}
+
+function prepareActionManifest(args, { workspaceRoot, hubRoot = HUB_ROOT } = {}) {
+  const task = args?.task || {};
+  const plan = args?.plan || {};
+  const identity = { projectId: String(task.projectId || ''), taskId: String(task.taskId || '') };
+  const workspace = inspectTaskWorkspace({ projectDir: task.projectDir, ...identity, workspaceRoot });
+  if (!workspace.ok) throw Object.assign(new Error(workspace.reason || 'workspace-inspection-failed'), { code: workspace.reason || 'workspace-inspection-failed' });
+  const registry = JSON.parse(fs.readFileSync(path.join(hubRoot, 'shared', 'control-plane', 'rule-registry.json'), 'utf8'));
+  return createActionManifest({
+    task,
+    plan,
+    actions: args.actions || [],
+    repairActions: args.repairActions || {},
+    workspace,
+    policy: {
+      version: `rule-registry/${registry.schemaVersion || 1}`,
+      registryHash: canonicalHash(registry),
+      ruleIds: (registry.rules || []).map((rule) => rule.id),
+    },
+  });
 }
 
 const workspaceShape = {
@@ -37,17 +73,34 @@ const workspaceShape = {
 };
 
 const tools = [
+  ...queueTools,
   {
     name: 'inspect_task_workspace',
     description: 'Read-only check that the selected project is a clean Git repository and report its base revision and resumable task workspace. Does not create files or a worktree.',
     inputSchema: { type: 'object', properties: { projectDir: { type: 'string' }, projectId: { type: 'string' }, taskId: { type: 'string' } }, required: ['projectDir', 'projectId', 'taskId'], additionalProperties: false },
   },
   {
-    name: 'run_managed_task',
-    description: 'Execute an owner-reviewed plan in an isolated Git worktree. Antigravity forces a fresh owner approval before this tool runs. Writes and registered checks run in the worktree; success returns a patch for separate review and promotion.',
+    name: 'prepare_managed_action',
+    description: 'Read-only step: inspect the clean project, canonicalize the exact planned writes and requested check commands, and return a short-lived action manifest. Pass that exact manifest to run_managed_task; execution rejects any changed file, command, scope, policy or base revision.',
     inputSchema: {
       type: 'object',
       properties: {
+        task: { type: 'object', properties: { projectDir: { type: 'string' }, projectId: { type: 'string' }, taskId: { type: 'string' }, objective: { type: 'string' }, scope: { type: 'array', items: { type: 'string' } }, acceptance: { type: 'array', items: { type: 'string' } }, forbiddenPaths: { type: 'array', items: { type: 'string' } }, requiredEvidence: { type: 'array', items: { type: 'string' } }, projectType: { type: 'string' }, taskType: { type: 'string' }, agent: { type: 'string' } }, required: ['projectDir', 'projectId', 'taskId', 'objective', 'scope', 'acceptance'], additionalProperties: true },
+        plan: { type: 'object', properties: { steps: { type: 'array', items: { type: 'string' } }, assumptions: { type: 'array' }, affectedPaths: { type: 'array', items: { type: 'string' } }, checks: { type: 'array', items: { type: 'object' } }, rollback: { type: ['string', 'null'] }, allowedNetwork: { type: 'array', items: { type: 'string' } } }, required: ['steps', 'affectedPaths', 'checks'], additionalProperties: true },
+        actions: { type: 'array', items: { type: 'object', properties: { type: { type: 'string' }, path: { type: 'string' }, content: { type: 'string' } }, required: ['type', 'path', 'content'], additionalProperties: false } },
+        repairActions: { type: 'object', additionalProperties: { type: 'array', items: { type: 'object', properties: { type: { type: 'string' }, path: { type: 'string' }, content: { type: 'string' } }, required: ['type', 'path', 'content'], additionalProperties: false } } },
+      },
+      required: ['task', 'plan', 'actions'],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: 'run_managed_task',
+    description: 'Execute a prepared action manifest in a detached Git worktree (workspace separation, not an OS sandbox). The durable local ledger binds the receipt, policy, effects and verification to this exact manifest. The host may request fresh review, but no host-signed human identity attestation is available; hook failure behavior is not guaranteed by the public contract.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        actionManifest: { type: 'object', description: 'Exact unmodified manifest returned by prepare_managed_action.', additionalProperties: true },
         task: {
           type: 'object',
           properties: {
@@ -63,14 +116,15 @@ const tools = [
           type: 'object',
           properties: {
             steps: { type: 'array', items: { type: 'string' } }, assumptions: { type: 'array' }, affectedPaths: { type: 'array', items: { type: 'string' } },
-            checks: { type: 'array', items: { type: 'object' } }, rollback: { type: ['string', 'null'] },
+            checks: { type: 'array', items: { type: 'object' } }, rollback: { type: ['string', 'null'] }, allowedNetwork: { type: 'array', items: { type: 'string' } },
           },
           required: ['steps', 'affectedPaths', 'checks'],
           additionalProperties: true,
         },
         actions: { type: 'array', items: { type: 'object', properties: { type: { type: 'string' }, path: { type: 'string' }, content: { type: 'string' } }, required: ['type', 'path', 'content'], additionalProperties: false } },
+        repairActions: { type: 'object', additionalProperties: { type: 'array', items: { type: 'object', properties: { type: { type: 'string' }, path: { type: 'string' }, content: { type: 'string' } }, required: ['type', 'path', 'content'], additionalProperties: false } } },
       },
-      required: ['task', 'plan', 'actions'],
+      required: ['task', 'plan', 'actions', 'actionManifest'],
       additionalProperties: false,
     },
   },
@@ -91,22 +145,50 @@ const tools = [
   },
 ];
 
-export function createManagedMcpServer({ workspaceRoot = process.env.MANSOOR_WORKSPACE_ROOT, hubRoot } = {}) {
-  const runtimeDeps = { workspaceRoot, ...(hubRoot ? { hubRoot } : {}) };
+export function createManagedMcpServer({ workspaceRoot = process.env.MANSOOR_WORKSPACE_ROOT, hubRoot, daemonClientFactory = async () => connectRuntimeClient() } = {}) {
+  const runtimeDeps = {
+    workspaceRoot,
+    approvalAuthorityFactory: async (_manifest, ledger) => createFileBackedApprovalAuthority(ledger.directory),
+    ...(hubRoot ? { hubRoot } : {}),
+  };
 
   async function callTool(name, args = {}) {
     if (!args || typeof args !== 'object' || Array.isArray(args)) return toolText({ status: 'blocked', reason: 'tool-arguments-must-be-an-object' }, { isError: true });
     try {
+      if (['submit_task', 'get_run_status', 'follow_run_events', 'stop_run'].includes(name)) {
+        let client;
+        try { client = await daemonClientFactory(); }
+        catch (error) { return toolText({ status: 'queued-host-unavailable', providerFallback: false, reason: String(error.code || error.message || 'daemon-unavailable') }); }
+        try {
+          const method = name === 'submit_task' ? 'submit' : name === 'get_run_status' ? 'status' : name === 'follow_run_events' ? 'events' : 'stop';
+          const request = name === 'submit_task' ? { method, input: args } : { method, ...args };
+          return toolText(await client.request(request));
+        } finally { client.close(); }
+      }
       if (name === 'inspect_task_workspace') {
         const result = inspectTaskWorkspace({ ...args, workspaceRoot });
         return toolText({ status: result.ok ? 'ready' : 'blocked', ...result });
       }
+      if (name === 'prepare_managed_action') {
+        const manifest = prepareActionManifest(args, { workspaceRoot, hubRoot: runtimeDeps.hubRoot });
+        return toolText({ status: 'ready', actionManifest: manifest, nextAction: 'pass-this-manifest-unchanged-to-run_managed_task' });
+      }
       if (name === 'run_managed_task') {
+        if (!args.actionManifest || typeof args.actionManifest !== 'object' || Array.isArray(args.actionManifest)) {
+          return toolText({ status: 'blocked', reason: 'action-manifest-required' }, { isError: true });
+        }
         const result = await runManagedTask(args, {
           ...runtimeDeps,
-          // The plugin's PreToolUse hook forces an interactive owner prompt for this MCP tool.
-          // The runtime itself still requires this trusted, non-model-authored callback.
-          approvePlan: async () => ({ approved: true, actor: 'antigravity-force-ask-gate', approvedAt: new Date().toISOString() }),
+          // The PreToolUse hook requests a fresh review of this exact tool call.
+          // This receipt binds the accepted invocation; it is not a host-signed
+          // assertion of a human identity or of OS-level containment.
+          approvePlan: async (manifest, authority) => authority.issue(manifest, {
+            approved: true,
+            actor: 'host-invocation',
+            source: 'antigravity-tool-call-host-review-unattested',
+            manifestHash: manifest.manifestHash,
+            nonce: manifest.nonce,
+          }),
         });
         return toolText(result, { isError: result.status === 'blocked' || result.status === 'escalated' });
       }
@@ -116,16 +198,16 @@ export function createManagedMcpServer({ workspaceRoot = process.env.MANSOOR_WOR
         if (args.patchHash !== review.patchHash || args.ownerReviewedPatch !== review.patchText) {
           return toolText({ status: 'blocked', reason: 'owner-reviewed-patch-mismatch', patchHash: review.patchHash }, { isError: true });
         }
-        const promoted = promoteTaskWorkspace(args.workspace, {
+        const promoted = promoteManagedTaskWorkspace(args.workspace, {
           approved: true,
-          actor: 'antigravity-force-ask-gate',
+          actor: 'host-invocation',
           patchHash: review.patchHash,
         });
-        return toolText(promoted);
+        return toolText(promoted, { isError: promoted.status === 'blocked' });
       }
       if (name === 'discard_task_workspace') {
-        const discarded = discardTaskWorkspace(args.workspace, { approved: true, actor: 'antigravity-force-ask-gate' });
-        return toolText(discarded);
+        const discarded = discardManagedTaskWorkspace(args.workspace, { approved: true, actor: 'host-invocation' });
+        return toolText(discarded, { isError: discarded.status === 'blocked' });
       }
       return toolText({ status: 'blocked', reason: 'unknown-tool' }, { isError: true });
     } catch (error) {
