@@ -54,6 +54,14 @@ Apply `claude-style-response-quality` to every user-facing answer and specialist
 - Use `tools/ultra-agent-v2/contract.mjs` for contract audit, bootstrap proposal, requirement creation and delegation-envelope validation. Use `tools/ultra-agent-v3/policy.mjs` with a concrete path and approval before any owned write.
 - Unexpected files, folders, path traversal, protected-file access, missing evidence or unapproved contract drift immediately block completion; do not repair by broad rewrite.
 
+## Automatic context and strict product contract
+
+The runtime supplies a project context envelope automatically; never ask a specialist to locate or declare a memory file. Before delegation, confirm the envelope contains the canonical product domain, glossary, in-scope features, non-goals, API/data contracts, auth/session invariants, acceptance criteria, affected paths and current verified evidence. Global Mansoor rules and selected-project memory are separate tiers; project identity, revision and source hashes must match before facts are promoted.
+
+Treat domain drift as a blocker. If the requirement is inventory management, do not turn it into a store, marketplace or seller product; if a feature, route, screen, migration or API change is not in the approved scope, propose it as a separate owner-review item. Extra UI, invented business rules, placeholder data and broad cleanup are prohibited by default.
+
+For protected APIs, apply the detected project auth contract before any implementation or verification call: authenticate first, bind the session subject and tenant to the request, reject expired/revoked/mismatched sessions with the existing 401/403 behavior, and never trust client-supplied user IDs, roles, tenant IDs or prices. JWT is a policy template, not a universal replacement for an existing approved auth mechanism. Completion requires negative auth tests and evidence, not prompt compliance.
+
 ## Native agent activity in parent chat
 
 Use Antigravity's native `invoke_subagent` and native sub-agent panel as the live source of worker state. The parent conversation is the user's concise activity log; do not direct the user to a separate browser dashboard.
@@ -117,6 +125,7 @@ Use a fast path by default for routine, clearly scoped work:
 - Use one matching specialist at most. Skip research, consensus and a second reviewer when the task is local, reversible and already specified.
 - Load skills on demand: choose the smallest skill set that covers the task, then fetch another skill only when an unresolved requirement needs it. Never paste the whole skill library or every agent profile into the task context.
 - Treat the Fast result from `tools/ultra-agent-v3/mode.mjs` as a hard manager budget: at most 12 relevant context files, 6 full skill bodies, 12 tool calls, zero web queries, one verification command, one targeted recovery and zero idle polling. A proven parallel wave may raise only the tool-call cap to 18 and worker count to 3; it does not raise thinking level or research scope.
+- Treat the mode result's `latencyProfile` as the host preset: for Fast CLI work pass its `--model Gemini 3.8 Flash --effort low` args; in the Antigravity desktop selector, verify the same model and Low thinking before starting. The kit cannot change a host-owned selector or a plan quota. Reuse a valid preflight/memory/context cache for the same project revision instead of rebuilding it on every routine turn.
 - Do not run full-repository scans, broad `npm test`, repeated status polling or a second explanation on the Fast path. Start the smallest implementation after the contract is clear. If a native tool is unresolved, do not launch another call beside it; report the blocker or use a deterministic local fallback.
 - Reuse a current repository map and verified project facts when their revision/hash still matches; invalidate stale entries instead of rereading the whole project.
 - Keep checks narrow but mandatory. Run the smallest test/lint/build check that proves the acceptance criteria; reuse a cached result only when its exact inputs and tool versions still match.

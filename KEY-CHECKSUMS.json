@@ -31,13 +31,13 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/dotnet-backend-specialist/agent.md",
-    "SHA256": "417F66E72B46489E9D2AA53E4DAC8343B5F5E96517638A8F9B76DC9C745DE4C3",
-    "Bytes": 1634
+    "SHA256": "B1F1AE038D6957AF6DB22ED6EBEAB75B7D1621540A60BC3A6CA86B4C9ED58282",
+    "Bytes": 2157
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/enterprise-schema-architect/agent.md",
-    "SHA256": "B28E7B1055C19C593562E3F76A80C45491354305F8BC0DC038BDB77FF7A850AE",
-    "Bytes": 2801
+    "SHA256": "94BB021E865F45E3F06BE595E1C7DA9DBCFCF67DD28B2EE413FD9E4E379073AE",
+    "Bytes": 3616
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/flutter-mobile-specialist/agent.md",
@@ -61,18 +61,18 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/node-backend-specialist/agent.md",
-    "SHA256": "3E061BF30C99C046FD7B6B089C5525EBC9B00591C5B4A3B7C4799BB2BAAE22FC",
-    "Bytes": 1620
+    "SHA256": "894915B6AE3A51BF00B8A4B9040863F2D4E9C81DEE6CEB381CA50264A95B7520",
+    "Bytes": 2112
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "9CD1C6513EDF1240C7C18D285B52A0FD6C4D4AABCE674497B6CF1683F529E87D",
-    "Bytes": 30233
+    "SHA256": "592B225236655CFB423D11C3F21A9CA7CAB8F09D549A9551933DD21E8A81F829",
+    "Bytes": 31655
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
-    "SHA256": "75673C54D4DBD9E90E054089E1F9A23B36455A21FB1F2EE40859247BB885EFB0",
-    "Bytes": 1538
+    "SHA256": "E36BADD6C1B44D74232DE7B5C321FA8FD540C7459D4BDE311A044F3B941FACD5",
+    "Bytes": 1982
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/qa-release-specialist/agent.md",
@@ -191,8 +191,8 @@
   },
   {
     "Path": "Agents/shared/control-plane/agent-capability-manifest.json",
-    "SHA256": "178FBE69A46A139A4EA0B75DCE435208ED3B4CCAD14D48BEAEB3290F72130D8E",
-    "Bytes": 1544
+    "SHA256": "857F7AEA21EF679448BCC188B566EC7ECAEB7BB2A6167A9D0F4ABBDD01520B0C",
+    "Bytes": 2095
   },
   {
     "Path": "Agents/shared/SUPER_AGENT_PROTOCOL.md",

@@ -54,3 +54,9 @@ In the multi-agent consensus loop:
 - Block implementation until database migrations, constraints, and mock fixtures are confirmed.
    - Use official ERP/database documentation and maintained open-source implementations as comparison references, recording direct sources. Update the schema/feature document with evidence and invariants.
    - Read-only analysis by default. No live database or production API mutations.
+
+## Product-contract and authorization invariants
+
+Consume the automatic project context envelope before proposing entities or migrations. Keep the owner's domain terminology and non-goals immutable: an inventory-management product must not drift into store/marketplace behavior without a new approved requirement. List exact affected tables, endpoints, files, rollback and acceptance tests; reject invented folders, features or UI contracts.
+
+For every user/session/tenant relationship, verify the existing auth mechanism before schema work. Protected reads and mutations must bind the authenticated subject and tenant, reject expired/revoked/mismatched sessions, preserve audit/idempotency/soft-delete invariants, and include negative authorization tests. Never authorize from a client-supplied identifier alone.

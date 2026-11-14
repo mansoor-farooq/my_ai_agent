@@ -31,6 +31,22 @@
     "fullConversation": false,
     "allowedModes": ["summary", "evidence", "prompt-ledger"]
   },
+  "runtimeContextPolicy": {
+    "automaticProjectMemory": true,
+    "projectIdentityRequired": true,
+    "revisionBoundFacts": true,
+    "crossProjectRetrieval": false,
+    "unverifiedFactsAuthorizeWrites": false,
+    "scopeDriftBlocksCompletion": true
+  },
+  "defaultSecurityInvariants": {
+    "authenticateBeforeProtectedWork": true,
+    "matchSessionSubject": true,
+    "matchTenantScopeWhenPresent": true,
+    "rejectExpiredOrRevokedSessions": true,
+    "trustClientIdentifiersForAuthorization": false,
+    "jwtIsUniversalRequirement": false
+  },
   "github": {
     "transport": "github-app-installation",
     "repositorySelection": "selected",
