@@ -9,6 +9,7 @@ Repeated permission prompts were caused by a boundary between the local Mansoor 
 - Merged the Mansoor `auto-safe-review-critical` policy into the local Antigravity desktop configuration.
 - Preserved existing user grants.
 - Added narrow auto-allow rules for version probes, routine verification commands, and the managed runtime MCP tools.
+- Added explicit global `read_file(*)` and `write_file(*)` grants because Windows can classify project paths as non-workspace; protected deny rules remain higher priority.
 - Updated the PreToolUse hook so canonical in-workspace file mutations run as one scoped batch instead of prompting once per file.
 - Kept deny rules for secrets, `.env`, `.git`, SSH keys, destructive commands, network-capable commands, and Git push/reset/clean.
 - Created the host-config backup at `C:\Users\pc\.gemini\config\config.json.mansoor-backup`.

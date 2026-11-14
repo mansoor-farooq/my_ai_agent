@@ -25,4 +25,6 @@ test('desktop permission merge adds deny precedence without deleting custom gran
 test('permission merge never adds a blanket command allow', () => {
   const result = mergeCliSettings({});
   assert.ok(!result.permissions.allow.includes('command(*)'));
+  assert.ok(result.permissions.allow.includes('read_file(*)'));
+  assert.ok(result.permissions.allow.includes('write_file(*)'));
 });

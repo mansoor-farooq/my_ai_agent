@@ -9,6 +9,13 @@ export const PERMISSION_POLICY_VERSION = '2026-11-14.1';
 // Keep these entries narrow. Antigravity evaluates deny before ask before allow;
 // the installer must never add a blanket command(*) allow for the managed team.
 export const SAFE_ALLOW_RULES = Object.freeze([
+  // Antigravity's Windows host can fall back to Ask for paths it does not
+  // recognize as the active project. Explicit global read access keeps
+  // indexing/RAG autonomous across projects. Explicit global write access
+  // keeps approved manager edits autonomous across projects; protected deny rules below
+  // still take precedence for secrets and Git/SSH metadata.
+  'read_file(*)',
+  'write_file(*)',
   'command(regex:^node --version$)',
   'command(regex:^npm --version$)',
   'command(regex:^flutter --version$)',
