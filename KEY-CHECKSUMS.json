@@ -2456,8 +2456,8 @@
   },
   {
     "Path": "Agents/tools/antigravity-pretool-guard.mjs",
-    "SHA256": "B7DE099196BF1BF00002C352F7F925F633F7FE6A80E27BF165031ACFFD2C3AD7",
-    "Bytes": 12284
+    "SHA256": "52C252C4A7DBDEC9D8E5DC7365ACA0D6009B85E71601BFD5CA2399B31D58F09C",
+    "Bytes": 12539
   },
   {
     "Path": "Agents/tools/antigravity-pretool-guard.ps1",

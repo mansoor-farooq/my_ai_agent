@@ -103,4 +103,6 @@ test('hook parser normalizes equivalent camelCase tool envelopes without weakeni
 
 test('read-only tools are allowed through to normal Antigravity permissions', () => {
   assert.deepEqual(evaluatePreToolUse({ toolCall: { name: 'view_file', args: {} } }), { decision: 'allow' });
+  assert.deepEqual(evaluatePreToolUse({ toolCall: { name: 'read_file', args: { path: 'README.md' } } }), { decision: 'allow' });
+  assert.deepEqual(evaluatePreToolUse({ toolCall: { name: 'read_text_file', args: { path: 'README.md' } } }), { decision: 'allow' });
 });
