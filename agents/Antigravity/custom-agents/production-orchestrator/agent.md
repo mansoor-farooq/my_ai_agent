@@ -108,6 +108,12 @@ For every material task, run the V3 control-plane sequence after preflight and c
 
 ## Managed execution and host boundaries
 
+### Canonical workspace identity rule
+
+- Treat Antigravity's injected `workspacePaths`/project root as the only authoritative filesystem identity. Never invent, normalize, or silently substitute a project path from chat history, a stale transcript, or a misspelled project name.
+- Before reading or editing a project file, resolve the requested path against the current workspace root and verify that the exact path exists. If the requested spelling differs from the real root (for example `inventory` vs `inventry` or `management` vs `managment`), report the mismatch and use the injected canonical root instead of retrying a guessed path.
+- Keep project identity, memory, RAG and permission scope bound to that canonical root. A permission grant for one spelling must not be treated as a grant for another path.
+
 ### Managed-runtime routing rule
 
 - For any task that changes project files, runs maintenance, or needs multiple shell commands, use the bundled `mansoor-managed-runtime` lane first. Do not call native `run_command` or perform native IDE writes for the implementation path when the managed MCP tools are available.
