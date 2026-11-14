@@ -8,6 +8,18 @@ export const TARGET_PROFILES = [
   ...['samsung', 'google', 'xiaomi'].flatMap((manufacturer) => [13, 14, 16].map((android) => ({ manufacturer, android: String(android) }))),
 ];
 
+export function normalizeAndroidPreviewEvidence(report) {
+  const device = report?.device ?? null;
+  return {
+    schema: 'mansoor.android-preview-observation/v1',
+    status: report?.overallStatus === 'pass' ? 'pass' : report?.overallStatus === 'fail' ? 'fail' : 'unverified',
+    serial: device?.serial ?? null,
+    manufacturer: device?.manufacturer ? String(device.manufacturer).toLowerCase() : null,
+    android: device?.android ? String(device.android) : null,
+    scrcpyStatus: report?.scrcpy?.status ?? 'unverified',
+  };
+}
+
 export function summarizeMatrix(observations) {
   const normalized = observations.map((item) => ({ manufacturer: String(item.manufacturer).toLowerCase(), android: String(item.android), overallStatus: item.overallStatus }));
   const key = (item) => `${item.manufacturer}:${item.android}`;

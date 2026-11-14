@@ -11,7 +11,7 @@ export function calculateP95(values) {
   return sorted[Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1)];
 }
 
-export function buildReleaseReport({ project, analyze, tests, build, apkBytes = null, startupMs = [] }) {
+export function buildReleaseReport({ project, analyze, tests, build, apkBytes = null, startupMs = [], androidPreview = null }) {
   const gates = {
     analyze: analyze.ok ? 'pass' : 'fail',
     tests: tests.ok ? 'pass' : 'fail',
@@ -21,12 +21,13 @@ export function buildReleaseReport({ project, analyze, tests, build, apkBytes = 
     schema: 'mansoor.flutter-release-gate/v1',
     project,
     generatedAt: new Date().toISOString(),
-    overallStatus: Object.values(gates).includes('fail') ? 'fail' : 'pass',
+    overallStatus: Object.values(gates).includes('fail') || androidPreview?.overallStatus === 'fail' ? 'fail' : 'pass',
     gates,
     apkBytes,
     startupMs: startupMs.length ? { samples: startupMs, p95: calculateP95(startupMs) } : { samples: [], p95: null, status: 'not_measured' },
     frameDrops: { status: 'not_measured', reason: 'Requires profile-mode timeline capture on a target device.' },
     evidence: { analyze, tests, build },
+    androidPreview,
   };
 }
 
@@ -67,7 +68,9 @@ function main() {
   const smokePath = path.join(project, '.agents', 'android-runtime-smoke.json');
   const smoke = fs.existsSync(smokePath) ? JSON.parse(fs.readFileSync(smokePath, 'utf8')) : null;
   const startup = Number(smoke?.checks?.startup?.evidence);
-  const report = buildReleaseReport({ project, analyze, tests, build, apkBytes: fs.existsSync(apk) ? fs.statSync(apk).size : null, startupMs: Number.isFinite(startup) ? [startup] : [] });
+  const previewPath = path.join(project, '.agents', 'android-preview.json');
+  const androidPreview = fs.existsSync(previewPath) ? JSON.parse(fs.readFileSync(previewPath, 'utf8')) : null;
+  const report = buildReleaseReport({ project, analyze, tests, build, apkBytes: fs.existsSync(apk) ? fs.statSync(apk).size : null, startupMs: Number.isFinite(startup) ? [startup] : [], androidPreview });
   if (out) {
     fs.mkdirSync(path.dirname(out), { recursive: true });
     fs.writeFileSync(out, `${JSON.stringify(report, null, 2)}\n`);
