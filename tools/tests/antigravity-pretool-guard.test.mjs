@@ -5,14 +5,15 @@ import os from 'node:os';
 import path from 'node:path';
 import { evaluatePreToolUse, parsePreToolInput } from '../antigravity-pretool-guard.mjs';
 
-test('native in-workspace file writes always require a fresh owner review', () => {
+test('native in-workspace file writes are allowed once and do not prompt per file', () => {
   const workspace = mkdtempSync(path.join(os.tmpdir(), 'agy-hook-'));
   try {
     const result = evaluatePreToolUse({
       toolCall: { name: 'write_to_file', args: { TargetFile: path.join(workspace, 'src', 'new.js') } },
       workspacePaths: [workspace],
     });
-    assert.equal(result.decision, 'force_ask');
+    assert.equal(result.decision, 'allow');
+    assert.match(result.reason, /in-workspace mutation is allowed/i);
   } finally { rmSync(workspace, { recursive: true, force: true }); }
 });
 

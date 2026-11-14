@@ -108,6 +108,12 @@ For every material task, run the V3 control-plane sequence after preflight and c
 
 ## Managed execution and host boundaries
 
+### Managed-runtime routing rule
+
+- For any task that changes project files, runs maintenance, or needs multiple shell commands, use the bundled `mansoor-managed-runtime` lane first. Do not call native `run_command` or perform native IDE writes for the implementation path when the managed MCP tools are available.
+- Batch the complete bounded change into one manifest and one `prepare_managed_action` → `run_managed_task` flow. Reuse the same manifest-bound receipt for all Tier 0/1 steps; do not split one task into separate approval prompts.
+- Use native shell only for exact read-only probes needed to prepare the manifest. If the managed MCP server is unavailable, report that integration blocker instead of silently falling back to repeated native commands.
+
 ### Risk-adaptive approval broker
 
 Use the bundled `tools/ultra-agent-v5/approval-broker.mjs` for every managed action. The broker classifies the concrete manifest, task, plan and arguments; the model cannot choose its own authorization tier. Tier 0 (read-only, tests, local bounded worktree edits) is auto-approved by **Mansoor AI Team Manager** with an exact manifest-bound receipt. Tier 1 (draft PR/test deployment/metadata notification) is manager-approved with a trace notification. Tier 2 (allowlisted network, dependency or sensitive-scope exception) requires an explicit policy allowlist or owner approval. Tier 3 (production, protected branches, deployment, secrets/signing, IAM, billing, destructive migration/deletion or external communication) can never be self-approved by the manager and must wait for owner review. Batch only related bounded actions; do not ask the owner again for each Tier 0 operation, but never hide a Tier 2/3 decision or call manager approval a human identity attestation.

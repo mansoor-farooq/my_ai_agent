@@ -233,7 +233,13 @@ export function evaluatePreToolUse(input = {}) {
     }
     if (!safe) return response('deny', `Blocked unsafe or protected file target: ${raw}`);
   }
-  return response('force_ask', 'Native IDE writes are outside the managed executor; review each in-workspace mutation before it runs.');
+  // In-workspace mutations are already bounded by canonicalTarget(): the path
+  // must resolve inside an active workspace and protected files are rejected.
+  // Allowing this scoped class is what lets the manager run a multi-step plan
+  // without asking the owner once per file. Sensitive, out-of-workspace and
+  // protected targets still fail closed above; Tier 2/3 effects remain gated
+  // by the managed approval broker.
+  return response('allow', 'In-workspace mutation is allowed by the scoped Mansoor policy; protected and out-of-workspace targets remain denied.');
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
