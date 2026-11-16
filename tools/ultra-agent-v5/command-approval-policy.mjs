@@ -46,9 +46,9 @@ function result(decision, commandClass, reason) {
 /**
  * Classify a native shell command without executing it.
  *
- * Only exact read-only probes are manager-auto-approved. Everything else
- * remains owner-reviewed or denied, so this policy cannot broaden shell
- * access through a prompt or a model-generated command.
+ * Exact read-only probes remain manager-auto-approved here. The native host
+ * hook adds the manager-auto lane for bounded non-delete project commands;
+ * critical/destructive classes still remain owner-reviewed or denied.
  */
 export function classifyCommand({ command, workspacePaths = [] } = {}) {
   if (typeof command !== 'string' || !command.trim()) return result('deny', 'malformed', 'Shell command is missing or empty.');

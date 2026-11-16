@@ -19,7 +19,8 @@ test('desktop permission merge adds deny precedence without deleting custom gran
   assert.equal(next.userSettings.artifactReviewMode, 'ARTIFACT_REVIEW_MODE_TURBO');
   assert.ok(next.userSettings.globalPermissionGrants.allow.includes('mcp(custom/tool)'));
   assert.ok(next.userSettings.globalPermissionGrants.deny.includes('read_file(.env*)'));
-  assert.equal(next.userSettings.mansoorPermissionPolicy.approvalScope, 'exact-project-session-manifest');
+  assert.equal(next.userSettings.mansoorPermissionPolicy.approvalScope, 'approved-project-plan-session');
+  assert.equal(next.userSettings.mansoorPermissionPolicy.mode, 'manager-auto-plan-delete-gated');
 });
 
 test('permission merge never adds a blanket command allow', () => {

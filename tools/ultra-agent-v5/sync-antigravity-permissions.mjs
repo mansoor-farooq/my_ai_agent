@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const PERMISSION_POLICY_SCHEMA = 'mansoor.antigravity-permissions/v1';
-export const PERMISSION_POLICY_VERSION = '2026-11-14.1';
+export const PERMISSION_POLICY_VERSION = '2026-11-16.1';
 
 // Keep these entries narrow. Antigravity evaluates deny before ask before allow;
 // the installer must never add a blanket command(*) allow for the managed team.
@@ -66,8 +66,9 @@ function policyMetadata() {
     schema: PERMISSION_POLICY_SCHEMA,
     version: PERMISSION_POLICY_VERSION,
     manager: 'Mansoor AI Team Manager',
-    mode: 'auto-safe-review-critical',
-    approvalScope: 'exact-project-session-manifest',
+    mode: 'manager-auto-plan-delete-gated',
+    approvalScope: 'approved-project-plan-session',
+    managerAutoLane: 'non-delete-in-workspace-and-managed-actions',
     denyPrecedence: true,
   };
 }
@@ -159,7 +160,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   process.stdout.write(`${JSON.stringify({
     status: 'ok',
     dryRun,
-    policy: { schema: PERMISSION_POLICY_SCHEMA, version: PERMISSION_POLICY_VERSION, mode: 'auto-safe-review-critical' },
+    policy: { schema: PERMISSION_POLICY_SCHEMA, version: PERMISSION_POLICY_VERSION, mode: 'manager-auto-plan-delete-gated' },
     files: result.files.map((file) => ({ filePath: file.filePath, changed: file.changed })),
   })}\n`);
 }

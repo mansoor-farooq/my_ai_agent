@@ -5,22 +5,27 @@ import os from 'node:os';
 import path from 'node:path';
 import { evaluatePreToolUse, parsePreToolInput } from '../antigravity-pretool-guard.mjs';
 
-test('native in-workspace file writes ask through host permissions so Always Allow can be reused', () => {
+test('native in-workspace file writes are manager-auto-approved inside the active workspace', () => {
   const workspace = mkdtempSync(path.join(os.tmpdir(), 'agy-hook-'));
   try {
     const result = evaluatePreToolUse({
       toolCall: { name: 'write_to_file', args: { TargetFile: path.join(workspace, 'src', 'new.js') } },
       workspacePaths: [workspace],
     });
-    assert.equal(result.decision, 'ask');
-    assert.match(result.reason, /Always Allow/i);
+    assert.equal(result.decision, 'auto_approve');
+    assert.match(result.reason, /manager|workspace/i);
   } finally { rmSync(workspace, { recursive: true, force: true }); }
 });
 
-test('native shell commands ask through host permissions so Always Allow can be reused', () => {
+test('native non-delete shell commands are manager-auto-approved', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'echo safe' } } });
-  assert.equal(result.decision, 'ask');
-  assert.match(result.reason, /Always Allow/i);
+  assert.equal(result.decision, 'auto_approve');
+  assert.match(result.reason, /manager|plan/i);
+});
+
+test('native project build command is manager-auto-approved', () => {
+  const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'npm run build' } } });
+  assert.equal(result.decision, 'auto_approve');
 });
 
 test('manager-approved read-only shell probes are allowed without a repeated host prompt', () => {
@@ -36,7 +41,12 @@ test('manager does not auto-approve a destructive storage purge', () => {
     toolCall: { name: 'run_command', args: { CommandLine: 'Clear-RecycleBin -Force; Remove-Item -Recurse -Force C:\\Windows\\Temp' } },
   });
   assert.equal(result.decision, 'ask');
-  assert.match(result.reason, /Always Allow/i);
+  assert.match(result.reason, /delete|destructive|owner/i);
+});
+
+test('native project deletion remains an approval boundary', () => {
+  const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'Remove-Item -Recurse -Force .\\tmp' } } });
+  assert.equal(result.decision, 'ask');
 });
 
 test('unclassified tools remain fail-closed and do not inherit a cached grant', () => {

@@ -43,14 +43,18 @@ function taskAndPlan(projectDir) {
   };
 }
 
-test('Antigravity MCP task execution and promotion calls use host ask so Always Allow can be reused', () => {
-  for (const toolName of ['run_managed_task', 'promote_reviewed_patch', 'discard_task_workspace']) {
+test('Antigravity MCP non-delete actions use manager auto approval while discard remains gated', () => {
+  for (const toolName of ['run_managed_task', 'promote_reviewed_patch']) {
     const result = evaluatePreToolUse({
       toolCall: { name: 'call_mcp_tool', args: { ServerName: 'mansoor-managed-runtime', ToolName: toolName, Arguments: {} } },
     });
-    assert.equal(result.decision, 'ask', toolName);
-    assert.match(result.reason, /Always Allow/i, toolName);
+    assert.equal(result.decision, 'auto_approve', toolName);
+    assert.match(result.reason, /manager|plan/i, toolName);
   }
+  const discard = evaluatePreToolUse({
+    toolCall: { name: 'call_mcp_tool', args: { ServerName: 'mansoor-managed-runtime', ToolName: 'discard_task_workspace', Arguments: {} } },
+  });
+  assert.equal(discard.decision, 'ask', 'discard_task_workspace');
   for (const toolName of ['inspect_task_workspace', 'prepare_managed_action', 'get_review_patch']) {
     const result = evaluatePreToolUse({
       toolCall: { name: 'call_mcp_tool', args: { ServerName: 'mansoor-managed-runtime', ToolName: toolName, Arguments: {} } },

@@ -14,6 +14,8 @@ const pathKeys = new Set(['targetfile', 'path', 'filepath', 'file_path', 'target
 const privateFile = /^(?:\.env(?:\..*)?|\.git|id_rsa(?:\.pub)?|id_ed25519(?:\.pub)?|.*\.(?:pem|key|p12|pfx|keystore))$/i;
 const managedMcpReadTools = new Set(['inspect_task_workspace', 'prepare_managed_action', 'get_review_patch']);
 const managedMcpApprovalTools = new Set(['run_managed_task', 'promote_reviewed_patch', 'discard_task_workspace']);
+const DELETE_OR_DESTRUCTIVE = /(?:clear-recyclebin|remove-(?:item|child|object)|\b(?:delete|destroy|drop|truncate|purge|rmdir|del|erase|discard|clean)\b)/i;
+const EXTERNAL_SIDE_EFFECT = /(?:\bgit\s+(?:push|reset|clean)\b|\b(?:deploy|publish)\b)/i;
 
 function response(decision, reason) {
   return reason ? { decision, reason } : { decision };
@@ -203,6 +205,10 @@ function isBoundedManagedRun(args = {}) {
   }
 }
 
+function managerAutoReason(resource) {
+  return `Mansoor AI Team Manager auto-approved this non-delete ${resource} inside the approved project plan; protected and destructive actions remain gated.`;
+}
+
 export function evaluatePreToolUse(input = {}) {
   const normalized = parsePreToolInput(input);
   const name = normalized?.toolCall?.name;
@@ -212,14 +218,21 @@ export function evaluatePreToolUse(input = {}) {
   if (managedTool && managedMcpReadTools.has(managedTool)) return response('allow');
   if (managedTool && managedMcpApprovalTools.has(managedTool)) {
     if (managedTool === 'run_managed_task' && isBoundedManagedRun(args)) return response('allow', 'Bounded managed run is authorized by the Mansoor policy broker; Tier 3 actions still require owner review.');
-    return response('ask', `Managed MCP action ${managedTool} requires owner review; saved Antigravity Always Allow grants may be reused.`);
+    if (managedTool === 'discard_task_workspace') return response('ask', 'Discarding a managed workspace is destructive and requires owner approval.');
+    const payload = managedMcpArguments(args);
+    if (DELETE_OR_DESTRUCTIVE.test(JSON.stringify(payload))) return response('ask', `Managed MCP action ${managedTool} contains a destructive/delete operation and requires owner approval.`);
+    return response('auto_approve', managerAutoReason(`MCP action ${managedTool}`));
   }
   if (/^run_command$/i.test(name)) {
     const command = args?.CommandLine ?? args?.commandLine ?? args?.command ?? args?.cmd ?? '';
     const commandDecision = classifyCommand({ command, workspacePaths: normalized.workspacePaths });
     if (commandDecision.decision === 'auto_approve') return response('allow', commandDecision.reason);
     if (commandDecision.decision === 'deny') return response('deny', commandDecision.reason);
-    return response('ask', `${commandDecision.reason} Antigravity Always Allow grants may be reused for this exact command.`);
+    if (DELETE_OR_DESTRUCTIVE.test(command)) return response('ask', 'Delete or destructive shell command requires owner approval.');
+    if (EXTERNAL_SIDE_EFFECT.test(command) || commandDecision.class === 'network' || commandDecision.class === 'protected-path') {
+      return response('ask', `${commandDecision.reason} External, protected or critical side effects remain owner-reviewed.`);
+    }
+    return response('auto_approve', managerAutoReason('shell command'));
   }
   if (readOnlyTool.test(name)) return response('allow');
   if (!mutatingTool.test(name)) return response('force_ask', 'Unclassified Antigravity tool requires owner review.');
@@ -236,7 +249,7 @@ export function evaluatePreToolUse(input = {}) {
     }
     if (!safe) return response('deny', `Blocked unsafe or protected file target: ${raw}`);
   }
-  return response('ask', 'Native IDE writes are outside the managed executor; review the in-workspace mutation. Antigravity Always Allow grants may be reused for the same resource.');
+  return response('auto_approve', managerAutoReason('in-workspace write'));
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
