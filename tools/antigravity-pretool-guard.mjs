@@ -17,8 +17,15 @@ const managedMcpApprovalTools = new Set(['run_managed_task', 'promote_reviewed_p
 const DELETE_OR_DESTRUCTIVE = /(?:clear-recyclebin|remove-(?:item|child|object)|\b(?:delete|destroy|drop|truncate|purge|rmdir|del|erase|discard|clean)\b)/i;
 const EXTERNAL_SIDE_EFFECT = /(?:\bgit\s+(?:push|reset|clean)\b|\b(?:deploy|publish)\b)/i;
 
-function response(decision, reason) {
-  return reason ? { decision, reason } : { decision };
+function response(decision, reason, permissionOverrides = []) {
+  const result = reason ? { decision, reason } : { decision };
+  if (Array.isArray(permissionOverrides) && permissionOverrides.length) result.permissionOverrides = permissionOverrides;
+  return result;
+}
+
+function commandPermissionOverride(command) {
+  const normalized = String(command || '').trim();
+  return normalized ? [`command(${normalized})`] : [];
 }
 
 function isObject(value) {
@@ -228,9 +235,9 @@ export function evaluatePreToolUse(input = {}) {
     const commandDecision = classifyCommand({ command, workspacePaths: normalized.workspacePaths });
     if (commandDecision.decision === 'auto_approve') return response('allow', commandDecision.reason);
     if (commandDecision.decision === 'deny') return response('deny', commandDecision.reason);
-    if (DELETE_OR_DESTRUCTIVE.test(command)) return response('ask', 'Delete or destructive shell command requires owner approval.');
-    if (EXTERNAL_SIDE_EFFECT.test(command) || commandDecision.class === 'network' || commandDecision.class === 'protected-path') {
-      return response('ask', `${commandDecision.reason} External, protected or critical side effects remain owner-reviewed.`);
+    if (DELETE_OR_DESTRUCTIVE.test(command)) return response('force_ask', 'Delete or destructive shell command never receives an Always Allow override.');
+    if (EXTERNAL_SIDE_EFFECT.test(command) || commandDecision.class === 'mutating' || commandDecision.class === 'network' || commandDecision.class === 'protected-path') {
+      return response('ask', `${commandDecision.reason} Review once, then Antigravity may remember this exact command for this project/session.`, commandPermissionOverride(command));
     }
     return response('auto_approve', managerAutoReason('shell command'));
   }

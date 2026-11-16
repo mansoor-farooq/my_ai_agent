@@ -40,13 +40,20 @@ test('manager does not auto-approve a destructive storage purge', () => {
   const result = evaluatePreToolUse({
     toolCall: { name: 'run_command', args: { CommandLine: 'Clear-RecycleBin -Force; Remove-Item -Recurse -Force C:\\Windows\\Temp' } },
   });
-  assert.equal(result.decision, 'ask');
+  assert.equal(result.decision, 'force_ask');
+  assert.equal(result.permissionOverrides, undefined);
   assert.match(result.reason, /delete|destructive|owner/i);
 });
 
 test('native project deletion remains an approval boundary', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'Remove-Item -Recurse -Force .\\tmp' } } });
+  assert.equal(result.decision, 'force_ask');
+});
+
+test('non-delete critical commands expose an exact Always Allow override', () => {
+  const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'npm install lodash' } } });
   assert.equal(result.decision, 'ask');
+  assert.deepEqual(result.permissionOverrides, ['command(npm install lodash)']);
 });
 
 test('unclassified tools remain fail-closed and do not inherit a cached grant', () => {
