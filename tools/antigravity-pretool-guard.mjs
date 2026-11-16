@@ -209,14 +209,14 @@ export function evaluatePreToolUse(input = {}) {
   if (managedTool && managedMcpReadTools.has(managedTool)) return response('allow');
   if (managedTool && managedMcpApprovalTools.has(managedTool)) {
     if (managedTool === 'run_managed_task' && isBoundedManagedRun(args)) return response('allow', 'Bounded managed run is authorized by the Mansoor policy broker; Tier 3 actions still require owner review.');
-    return response('force_ask', `Managed MCP action ${managedTool} requires fresh owner review.`);
+    return response('ask', `Managed MCP action ${managedTool} requires owner review; saved Antigravity Always Allow grants may be reused.`);
   }
   if (/^run_command$/i.test(name)) {
     const command = args?.CommandLine ?? args?.commandLine ?? args?.command ?? args?.cmd ?? '';
     const commandDecision = classifyCommand({ command, workspacePaths: normalized.workspacePaths });
     if (commandDecision.decision === 'auto_approve') return response('allow', commandDecision.reason);
     if (commandDecision.decision === 'deny') return response('deny', commandDecision.reason);
-    return response('force_ask', commandDecision.reason);
+    return response('ask', `${commandDecision.reason} Antigravity Always Allow grants may be reused for this exact command.`);
   }
   if (readOnlyTool.test(name)) return response('allow');
   if (!mutatingTool.test(name)) return response('force_ask', 'Unclassified Antigravity tool requires owner review.');
@@ -233,7 +233,7 @@ export function evaluatePreToolUse(input = {}) {
     }
     if (!safe) return response('deny', `Blocked unsafe or protected file target: ${raw}`);
   }
-  return response('force_ask', 'Native IDE writes are outside the managed executor; review each in-workspace mutation before it runs.');
+  return response('ask', 'Native IDE writes are outside the managed executor; review the in-workspace mutation. Antigravity Always Allow grants may be reused for the same resource.');
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

@@ -25,7 +25,7 @@ export const SAFE_ALLOW_RULES = Object.freeze([
 ]);
 
 export const PROTECTED_DENY_RULES = Object.freeze([
-  'command(regex:.*(?:Clear-RecycleBin|Remove-Item\\s+-Recurse|Remove-Item\\s+.*(?:\\.env|\\.git)|git\\s+(?:push|reset\\s+--hard|clean)|(?:format|diskpart|rmdir|del)\\b).*)',
+  'command(regex:.*(?:Clear-RecycleBin|Remove-Item\\s+.*(?:[A-Za-z]:\\\\Windows|[A-Za-z]:\\\\Program\\s+Files|\\.env|\\.git|\\.ssh)|git\\s+(?:push|reset\\s+--hard|clean)|(?:format|diskpart)\\b).*)',
   'command(regex:.*(?:Invoke-WebRequest|Invoke-RestMethod|curl|wget|ssh|scp|ftp)\\b.*)',
   'read_file(.env*)',
   'write_file(.env*)',

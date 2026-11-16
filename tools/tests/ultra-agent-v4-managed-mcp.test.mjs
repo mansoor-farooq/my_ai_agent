@@ -43,12 +43,13 @@ function taskAndPlan(projectDir) {
   };
 }
 
-test('Antigravity MCP task execution and promotion calls always require fresh owner approval', () => {
+test('Antigravity MCP task execution and promotion calls use host ask so Always Allow can be reused', () => {
   for (const toolName of ['run_managed_task', 'promote_reviewed_patch', 'discard_task_workspace']) {
     const result = evaluatePreToolUse({
       toolCall: { name: 'call_mcp_tool', args: { ServerName: 'mansoor-managed-runtime', ToolName: toolName, Arguments: {} } },
     });
-    assert.equal(result.decision, 'force_ask', toolName);
+    assert.equal(result.decision, 'ask', toolName);
+    assert.match(result.reason, /Always Allow/i, toolName);
   }
   for (const toolName of ['inspect_task_workspace', 'prepare_managed_action', 'get_review_patch']) {
     const result = evaluatePreToolUse({

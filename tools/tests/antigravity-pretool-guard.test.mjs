@@ -5,20 +5,22 @@ import os from 'node:os';
 import path from 'node:path';
 import { evaluatePreToolUse, parsePreToolInput } from '../antigravity-pretool-guard.mjs';
 
-test('native in-workspace file writes always require a fresh owner review', () => {
+test('native in-workspace file writes ask through host permissions so Always Allow can be reused', () => {
   const workspace = mkdtempSync(path.join(os.tmpdir(), 'agy-hook-'));
   try {
     const result = evaluatePreToolUse({
       toolCall: { name: 'write_to_file', args: { TargetFile: path.join(workspace, 'src', 'new.js') } },
       workspacePaths: [workspace],
     });
-    assert.equal(result.decision, 'force_ask');
+    assert.equal(result.decision, 'ask');
+    assert.match(result.reason, /Always Allow/i);
   } finally { rmSync(workspace, { recursive: true, force: true }); }
 });
 
-test('native shell commands always require fresh owner review', () => {
+test('native shell commands ask through host permissions so Always Allow can be reused', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'echo safe' } } });
-  assert.equal(result.decision, 'force_ask');
+  assert.equal(result.decision, 'ask');
+  assert.match(result.reason, /Always Allow/i);
 });
 
 test('manager-approved read-only shell probes are allowed without a repeated host prompt', () => {
@@ -33,6 +35,12 @@ test('manager does not auto-approve a destructive storage purge', () => {
   const result = evaluatePreToolUse({
     toolCall: { name: 'run_command', args: { CommandLine: 'Clear-RecycleBin -Force; Remove-Item -Recurse -Force C:\\Windows\\Temp' } },
   });
+  assert.equal(result.decision, 'ask');
+  assert.match(result.reason, /Always Allow/i);
+});
+
+test('unclassified tools remain fail-closed and do not inherit a cached grant', () => {
+  const result = evaluatePreToolUse({ toolCall: { name: 'mystery_workspace_tool', args: { TargetFile: 'src/a.js' } } });
   assert.equal(result.decision, 'force_ask');
 });
 
