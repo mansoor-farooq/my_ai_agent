@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.19.6';
+const packageVersion = '1.19.7';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -64,6 +64,7 @@ for (const entry of await readdir(sourceAgents, { withFileTypes: true })) {
 const { skillCount, ruleCount } = await copyPortableComponents(root, target, secretPattern);
 const portableRuntimeFiles = [
   'tools/agent-training-dataset.mjs',
+  'tools/project-agent-refresh.mjs',
   'tools/ultra-agent-cli.mjs',
   'tools/ultra-agent-v4/daemon/paths.mjs',
   'tools/ultra-agent-v4/daemon/events.mjs',

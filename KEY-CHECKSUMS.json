@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "B3DC089D07940E455225D49AE9B2DD70DA401B3AE86AD3F7184C770FF3303465",
-    "Bytes": 36590
+    "SHA256": "724385B439DBC3D11CF60FE58D6F6D02EA2BD227C93B105184E3571C8B210E74",
+    "Bytes": 37092
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "45F8C479EE6A3C8D959D59771D1059DC0A35145B5CBFFD271B79C648860B885F",
+    "SHA256": "7B922691F0687E3A1D8A4699CD6528109CC934EE04E7B259EC644FD66991A4F2",
     "Bytes": 673
   },
   {
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "94A2F6D66D6FEE562C9DF1BC3764B183AA69C7ED1D55C6446C9E53B59BFCB74B",
-    "Bytes": 25178
+    "SHA256": "01456B1F034D11EBF068B2A918A24777236A3946BB4D7D72CF9248B34892245C",
+    "Bytes": 26078
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "3F7D509D85AF7B689B21CCD444093F4326AB0B37843E0FE4643055DA4A564FF1",
-    "Bytes": 59073
+    "SHA256": "B46ACE491376FF4162FC6A2BAA2CADB25AAACCB2266C1D40F5D24CCDCA89AD44",
+    "Bytes": 59110
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2266,7 +2266,7 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "2672CAACC151FAE2B2E1093A9BCF07683E8C623B9C31BCC12B1AC65DBEEA7406",
+    "SHA256": "A71CBFEADE6C982E117F71670FF957E5A34F91E2796755CC2BEDED386EE175FA",
     "Bytes": 18763
   },
   {

@@ -77,8 +77,9 @@ Use Antigravity's native `invoke_subagent` and native sub-agent panel as the liv
 For a material or long-lived repository task, use the bundled local runtime when it is available:
 
 1. Resolve the enabled `mansoor-agent-hub` plugin path from `agy plugin list --json` once per session. Set `<hubRoot>` to that entry's `path`; all bundled runtime scripts live under `<hubRoot>`, not under the project repository.
-2. Run `node <hubRoot>/tools/ultra-agent-v2/preflight.mjs --dir <repo> --project <name>` and use its JSON to choose only tools and specialists that the repository actually needs.
-3. Run `node <hubRoot>/tools/ultra-agent-v2/memory.mjs init --dir <repo> --project <name>`, then read the relevant `.agents/memory/` files before broad discovery. Keep each project identity separate.
+2. At intake, run `node <hubRoot>/tools/project-agent-refresh.mjs --mode sync --dir <repo> --project <name> --source <installed-plugin-path>`. This refreshes a stale project-level `.agents/plugins/mansoor-agent-hub` copy from the installed signed plugin, writes a version/policy state marker and leaves local customizations untouched. If the project has no workspace override, it records that the project inherits the current global plugin; it never rewrites application files or project requirements.
+3. Run `node <hubRoot>/tools/ultra-agent-v2/preflight.mjs --dir <repo> --project <name>` and use its JSON to choose only tools and specialists that the repository actually needs.
+4. Run `node <hubRoot>/tools/ultra-agent-v2/memory.mjs init --dir <repo> --project <name>`, then read the relevant `.agents/memory/` files before broad discovery. Keep each project identity separate.
 4. Record bounded research with `node <hubRoot>/tools/ultra-agent-v2/evidence.mjs append --dir <repo> --kind research ...` and observable checks with `--kind verification ...`. Do not record hidden chain-of-thought or raw conversation transcripts.
 5. Append a concise change/decision note after a material change. Use `node <hubRoot>/tools/sync-knowledge-bank.mjs` only for the approved project and only with explicit authorization for `--push`.
 
