@@ -6,7 +6,10 @@ import { classifyRisk } from './ultra-agent-v5/approval-broker.mjs';
 import { classifyCommand } from './ultra-agent-v5/command-approval-policy.mjs';
 
 const mutatingTool = /(?:write|edit|replace|patch|delete|remove|move|rename|mkdir|create|apply_diff)/i;
-const readOnlyTool = /^(?:view_file|list_dir|find_by_name|grep_search|search_web|read_url_content|browser_.*)$/i;
+// Antigravity can expose the same safe read as view_file or read_file
+// depending on the host/tool version. Keep all read-only variants in one
+// allowlist so reading a project README does not become an owner prompt.
+const readOnlyTool = /^(?:view_file|read_file|read_text_file|list_dir|list_files|find_by_name|grep_search|search_web|read_url_content|browser_.*)$/i;
 const pathKeys = new Set(['targetfile', 'path', 'filepath', 'file_path', 'targetpath', 'target_path', 'absolutepath', 'directorypath', 'directory_path', 'file', 'filename']);
 const privateFile = /^(?:\.env(?:\..*)?|\.git|id_rsa(?:\.pub)?|id_ed25519(?:\.pub)?|.*\.(?:pem|key|p12|pfx|keystore))$/i;
 const managedMcpReadTools = new Set(['inspect_task_workspace', 'prepare_managed_action', 'get_review_patch']);

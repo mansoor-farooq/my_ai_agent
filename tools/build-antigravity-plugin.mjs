@@ -297,7 +297,7 @@ const premiumPackageReadme = [
   '',
   '## Security boundary',
   '',
-  `The package contains ${agentCount} agent profiles, ${skillCount} portable skills, ${ruleCount} governed rules, a PreToolUse security hook and one local managed-runtime MCP server. The hook denies protected/out-of-workspace writes and requests fresh review for in-workspace writes, shell commands and managed task execution/promotion. Antigravity may ignore hook errors, so the hook is not an OS sandbox or guaranteed fail-closed boundary. It does not include remote/provider MCP connectors, sidecars, provider credentials, private chats or native-profile data.`,
+  `The package contains ${agentCount} agent profiles, ${skillCount} portable skills, ${ruleCount} governed rules, a PreToolUse security hook and one local managed-runtime MCP server. The hook denies protected/out-of-workspace writes, allows canonical in-workspace mutations as one scoped batch, and keeps shell commands plus managed task execution/promotion review-gated. Antigravity may ignore hook errors, so the hook is not an OS sandbox or guaranteed fail-closed boundary. It does not include remote/provider MCP connectors, sidecars, provider credentials, private chats or native-profile data.`,
   '',
   'The package does not collect project files, private chats, customer data, credentials or hidden reasoning. Signature verification detects ordinary unauthorized changes and fails closed. It is not unbreakable DRM against a local administrator; stronger secrecy requires a signed runtime or private hosted execution.',
   '',
