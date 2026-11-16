@@ -251,6 +251,14 @@ The public repository is a product showcase and discovery surface. The portable 
 
 Native shell commands use `tools/ultra-agent-v5/command-approval-policy.mjs`. The hook auto-allows exact read-only probes and routes bounded non-delete project commands through the Mansoor manager-auto lane; routine verification commands include `npm test`, approved lint/typecheck/analyze scripts, `flutter analyze/test`, `dotnet test` and `python -m pytest`. For non-delete critical commands that still need a review, the hook returns `ask` plus an exact `permissionOverrides` resource such as `command(npm install lodash)`, so Antigravity's project/session **Always Allow** can be used for that exact command. Delete/destructive commands return `force_ask` without an override and never expose a permanent grant. This removes per-command prompts for normal parallel work without turning the manager into an unrestricted shell authority.
 
+For repeated setup/optimizer work, use the owner-approved script registry instead of `command(node)`, `command(powershell)`, `command(*)` or `--dangerously-skip-permissions`. Register an unchanged `.js/.mjs/.cjs/.ps1` script once for the selected project:
+
+```text
+node tools/ultra-agent-v5/manager-script-registry.mjs --register --script "C:\path\to\script.ps1" --project "E:\path\to\project"
+```
+
+The registry stores the project path, interpreter and SHA-256 content hash. The native hook auto-allows only the same unchanged script for that project, even when the script is outside the workspace. Inline `node -e`/PowerShell `-Command`, modified scripts, network scripts and destructive scripts stay reviewable or fail-closed. This gives Turbo-compatible manager automation without a blanket command grant.
+
 The installer also merges a per-user Antigravity CLI `agentMode: auto` policy and protected desktop grant rules. Existing user settings are preserved and the merge is idempotent; deny rules protect `.env*`, `.git`, SSH keys, network egress and destructive system-level shell patterns. The Mansoor manager-auto lane uses the hook's `auto_approve` decision for in-workspace, non-delete writes and non-critical commands, so parallel specialist work does not ask once per file or command. Delete/destructive actions, secrets, protected paths, network egress, Git push/reset/clean and deployment remain `ask` or `deny`; explicit host rules always win. A native “always allow” click is host-owned and is not inferred from chat history. For delete/recreate work, the manager prepares one exact manifest (paths, pre-change hashes, replacement content, rollback and checks), obtains one review, then runs the complete bounded batch through the managed MCP lane.
 
 ### Existing-project refresh

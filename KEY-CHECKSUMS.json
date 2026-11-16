@@ -101,8 +101,8 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "8695D90ECA7E2422E5310ACDCE1CBDA1F31F1C907001D17D8627302CFF32A891",
-    "Bytes": 12683
+    "SHA256": "C0D1249EA710120D18CB2C582EC62B0288652454B6773C1EA01DEE9A574665C4",
+    "Bytes": 12753
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "47CC0343056A3D2EC186B389DB1EF317B0166D75B8AF5D2BC690C5A7713AB605",
+    "SHA256": "9B9A93C1D37DC7B14F89024558A650CEB67FF1F711618067163D329516BC1BFA",
     "Bytes": 673
   },
   {
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "95EEC95268D4BCB447F2F5E7BAFF54FF9F38C960FBDA8DA041BB0D7F9A37AB38",
-    "Bytes": 26688
+    "SHA256": "15911ACD6866CF415BE09CD0C1E68138C976B83CBC3258F4C01F47F342D37E7F",
+    "Bytes": 27498
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2196,13 +2196,13 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "2B8E664CF9554C4A7C333815DB391842A4357B4896E2E2DA6DB77F968633A3EE",
-    "Bytes": 21703
+    "SHA256": "4E78E5139F9C9FEA53E12F934B7BE90F4A16EE1D71BBACCD6E93EF9C1E3DD619",
+    "Bytes": 21759
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "6DDAF9A80579DF1907ADD55F28808651BAFE83F2F163680585A7AF7097D6725E",
-    "Bytes": 59753
+    "SHA256": "F1526C9ABF78156DC378DBCF4F765521B84BFF282259A6EBEF32393561FDCAEB",
+    "Bytes": 59807
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "4B9776F0AD94E3F1CA0B3FFCEDB7E306E03754FA6CDBDA6620F500373F3CD2EE",
-    "Bytes": 18763
+    "SHA256": "B1DEF4B70C50F5A715579556072F619198AD72167897AF40DB36740B0204EBF8",
+    "Bytes": 18821
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
@@ -2456,8 +2456,8 @@
   },
   {
     "Path": "Agents/tools/antigravity-pretool-guard.mjs",
-    "SHA256": "76C38B1AE2124E415320D3DB239D6DA99A7168310D65FD8ED9A612DCD0A0B7F3",
-    "Bytes": 13747
+    "SHA256": "D8E8B10154BE35E82706866217DAFE7DF69BD6738822AACF88804E0A9B866EC3",
+    "Bytes": 15157
   },
   {
     "Path": "Agents/tools/antigravity-pretool-guard.ps1",

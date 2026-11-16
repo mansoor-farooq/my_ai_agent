@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { classifyRisk } from './ultra-agent-v5/approval-broker.mjs';
 import { classifyCommand } from './ultra-agent-v5/command-approval-policy.mjs';
+import { parseManagerScriptCommand, verifyManagerScriptCommand } from './ultra-agent-v5/manager-script-registry.mjs';
 
 const mutatingTool = /(?:write|edit|replace|patch|delete|remove|move|rename|mkdir|create|apply_diff)/i;
 // Antigravity can expose the same safe read as view_file or read_file
@@ -232,6 +233,24 @@ export function evaluatePreToolUse(input = {}) {
   }
   if (/^run_command$/i.test(name)) {
     const command = args?.CommandLine ?? args?.commandLine ?? args?.command ?? args?.cmd ?? '';
+    const registeredScript = verifyManagerScriptCommand(command, {
+      workspacePaths: normalized.workspacePaths,
+      registryPath: normalized.managerScriptRegistryPath,
+    });
+    if (registeredScript.approved) {
+      return response('allow', managerAutoReason(`owner-approved ${registeredScript.interpreter} script`));
+    }
+    const scriptCommand = parseManagerScriptCommand(command);
+    if (scriptCommand) {
+      if (registeredScript.reason === 'script-contains-destructive-operation') {
+        return response('force_ask', 'Registered manager scripts cannot auto-run destructive operations.');
+      }
+      return response('ask', 'This script is not registered for the selected project and exact script hash; register it once through Mansoor AI Team Manager.', commandPermissionOverride(command));
+    }
+    if (/^\s*(?:node|node\.exe|powershell|powershell\.exe|pwsh|pwsh\.exe)\s+(?:-e|-Command)\b/i.test(command)) {
+      if (DELETE_OR_DESTRUCTIVE.test(command)) return response('force_ask', 'Inline interpreter command contains a destructive operation and never receives an Always Allow override.');
+      return response('ask', 'Inline interpreter commands are not hash-bound. Use a registered script file for manager auto-run.', commandPermissionOverride(command));
+    }
     const commandDecision = classifyCommand({ command, workspacePaths: normalized.workspacePaths });
     if (commandDecision.decision === 'auto_approve') return response('allow', commandDecision.reason);
     if (commandDecision.decision === 'deny') return response('deny', commandDecision.reason);

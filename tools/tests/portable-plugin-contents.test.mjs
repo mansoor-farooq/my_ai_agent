@@ -197,6 +197,7 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
       'tools/ultra-agent-v5/action-manifest.mjs',
       'tools/ultra-agent-v5/approval-broker.mjs',
       'tools/ultra-agent-v5/command-approval-policy.mjs',
+      'tools/ultra-agent-v5/manager-script-registry.mjs',
       'tools/ultra-agent-v5/durable-ledger.mjs',
       'tools/ultra-agent-v5/readiness-gate.mjs',
       'tools/start-managed-mcp.ps1',
@@ -213,7 +214,7 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.20.0');
+    assert.equal(plugin.version, '1.21.0');
     const packagedManager = await readFile(path.join(output, 'agents', 'production-orchestrator.md'), 'utf8');
     assert.doesNotMatch(packagedManager, /^skills:\r?$/m, 'packaged plugin agents must avoid broken AgentBasePath-relative skill metadata');
     assert.match(packagedManager, /Bundled skill routing/);

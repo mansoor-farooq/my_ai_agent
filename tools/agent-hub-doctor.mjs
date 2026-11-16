@@ -243,6 +243,7 @@ export async function runDoctor() {
 
   const v5HardeningFiles = [
     'tools/ultra-agent-v5/approval-broker.mjs',
+    'tools/ultra-agent-v5/manager-script-registry.mjs',
     'tools/ultra-agent-v5/readiness-gate.mjs',
     'tools/ultra-agent-v5/process-lock.mjs',
     'tools/ultra-agent-v5/capability-preflight.mjs',

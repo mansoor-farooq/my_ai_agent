@@ -73,6 +73,7 @@ try {
     (Join-Path $hub 'tools\tests\global-rule-sync.test.mjs') `
     (Join-Path $hub 'tools\tests\antigravity-runtime-preflight.test.mjs') `
     (Join-Path $hub 'tools\tests\antigravity-pretool-guard.test.mjs') `
+    (Join-Path $hub 'tools\tests\manager-script-registry.test.mjs') `
     (Join-Path $hub 'tools\tests\agent-benchmark.test.mjs') `
     (Join-Path $hub 'tools\tests\benchmark-corpus.test.mjs') `
     (Join-Path $hub 'tools\tests\secret-scan.test.mjs') `

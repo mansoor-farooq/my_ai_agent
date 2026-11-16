@@ -14,7 +14,7 @@ function sourceFixture() {
   writeFileSync(path.join(source, 'plugin.json'), JSON.stringify({ name: 'mansoor-agent-hub', version: '2.0.0' }));
   writeFileSync(path.join(source, 'PACKAGE-CHECKSUMS.json'), 'checks-v2');
   writeFileSync(path.join(source, 'PACKAGE-SIGNATURE.json'), 'signature-v2');
-  writeFileSync(path.join(source, 'tools', 'ultra-agent-v5', 'sync-antigravity-permissions.mjs'), "export const PERMISSION_POLICY_VERSION = '2026-11-16.5';\n");
+  writeFileSync(path.join(source, 'tools', 'ultra-agent-v5', 'sync-antigravity-permissions.mjs'), "export const PERMISSION_POLICY_VERSION = '2026-11-16.6';\n");
   writeFileSync(path.join(source, 'agents.md'), 'new manager');
   return { root, source };
 }
@@ -35,7 +35,7 @@ test('project refresh registers global inheritance and is idempotent', () => {
     assert.equal(first.status, 'registered-global-inherited');
     const second = syncProjectAgent({ projectDir: project, sourceRoot: fixture.source, project: 'Refresh Fixture' });
     assert.equal(second.status, 'current');
-    assert.equal(JSON.parse(readFileSync(path.join(project, '.agents', 'mansoor-agent-state.json'), 'utf8')).permissionPolicyVersion, '2026-11-16.5');
+    assert.equal(JSON.parse(readFileSync(path.join(project, '.agents', 'mansoor-agent-state.json'), 'utf8')).permissionPolicyVersion, '2026-11-16.6');
   } finally { rmSync(fixture.root, { recursive: true, force: true }); }
 });
 

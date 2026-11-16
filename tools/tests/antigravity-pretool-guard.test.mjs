@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { mkdtempSync, rmSync, symlinkSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { evaluatePreToolUse, parsePreToolInput } from '../antigravity-pretool-guard.mjs';
+import { registerManagerScript } from '../ultra-agent-v5/manager-script-registry.mjs';
 
 test('native in-workspace file writes are manager-auto-approved inside the active workspace', () => {
   const workspace = mkdtempSync(path.join(os.tmpdir(), 'agy-hook-'));
@@ -62,6 +63,32 @@ test('service mutation exposes an exact Always Allow override instead of force_a
   });
   assert.equal(result.decision, 'ask');
   assert.deepEqual(result.permissionOverrides, ['command(Set-Service -Name ClickToRunSvc -StartupType Manual)']);
+});
+
+test('owner-approved manager script outside the workspace is auto-approved by hash', () => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'agy-manager-script-'));
+  const project = path.join(root, 'project');
+  const script = path.join(root, 'Desktop', 'optimizer.ps1');
+  const registry = path.join(root, 'registry.json');
+  try {
+    mkdirSync(project, { recursive: true });
+    mkdirSync(path.dirname(script), { recursive: true });
+    writeFileSync(script, 'Set-Service -Name ClickToRunSvc -StartupType Manual\n', 'utf8');
+    assert.equal(registerManagerScript({ scriptPath: script, projectRoot: project, registryPath: registry }).status, 'registered');
+    const result = evaluatePreToolUse({
+      managerScriptRegistryPath: registry,
+      workspacePaths: [project],
+      toolCall: { name: 'run_command', args: { CommandLine: `powershell.exe -NoProfile -File "${script}"` } },
+    });
+    assert.equal(result.decision, 'allow');
+    assert.match(result.reason, /owner-approved|manager/i);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('inline node scripts stay reviewable and cannot inherit a wildcard manager grant', () => {
+  const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'node -e "console.log(1)"' } } });
+  assert.equal(result.decision, 'ask');
+  assert.deepEqual(result.permissionOverrides, ['command(node -e "console.log(1)")']);
 });
 
 test('unclassified tools remain fail-closed and do not inherit a cached grant', () => {
