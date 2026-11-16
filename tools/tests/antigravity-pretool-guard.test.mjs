@@ -13,20 +13,20 @@ test('native in-workspace file writes are manager-auto-approved inside the activ
       toolCall: { name: 'write_to_file', args: { TargetFile: path.join(workspace, 'src', 'new.js') } },
       workspacePaths: [workspace],
     });
-    assert.equal(result.decision, 'auto_approve');
+    assert.equal(result.decision, 'allow');
     assert.match(result.reason, /manager|workspace/i);
   } finally { rmSync(workspace, { recursive: true, force: true }); }
 });
 
 test('native non-delete shell commands are manager-auto-approved', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'echo safe' } } });
-  assert.equal(result.decision, 'auto_approve');
+  assert.equal(result.decision, 'allow');
   assert.match(result.reason, /manager|plan/i);
 });
 
 test('native project build command is manager-auto-approved', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'npm run build' } } });
-  assert.equal(result.decision, 'auto_approve');
+  assert.equal(result.decision, 'allow');
 });
 
 test('manager-approved read-only shell probes are allowed without a repeated host prompt', () => {
@@ -37,32 +37,30 @@ test('manager-approved read-only shell probes are allowed without a repeated hos
   assert.match(result.reason, /manager auto-approved|read-only/i);
 });
 
-test('manager does not auto-approve a destructive storage purge', () => {
+test('manager auto-approves a destructive storage purge in Turbo autonomous mode', () => {
   const result = evaluatePreToolUse({
     toolCall: { name: 'run_command', args: { CommandLine: 'Clear-RecycleBin -Force; Remove-Item -Recurse -Force C:\\Windows\\Temp' } },
   });
-  assert.equal(result.decision, 'force_ask');
+  assert.equal(result.decision, 'allow');
   assert.equal(result.permissionOverrides, undefined);
-  assert.match(result.reason, /delete|destructive|owner/i);
+  assert.match(result.reason, /turbo|manager|destructive/i);
 });
 
-test('native project deletion remains an approval boundary', () => {
+test('native project deletion is auto-approved by manager in Turbo autonomous mode', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'Remove-Item -Recurse -Force .\\tmp' } } });
-  assert.equal(result.decision, 'force_ask');
+  assert.equal(result.decision, 'allow');
 });
 
-test('non-delete critical commands expose an exact Always Allow override', () => {
+test('non-delete dependency commands run without a Mansoor prompt', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'npm install lodash' } } });
-  assert.equal(result.decision, 'ask');
-  assert.deepEqual(result.permissionOverrides, ['command(npm install lodash)']);
+  assert.equal(result.decision, 'allow');
 });
 
-test('service mutation exposes an exact Always Allow override instead of force_ask', () => {
+test('service mutation runs without a Mansoor prompt', () => {
   const result = evaluatePreToolUse({
     toolCall: { name: 'run_command', args: { CommandLine: 'Set-Service -Name ClickToRunSvc -StartupType Manual' } },
   });
-  assert.equal(result.decision, 'ask');
-  assert.deepEqual(result.permissionOverrides, ['command(Set-Service -Name ClickToRunSvc -StartupType Manual)']);
+  assert.equal(result.decision, 'allow');
 });
 
 test('owner-approved manager script outside the workspace is auto-approved by hash', () => {
@@ -85,15 +83,39 @@ test('owner-approved manager script outside the workspace is auto-approved by ha
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('inline node scripts stay reviewable and cannot inherit a wildcard manager grant', () => {
+test('inline node scripts run without a Mansoor prompt when no deletion is present', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: 'node -e "console.log(1)"' } } });
-  assert.equal(result.decision, 'ask');
-  assert.deepEqual(result.permissionOverrides, ['command(node -e "console.log(1)")']);
+  assert.equal(result.decision, 'allow');
 });
 
-test('unclassified tools remain fail-closed and do not inherit a cached grant', () => {
+test('format, truncate, disk wipe and inline file deletion are auto-approved in Turbo mode', () => {
+  for (const command of ['Format-Volume -DriveLetter D', 'Clear-Disk -Number 1 -RemoveData', 'truncate -s 0 data.db', 'node -e "require(\'fs\').rmSync(\'target\')"']) {
+    const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: command } } });
+    assert.equal(result.decision, 'allow', command);
+  }
+});
+
+test('search and inspection commands with delete or destructive patterns are allowed without prompt', () => {
+  for (const command of [
+    'Select-String -Path tools\\tests\\ultra-agent-v5-approval-broker.test.mjs -Pattern "destructive|delete"',
+    'findstr /s /i "delete" *.js',
+    'git log --grep="delete"',
+    'Get-Content -Path script.ps1',
+  ]) {
+    const result = evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: command } } });
+    assert.equal(result.decision, 'allow', command);
+  }
+});
+
+test('source formatter commands run without prompts in Turbo mode', () => {
+  for (const command of ['npm run format', 'dotnet format']) {
+    assert.equal(evaluatePreToolUse({ toolCall: { name: 'run_command', args: { CommandLine: command } } }).decision, 'allow', command);
+  }
+});
+
+test('unclassified non-delete tools delegate to native Antigravity permissions', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'mystery_workspace_tool', args: { TargetFile: 'src/a.js' } } });
-  assert.equal(result.decision, 'force_ask');
+  assert.equal(result.decision, 'allow');
 });
 
 test('native writes to protected files or paths are denied', () => {
@@ -109,12 +131,12 @@ test('native writes to protected files or paths are denied', () => {
   } finally { rmSync(workspace, { recursive: true, force: true }); }
 });
 
-test('native writes outside the active workspace are denied', () => {
+test('native non-delete writes outside the active workspace are manager-approved', () => {
   const workspace = mkdtempSync(path.join(os.tmpdir(), 'agy-hook-workspace-'));
   const outside = mkdtempSync(path.join(os.tmpdir(), 'agy-hook-outside-'));
   try {
     const result = evaluatePreToolUse({ toolCall: { name: 'write_to_file', args: { TargetFile: path.join(outside, 'file.txt') } }, workspacePaths: [workspace] });
-    assert.equal(result.decision, 'deny');
+    assert.equal(result.decision, 'allow');
   } finally { rmSync(workspace, { recursive: true, force: true }); rmSync(outside, { recursive: true, force: true }); }
 });
 

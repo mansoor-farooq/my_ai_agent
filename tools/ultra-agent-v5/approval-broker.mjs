@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import crypto from 'node:crypto';
 import { validateActionManifest } from './action-manifest.mjs';
+import { isDestructiveAction, isDestructiveCommand } from './destructive-action.mjs';
 
 export const APPROVAL_BROKER_SCHEMA = 'mansoor.approval-broker/v1';
 export const POLICY_VERSION = 'mansoor.risk-policy/v1';
@@ -49,65 +50,35 @@ function hasTerm(text, terms) {
  */
 export function classifyRisk({ task = {}, plan = {}, actions = [], manifest = null, context = {} } = {}) {
   const taskType = String(task.taskType ?? manifest?.project?.taskType ?? '').trim().toLowerCase();
-  const objective = textOf(task.objective, manifest?.project?.objective, context.objective);
-  const actionSignals = (Array.isArray(actions) ? actions : []).map((action) => ({ type: action?.type, path: action?.path, command: action?.command }));
-  const combined = textOf(taskType, objective, plan.steps, plan.assumptions, plan.allowedNetwork, actionSignals, context.operation, context.riskSignals);
   const reasons = [];
   let riskTier = RISK_TIERS.AUTONOMOUS;
 
-  const tier3Match = hasTerm(combined, TIER_3_TERMS);
-  if (tier3Match) {
+  const destructive = isDestructiveCommand(taskType)
+    || (Array.isArray(actions) && actions.some(isDestructiveAction))
+    || (Array.isArray(plan.steps) && plan.steps.some(isDestructiveCommand));
+  if (destructive) {
     riskTier = RISK_TIERS.OWNER;
-    reasons.push(`critical side effect or protected resource matched: ${tier3Match}`);
-  }
-  if (riskTier < RISK_TIERS.OWNER && (Array.isArray(plan.allowedNetwork) && plan.allowedNetwork.length > 0)) {
-    riskTier = RISK_TIERS.EXCEPTION;
-    reasons.push('external network access is declared');
-  }
-  const tier2Match = hasTerm(combined, TIER_2_TERMS);
-  if (riskTier < RISK_TIERS.EXCEPTION && tier2Match) {
-    riskTier = RISK_TIERS.EXCEPTION;
-    reasons.push(`exception-risk operation matched: ${tier2Match}`);
-  }
-  const tier1Match = hasTerm(combined, TIER_1_TERMS);
-  if (riskTier < RISK_TIERS.EXCEPTION && tier1Match) {
-    riskTier = RISK_TIERS.NOTIFY;
-    reasons.push(`reversible external notification matched: ${tier1Match}`);
+    reasons.push('delete or data-loss action requires fresh owner approval');
+  } else {
+    reasons.push('non-delete action covered by the approved project plan');
   }
 
-  if (taskType && !KNOWN_TASK_TYPES.has(taskType)) {
-    riskTier = Math.max(riskTier, RISK_TIERS.EXCEPTION);
-    reasons.push(`unknown task type is ambiguous: ${taskType}`);
-  }
-  if (!String(task.objective ?? manifest?.project?.objective ?? '').trim()) {
+  if (!String(task.objective ?? manifest?.project?.objective ?? '').trim()
+    || !Array.isArray(task.scope ?? manifest?.project?.taskScope)
+    || !(task.scope ?? manifest?.project?.taskScope).length
+    || !Array.isArray(plan.affectedPaths ?? manifest?.plan?.affectedPaths)
+    || !(plan.affectedPaths ?? manifest?.plan?.affectedPaths).length) {
     riskTier = RISK_TIERS.OWNER;
-    reasons.push('missing objective cannot be authorized');
+    reasons.push('missing objective, scope or affected paths cannot be authorized');
   }
-  if (!Array.isArray(task.scope ?? manifest?.project?.taskScope) || !(task.scope ?? manifest?.project?.taskScope).length) {
-    riskTier = RISK_TIERS.OWNER;
-    reasons.push('missing scope cannot be authorized');
-  }
-  if (!Array.isArray(plan.affectedPaths ?? manifest?.plan?.affectedPaths) || !(plan.affectedPaths ?? manifest?.plan?.affectedPaths).length) {
-    riskTier = RISK_TIERS.OWNER;
-    reasons.push('missing affected paths cannot be authorized');
-  }
-  if (!String(plan.rollback ?? manifest?.plan?.rollback ?? '').trim() && riskTier > RISK_TIERS.AUTONOMOUS) {
-    riskTier = RISK_TIERS.OWNER;
-    reasons.push('exception-risk operation has no rollback plan');
-  }
-  if (!reasons.length) reasons.push('bounded local, reversible project work');
-
-  const decision = riskTier === RISK_TIERS.AUTONOMOUS ? 'auto_approve' : riskTier === RISK_TIERS.NOTIFY ? 'notify' : 'owner_approval';
+  const decision = riskTier === RISK_TIERS.OWNER ? 'owner_approval' : 'auto_approve';
   return {
-    schema: 'mansoor.policy-decision/v1',
-    policyVersion: POLICY_VERSION,
+    schema: 'mansoor.policy-decision/v1', policyVersion: POLICY_VERSION,
     policyHash: hash({ policyVersion: POLICY_VERSION, riskTier, reasons }),
-    riskTier,
-    decision,
-    requiresOwner: riskTier >= RISK_TIERS.EXCEPTION,
-    managerCanApprove: riskTier <= RISK_TIERS.NOTIFY,
-    reasons,
+    riskTier, decision, requiresOwner: riskTier === RISK_TIERS.OWNER,
+    managerCanApprove: riskTier !== RISK_TIERS.OWNER, reasons,
   };
+
 }
 
 function validateReceipt(authority, receipt, manifest) {

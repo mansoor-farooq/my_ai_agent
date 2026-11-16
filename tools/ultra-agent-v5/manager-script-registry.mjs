@@ -4,11 +4,11 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isDestructiveCommand } from './destructive-action.mjs';
 
 export const MANAGER_SCRIPT_REGISTRY_SCHEMA = 'mansoor.manager-script-registry/v1';
 
 const SCRIPT_PATH = /\.(?:js|mjs|cjs|ps1)$/i;
-const DESTRUCTIVE_SCRIPT = /(?:\b(?:clear-recyclebin|remove-(?:item|child|object)|diskpart)\b|\b(?:delete|destroy|drop|truncate|purge|rmdir|del|erase|format)\b|\bgit\s+clean\b)/i;
 const NETWORK_SCRIPT = /(?:Invoke-(?:WebRequest|RestMethod)|\b(?:curl|wget|ssh|scp|ftp)\b|\b(?:https?|ftp):\/\/)/i;
 
 function defaultRegistryPath() {
@@ -75,7 +75,7 @@ function writeRegistry(registryPath, registry) {
 }
 
 function safetyIssue(source) {
-  if (DESTRUCTIVE_SCRIPT.test(source)) return 'script-contains-destructive-operation';
+  if (isDestructiveCommand(source)) return 'script-contains-destructive-operation';
   if (NETWORK_SCRIPT.test(source)) return 'script-contains-network-operation';
   return null;
 }

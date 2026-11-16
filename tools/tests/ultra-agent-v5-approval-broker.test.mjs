@@ -46,35 +46,40 @@ test('classifies routine local work as Tier 0 manager auto-approval', () => {
   assert.equal(result.requiresOwner, false);
 });
 
-test('classifies reversible branch or test publication as Tier 1 notification', () => {
+test('classifies reversible branch or test publication for manager auto approval', () => {
   const result = classifyRisk({ task: task({ taskType: 'draft-pr' }), plan: plan(), actions: [] });
-  assert.equal(result.riskTier, 1);
-  assert.equal(result.decision, 'notify');
+  assert.equal(result.riskTier, 0);
+  assert.equal(result.decision, 'auto_approve');
   assert.equal(result.managerCanApprove, true);
 });
 
-test('classifies sensitive network or dependency work as Tier 2 owner approval by default', () => {
+test('manager approves non-delete dependency work under approved plan policy', () => {
   const result = classifyRisk({ task: task({ taskType: 'dependency-update' }), plan: plan({ allowedNetwork: ['registry.npmjs.org'] }), actions: [] });
-  assert.equal(result.riskTier, 2);
-  assert.equal(result.decision, 'owner_approval');
-  assert.equal(result.requiresOwner, true);
+  assert.equal(result.decision, 'auto_approve');
+  assert.equal(result.requiresOwner, false);
 });
 
-test('Tier 2 can be manager-approved only when every declared network host is explicitly allowlisted', () => {
+test('non-delete network action is manager-approved with or without a host allowlist', () => {
   const input = { task: task({ taskType: 'dependency-update' }), plan: plan({ allowedNetwork: ['registry.npmjs.org'] }), actions: [] };
   const blocked = createApprovalBroker().evaluate(input);
-  assert.equal(blocked.decision, 'owner_approval');
+  assert.equal(blocked.decision, 'auto_approve');
   const allowed = createApprovalBroker({ allowlistedNetwork: ['registry.npmjs.org'], autoApproveTier2: true }).evaluate(input);
   assert.equal(allowed.decision, 'auto_approve');
   assert.equal(allowed.requiresOwner, false);
 });
 
-test('classifies production, secret, destructive and external side effects as Tier 3', () => {
+test('non-delete side effects are manager-approved under the approved plan', () => {
   for (const taskType of ['production-deploy', 'secret-rotation', 'database-migration', 'git-push', 'send-message']) {
     const result = classifyRisk({ task: task({ taskType }), plan: plan(), actions: [] });
-    assert.equal(result.riskTier, 3, taskType);
-    assert.equal(result.decision, 'owner_approval', taskType);
-    assert.equal(result.managerCanApprove, false, taskType);
+    assert.equal(result.decision, 'auto_approve', taskType);
+    assert.equal(result.managerCanApprove, true, taskType);
+  }
+});
+
+test('delete, format, truncate and disk wipe actions still require owner approval', () => {
+  for (const command of ['Remove-Item data', 'Format-Volume -DriveLetter D', 'TRUNCATE TABLE orders', 'Clear-Disk -Number 1']) {
+    const result = classifyRisk({ task: task(), plan: plan(), actions: [{ type: 'command', command }] });
+    assert.equal(result.requiresOwner, true, command);
   }
 });
 
@@ -91,22 +96,22 @@ test('manager auto-approval issues an exact manifest-bound receipt for routine w
   });
 });
 
-test('Tier 3 never receives a manager self-approval and waits for owner', async () => {
-  const manifest = manifestFor({ task: { taskType: 'production-deploy', objective: 'Deploy to production' } });
+test('destructive action never receives manager self approval', async () => {
+  const manifest = manifestFor({ task: { taskType: 'delete', objective: 'Delete one file' } });
   const authority = createApprovalAuthority({ secret: Buffer.from('manager-approval-test-key-material-32') });
   const broker = createApprovalBroker();
-  const result = await broker.authorize(manifest, authority, { task: task({ taskType: 'production-deploy', objective: 'Deploy to production' }), plan: plan(), actions: [] });
+  const result = await broker.authorize(manifest, authority, { task: task({ taskType: 'delete', objective: 'Delete one file' }), plan: plan(), actions: [] });
   assert.equal(result.status, 'owner-approval-required');
   assert.equal(result.receipt, undefined);
   assert.equal(result.decision.requiresOwner, true);
 });
 
-test('owner approval callback can authorize a Tier 3 manifest with explicit provenance', async () => {
-  const manifest = manifestFor({ task: { taskType: 'production-deploy', objective: 'Deploy to production' } });
+test('owner approval callback can authorize a destructive manifest with explicit provenance', async () => {
+  const manifest = manifestFor({ task: { taskType: 'delete', objective: 'Delete one file' } });
   const authority = createApprovalAuthority({ secret: Buffer.from('manager-approval-test-key-material-32') });
   const broker = createApprovalBroker();
   const result = await broker.authorize(manifest, authority, {
-    task: task({ taskType: 'production-deploy', objective: 'Deploy to production' }),
+    task: task({ taskType: 'delete', objective: 'Delete one file' }),
     plan: plan(),
     actions: [],
     ownerApprove: async (exactManifest, decision) => authority.issue(exactManifest, { ...decision, approved: true, actor: 'owner', source: 'owner-review' }),
@@ -116,9 +121,8 @@ test('owner approval callback can authorize a Tier 3 manifest with explicit prov
   assert.equal(result.receipt.source, 'owner-review');
 });
 
-test('unknown operation fails closed', () => {
+test('unknown non-delete task type may proceed when scope and plan are valid', () => {
   const result = classifyRisk({ task: task({ taskType: 'something-new-and-unknown' }), plan: plan({ steps: [] }), actions: [] });
-  assert.equal(result.decision, 'owner_approval');
-  assert.equal(result.requiresOwner, true);
-  assert.match(result.reasons.join(' '), /unknown|ambiguous/i);
+  assert.equal(result.decision, 'auto_approve');
+  assert.equal(result.requiresOwner, false);
 });

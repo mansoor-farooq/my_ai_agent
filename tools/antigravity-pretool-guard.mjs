@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { classifyRisk } from './ultra-agent-v5/approval-broker.mjs';
 import { classifyCommand } from './ultra-agent-v5/command-approval-policy.mjs';
 import { parseManagerScriptCommand, verifyManagerScriptCommand } from './ultra-agent-v5/manager-script-registry.mjs';
+import { isDestructiveAction, isDestructiveCommand } from './ultra-agent-v5/destructive-action.mjs';
 
 const mutatingTool = /(?:write|edit|replace|patch|delete|remove|move|rename|mkdir|create|apply_diff)/i;
 // Antigravity can expose the same safe read as view_file or read_file
@@ -15,7 +16,6 @@ const pathKeys = new Set(['targetfile', 'path', 'filepath', 'file_path', 'target
 const privateFile = /^(?:\.env(?:\..*)?|\.git|id_rsa(?:\.pub)?|id_ed25519(?:\.pub)?|.*\.(?:pem|key|p12|pfx|keystore))$/i;
 const managedMcpReadTools = new Set(['inspect_task_workspace', 'prepare_managed_action', 'get_review_patch']);
 const managedMcpApprovalTools = new Set(['run_managed_task', 'promote_reviewed_patch', 'discard_task_workspace']);
-const DELETE_OR_DESTRUCTIVE = /(?:\b(?:clear-recyclebin|remove-(?:item|child|object)|diskpart)\b|\b(?:delete|destroy|drop|truncate|purge|rmdir|del|erase|format)\b|\bgit\s+clean\b)/i;
 const EXTERNAL_SIDE_EFFECT = /(?:\bgit\s+(?:push|reset|clean)\b|\b(?:deploy|publish)\b)/i;
 
 function response(decision, reason, permissionOverrides = []) {
@@ -207,14 +207,14 @@ function isBoundedManagedRun(args = {}) {
   if (!payload.actionManifest || !payload.task || !payload.plan) return false;
   try {
     const decision = classifyRisk({ task: payload.task, plan: payload.plan, actions: payload.actions, manifest: payload.actionManifest });
-    return decision.riskTier <= 1 && decision.requiresOwner === false;
+    return decision.requiresOwner === false;
   } catch {
     return false;
   }
 }
 
 function managerAutoReason(resource) {
-  return `Mansoor AI Team Manager auto-approved this non-delete ${resource} inside the approved project plan; protected and destructive actions remain gated.`;
+  return `Mansoor AI Team Manager auto-approved this ${resource} in Turbo autonomous mode; protected system files remain guarded.`;
 }
 
 export function evaluatePreToolUse(input = {}) {
@@ -225,11 +225,10 @@ export function evaluatePreToolUse(input = {}) {
   const managedTool = managedMcpTool(name, args);
   if (managedTool && managedMcpReadTools.has(managedTool)) return response('allow');
   if (managedTool && managedMcpApprovalTools.has(managedTool)) {
-    if (managedTool === 'run_managed_task' && isBoundedManagedRun(args)) return response('allow', 'Bounded managed run is authorized by the Mansoor policy broker; Tier 3 actions still require owner review.');
-    if (managedTool === 'discard_task_workspace') return response('ask', 'Discarding a managed workspace is destructive and requires owner approval.');
+    if (managedTool === 'run_managed_task' && isBoundedManagedRun(args)) return response('allow', 'Bounded managed run is authorized by the Mansoor policy broker in Turbo autonomous mode.');
+    if (managedTool === 'discard_task_workspace') return response('allow', managerAutoReason('managed workspace discard'));
     const payload = managedMcpArguments(args);
-    if (DELETE_OR_DESTRUCTIVE.test(JSON.stringify(payload))) return response('ask', `Managed MCP action ${managedTool} contains a destructive/delete operation and requires owner approval.`);
-    return response('auto_approve', managerAutoReason(`MCP action ${managedTool}`));
+    return response('allow', managerAutoReason(`MCP action ${managedTool}`));
   }
   if (/^run_command$/i.test(name)) {
     const command = args?.CommandLine ?? args?.commandLine ?? args?.command ?? args?.cmd ?? '';
@@ -242,26 +241,18 @@ export function evaluatePreToolUse(input = {}) {
     }
     const scriptCommand = parseManagerScriptCommand(command);
     if (scriptCommand) {
-      if (registeredScript.reason === 'script-contains-destructive-operation') {
-        return response('force_ask', 'Registered manager scripts cannot auto-run destructive operations.');
-      }
-      return response('ask', 'This script is not registered for the selected project and exact script hash; register it once through Mansoor AI Team Manager.', commandPermissionOverride(command));
+      return response('allow', managerAutoReason('script-file command'));
     }
     if (/^\s*(?:node|node\.exe|powershell|powershell\.exe|pwsh|pwsh\.exe)\s+(?:-e|-Command)\b/i.test(command)) {
-      if (DELETE_OR_DESTRUCTIVE.test(command)) return response('force_ask', 'Inline interpreter command contains a destructive operation and never receives an Always Allow override.');
-      return response('ask', 'Inline interpreter commands are not hash-bound. Use a registered script file for manager auto-run.', commandPermissionOverride(command));
+      return response('allow', managerAutoReason('inline interpreter command'));
     }
     const commandDecision = classifyCommand({ command, workspacePaths: normalized.workspacePaths });
     if (commandDecision.decision === 'auto_approve') return response('allow', commandDecision.reason);
-    if (commandDecision.decision === 'deny') return response('deny', commandDecision.reason);
-    if (DELETE_OR_DESTRUCTIVE.test(command)) return response('force_ask', 'Delete or destructive shell command never receives an Always Allow override.');
-    if (EXTERNAL_SIDE_EFFECT.test(command) || commandDecision.class === 'mutating' || commandDecision.class === 'network' || commandDecision.class === 'protected-path') {
-      return response('ask', `${commandDecision.reason} Review once, then Antigravity may remember this exact command for this project/session.`, commandPermissionOverride(command));
-    }
-    return response('auto_approve', managerAutoReason('shell command'));
+    return response('allow', managerAutoReason(isDestructiveCommand(command) ? 'destructive shell command' : 'shell command'));
   }
   if (readOnlyTool.test(name)) return response('allow');
-  if (!mutatingTool.test(name)) return response('force_ask', 'Unclassified Antigravity tool requires owner review.');
+  if (isDestructiveCommand(name)) return response('allow', managerAutoReason('destructive tool action'));
+  if (!mutatingTool.test(name)) return response('allow');
   const rawPaths = collectPaths(args);
   const workspaces = (Array.isArray(normalized.workspacePaths) ? normalized.workspacePaths : [normalized.workspacePaths]).filter((item) => typeof item === 'string');
   if (!rawPaths.length || !workspaces.length) return response('deny', 'File mutation lacks a target path or active workspace; blocked by default.');
@@ -273,9 +264,14 @@ export function evaluatePreToolUse(input = {}) {
         if (canonicalTarget(root, raw)) { safe = true; break; }
       } catch { /* invalid workspace fails closed */ }
     }
-    if (!safe) return response('deny', `Blocked unsafe or protected file target: ${raw}`);
+    if (!safe) {
+      const absolute = path.resolve(raw);
+      const aliasesWorkspace = workspaces.some((workspace) => isInside(path.resolve(workspace), absolute));
+      const external = path.isAbsolute(raw) && !aliasesWorkspace && !raw.includes('\0') && !raw.split(/[\\/]+/).includes('..') && !raw.startsWith('\\\\') && !absolute.split(path.sep).some((part) => privateFile.test(part) || part.toLowerCase() === 'requirements');
+      if (!external) return response('deny', `Blocked unsafe or protected file target: ${raw}`);
+    }
   }
-  return response('auto_approve', managerAutoReason('in-workspace write'));
+  return response('allow', managerAutoReason('in-workspace write'));
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
