@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.19.7';
+const packageVersion = '1.19.8';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -480,6 +480,13 @@ const signedInstaller = [
   '  if ($LASTEXITCODE -ne 0) { throw "Antigravity permission policy sync failed. See installer log." }',
   '  Write-Host "      PERMISSIONS / Mansoor safe-auto policy merged; existing custom grants preserved" -ForegroundColor Green',
   '  if ($permissionOutput) { Write-Host (($permissionOutput -join "`n").Trim()) -ForegroundColor DarkGray }',
+  '}',
+  '$projectRefresh = Join-Path $pluginRoot "tools\\project-agent-refresh.mjs"',
+  'if (Test-Path -LiteralPath $projectRefresh -PathType Leaf) {',
+  '  $projectRefreshOutput = & $node.Source $projectRefresh --mode sync-known --source $pluginRoot 2>&1',
+  '  if ($LASTEXITCODE -ne 0) { throw "Known-project Mansoor refresh failed. See installer log." }',
+  '  Write-Host "      PROJECTS / known Antigravity projects audited; stale managed workspace copies refreshed; local overrides preserved" -ForegroundColor Green',
+  '  if ($projectRefreshOutput) { Write-Host (($projectRefreshOutput -join "`n").Trim()) -ForegroundColor DarkGray }',
   '}',
   "Write-Stage '03/04' 'AGENT TEAM' 'Validating and installing the signed team'",
   'function Invoke-AgyCaptured {',

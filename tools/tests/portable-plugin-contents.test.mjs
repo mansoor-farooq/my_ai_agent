@@ -213,7 +213,7 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.19.7');
+    assert.equal(plugin.version, '1.19.8');
     const packagedManager = await readFile(path.join(output, 'agents', 'production-orchestrator.md'), 'utf8');
     assert.doesNotMatch(packagedManager, /^skills:\r?$/m, 'packaged plugin agents must avoid broken AgentBasePath-relative skill metadata');
     assert.match(packagedManager, /Bundled skill routing/);

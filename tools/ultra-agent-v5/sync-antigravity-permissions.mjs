@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const PERMISSION_POLICY_SCHEMA = 'mansoor.antigravity-permissions/v1';
-export const PERMISSION_POLICY_VERSION = '2026-11-16.2';
+export const PERMISSION_POLICY_VERSION = '2026-11-16.3';
 
 // Keep these entries narrow. Antigravity evaluates deny before ask before allow;
 // the installer must never add a blanket command(*) allow for the managed team.

@@ -7,6 +7,7 @@ import { projectIdentity } from './ultra-agent-v2/project-identity.mjs';
 
 export const PROJECT_STATE_RELATIVE = '.agents/mansoor-agent-state.json';
 export const WORKSPACE_PLUGIN_RELATIVE = '.agents/plugins/mansoor-agent-hub';
+export const ANTIGRAVITY_PROJECT_REGISTRY_RELATIVE = '.gemini/config/projects';
 
 function fail(code, message = code) {
   throw Object.assign(new Error(message), { code });
@@ -69,6 +70,44 @@ function readState(projectDir) {
   if (!fs.existsSync(file)) return null;
   const state = readJson(file);
   return state && state.schema === 'mansoor.project-agent-state/v1' ? state : { invalid: true };
+}
+
+function projectFolderUris(projectRecord) {
+  const resources = projectRecord?.projectResources?.resources;
+  if (!Array.isArray(resources)) return [];
+  return resources.flatMap((resource) => {
+    const uri = resource?.folderUri || resource?.gitFolder?.folderUri;
+    return typeof uri === 'string' && uri.startsWith('file:') ? [uri] : [];
+  });
+}
+
+function projectPathFromUri(uri) {
+  try {
+    const decoded = fileURLToPath(uri);
+    return path.resolve(decoded);
+  } catch {
+    return null;
+  }
+}
+
+function permissionRegistryMode(projectRecord) {
+  const grants = projectRecord?.permissionGrants;
+  if (!grants || typeof grants !== 'object') return 'global-inherited';
+  const customKeys = Object.keys(grants).filter((key) => key !== 'v2Migrated');
+  return customKeys.length ? 'project-override-preserved' : 'global-inherited';
+}
+
+function readGlobalPermissionPolicy(configPath) {
+  const config = readJson(configPath);
+  const policy = config?.userSettings?.mansoorPermissionPolicy;
+  if (!policy || typeof policy !== 'object') return null;
+  return {
+    schema: policy.schema || null,
+    version: policy.version || null,
+    mode: policy.mode || null,
+    approvalScope: policy.approvalScope || null,
+    manager: policy.manager || null,
+  };
 }
 
 function writeJsonAtomic(filePath, value) {
@@ -179,6 +218,63 @@ export function syncProjectAgent({ projectDir, sourceRoot, project, force = fals
   };
 }
 
+/**
+ * Refresh every project Antigravity already knows about. This intentionally
+ * uses the host registry instead of scanning drives, and never rewrites app
+ * code or undocumented permission fields. Projects without an override inherit
+ * the global policy; workspace copies are refreshed atomically when managed.
+ */
+export function syncKnownProjects({
+  registryRoot,
+  sourceRoot,
+  configPath,
+  force = false,
+  dryRun = false,
+} = {}) {
+  const source = normalizeRoot(sourceRoot, 'source-plugin-required');
+  const registry = path.resolve(registryRoot || path.join(process.env.USERPROFILE || process.env.HOME || '', ANTIGRAVITY_PROJECT_REGISTRY_RELATIVE));
+  const policy = readGlobalPermissionPolicy(configPath || path.join(process.env.USERPROFILE || process.env.HOME || '', '.gemini', 'config', 'config.json'));
+  if (!fs.existsSync(registry) || !fs.statSync(registry).isDirectory()) {
+    return { schema: 'mansoor.project-agent-refresh-summary/v1', registry, policy, projects: [], counts: { discovered: 0, synced: 0, current: 0, preserved: 0, skipped: 0, errors: 0 } };
+  }
+  const projects = [];
+  for (const file of fs.readdirSync(registry).filter((name) => name.toLowerCase().endsWith('.json')).sort()) {
+    const registryFile = path.join(registry, file);
+    const record = readJson(registryFile);
+    const uri = projectFolderUris(record)[0];
+    const projectDir = uri ? projectPathFromUri(uri) : null;
+    const base = {
+      registryFile,
+      registryId: record?.id || path.basename(file, '.json'),
+      projectName: record?.name || path.basename(file, '.json'),
+      folderUri: uri || null,
+      permissionMode: permissionRegistryMode(record),
+    };
+    if (!projectDir || !fs.existsSync(projectDir) || !fs.statSync(projectDir).isDirectory()) {
+      projects.push({ ...base, status: 'skipped-missing-project', updated: false });
+      continue;
+    }
+    try {
+      projects.push({
+        ...base,
+        ...syncProjectAgent({ projectDir, sourceRoot: source, project: base.projectName, force, dryRun }),
+        projectDir,
+      });
+    } catch (error) {
+      projects.push({ ...base, projectDir, status: 'error', updated: false, error: error?.message || String(error) });
+    }
+  }
+  const counts = {
+    discovered: projects.length,
+    synced: projects.filter((item) => item.updated === true).length,
+    current: projects.filter((item) => item.status === 'current' || item.status === 'registered-global-inherited').length,
+    preserved: projects.filter((item) => item.status === 'preserved-local' || item.permissionMode === 'project-override-preserved').length,
+    skipped: projects.filter((item) => item.status === 'skipped-missing-project').length,
+    errors: projects.filter((item) => item.status === 'error').length,
+  };
+  return { schema: 'mansoor.project-agent-refresh-summary/v1', registry, policy, projects, counts };
+}
+
 function arg(name, fallback = '') {
   const args = process.argv.slice(2);
   const index = args.indexOf(name);
@@ -190,7 +286,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const projectDir = arg('--dir', process.cwd());
   const home = process.env.USERPROFILE || process.env.HOME || '';
   const sourceRoot = arg('--source', path.join(home, '.gemini', 'config', 'plugins', 'mansoor-agent-hub'));
-  const result = mode === 'sync'
+  const result = mode === 'sync-known'
+    ? syncKnownProjects({ registryRoot: arg('--registry', path.join(home, ANTIGRAVITY_PROJECT_REGISTRY_RELATIVE)), sourceRoot, configPath: arg('--config', path.join(home, '.gemini', 'config', 'config.json')), force: process.argv.includes('--force'), dryRun: process.argv.includes('--dry-run') })
+    : mode === 'sync'
     ? syncProjectAgent({ projectDir, sourceRoot, project: arg('--project', path.basename(path.resolve(projectDir))), force: process.argv.includes('--force'), dryRun: process.argv.includes('--dry-run') })
     : auditProjectAgent({ projectDir, sourceRoot, project: arg('--project', path.basename(path.resolve(projectDir))) });
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
