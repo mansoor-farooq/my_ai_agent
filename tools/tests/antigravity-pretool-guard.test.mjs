@@ -56,6 +56,14 @@ test('non-delete critical commands expose an exact Always Allow override', () =>
   assert.deepEqual(result.permissionOverrides, ['command(npm install lodash)']);
 });
 
+test('service mutation exposes an exact Always Allow override instead of force_ask', () => {
+  const result = evaluatePreToolUse({
+    toolCall: { name: 'run_command', args: { CommandLine: 'Set-Service -Name ClickToRunSvc -StartupType Manual' } },
+  });
+  assert.equal(result.decision, 'ask');
+  assert.deepEqual(result.permissionOverrides, ['command(Set-Service -Name ClickToRunSvc -StartupType Manual)']);
+});
+
 test('unclassified tools remain fail-closed and do not inherit a cached grant', () => {
   const result = evaluatePreToolUse({ toolCall: { name: 'mystery_workspace_tool', args: { TargetFile: 'src/a.js' } } });
   assert.equal(result.decision, 'force_ask');

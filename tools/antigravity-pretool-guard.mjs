@@ -14,7 +14,7 @@ const pathKeys = new Set(['targetfile', 'path', 'filepath', 'file_path', 'target
 const privateFile = /^(?:\.env(?:\..*)?|\.git|id_rsa(?:\.pub)?|id_ed25519(?:\.pub)?|.*\.(?:pem|key|p12|pfx|keystore))$/i;
 const managedMcpReadTools = new Set(['inspect_task_workspace', 'prepare_managed_action', 'get_review_patch']);
 const managedMcpApprovalTools = new Set(['run_managed_task', 'promote_reviewed_patch', 'discard_task_workspace']);
-const DELETE_OR_DESTRUCTIVE = /(?:clear-recyclebin|remove-(?:item|child|object)|\b(?:delete|destroy|drop|truncate|purge|rmdir|del|erase|discard|clean)\b)/i;
+const DELETE_OR_DESTRUCTIVE = /(?:\b(?:clear-recyclebin|remove-(?:item|child|object)|diskpart)\b|\b(?:delete|destroy|drop|truncate|purge|rmdir|del|erase|format)\b|\bgit\s+clean\b)/i;
 const EXTERNAL_SIDE_EFFECT = /(?:\bgit\s+(?:push|reset|clean)\b|\b(?:deploy|publish)\b)/i;
 
 function response(decision, reason, permissionOverrides = []) {

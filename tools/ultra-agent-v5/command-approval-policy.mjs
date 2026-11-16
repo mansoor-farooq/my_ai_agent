@@ -35,7 +35,7 @@ const ROUTINE_VERIFICATION_COMMANDS = Object.freeze([
 const CHAIN_OR_REDIRECT = /[;&|<>`]/;
 const COMMAND_SUBSTITUTION = /\$\(|\$\{/;
 const PROTECTED_PATH = /(?:^|[\\/\s"'=])(?:\.env(?:[.\w-]*)?|\.git(?:[\\/][^\s"']*)?|requirements(?:[\\/][^\s"']*)?|id_rsa(?:\.pub)?|id_ed25519(?:\.pub)?|[^\s"']+\.(?:pem|key|p12|pfx|keystore))(?=$|[\\/\s"'=])/i;
-const DESTRUCTIVE_OR_MUTATING = /(?:Clear-RecycleBin|Remove-(?:Item|Child|Object)|Set-(?:Content|Item|ItemProperty)|New-(?:Item|Object)|Move-Item|Copy-Item|Rename-Item|Stop-Process|Start-Process|Invoke-Expression|Install-(?:Package|Module)|Uninstall-(?:Package|Module)|\b(?:delete|drop|truncate|purge|format|rmdir|del)\b|\bgit\s+(?:push|reset|clean)\b|\b(?:npm|pnpm|yarn|pip)\s+install\b)/i;
+const DESTRUCTIVE_OR_MUTATING = /(?:Clear-RecycleBin|Remove-(?:Item|Child|Object)|Set-(?:Content|Item|ItemProperty|Service)|(?:Start|Stop|Restart)-Service|sc(?:\.exe)?\s+(?:config|start|stop|delete)|New-(?:Item|Object)|Move-Item|Copy-Item|Rename-Item|Stop-Process|Start-Process|Invoke-Expression|Install-(?:Package|Module)|Uninstall-(?:Package|Module)|\b(?:delete|drop|truncate|purge|format|rmdir|del)\b|\bgit\s+(?:push|reset|clean)\b|\b(?:npm|pnpm|yarn|pip)\s+install\b)/i;
 const NETWORK_COMMAND = /(?:Invoke-(?:WebRequest|RestMethod)|\b(?:curl|wget|ssh|scp|ftp)\b|(?:https?|ftp):\/\/|\s(?:-Uri|-Url|-Address|-Host)\s)/i;
 const PATH_TRAVERSAL = /(?:^|[\\/])\.\.(?:[\\/]|$)/;
 
