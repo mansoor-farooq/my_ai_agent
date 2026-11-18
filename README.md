@@ -185,12 +185,12 @@ The bootstrap accepts HTTPS GitHub URLs only. It does not execute arbitrary repo
 
 ### For a recipient
 
-1. Install Antigravity and sign in with the target user's Gemini account.
+1. Install Antigravity. The signed installer prepares Gemini CLI; sign in to the target account on first use.
 2. Obtain the approved signed `mansoor-agent-hub.zip` from Mansoor Farooq's owner distribution. The [GitHub releases page](https://github.com/mansoor-farooq/my_ai_agent/releases) will be used when a public release artifact is intentionally published.
 3. Extract the ZIP and run `Install-Mansoor-Agent-Team.cmd`.
-4. Open a project, select **Mansoor AI Team Manager** (internal id `production-orchestrator`), and give it a task in chat.
+4. Open a project and use **Mansoor AI Team Manager** as the main agent. `production-orchestrator` remains an Antigravity compatibility key, not the user-facing agent identity.
 
-The installer verifies the signed package and runs strict Antigravity validation before installing or updating the team. See the [recipient quickstart](docs/quickstart.md) for the full flow.
+The installer verifies the signed package and runs strict Antigravity validation before installing or updating the team. It also installs/updates Gemini CLI when npm manages it, then syncs all 15 agent profiles, the full 179-skill library and four domain policies into the user's global Gemini CLI profile. Existing unrelated Gemini skills are kept separate under `mam-*` names. See the [recipient quickstart](docs/quickstart.md) for the full flow.
 
 ### For the owner
 
@@ -199,7 +199,7 @@ cd /d E:\Agents
 npm run build
 ```
 
-The build refreshes source checksums, signs the portable ZIP, runs the doctor, validates the plugin and executes the focused test suite. If a Mansoor Agent Hub installation already exists on that PC, it also runs the signed installer automatically, reports the update plan and verifies active-plugin/profile hashes. Use `npm run build:package` when you only want a ZIP without touching the local installation. See [owner setup](docs/quickstart.md#owner-build-and-release).
+The build refreshes source checksums, signs the portable ZIP, runs the doctor, validates the plugin and executes the focused test suite. It syncs the latest agent profiles, full skills and policies into the owner's global Gemini CLI profile. If a Mansoor Agent Hub installation already exists on that PC, it also runs the signed installer automatically, reports the update plan and verifies active-plugin/profile hashes. Old extracted packages are removed only after their owner signature verifies. Use `npm run build:package` when you only want a ZIP without touching the local installation. See [owner setup](docs/quickstart.md#owner-build-and-release).
 
 ## Deep documentation
 

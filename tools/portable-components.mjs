@@ -15,6 +15,7 @@ const portableTextExtensions = new Set([
 ]);
 
 export const requiredPortableSupportFiles = [
+  'tools/install-gemini-cli-team.mjs',
   'tools/image-asset-workflow.mjs',
   'skills/impeccable/agents/impeccable_asset_producer.toml',
   'skills/impeccable/agents/impeccable_documenter.toml',

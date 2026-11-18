@@ -129,10 +129,36 @@ try {
     Write-Host "Use the versioned package until the old installer window is closed: $versionedPackage" -ForegroundColor Yellow
   }
 
+  $currentVersionedName = Split-Path -Leaf $versionedPackage
+  foreach ($oldPackage in @(Get-ChildItem -LiteralPath $dist -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '^mansoor-agent-hub-\d+\.\d+\.\d+$' -and $_.Name -ne $currentVersionedName })) {
+    $oldVerifier = Join-Path $oldPackage.FullName 'verify-package-signature.mjs'
+    if (-not (Test-Path -LiteralPath $oldVerifier -PathType Leaf)) {
+      Write-Host "STALE PACKAGE PRESERVED / no owner signature verifier in $($oldPackage.Name)" -ForegroundColor Yellow
+      continue
+    }
+    $verifyOutput = & $node.Source $oldVerifier 2>&1
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "STALE PACKAGE PRESERVED / signature check failed for $($oldPackage.Name)" -ForegroundColor Yellow
+      continue
+    }
+    $oldPackagePath = [IO.Path]::GetFullPath($oldPackage.FullName)
+    $distPath = [IO.Path]::GetFullPath($dist).TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
+    if (-not $oldPackagePath.StartsWith($distPath, [StringComparison]::OrdinalIgnoreCase)) { throw "Refusing to remove a path outside dist: $oldPackagePath" }
+    Remove-Item -LiteralPath $oldPackagePath -Recurse -Force
+    Write-Host "STALE SIGNED BUILD REMOVED / $($oldPackage.Name)" -ForegroundColor DarkGray
+  }
+
   Write-Host ''
   Write-Host 'BUILD COMPLETE' -ForegroundColor Green
   Write-Host "Share this file: $archive"
   Write-Host "SHA256: $hash"
+
+  if (-not $SkipAutoInstall) {
+    Write-Host ''
+    Write-Host 'GEMINI CLI / synchronizing Mansoor AI Team Manager, specialists, skills and policies...' -ForegroundColor Cyan
+    & $node.Source (Join-Path $PSScriptRoot 'tools\install-gemini-cli-team.mjs')
+    if ($LASTEXITCODE -ne 0) { throw "Gemini CLI team synchronization failed (exit $LASTEXITCODE)." }
+  }
 
   if (-not $SkipAutoInstall) {
     $agyForUpdate = Get-Command agy -ErrorAction SilentlyContinue

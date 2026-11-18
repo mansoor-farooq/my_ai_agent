@@ -14,16 +14,16 @@ The bootstrap reads the latest GitHub release, downloads `mansoor-agent-hub.zip`
 
 ## Recipient install
 
-1. Install Antigravity and sign in with the target user's Gemini account.
+1. Install Antigravity. The signed installer prepares Gemini CLI; sign in to Gemini CLI on first use.
 2. Obtain the approved signed `mansoor-agent-hub.zip` from Mansoor Farooq's owner distribution. The [releases page](https://github.com/mansoor-farooq/my_ai_agent/releases) is the future public-artifact location, not a promise that an artifact is published today.
 3. Extract the ZIP to a local folder.
 4. Double-click `Install-Mansoor-Agent-Team.cmd`.
 5. Restart Antigravity or reload its skills and agents.
-6. Open a project, select `production-orchestrator`, and give it a bounded task in chat.
+6. Open a project and use **Mansoor AI Team Manager** as the main agent. `production-orchestrator` remains an Antigravity compatibility key, not the user-facing identity.
 
-The installer checks the trusted owner signature, verifies package checksums, runs strict Antigravity validation and stops on an integrity failure. The recipient does not need the source repository, GitHub login, private signing key or build tools.
+The installer checks the trusted owner signature, verifies package checksums, runs strict Antigravity validation and stops on an integrity failure. It installs Gemini CLI if missing (or updates it if npm manages it), then syncs the manager, all 14 specialists, the complete 179-skill library and four domain policies into the user's global Gemini CLI profile. It does not copy account credentials; sign in to Gemini CLI yourself on first use. The recipient does not need the source repository, GitHub login, private signing key or build tools.
 
-Governed global rules are synchronized into the detected Antigravity `config/rules` directory. Unchanged managed rules update automatically; locally edited rules are preserved and reported with their local and package hashes. Rule precedence, scope, required evidence and verification checks are recorded in `shared/control-plane/rule-registry.json`.
+Governed global rules are synchronized into the detected Antigravity `config/rules` directory. Unchanged managed rules update automatically; locally edited rules are preserved and reported with their local and package hashes. Gemini CLI receives the same four domain policy texts as namespaced on-demand skills. Rule precedence, scope, required evidence and verification checks are recorded in `shared/control-plane/rule-registry.json`.
 
 ## First task
 
@@ -49,10 +49,11 @@ The build:
 - validates the Antigravity plugin;
 - runs the agent-hub doctor;
 - runs the focused test suite;
+- syncs the manager, 14 specialists, 179 skills and four policies into the owner's global Gemini CLI profile;
 - prints the exact ZIP path and SHA256 hash; and
 - automatically runs the signed installer when an existing local Mansoor Agent Hub installation is detected. The installer prints `UPDATE PLAN`, `UPDATED`, the synchronized profile roots and hash verification. If no local installation exists, it leaves the ZIP ready for the first manual install.
 
-For a package-only build that must not touch the local installation, run `npm run build:package`.
+For a package-only build that must not touch the local Antigravity or Gemini CLI installation, run `npm run build:package`. The GitHub bootstrap uses the latest **published signed release** when invoked; a normal Git push alone does not publish or install a release.
 
 Share only `E:\Agents\dist\mansoor-agent-hub.zip`. Keep `.env` files, the private signing key and the full source folder private.
 

@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.22.0';
+const packageVersion = '1.23.0';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -246,7 +246,7 @@ const premiumPackageReadme = [
   '',
   '## Install',
   '',
-  '1. Install Antigravity and sign in with the target user\'s Gemini account.',
+  '1. Install Antigravity. The signed installer prepares Gemini CLI; sign in to Gemini CLI on first use.',
   '2. Download the release from https://github.com/mansoor-farooq/my_ai_agent.',
   '3. Extract the ZIP and run Install-Mansoor-Agent-Team.cmd.',
   '',
@@ -254,7 +254,7 @@ const premiumPackageReadme = [
   '',
   '## Recipient setup',
   '',
-  'Install Antigravity and sign in once, extract this ZIP, then double-click Install-Mansoor-Agent-Team.cmd. If Node.js or the Antigravity CLI is missing, the installer downloads them from their official sources and verifies the Node.js archive checksum. It then installs the Agent Hub and tries the included official plugin set. If a plugin needs account consent or provider configuration, its original Antigravity message is shown; finish that setup in Antigravity and rerun the same installer. A failure in one plugin does not stop the others.',
+  'Install Antigravity and sign in once, extract this ZIP, then double-click Install-Mansoor-Agent-Team.cmd. If Node.js or the Antigravity CLI is missing, the installer downloads them from their official sources and verifies the Node.js archive checksum. It installs Gemini CLI from Google’s official npm package if missing, updates it when npm manages the existing install, then syncs the Mansoor AI Team Manager, all specialists, full skill library and domain policies into the global Gemini CLI profile. Sign in to Gemini CLI yourself on first use; the installer never creates or copies account credentials. It then installs the Agent Hub and tries the included official plugin set. If a plugin needs account consent or provider configuration, its original Antigravity message is shown; finish that setup in Antigravity and rerun the same installer. A failure in one optional plugin does not stop the others.',
   '',
   '## Owner build setup',
   '',
@@ -476,6 +476,34 @@ const signedInstaller = [
   '}',
   "if (-not $agy) { throw 'Antigravity CLI installation did not produce agy.exe. Check network access, then run this installer again.' }",
   "Write-Host '      READY  /  Antigravity command line is available' -ForegroundColor Green",
+  "Write-Stage '02/04' 'GEMINI CLI' 'Updating the manager runtime and syncing the complete team'",
+  '$npmCommand = Get-Command npm.cmd -ErrorAction SilentlyContinue',
+  '$npmCli = Join-Path (Split-Path -Parent $node.Source) "node_modules\\npm\\bin\\npm-cli.js"',
+  '$gemini = Get-Command gemini -ErrorAction SilentlyContinue',
+  '$npmManagedGemini = $false',
+  'if ($npmCommand) { & $npmCommand.Source list --global @google/gemini-cli --depth=0 2>$null; $npmManagedGemini = ($LASTEXITCODE -eq 0) }',
+  'if (-not $gemini -or $npmManagedGemini) {',
+  '  if ($npmCommand) { & $npmCommand.Source install --global @google/gemini-cli@latest }',
+  '  elseif (Test-Path -LiteralPath $npmCli -PathType Leaf) { & $node.Source $npmCli install --global @google/gemini-cli@latest }',
+  "  else { throw 'Gemini CLI is missing and npm was not found beside Node.js.' }",
+  "  if ($LASTEXITCODE -ne 0) { throw 'Could not install or update Gemini CLI from its official npm package.' }",
+  '}',
+  '$npmPrefix = $null',
+  'if ($npmCommand) { $npmPrefix = (& $npmCommand.Source prefix --global 2>$null | Select-Object -Last 1).Trim() }',
+  'elseif (Test-Path -LiteralPath $npmCli -PathType Leaf) { $npmPrefix = (& $node.Source $npmCli prefix --global 2>$null | Select-Object -Last 1).Trim() }',
+  'if ($npmPrefix) {',
+  '  $geminiShim = Join-Path $npmPrefix "gemini.cmd"',
+  '  if (Test-Path -LiteralPath $geminiShim -PathType Leaf) { $env:PATH = "$npmPrefix;$env:PATH"; $gemini = [pscustomobject]@{ Source = $geminiShim } }',
+  '}',
+  'if (-not $gemini) { $gemini = Get-Command gemini -ErrorAction SilentlyContinue }',
+  "if (-not $gemini) { throw 'Gemini CLI installation did not produce a gemini command.' }",
+  '& $gemini.Source --version | ForEach-Object { Write-Host ("      GEMINI CLI / " + $_.ToString().Trim()) -ForegroundColor DarkGray }',
+  'if ($LASTEXITCODE -ne 0) { throw "Gemini CLI version check failed." }',
+  '$geminiTeamInstaller = Join-Path $pluginRoot "tools\\install-gemini-cli-team.mjs"',
+  'if (-not (Test-Path -LiteralPath $geminiTeamInstaller -PathType Leaf)) { throw "Signed package is missing the Gemini CLI team installer." }',
+  '& $node.Source $geminiTeamInstaller',
+  'if ($LASTEXITCODE -ne 0) { throw "Gemini CLI team/skills/policy synchronization failed." }',
+  "Write-Host '      TEAM SYNC / 15 agents, 179 skills and four policies installed in user scope' -ForegroundColor Green",
   '$permissionSync = Join-Path $pluginRoot "tools\\ultra-agent-v5\\sync-antigravity-permissions.mjs"',
   'if (Test-Path -LiteralPath $permissionSync -PathType Leaf) {',
   '  $permissionOutput = & $node.Source $permissionSync 2>&1',

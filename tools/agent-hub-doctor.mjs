@@ -74,7 +74,7 @@ export async function runDoctor() {
   const profilesRoot = path.join(root, 'agents', 'Antigravity', 'custom-agents');
   const mainText = fs.readFileSync(path.join(profilesRoot, 'production-orchestrator', 'agent.md'), 'utf8');
   if (/^mainAgent:\s*true\s*$/m.test(mainText) && /^model:\s*inherit\s*$/m.test(mainText)) {
-    add('PASS', 'single Gemini manager', 'production-orchestrator is the only shipped manager and inherits the target Antigravity model');
+    add('PASS', 'single Gemini manager', 'Mansoor AI Team Manager is the main identity; production-orchestrator remains its Antigravity compatibility routing ID and inherits the target model');
   } else add('FAIL', 'single Gemini manager', 'manager profile is missing inherit-model or main-manager metadata');
 
   const found = fs.readdirSync(profilesRoot, { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => entry.name);

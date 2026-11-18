@@ -1,11 +1,14 @@
 {
   "name": "mansoor-agent-hub",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "private": true,
   "description": "Owner build entrypoint for the Mansoor Farooq private Antigravity agent team.",
   "scripts": {
     "build": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1",
     "build:package": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1 -SkipAutoInstall",
+    "agents:install:gemini": "node tools/install-gemini-cli-team.mjs",
+    "agents:check:gemini": "node tools/install-gemini-cli-team.mjs --check",
+    "skills:refresh:rea": "node tools/refresh-rea-skill.mjs",
     "test": "node --test \"tools/tests/*.test.mjs\"",
     "test:rag": "node tools/rag-ci-gate.mjs",
     "secret-scan": "node tools/secret-scan.mjs .",

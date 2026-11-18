@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "8904BBF317DECCB3016DCD653981C0CCF6431AB6DAC1F83ACBF22AF403BEACC2",
-    "Bytes": 35865
+    "SHA256": "746685C7C67E9F6F4398FCC3E139CB87AA454592F8077AF57595775F3597CF6C",
+    "Bytes": 36242
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -101,8 +101,8 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "C0D1249EA710120D18CB2C582EC62B0288652454B6773C1EA01DEE9A574665C4",
-    "Bytes": 12753
+    "SHA256": "DBE552783E8F7A45513DF7AB3ADC0F0C0E9A5523F832EF09F1A446A101A02808",
+    "Bytes": 14414
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
@@ -151,8 +151,8 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "8A109B0E2E610C338034A9D373F1BDF2DA0A76CE49778F7BF99F142BA50A16C3",
-    "Bytes": 673
+    "SHA256": "CD5720E8467282448EA92E32095350BA09D7DA200C7D5377323C2FB71A716295",
+    "Bytes": 883
   },
   {
     "Path": "Agents/Push-All-Branches.cmd",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "431E88A9DAC3781B6CA355CE630843DD3708653A7A69CFF9E8E9709E3DF56AF6",
-    "Bytes": 26158
+    "SHA256": "F3239C0FF8E8B23BC4607E27B286E77477569886635123CCBC6DA1475AE39C6C",
+    "Bytes": 26689
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2196,13 +2196,13 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "EAB2F3266CC579B6B40F815F98AC7054860F1D260E56CD959B051C9B4F40417A",
-    "Bytes": 21810
+    "SHA256": "D6F21CC285A158A0A251F8C959D2CC686F5D70A88B423CCA56C3FD9F541D070B",
+    "Bytes": 21865
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "E70EBB226DB9896596DFB0058C6197CFCC303CD43D735B4BDC3E2CB12DD56F32",
-    "Bytes": 59856
+    "SHA256": "AE325A1E74A38ECC9032E4152D5D47C431C528BC72BC4190D4770E73A8326523",
+    "Bytes": 62647
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2226,8 +2226,8 @@
   },
   {
     "Path": "Agents/tools/portable-components.mjs",
-    "SHA256": "D0DB99C2A6DB892236F985A1C740BBBFD0507A4C0EEFC38209431ED0CFDD6CA6",
-    "Bytes": 10491
+    "SHA256": "9E8C9A248994DFFB497A97791E333BE4CE877D177349D7FD10D0EE3EFFDE13BB",
+    "Bytes": 10530
   },
   {
     "Path": "Agents/tools/route-backend-ml-task.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "19CF07A15AC15F3B39F3A2EF694F885798A3D084FC8E1AE5DCF7990BF97778B5",
-    "Bytes": 18874
+    "SHA256": "76ED8C294F8BF6FB158415484BCE24CECACAFFB9DE53F1689B06D3F6326C6F8F",
+    "Bytes": 19644
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
@@ -2548,5 +2548,15 @@
     "Path": "Agents/tools/ultra-agent-v5/readiness-gate.mjs",
     "SHA256": "5D97CFBFE4D825B1DECB185614F19E29979A0C71122D11A5F21EA43913B645A7",
     "Bytes": 2295
+  },
+  {
+    "Path": "Agents/tools/install-gemini-cli-team.mjs",
+    "SHA256": "1231DE944C41923256C1A896D821715969D0B03798D1AD21A5FF20AE2A7ED6F7",
+    "Bytes": 19058
+  },
+  {
+    "Path": "Agents/tools/tests/gemini-cli-team.test.mjs",
+    "SHA256": "B86A7065D4B80A51DCE9DC0C659D104CD44990D499FAC4B818FE79D469ED2490",
+    "Bytes": 8314
   }
 ]

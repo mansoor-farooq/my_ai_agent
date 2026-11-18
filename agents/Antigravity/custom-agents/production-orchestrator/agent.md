@@ -196,6 +196,8 @@ Use one primary specialist. A second domain agent is appropriate only when the t
 
 ## GitHub URL installation
 
+For REA-backed reverse engineering of shipped binaries, apps, packages, or requested runtime behavior, use the installed `reverse-engineer-anything` skill and registered REA MCP server. If either is missing or stale, run `npm run skills:refresh:rea` from the hub root, then reload Antigravity before using the refreshed session. Do not install analysis engines automatically.
+
 When the owner gives a GitHub repository URL and asks to install this team on another machine, use the repository's `Install-Ultra-Agent.cmd` bootstrap. It may download only an approved signed `mansoor-agent-hub.zip` release, verify the detached checksum when present and rely on the package's owner-signed manifest before invoking the installer. Never run arbitrary repository source, `npm install`, a source build or a guessed script on a recipient machine. If the repository has no signed release asset, stop with that exact blocker and explain that the owner must publish an approved release first. The existing host login remains the recipient's responsibility; the bootstrap does not rotate accounts or bypass plan limits.
 
 ## Capability wave: reliability, memory, evaluation and mobile QA

@@ -126,6 +126,7 @@ test('portable bundle retains important non-Antigravity skill support files', as
   const output = await mkdtemp(path.join(os.tmpdir(), 'mansoor-agent-hub-support-'));
   try {
     await copyPortableComponents(root, output, /(?:AIza[0-9A-Za-z_-]{30,}|AQ\.[0-9A-Za-z_-]{32,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9_]{30,})/);
+    await assert.doesNotReject(access(path.join(output, 'tools', 'install-gemini-cli-team.mjs')), 'GitHub installer needs the package-aware Gemini sync tool');
     for (const relative of requiredPortableSupportFiles) {
       await assert.doesNotReject(access(path.join(output, relative)), relative);
     }
@@ -215,7 +216,8 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     }
     await assert.doesNotReject(access(path.join(output, 'SKILL-PROVENANCE.json')), 'SKILL-PROVENANCE.json');
     const plugin = JSON.parse(await readFile(path.join(output, 'plugin.json'), 'utf8'));
-    assert.equal(plugin.version, '1.22.0');
+    const packageMetadata = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
+    assert.equal(plugin.version, packageMetadata.version);
     const packagedManager = await readFile(path.join(output, 'agents', 'production-orchestrator.md'), 'utf8');
     assert.doesNotMatch(packagedManager, /^skills:\r?$/m, 'packaged plugin agents must avoid broken AgentBasePath-relative skill metadata');
     assert.match(packagedManager, /Bundled skill routing/);
@@ -240,12 +242,16 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.ok(hooks['mansoor-native-write-guard'].PreToolUse.some((entry) => entry.matcher === '*' && entry.hooks.some((handler) => handler.command.includes('antigravity-pretool-guard.ps1'))));
     await assert.doesNotReject(access(path.join(output, 'tools', 'antigravity-pretool-guard.ps1')));
     const installer = await readFile(path.join(output, 'Install-Mansoor-Agent-Team.ps1'), 'utf8');
+    await assert.doesNotReject(access(path.join(output, 'tools', 'install-gemini-cli-team.mjs')));
     const ruleSync = await readFile(path.join(output, 'tools', 'sync-global-rules.ps1'), 'utf8');
     assert.match(installer, /nodejs\.org\/dist\/index\.json/);
     assert.match(installer, /SHASUMS256\.txt/);
     assert.match(installer, /antigravity\.google\/cli\/install\.ps1/);
     assert.match(installer, /antigravity-plugins-official/);
     assert.match(installer, /"plugin", "list", "--json"/);
+    assert.match(installer, /@google\/gemini-cli@latest/);
+    assert.match(installer, /install-gemini-cli-team\.mjs/);
+    assert.match(installer, /Gemini CLI team\/skills\/policy synchronization failed/);
     assert.match(installer, /'plugin\.json', 'mcp_config\.json', 'hooks\.json'/);
     assert.match(installer, /Already installed; leaving the active package untouched/);
     assert.match(installer, /WindowsBuiltInRole.*Administrator/);
@@ -350,4 +356,7 @@ test('owner build refreshes the extracted distribution folder from the signed ZI
   assert.match(buildScript, /mansoor-agent-hub-refresh-/);
   assert.match(buildScript, /Expand-Archive/);
   assert.match(buildScript, /dist\\mansoor-agent-hub/);
+  assert.match(buildScript, /STALE SIGNED BUILD REMOVED/);
+  assert.match(buildScript, /verify-package-signature\.mjs/);
+  assert.match(buildScript, /Refusing to remove a path outside dist/);
 });
