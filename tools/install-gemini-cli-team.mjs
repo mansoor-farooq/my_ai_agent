@@ -97,8 +97,12 @@ export function convertRuleProfile(source, { fileName }) {
   return `---\nname: mam-policy-${slug}\ndescription: ${description.replace(/\s+/g, ' ')}\n---\n${marker}\n${body}`;
 }
 
-export function managerInstructions(existing) {
-  const block = `<!-- mansoor-ai-team-manager:start -->\n## Mansoor AI Team Manager\n\nThe primary agent identity for this Gemini CLI session is **Mansoor AI Team Manager**. This is the user's main agent; any older routing slug is an internal compatibility detail only. Apply the Mansoor team policies from this instruction and delegate bounded work to the registered \`mam-*\` specialists when the work is independent and useful. Use no more than three concurrent specialists, assign one writer per file/path, and prefer a read-only verifier for independent review. Keep progress updates brief and report only checks actually run.\n\nThe full Mansoor team skill library and four domain policies are installed globally as \`mam-*\` skills and load on demand. Use matching \`mam-policy-*\` skills for architecture, Flutter/mobile, SaaS, and live-testing work. Skills may ask for first-use consent according to Gemini CLI policy. Keep the selected model inherited from the Gemini CLI session. Do not route to DeepSeek, Hermes, API-key pools, cloud bridges or external model fallbacks. Follow the host approval mode; do not use YOLO mode or bypass approvals.\n\nThe signed Agent Hub installer syncs the latest team profiles, skills and policies from its package. In the source checkout, use \`npm run agents:install:gemini\`.\n<!-- mansoor-ai-team-manager:end -->`;
+const defaultPolicyNames = ['antigravity-native-orchestration', 'architecture-governance', 'flutter-mobile-standards', 'live-testing-governance', 'saas-architecture-governance'];
+
+export function managerInstructions(existing, policyNames = defaultPolicyNames) {
+  const policyCount = policyNames.length;
+  const policySkillNames = policyNames.map((name) => `mam-policy-${name}`).join(', ');
+  const block = `<!-- mansoor-ai-team-manager:start -->\n## Mansoor AI Team Manager\n\nThe primary agent identity for this Gemini CLI session is **Mansoor AI Team Manager**. This is the user's main agent; any older routing slug is an internal compatibility detail only. Apply the Mansoor team policies from this instruction and delegate bounded work to the registered \`mam-*\` specialists when the work is independent and useful. Use no more than three concurrent specialists, assign one writer per file/path, and prefer a read-only verifier for independent review. Keep progress updates brief and report only checks actually run.\n\nThe full Mansoor team skill library and ${policyCount} governed policy skills are installed globally as \`mam-*\` skills and load on demand. Use the matching policies when their task applies: ${policySkillNames}. Keep the selected model inherited from the Gemini CLI session. Do not route to DeepSeek, Hermes, API-key pools, cloud bridges or external model fallbacks. Preserve the host's selected model, permission mode, approval settings and safety controls; do not add a parallel approval flow or bypass the host.\n\nThe signed Agent Hub installer syncs the latest team profiles, skills and policies from its package. In the source checkout, use \`npm run agents:install:gemini\`.\n<!-- mansoor-ai-team-manager:end -->`;
   let out = existing.replace(/<!-- mansoor-ai-team-manager:start -->[\s\S]*?<!-- mansoor-ai-team-manager:end -->\s*/g, '');
   out = out.replace(/<!-- agents-hub-manager-routing -->[\s\S]*?<!-- \/agents-hub-manager-routing -->\s*/g, '');
   out = out.replace(/<!-- agents-hub-context -->[\s\S]*?<!-- \/agents-hub-context -->\s*/g, '');
@@ -267,7 +271,12 @@ export function syncGeminiTeam({ baseRoot = root, source, skills, rules, target 
   const agents = sourceAgents(agentSource);
   if (agents.length !== 15 || agents.filter((agent) => agent.manager).length !== 1) throw new Error(`Expected 15 source profiles and exactly one Mansoor manager; found ${agents.length}.`);
   const skillsToInstall = skillPayloads(skillSource, ruleSource);
-  if (skillsToInstall.length !== 183) throw new Error(`Expected 179 source skills and 4 domain policies; found ${skillsToInstall.length} entries.`);
+  if (!skillsToInstall.length) throw new Error('No Mansoor team skills or domain policies were found in the package.');
+  const policyNames = fs.readdirSync(ruleSource, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.md'))
+    .map((entry) => path.basename(entry.name, '.md'));
+  const policyCount = policyNames.length;
+  const teamSkillCount = skillsToInstall.length - policyCount;
   const agentDir = path.join(target, 'agents');
   const skillDir = path.join(target, 'skills');
   const outputs = agents.map((agent) => {
@@ -287,7 +296,7 @@ export function syncGeminiTeam({ baseRoot = root, source, skills, rules, target 
   const stateFile = path.join(target, stateName);
   const previousState = loadState(stateFile);
   const geminiFile = path.join(target, 'GEMINI.md');
-  const geminiContents = managerInstructions(fs.existsSync(geminiFile) ? fs.readFileSync(geminiFile, 'utf8') : '');
+  const geminiContents = managerInstructions(fs.existsSync(geminiFile) ? fs.readFileSync(geminiFile, 'utf8') : '', policyNames);
   const installedFilesMatch = allOutputs.every((item) => {
     const file = path.join(target, item.path);
     return fs.existsSync(file) && fs.readFileSync(file).equals(item.contents);
@@ -295,8 +304,8 @@ export function syncGeminiTeam({ baseRoot = root, source, skills, rules, target 
   const stateMatches = previousState && JSON.stringify(previousState) === JSON.stringify(expectedState);
   const instructionsMatch = fs.existsSync(geminiFile) && fs.readFileSync(geminiFile, 'utf8') === geminiContents;
   if (check) {
-    if (!installedFilesMatch || !stateMatches || !instructionsMatch) throw new Error(`Gemini CLI Mansoor team is out of sync: ${outputs.length} profiles, ${skillsToInstall.length} skills; run the bundled installer.`);
-    return `Gemini CLI Mansoor team is current: ${outputs.length} agent profiles, 179 skills, 4 domain policies and global manager instructions.`;
+    if (!installedFilesMatch || !stateMatches || !instructionsMatch) throw new Error(`Gemini CLI Mansoor team is out of sync: ${outputs.length} profiles, ${teamSkillCount} skills and ${policyCount} policies; run the bundled installer.`);
+    return `Gemini CLI Mansoor team is current: ${outputs.length} agent profiles, ${teamSkillCount} skills, ${policyCount} governed policies and global manager instructions.`;
   }
 
   fs.mkdirSync(agentDir, { recursive: true });
@@ -305,7 +314,7 @@ export function syncGeminiTeam({ baseRoot = root, source, skills, rules, target 
   for (const item of allOutputs) atomicWrite(path.join(target, item.path), item.contents);
   atomicWrite(geminiFile, geminiContents);
   atomicWrite(stateFile, `${JSON.stringify(expectedState, null, 2)}\n`);
-  return `Installed Mansoor AI Team Manager, ${outputs.length - 1} specialists, 179 full skills and 4 domain policies in ${target}.`;
+  return `Installed Mansoor AI Team Manager, ${outputs.length - 1} specialists, ${teamSkillCount} full skills and ${policyCount} governed policies in ${target}.`;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

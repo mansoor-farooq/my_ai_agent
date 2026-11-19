@@ -15,7 +15,12 @@ const portableTextExtensions = new Set([
 ]);
 
 export const requiredPortableSupportFiles = [
+  '.codex/agents/flutter-mobile-specialist.toml',
+  'tools/install-codex-mobile-specialist.mjs',
   'tools/install-gemini-cli-team.mjs',
+  'tools/update-skill-references.mjs',
+  'skills-lock.json',
+  'SKILL-PROVENANCE.json',
   'tools/image-asset-workflow.mjs',
   'skills/impeccable/agents/impeccable_asset_producer.toml',
   'skills/impeccable/agents/impeccable_documenter.toml',
@@ -192,7 +197,7 @@ export async function copyPortableComponents(root, target, credentialPattern) {
     await writeFile(destination, compactSkillRouter(original, name));
   }
   await cp(path.join(root, 'rules'), path.join(target, 'rules'), { recursive: true, errorOnExist: true });
-  for (const relative of requiredPortableSupportFiles.filter((file) => file.startsWith('tools/'))) {
+  for (const relative of requiredPortableSupportFiles) {
     const source = path.join(root, relative);
     const destination = path.join(target, relative);
     await mkdir(path.dirname(destination), { recursive: true });

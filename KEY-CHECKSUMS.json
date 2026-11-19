@@ -41,8 +41,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/flutter-mobile-specialist/agent.md",
-    "SHA256": "F9DD488853B60A5017CFB790EEE627AE34DDE262BE9D0EAE2AA6C93A0A458BE7",
-    "Bytes": 9638
+    "SHA256": "8381F1FDE3C5EA69CE64ACD57A6F8F41ABBC4547D94A7F75CA09F8FBF43D8EA8",
+    "Bytes": 11554
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/mansoor-ui-specialist/agent.md",
@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "746685C7C67E9F6F4398FCC3E139CB87AA454592F8077AF57595775F3597CF6C",
-    "Bytes": 36242
+    "SHA256": "DDC450A5DEADDAFE7BC49BD70F928121BE42B66F9F8E64D672936B2890E3BC1E",
+    "Bytes": 36558
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -76,8 +76,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/qa-release-specialist/agent.md",
-    "SHA256": "4949818D8DE34D81CA2C949505B14940EFF070D4FF4BD89C112525AA150BD815",
-    "Bytes": 1407
+    "SHA256": "549F1A7F75508E3DB2C3BCD43EC99FC4A32D74169DFB180AEEFF5272356BCC87",
+    "Bytes": 2025
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/research-docs-specialist/agent.md",
@@ -151,8 +151,8 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "CD5720E8467282448EA92E32095350BA09D7DA200C7D5377323C2FB71A716295",
-    "Bytes": 883
+    "SHA256": "C6AA097F2405CB612A8DDC755F871B2E1633696E171F3C0DB6CA33E39072A84B",
+    "Bytes": 1024
   },
   {
     "Path": "Agents/Push-All-Branches.cmd",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "F3239C0FF8E8B23BC4607E27B286E77477569886635123CCBC6DA1475AE39C6C",
-    "Bytes": 26689
+    "SHA256": "F17CA8632481CF89E6144065F83E712552CC7F78FC314727FF402B3D110F23DD",
+    "Bytes": 27865
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -201,8 +201,8 @@
   },
   {
     "Path": "Agents/SKILL-PROVENANCE.json",
-    "SHA256": "9C93BE0F955F126CB0A282EC4A547F81F8C5C54872455A2933C8B76E5A4FD75B",
-    "Bytes": 55076
+    "SHA256": "AF4D969560E94FDAF4FE80EE258AD431CFDBEBA356AE74F7155ED790CC8FD444",
+    "Bytes": 86993
   },
   {
     "Path": "Agents/skills/accidental-data-loss-prevention/SKILL.md",
@@ -1546,8 +1546,8 @@
   },
   {
     "Path": "Agents/skills/live-web-quality-auditor/SKILL.md",
-    "SHA256": "0E5A6F9240981EE47F3CEE662869B64C837575BABBB71B5AE1F12FFFC5AD908E",
-    "Bytes": 8949
+    "SHA256": "5CC5711E02B040354538E83DE8006EECFD4CC2D56803845C00A567C3BF9855C8",
+    "Bytes": 9940
   },
   {
     "Path": "Agents/skills/managing-python-dependencies/SKILL.md",
@@ -2196,13 +2196,13 @@
   },
   {
     "Path": "Agents/tools/agent-hub-doctor.mjs",
-    "SHA256": "D6F21CC285A158A0A251F8C959D2CC686F5D70A88B423CCA56C3FD9F541D070B",
-    "Bytes": 21865
+    "SHA256": "7800D15A3574547D786E1DEBBBBC355575355F3790211056665FE8E79B5BE83B",
+    "Bytes": 21995
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "AE325A1E74A38ECC9032E4152D5D47C431C528BC72BC4190D4770E73A8326523",
-    "Bytes": 62647
+    "SHA256": "9CBCE0800474AD0C700043E6343C8CDAF98BDF303DBC8B169066E5A6E0D449A3",
+    "Bytes": 62646
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2216,8 +2216,8 @@
   },
   {
     "Path": "Agents/tools/generate-skill-provenance.mjs",
-    "SHA256": "EB292FDEB30394BF94BE35239BBE70F7748DF426C98E6A55EA065A5A5F238B64",
-    "Bytes": 2264
+    "SHA256": "E5851F9E2760FB1920F86DECB7281447C836A292344DBD390A4BE0C7600F1D94",
+    "Bytes": 2462
   },
   {
     "Path": "Agents/tools/package-signing.mjs",
@@ -2226,8 +2226,8 @@
   },
   {
     "Path": "Agents/tools/portable-components.mjs",
-    "SHA256": "9E8C9A248994DFFB497A97791E333BE4CE877D177349D7FD10D0EE3EFFDE13BB",
-    "Bytes": 10530
+    "SHA256": "FA6A129880C8D99DB82929F45E99942ADEC170B5FB289902B7937FF89937F36E",
+    "Bytes": 10671
   },
   {
     "Path": "Agents/tools/route-backend-ml-task.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "76ED8C294F8BF6FB158415484BCE24CECACAFFB9DE53F1689B06D3F6326C6F8F",
-    "Bytes": 19644
+    "SHA256": "6652AE5FEBF926482FAB1EA313437A081599EAA7ACA0231B755C36DF019C9D8E",
+    "Bytes": 20422
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
@@ -2451,8 +2451,8 @@
   },
   {
     "Path": "Agents/tools/rule-governance.mjs",
-    "SHA256": "855CFB80397A714623BA78CC030B98F713CF86164455BD6B4B777451AAB55752",
-    "Bytes": 3465
+    "SHA256": "AA702A03212D19FA76AF2BC1C8F3A3E7D5AC7B6E7DF4BB617CCCB352126D358C",
+    "Bytes": 3483
   },
   {
     "Path": "Agents/tools/antigravity-pretool-guard.mjs",
@@ -2491,8 +2491,8 @@
   },
   {
     "Path": "Agents/shared/control-plane/rule-registry.json",
-    "SHA256": "E4657D5A05D7979EB64A86453AB42C56CC1AD83143B0280A9CA1A5EF702B6918",
-    "Bytes": 2856
+    "SHA256": "3DEEAAE0105074B576906549233791AD07E1C580705B22D4435F69D0162BFEDB",
+    "Bytes": 4125
   },
   {
     "Path": "Agents/benchmarks/README.md",
@@ -2551,12 +2551,27 @@
   },
   {
     "Path": "Agents/tools/install-gemini-cli-team.mjs",
-    "SHA256": "1231DE944C41923256C1A896D821715969D0B03798D1AD21A5FF20AE2A7ED6F7",
-    "Bytes": 19058
+    "SHA256": "291831C228C31664C5B7F8281240DB17548B860B23B1038A55DA0007FBF78F59",
+    "Bytes": 19761
   },
   {
     "Path": "Agents/tools/tests/gemini-cli-team.test.mjs",
-    "SHA256": "B86A7065D4B80A51DCE9DC0C659D104CD44990D499FAC4B818FE79D469ED2490",
-    "Bytes": 8314
+    "SHA256": "118ECF05AD4A0277FFC6594FD2436F72E94CC02FEAEEC7A0321B9704354ED215",
+    "Bytes": 8475
+  },
+  {
+    "Path": "Agents/tools/update-skill-references.mjs",
+    "SHA256": "D3D5E77D52633FFD0CF8B8645B856D8F7134048A7C963944004B9DCB2F32844C",
+    "Bytes": 6656
+  },
+  {
+    "Path": "Agents/skills-lock.json",
+    "SHA256": "F633E0250C116C382673310B35ACF4F8C0FBB41AACF39AD76F773E5E67E1820F",
+    "Bytes": 47994
+  },
+  {
+    "Path": "Agents/tools/tests/skill-reference-updater.test.mjs",
+    "SHA256": "265ABF803D64C3F141DCF28F5B1C941B82C1E8FF247E46EAF43E497F3BDFAB49",
+    "Bytes": 1838
   }
 ]

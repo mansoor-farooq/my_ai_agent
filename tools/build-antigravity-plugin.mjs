@@ -25,7 +25,7 @@ const sourceAgents = join(root, 'agents', 'Antigravity', 'custom-agents');
 const responsePolicy = `\n\n## Response quality contract\n\nLead with the result. Use plain language and short paragraphs, match the user's language, separate evidence from assumptions, give concise rationale without hidden chain-of-thought, and report only verification actually run. For implementation handoffs include changed paths, behavior, checks and limitations. Never invent metrics, citations, records or tool results.\n\n## Antigravity subagent contract\n\nWhen Antigravity injects the available subagent roster, use only the declared agent names and the native invoke_subagent tool. Do not invent agent IDs, silently create provider bridges or route work outside the manager. Keep each handoff bounded, include the project identity and expected evidence, and return the worker result to the manager before continuing.\n`;
 const packageManifestName = 'PACKAGE-CHECKSUMS.json';
 const packageSignatureName = 'PACKAGE-SIGNATURE.json';
-const packageVersion = '1.23.0';
+const packageVersion = '1.23.2';
 const signingKeyPath = resolve(process.env.MANSOOR_AGENT_SIGNING_KEY || defaultOwnerKeyPath());
 let ownerPrivateKeyPem;
 try {
@@ -167,9 +167,9 @@ await writeFile(join(target, 'SKILL-PROVENANCE.json'), provenanceText);
 const manifest = {
   $schema: 'https://antigravity.google/schemas/v1/plugin.json',
   name: 'mansoor-agent-hub',
-  displayName: 'Mansoor Gemini Agent Team',
+  displayName: 'Mansoor AI Team Manager',
   version: packageVersion,
-  description: 'A private, owner-signed Antigravity engineering product with a lead manager, focused specialists, portable skills and governed delivery.',
+  description: 'Antigravity and Gemini CLI coding-agent team for software engineering, Flutter/Android, and live-browser QA.',
   logo: 'assets/logo.svg',
   suggestedPrompts: [
     'Inspect this repository and route the task to one matching domain expert.',
@@ -254,7 +254,7 @@ const premiumPackageReadme = [
   '',
   '## Recipient setup',
   '',
-  'Install Antigravity and sign in once, extract this ZIP, then double-click Install-Mansoor-Agent-Team.cmd. If Node.js or the Antigravity CLI is missing, the installer downloads them from their official sources and verifies the Node.js archive checksum. It installs Gemini CLI from Google’s official npm package if missing, updates it when npm manages the existing install, then syncs the Mansoor AI Team Manager, all specialists, full skill library and domain policies into the global Gemini CLI profile. Sign in to Gemini CLI yourself on first use; the installer never creates or copies account credentials. It then installs the Agent Hub and tries the included official plugin set. If a plugin needs account consent or provider configuration, its original Antigravity message is shown; finish that setup in Antigravity and rerun the same installer. A failure in one optional plugin does not stop the others.',
+  'Install Antigravity and sign in once, extract this ZIP, then double-click Install-Mansoor-Agent-Team.cmd. If Node.js or the Antigravity CLI is missing, the installer downloads them from their official sources and verifies the Node.js archive checksum. It installs Gemini CLI from Google’s official npm package if missing, updates it when npm manages the existing install, then syncs the Mansoor AI Team Manager, all specialists, full skill library and governed policies into the global Gemini CLI profile. Sign in to Gemini CLI yourself on first use; the installer never creates or copies account credentials. It then installs the Agent Hub and tries the included official plugin set. If a plugin needs account consent or provider configuration, its original Antigravity message is shown; finish that setup in Antigravity and rerun the same installer. A failure in one optional plugin does not stop the others.',
   '',
   '## Owner build setup',
   '',
@@ -503,7 +503,7 @@ const signedInstaller = [
   'if (-not (Test-Path -LiteralPath $geminiTeamInstaller -PathType Leaf)) { throw "Signed package is missing the Gemini CLI team installer." }',
   '& $node.Source $geminiTeamInstaller',
   'if ($LASTEXITCODE -ne 0) { throw "Gemini CLI team/skills/policy synchronization failed." }',
-  "Write-Host '      TEAM SYNC / 15 agents, 179 skills and four policies installed in user scope' -ForegroundColor Green",
+  `Write-Host '      TEAM SYNC / 15 agents, ${skillCount} skills and ${ruleCount} governed policies installed in user scope' -ForegroundColor Green`,
   '$permissionSync = Join-Path $pluginRoot "tools\\ultra-agent-v5\\sync-antigravity-permissions.mjs"',
   'if (Test-Path -LiteralPath $permissionSync -PathType Leaf) {',
   '  $permissionOutput = & $node.Source $permissionSync 2>&1',

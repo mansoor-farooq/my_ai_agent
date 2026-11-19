@@ -24,6 +24,8 @@ for (const item of await readdir(skillRoot, { withFileTypes: true })) {
   if (!roots.length) roots.push('mansoor-agent-hub-owned');
   const license = frontmatter.match(/^license:\s*([^\r\n]+)$/m)?.[1]?.trim() ?? null;
   const declaredSource = frontmatter.match(/^(?:source|source_repo|source_url):\s*([^\r\n]+)$/m)?.[1]?.trim() ?? null;
+  const declaredSourceRoot = frontmatter.match(/^source_root:\s*([^\r\n]+)$/m)?.[1]?.trim() ?? null;
+  if (declaredSourceRoot && !roots.includes(declaredSourceRoot)) roots.push(declaredSourceRoot);
   entries.push({
     name: item.name,
     sourceRoots: roots,

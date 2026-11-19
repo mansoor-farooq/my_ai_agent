@@ -29,6 +29,21 @@ test('resolver applies security first and project rules before global rules, fil
   assert.deepEqual(resolveRules(registry, {}).map((rule) => rule.id), ['SEC-1', 'GLB-1']);
 });
 
+test('Antigravity host-orchestration rule precedes routine global policy without changing host controls', async () => {
+  const registry = createRuleRegistry([
+    { id: 'SEC-1', version: 1, priority: 50, scope: ['global'], owner: 'owner', category: 'security', agents: ['*'], tasks: ['*'], file: 'rules/security.md', contentHash: 'sha256:' + 'a'.repeat(64), requiredEvidence: [], verification: [] },
+    { id: 'HOST-1', version: 1, priority: 1, scope: ['global'], owner: 'owner', category: 'orchestration', agents: ['*'], tasks: ['*'], file: 'rules/antigravity-native-orchestration.md', contentHash: 'sha256:' + 'b'.repeat(64), requiredEvidence: [], verification: [] },
+    { id: 'GLB-1', version: 1, priority: 99, scope: ['global'], owner: 'owner', category: 'quality', agents: ['*'], tasks: ['*'], file: 'rules/global.md', contentHash: 'sha256:' + 'c'.repeat(64), requiredEvidence: [], verification: [] },
+  ]);
+  assert.deepEqual(resolveRules(registry, {}).map((rule) => rule.id), ['SEC-1', 'HOST-1', 'GLB-1']);
+
+  const rule = await readFile(path.join(root, 'rules', 'antigravity-native-orchestration.md'), 'utf8');
+  assert.match(rule, /Mansoor AI Team Manager is the single manager/i);
+  assert.match(rule, /Do not change, reset, or override the host's permission mode/i);
+  assert.match(rule, /Antigravity is the primary work host/i);
+  assert.match(rule, /Carry verified context forward across manager, specialist, Antigravity and Gemini CLI handoffs/i);
+});
+
 test('shipped registry hashes match their Markdown rule contents', async () => {
   const registry = JSON.parse(await readFile(path.join(root, 'shared', 'control-plane', 'rule-registry.json'), 'utf8'));
   const result = await validateRuleRegistry(registry, { root });

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Browser Regression Handoff"
+  short_description: "Convert observed browser findings into stable tests."
+  default_prompt: "Use $browser-regression-handoff when a live browser finding needs a project-native, repeatable regression test."

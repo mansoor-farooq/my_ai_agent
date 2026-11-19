@@ -9,6 +9,17 @@
   },
   "skills": [
     {
+      "name": "accessibility-as-code",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/accessibility-as-code/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "accidental-data-loss-prevention",
       "sourceRoots": [
         "antigravity-global"
@@ -18,6 +29,28 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "adaptive-layout",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/adaptive-layout/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "ads-and-iap-monetization",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/ads-and-iap-monetization/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "agent-hub-operations",
@@ -38,6 +71,28 @@
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": "hashgraph-online/awesome-codex-plugins",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "app-startup-and-bootstrap",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/app-startup-and-bootstrap/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "async-safety",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/async-safety/SKILL.md",
       "provenanceStatus": "declared",
       "distribution": "private-only",
       "publicReleaseReviewRequired": false
@@ -175,6 +230,17 @@
       "publicReleaseReviewRequired": false
     },
     {
+      "name": "browser-regression-handoff",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/mansoor-farooq/my_ai_agent/tree/mansoor-development/skills/browser-regression-handoff",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "building-data-apps",
       "sourceRoots": [
         "antigravity-global"
@@ -195,6 +261,17 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "ci-pipeline-and-gates",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/ci-pipeline-and-gates/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "cinematic-ui",
@@ -230,6 +307,17 @@
       "publicReleaseReviewRequired": false
     },
     {
+      "name": "codegen-and-toolchain",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/codegen-and-toolchain/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "create-plan",
       "sourceRoots": [
         "antigravity-global",
@@ -237,6 +325,204 @@
       ],
       "declaredLicense": "Apache-2.0 (see bundled LICENSE.txt)",
       "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "custom-canvas-and-gestures",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/custom-canvas-and-gestures/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-add-unit-test",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-add-unit-test/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-build-cli-app",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-build-cli-app/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-collect-coverage",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-collect-coverage/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-fix-runtime-errors",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-fix-runtime-errors/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-generate-test-mocks",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-generate-test-mocks/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-migrate-to-checks-package",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-migrate-to-checks-package/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-resolve-package-conflicts",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-resolve-package-conflicts/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-run-static-analysis",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-run-static-analysis/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-setup-ffi-assets",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-setup-ffi-assets/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-use-doc-examples",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-use-doc-examples/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-use-ffigen",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-use-ffigen/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-use-path-package",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-use-path-package/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-use-pattern-matching",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-use-pattern-matching/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-use-primary-constructors",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-use-primary-constructors/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart-write-documentation",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-write-documentation/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dart3-idioms-and-coding-standards",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/dart3-idioms-and-coding-standards/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dartdoc-conventions",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/dartdoc-conventions/SKILL.md",
       "provenanceStatus": "declared",
       "distribution": "private-only",
       "publicReleaseReviewRequired": false
@@ -251,6 +537,17 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "data-export-and-restore",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/data-export-and-restore/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "dataform-bigquery",
@@ -287,6 +584,39 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "deep-code-review",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/ducafecat/skills/blob/5443218aceca77782c79b77e135ae075fd3a9b68/skills/deep-code-review/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "dependency-hygiene",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/dependency-hygiene/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "design-logo",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/ducafecat/skills/blob/5443218aceca77782c79b77e135ae075fd3a9b68/skills/design-logo/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "design-reference-research",
       "sourceRoots": [
         "antigravity-global"
@@ -296,6 +626,28 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "design-review-workflow",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/design-review-workflow/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "design-system-structure",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/design-system-structure/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "discovering-gcp-data-assets",
@@ -672,6 +1024,17 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "error-handling-typed-results",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/error-handling-typed-results/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "feature-documentation",
       "sourceRoots": [
         "mansoor-agent-hub-owned"
@@ -694,6 +1057,161 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "flutter-add-integration-test",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-add-integration-test/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-add-widget-preview",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-add-widget-preview/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-add-widget-test",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-add-widget-test/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-app-icon",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/ducafecat/skills/blob/5443218aceca77782c79b77e135ae075fd3a9b68/skills/flutter-app-icon/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-apply-architecture-best-practices",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-apply-architecture-best-practices/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-architecture",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/flutter-architecture/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-assets-compress",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/ducafecat/skills/blob/5443218aceca77782c79b77e135ae075fd3a9b68/skills/flutter-assets-compress/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-build-responsive-layout",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-build-responsive-layout/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-conventions-index",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/flutter-conventions-index/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-fix-layout-issues",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-fix-layout-issues/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-getx-init",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/ducafecat/skills/blob/5443218aceca77782c79b77e135ae075fd3a9b68/skills/flutter-getx-init/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-implement-json-serialization",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-implement-json-serialization/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-mobile-master-engineer",
+      "sourceRoots": [
+        "cross-runtime-agents",
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "locally-authored",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-performance",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/flutter-performance/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "flutter-production-layout-qa",
       "sourceRoots": [
         "mansoor-agent-hub-owned"
@@ -703,6 +1221,50 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "flutter-rename",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/ducafecat/skills/blob/5443218aceca77782c79b77e135ae075fd3a9b68/skills/flutter-rename/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-riverpod-init",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/ducafecat/skills/blob/5443218aceca77782c79b77e135ae075fd3a9b68/skills/flutter-riverpod-init/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-setup-declarative-routing",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-setup-declarative-routing/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-setup-localization",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-setup-localization/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "flutter-ui-ux",
@@ -724,6 +1286,28 @@
       ],
       "declaredLicense": "Proprietary - private distribution only",
       "declaredSource": "Mansoor Agent Hub private skill library",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "flutter-use-http-package",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "BSD-3-Clause",
+      "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-use-http-package/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "forms-and-input",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/forms-and-input/SKILL.md",
       "provenanceStatus": "declared",
       "distribution": "private-only",
       "publicReleaseReviewRequired": false
@@ -865,6 +1449,17 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "i18n-rtl-l10n",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/i18n-rtl-l10n/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "impeccable",
       "sourceRoots": [
         "antigravity-global",
@@ -901,6 +1496,17 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "lint-and-style-config",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/lint-and-style-config/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "live-web-quality-auditor",
       "sourceRoots": [
         "antigravity-global",
@@ -911,6 +1517,17 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "local-notifications-scheduler",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/local-notifications-scheduler/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "managing-python-dependencies",
@@ -1135,6 +1752,17 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "motion-and-haptics",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/motion-and-haptics/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "multi-agent-consensus",
       "sourceRoots": [
         "antigravity-global"
@@ -1144,6 +1772,28 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "naming-conventions",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/naming-conventions/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "navigation-and-routing",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/navigation-and-routing/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "node-api-design",
@@ -1322,6 +1972,29 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "persistence-drift",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/persistence-drift/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "playwright-cli-live-browser",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned",
+        "fugazi/test-automation-skills-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/fugazi/test-automation-skills-agents/tree/main/skills/playwright-cli",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "pre-implementation-evidence-gate",
       "sourceRoots": [
         "mansoor-agent-hub-owned"
@@ -1398,6 +2071,17 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "project-structure-and-packages",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/project-structure-and-packages/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "python-async-concurrency",
@@ -1521,6 +2205,17 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "release-and-store-shipping",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/release-and-store-shipping/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "reverse-deep-researcher",
       "sourceRoots": [
         "mansoor-agent-hub-owned"
@@ -1544,6 +2239,39 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "run-codegen",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/run-codegen/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "run-goldens-rebaseline",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/run-goldens-rebaseline/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "run-migration",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/run-migration/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "saas-architecture-engineer",
       "sourceRoots": [
         "antigravity-global",
@@ -1554,6 +2282,17 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "scaffold-feature-module",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/scaffold-feature-module/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "schema-mapping",
@@ -1587,6 +2326,28 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "seeded-determinism-and-golden-vectors",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/seeded-determinism-and-golden-vectors/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "service-boundary-and-native",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/service-boundary-and-native/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "skill-repair",
@@ -1623,6 +2384,17 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "state-management-riverpod",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/state-management-riverpod/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "stop-slop",
       "sourceRoots": [
         "antigravity-global",
@@ -1630,6 +2402,17 @@
       ],
       "declaredLicense": "MIT (see bundled LICENSE)",
       "declaredSource": "Antigravity global skill catalog",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "testing-strategy",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/testing-strategy/SKILL.md",
       "provenanceStatus": "declared",
       "distribution": "private-only",
       "publicReleaseReviewRequired": false
@@ -1646,9 +2429,21 @@
       "publicReleaseReviewRequired": true
     },
     {
+      "name": "ui-states-and-feedback",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/ui-states-and-feedback/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
       "name": "ui-ux-pro-max",
       "sourceRoots": [
-        "antigravity-global"
+        "antigravity-global",
+        "cross-runtime-agents"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1666,6 +2461,17 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "value-objects-money-and-units",
+      "sourceRoots": [
+        "mansoor-agent-hub-owned"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/value-objects-money-and-units/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "vercel-composition-patterns",
@@ -1721,6 +2527,28 @@
       "provenanceStatus": "unverified",
       "distribution": "private-only",
       "publicReleaseReviewRequired": true
+    },
+    {
+      "name": "widget-composition",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/widget-composition/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
+    },
+    {
+      "name": "widget-golden-and-a11y-testing",
+      "sourceRoots": [
+        "cross-runtime-agents"
+      ],
+      "declaredLicense": "MIT",
+      "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/widget-golden-and-a11y-testing/SKILL.md",
+      "provenanceStatus": "declared",
+      "distribution": "private-only",
+      "publicReleaseReviewRequired": false
     },
     {
       "name": "workflow-agent-handoffs",

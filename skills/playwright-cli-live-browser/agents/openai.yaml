@@ -1,0 +1,4 @@
+interface:
+  display_name: "Playwright CLI Live Browser"
+  short_description: "Drive a scoped live browser session and capture evidence."
+  default_prompt: "Use $playwright-cli-live-browser for an authorized live browser check; keep the session isolated and report observed evidence only."

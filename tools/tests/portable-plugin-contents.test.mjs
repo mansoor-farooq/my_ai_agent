@@ -19,8 +19,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 test('portable source contains the complete owned skill and rule library', async () => {
   const inventory = await inspectPortableSource(root);
 
-  assert.equal(inventory.skills.length, 179);
-  assert.equal(inventory.rules.length, 4);
+  assert.equal(inventory.skills.length, 254);
+  assert.equal(inventory.rules.length, 5);
   assert.deepEqual(inventory.invalidSkills, []);
   assert.deepEqual(inventory.invalidRules, []);
   assert.deepEqual(inventory.nestedSkillFiles, []);
@@ -33,7 +33,7 @@ test('governed rule registry is valid and matches bundled rule hashes', async ()
   const registry = JSON.parse(await readFile(path.join(root, 'shared', 'control-plane', 'rule-registry.json'), 'utf8'));
   const result = await validateRuleRegistry(registry, { root });
   assert.equal(result.valid, true, JSON.stringify(result));
-  assert.equal(registry.rules.length, 4);
+  assert.equal(registry.rules.length, 5);
 });
 
 test('portable source includes every unique Antigravity global skill', async () => {
@@ -102,6 +102,7 @@ test('Flutter specialist carries production layout QA and ERP research capabilit
   assert.ok(inventory.skills.includes('flutter-production-layout-qa'));
   const profile = await readFile(path.join(root, 'agents', 'Antigravity', 'custom-agents', 'flutter-mobile-specialist', 'agent.md'), 'utf8');
   for (const name of [
+    'flutter-mobile-master-engineer',
     'flutter-production-layout-qa',
     'premium-crm-template',
     'enterprise-erp-reverse-engineering',
@@ -110,6 +111,17 @@ test('Flutter specialist carries production layout QA and ERP research capabilit
     'workflow-operator-console-ui',
     'webapp-testing',
   ]) assert.match(profile, new RegExp(`skills/${name}`));
+});
+
+test('Codex package includes the Flutter custom subagent and its safe personal installer', async () => {
+  const agent = await readFile(path.join(root, '.codex', 'agents', 'flutter-mobile-specialist.toml'), 'utf8');
+  assert.match(agent, /^name = "flutter-mobile-specialist"/m);
+  assert.match(agent, /flutter-mobile-master-engineer/);
+  const installer = await readFile(path.join(root, 'tools', 'install-codex-mobile-specialist.mjs'), 'utf8');
+  assert.match(installer, /Refusing to replace an existing non-Mansoor skill/);
+  assert.match(installer, /Refusing to replace an existing custom Codex agent/);
+  const inventory = await inspectPortableSource(root);
+  assert.ok(inventory.skills.includes('flutter-mobile-master-engineer'));
 });
 
 test('skill provenance ledger covers every bundled skill without inventing public licences', async () => {
@@ -283,7 +295,7 @@ test('built ZIP retains the support files after archive creation', { skip: !exis
     assert.match(installer, /@\(.*'tools'.*'shared'.*\)/s);
     assert.match(installer, /\[MF\]\s+MANSOOR FAROOQ/);
     assert.match(installer, /ULTRA AGENT v4/);
-    assert.match(installer, /VALIDATED\s+\/\s+15 agents, 179 skills, 4 rules, 1 hook/);
+    assert.match(installer, /VALIDATED\s+\/\s+15 agents, \d+ skills, 5 rules, 1 hook/);
     assert.match(installer, /Invoke-AgyCaptured -CommandArguments @\("plugin", "validate"/);
     assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$validationResult = Invoke-AgyCaptured'));
     assert.ok(installer.indexOf('function Invoke-AgyCaptured') < installer.indexOf('$inventoryResult = Invoke-AgyCaptured'));

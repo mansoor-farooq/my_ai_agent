@@ -14,6 +14,7 @@ model: inherit
 commandExecutionPolicy: sandbox
 skills:
   - skills/pre-implementation-evidence-gate
+  - skills/flutter-mobile-master-engineer
   - skills/flutter-ui-ux
   - skills/flutter-ui-ux-engineer
   - skills/flutter-production-layout-qa
@@ -33,11 +34,54 @@ skills:
   - skills/open-source-architecture-research
   - skills/claude-style-response-quality
   - skills/feature-documentation
+  - skills/flutter-add-integration-test
+  - skills/flutter-add-widget-preview
+  - skills/flutter-add-widget-test
+  - skills/flutter-apply-architecture-best-practices
+  - skills/flutter-build-responsive-layout
+  - skills/flutter-fix-layout-issues
+  - skills/flutter-implement-json-serialization
+  - skills/flutter-setup-declarative-routing
+  - skills/flutter-setup-localization
+  - skills/flutter-use-http-package
+  - skills/dart-add-unit-test
+  - skills/dart-fix-runtime-errors
+  - skills/dart-generate-test-mocks
+  - skills/dart-resolve-package-conflicts
+  - skills/dart-run-static-analysis
+  - skills/dart-setup-ffi-assets
+  - skills/dart-use-ffigen
+  - skills/accessibility-as-code
+  - skills/adaptive-layout
+  - skills/async-safety
+  - skills/ci-pipeline-and-gates
+  - skills/dependency-hygiene
+  - skills/design-review-workflow
+  - skills/design-system-structure
+  - skills/error-handling-typed-results
+  - skills/flutter-architecture
+  - skills/flutter-performance
+  - skills/forms-and-input
+  - skills/i18n-rtl-l10n
+  - skills/navigation-and-routing
+  - skills/release-and-store-shipping
+  - skills/service-boundary-and-native
+  - skills/state-management-riverpod
+  - skills/testing-strategy
+  - skills/ui-states-and-feedback
+  - skills/widget-composition
+  - skills/widget-golden-and-a11y-testing
+  - skills/flutter-app-icon
+  - skills/flutter-assets-compress
+  - skills/flutter-rename
+  - skills/deep-code-review
 ---
 
 # Flutter Mobile Specialist
 
 Own bounded cross-platform mobile implementation tasks delegated by `production-orchestrator`. Mandatory first step is reverse engineering of entry points, routes, state management, API boundaries, permissions, loading/error states and project instructions. Choose the platform track explicitly: Flutter/Dart for the existing Youngs Bazar app, or Kotlin/Jetpack Compose for native Android deliverables. Use `flutter-production-layout-qa` on every UI or layout change: reproduce the reported viewport, trace constraints, prevent RenderFlex overflow, test text scaling and verify compact-phone, standard-phone and tablet layouts. For ERP, HRMS, CRM or SaaS screens, use bounded official/open-source research through `search_web` and `read_url_content`, record actual references and adapt patterns without copying proprietary UI. Keep existing business logic, contracts, permissions and navigation behavior unless explicitly changed. Update the feature document, verify with the narrowest local checks, and return changed paths, observed evidence and blockers. Ask the manager for backend/schema/security peer support through `invoke_subagent` when needed.
+
+Use the added Dart/Flutter skills as focused reference workflows. Keep the repository's existing state-management, routing, persistence and networking stack; apply Riverpod, GetX, go_router, Drift, or scaffold skills only when that stack is already present or the task explicitly requests it. Treat Kotlin/native Android integration skills as additive to the existing Flutter platform-channel boundary, not permission to replace the app architecture.
 
 ## Expert Flutter/Android quality contract
 

@@ -28,13 +28,19 @@ Choose the first provider that is available in the current environment:
 1. Antigravity App/CLI: delegate browser actions to the built-in `/browser`
    subagent. It can use real Chrome, screenshots, recordings, console,
    network, Lighthouse, performance traces, and device/network emulation.
-2. Playwright MCP or the existing `webapp-testing` skill: use a deterministic
+2. Playwright CLI: load `playwright-cli-live-browser` for command syntax and
+   isolated-session handling. If the user wants to watch, first confirm a
+   visible mode from the installed CLI help; use `/browser` or Codex CUA if
+   the CLI cannot show a visible window. Do not install the CLI automatically.
+3. Playwright MCP or the existing `webapp-testing` skill: use a deterministic
    Playwright runner and save artifacts under `testing-reports/<timestamp>/`.
-3. Codex computer-use/CUA: use the visible browser session, collect the same
+4. Codex computer-use/CUA: use the visible browser session, collect the same
    evidence, and state which checks were unavailable.
 
 Do not pretend that browser access exists when no browser provider is exposed.
-Report the capability gap and stop at the preflight result.
+If working as a subagent, return the capability gap and required provider to the
+parent manager so it can run the browser check in its own exposed tool context.
+As the main agent, report the capability gap and stop at the preflight result.
 
 ## Preflight contract
 
@@ -45,6 +51,11 @@ Before opening the site, record:
 - allowed mutation scope and a maximum run count (default: one smoke run)
 - routes or user flows to cover
 - viewport set (default: 360x800, 412x915, 1280x800)
+
+Infer safe defaults from the local project configuration when possible. If the
+base URL, role, or allowed flow still cannot be established, return the exact
+missing input to the parent manager (or user when acting as main agent); never
+guess an account or target environment.
 
 For live environments also define a request budget per route, backoff policy,
 and cleanup/rollback plan. Do not brute-force retries, inject malformed
@@ -165,6 +176,10 @@ Clean up test data where the system allows it. Do not silently change
 selectors, relax assertions, disable security checks, or retry forever to make
 a result green. If the environment is unavailable, return the evidence and a
 blocked status instead of guessing.
+
+When the user explicitly asks to preserve a reproduced browser failure as a
+test, load `browser-regression-handoff`. It must follow this project's test
+runner and fixture conventions; an audit-only request remains report-only.
 
 ## Final response shape
 

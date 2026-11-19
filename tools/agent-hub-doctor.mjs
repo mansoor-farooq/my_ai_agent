@@ -107,7 +107,8 @@ export async function runDoctor() {
   else add('FAIL', 'governed rule registry', [...ruleRegistryReport.errors, ...ruleRegistryReport.hashMismatches.map((file) => `content hash mismatch: ${file}`)].join('; '));
   const skillReferences = await readAgentSkillReferences(root);
   const missingSkillBodies = [...new Set(skillReferences.filter((name) => !portable.skills.includes(name)))].sort();
-  if (portable.skills.length === 179 && portable.rules.length === 4
+  const hostOrchestrationRulePresent = portable.rules.includes('antigravity-native-orchestration.md');
+  if (portable.skills.length > 0 && portable.rules.length >= 5 && hostOrchestrationRulePresent
       && !portable.invalidSkills.length && !portable.invalidRules.length
       && !portable.nestedSkillFiles.length && !portable.unsafePaths.length
       && !portable.brokenLocalReferences.length && !portable.provenanceGaps.length

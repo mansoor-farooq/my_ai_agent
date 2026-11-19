@@ -3,7 +3,7 @@ import path from 'node:path';
 import { contentSha256 } from './content-hash.mjs';
 
 const requiredFields = ['id', 'version', 'priority', 'scope', 'owner', 'category', 'agents', 'tasks', 'file', 'contentHash', 'requiredEvidence', 'verification'];
-const precedence = { security: 0, project: 1, global: 2 };
+const precedence = { security: 0, orchestration: 1, project: 2, global: 3 };
 
 async function validateRuleRegistry(registry, { root } = {}) {
   const errors = [];

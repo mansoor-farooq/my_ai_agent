@@ -73,15 +73,15 @@ test('syncs a complete team idempotently and prunes only unchanged stale managed
     for (let index = 0; index < 179; index += 1) makeSkill(`skill-${String(index).padStart(3, '0')}`);
     for (let index = 0; index < 4; index += 1) fs.writeFileSync(path.join(ruleRoot, `policy-${index}.md`), `---\ndescription: Policy ${index} applies.\n---\n# Policy ${index}\nApply this policy.`);
 
-    assert.match(syncGeminiTeam({ baseRoot, target }), /14 specialists, 179 full skills and 4 domain policies/);
+    assert.match(syncGeminiTeam({ baseRoot, target }), /14 specialists, 179 full skills and 4 governed policies/);
     const staleSkill = path.join(target, 'skills', 'mam-skill-178', 'SKILL.md');
     fs.appendFileSync(staleSkill, '\nUser customization preserved.');
     fs.rmSync(path.join(skillRoot, 'skill-178'), { recursive: true, force: true });
     makeSkill('skill-replacement');
-    assert.match(syncGeminiTeam({ baseRoot, target }), /14 specialists, 179 full skills and 4 domain policies/);
+    assert.match(syncGeminiTeam({ baseRoot, target }), /14 specialists, 179 full skills and 4 governed policies/);
     assert.ok(fs.existsSync(staleSkill), 'locally edited stale skill is preserved');
     assert.ok(fs.existsSync(path.join(target, 'skills', 'mam-skill-replacement', 'SKILL.md')));
-    assert.equal(syncGeminiTeam({ baseRoot, target, check: true }), 'Gemini CLI Mansoor team is current: 15 agent profiles, 179 skills, 4 domain policies and global manager instructions.');
+    assert.equal(syncGeminiTeam({ baseRoot, target, check: true }), 'Gemini CLI Mansoor team is current: 15 agent profiles, 179 skills, 4 governed policies and global manager instructions.');
 
     fs.rmSync(staleSkill);
     fs.rmSync(path.join(baseRoot, 'skills', 'skill-177'), { recursive: true, force: true });
@@ -110,6 +110,8 @@ test('replaces legacy provider-routing blocks and preserves unrelated Gemini ins
   assert.match(updated, /Keep this custom rule\./);
   assert.match(updated, /<!-- context7 -->\nKeep Context7\./);
   assert.match(updated, /Mansoor AI Team Manager/);
+  assert.match(updated, /mam-policy-antigravity-native-orchestration/);
+  assert.match(updated, /permission mode, approval settings and safety controls/);
   assert.doesNotMatch(updated, /production-orchestrator|agents-hub-manager-routing/);
   assert.equal(managerInstructions(updated), updated);
 });

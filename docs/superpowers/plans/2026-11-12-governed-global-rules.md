@@ -25,7 +25,7 @@ Read registry + project/task context
 4. Installer copies a missing rule and refreshes a rule that still matches its prior managed hash.
 5. Installer preserves a locally edited global rule, reports its path and source hashes, and does not silently overwrite it.
 6. Rule registry, package signature, doctor, and release tests validate together.
-7. Actual owner-machine installation reports all four rules and confirms no unintended rule drift.
+7. Actual owner-machine installation reports all five rules and confirms no unintended rule drift.
 
 ## Implementation Tasks
 

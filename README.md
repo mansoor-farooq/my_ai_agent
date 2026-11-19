@@ -1,8 +1,8 @@
-# Mansoor Farooq | Ultra Agent v4.4 Gemini Antigravity Multi-Agent Team
+# Mansoor AI Team Manager | Antigravity, Gemini CLI & Codex Coding Agent
 
 <div align="center">
 
-### Gemini-powered Antigravity agent orchestration for production software engineering
+### Antigravity-native AI coding team for software engineering, Flutter/Android, and live browser QA
 
 **Plan clearly. Delegate safely. Verify everything. Ship with evidence.**
 
@@ -15,9 +15,11 @@
 
 </div>
 
-> **Ultra Agent v4.4** is Mansoor Farooq's owner-led Gemini agent team for Antigravity: one manager, 14 focused specialists, local project memory, PostgreSQL RAG, evidence-gated verification and an owner-signed release path.
+> **Mansoor AI Team Manager** is an Antigravity-native multi-agent coding system that also supports Gemini CLI and Codex workflows: one main manager, 14 specialist agents, project memory, evidence-based verification, Flutter/Android engineering, and live Playwright browser QA.
 
 Ultra Agent helps you plan, delegate and verify work across software architecture, production UI, Flutter, Android, .NET, Node.js, Python, PyTorch, PostgreSQL RAG, security, QA and release engineering.
+
+Find this project for **AI coding agents**, **Antigravity agent teams**, **Gemini CLI coding agents**, **Codex custom agents**, **multi-agent software engineering**, **Flutter and Android development**, **Playwright CLI live browser automation**, and **QA regression testing**. The bundled QA specialist uses the main manager's project scope and reports observed browser evidence instead of acting as a separate orchestrator.
 
 **Start with:** [quickstart](docs/quickstart.md) · [architecture](docs/architecture.md) · [use cases](docs/use-cases.md) · [releases](https://github.com/mansoor-farooq/my_ai_agent/releases)
 
@@ -35,8 +37,8 @@ Mansoor Farooq built this system for production-minded software architecture, pr
 | --- | --- |
 | **1 manager** | **Mansoor AI Team Manager** (`production-orchestrator` internal id) owns intake, planning, delegation and final verification. |
 | **14 specialists** | UI, Flutter, SaaS, ERP/schema, .NET, Node.js, Python, ML, cloud data, workflows, security, QA, research and hub operations. |
-| **179 skills** | A portable, deduplicated skill library with explicit provenance tracking, including the Vercel UI pack. |
-| **4 governed rules** | A signed metadata registry versions scope, precedence, evidence and verification; the installer reports drift and preserves locally customized rules. |
+| **254 skills** | A portable, deduplicated skill library with explicit provenance tracking, including Dart/Flutter Android workflows, the Vercel UI pack and live-browser QA. |
+| **5 governed rules** | A signed metadata registry covers architecture, Flutter/mobile, testing, SaaS and Antigravity-native orchestration; local customizations are preserved. |
 | **Local-first memory** | Project identity, decisions, evidence, conflicts and checkpoints stay scoped to the selected repository. |
 | **Local managed MCP** | The installed Antigravity plugin bundles its own managed-task MCP server; no per-project MCP config, provider key or remote telemetry service is required. |
 
@@ -133,7 +135,11 @@ Assignments, progress, blockers, handoffs and completed work appear in the Antig
 
 ### Flutter/Android specialist release gate
 
-`flutter-mobile-specialist` is the expert mobile UI/Android worker for adaptive Flutter and native Compose products. It requires a UI decision brief, compact-phone/standard-phone/tablet coverage, safe-area and keyboard handling, loading/empty/error/offline/permission states, text scaling and semantics, 60fps motion discipline, native capability probes, OEM compatibility evidence and focused analyzer/widget/golden/integration verification. It preserves existing navigation, API/database contracts, IDs, validation and permissions; arbitrary state-management or folder rewrites are outside a UI task.
+`flutter-mobile-specialist` is the expert mobile UI/Android worker for adaptive Flutter and native Compose products. Its `flutter-mobile-master-engineer` skill routes work through project discovery, stack-preserving implementation and evidence-based verification. It covers compact/large screens, safe areas and keyboard behavior, loading/empty/error/offline/permission states, semantics, motion, native capability and OEM compatibility as relevant. It preserves existing navigation, API/database contracts, IDs, validation and permissions; arbitrary state-management or folder rewrites are outside a UI task.
+
+### Codex mobile specialist
+
+The portable bundle includes a Codex custom subagent at `.codex/agents/flutter-mobile-specialist.toml` and the shared master skill. On this machine, install them for all Codex workspaces with `npm run agents:install:codex`; the installer preserves unrelated custom skill/agent files and refuses to replace them. In Codex, ask the manager to delegate a bounded Flutter/Android workstream to `flutter-mobile-specialist`. The subagent inherits the parent session's model, tools and permission mode; its configuration cannot bypass Codex approvals.
 
 ### Release-quality gates
 
@@ -190,7 +196,7 @@ The bootstrap accepts HTTPS GitHub URLs only. It does not execute arbitrary repo
 3. Extract the ZIP and run `Install-Mansoor-Agent-Team.cmd`.
 4. Open a project and use **Mansoor AI Team Manager** as the main agent. `production-orchestrator` remains an Antigravity compatibility key, not the user-facing agent identity.
 
-The installer verifies the signed package and runs strict Antigravity validation before installing or updating the team. It also installs/updates Gemini CLI when npm manages it, then syncs all 15 agent profiles, the full 179-skill library and four domain policies into the user's global Gemini CLI profile. Existing unrelated Gemini skills are kept separate under `mam-*` names. See the [recipient quickstart](docs/quickstart.md) for the full flow.
+The installer verifies the signed package and runs strict Antigravity validation before installing or updating the team. It also installs/updates Gemini CLI when npm manages it, then syncs all 15 agent profiles, the full 254-skill library, four domain policies and one Antigravity-native orchestration policy into the user's global Gemini CLI profile. Existing unrelated Gemini skills are kept separate under `mam-*` names. See the [recipient quickstart](docs/quickstart.md) for the full flow.
 
 ### For the owner
 
@@ -217,7 +223,7 @@ The build refreshes source checksums, signs the portable ZIP, runs the doctor, v
 The V4.4 release gate currently verifies:
 
 - `npm test`: test totals are generated from the current run; the ordinary suite may skip six PostgreSQL-backed checks without a dedicated test database. CI runs the full eight-case RAG file against the isolated `mansoor_agent_rag_test` service and rejects any skip.
-- 15 packaged agent profiles, 179 skills, 4 governed rules and zero provider connectors;
+- 15 packaged agent profiles, 254 skills, 5 governed rules and zero provider connectors;
 - owner-signed package checksums, strict Antigravity plugin validation and source integrity checks;
 - benchmark envelopes for acceptance, latency, p95 timing and bounded failure reasons;
 - checkpoint drift reporting, memory health diagnostics, activity summaries, capability probes, manifest drift, runtime smoke and expanded secret redaction.
