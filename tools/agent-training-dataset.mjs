@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 import crypto from 'node:crypto';
+import fsSync from 'node:fs';
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,6 +13,7 @@ const secretPatterns = [
 ];
 const localPathPattern = /(?:[A-Za-z]:[\\/]|\\\\)[^\s"'`]+/g;
 const passing = new Set(['pass', 'passed', 'success', 'verified', 'complete']);
+const DATASET_FOLDER = 'Mansoor AI Team Manager';
 
 export function redactTrainingText(value, limit = 2000) {
   let text = String(value ?? '');
@@ -24,6 +27,28 @@ export function redactTrainingText(value, limit = 2000) {
 }
 
 const safeOwnerId = (value) => /^[A-Za-z0-9][A-Za-z0-9._-]{0,95}$/.test(String(value || '')) ? String(value) : null;
+
+export function getTrainingDatasetRoot({ env = process.env, platform = process.platform, home = os.homedir(), dDriveAvailable = fsSync.existsSync('D:\\') } = {}) {
+  const override = String(env.MANSOOR_AGENT_DATASET_ROOT || '').trim();
+  if (override) return path.resolve(override);
+  if (platform === 'win32' && dDriveAvailable) return path.win32.join('D:\\', 'Mansoor AI Team Manager', 'Agent Knowledge Datasets');
+  const dataHome = env.LOCALAPPDATA || env.XDG_DATA_HOME || path.join(home, '.local', 'share');
+  return path.join(dataHome, 'Mansoor AI Team Manager', 'Agent Knowledge Datasets');
+}
+
+function projectFolderName(projectDir, projectId) {
+  const label = String(projectId || path.basename(path.resolve(projectDir || process.cwd())) || 'project')
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+  return !label || label === '.' || label === '..' ? 'project' : label;
+}
+
+export function getTrainingDatasetDirectory({ projectDir = process.cwd(), projectId = null, root = getTrainingDatasetRoot() } = {}) {
+  return path.join(root, projectFolderName(projectDir, projectId), DATASET_FOLDER);
+}
 
 function parseJsonl(text) {
   return String(text ?? '').split(/\r?\n/).filter(Boolean).flatMap((line) => {
@@ -129,7 +154,7 @@ async function writeJsonl(file, records) {
 
 export async function buildTrainingPack({ projectDir = process.cwd(), outputDir, projectId = null } = {}) {
   const root = path.resolve(projectDir);
-  const output = path.resolve(outputDir || path.join(root, '.agents', 'training-pack'));
+  const output = path.resolve(outputDir || getTrainingDatasetDirectory({ projectDir: root, projectId }));
   await fs.mkdir(output, { recursive: true });
   const metricFile = path.join(root, '.agents', 'ultra-v4', 'metrics', 'tasks.jsonl');
   const reviewFile = path.join(root, '.agents', 'ultra-v4', 'metrics', 'reviews.jsonl');
@@ -201,7 +226,7 @@ export async function buildTrainingPack({ projectDir = process.cwd(), outputDir,
     await fs.writeFile(path.join(targetDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
     return { manifest, counts };
   };
-  const managerPack = await writePack(output, metricRecords, 'Mansoor AI Team Manager', managerId);
+  const managerPack = await writePack(output, metricRecords, DATASET_FOLDER, managerId);
   const agentGroups = new Map();
   for (const record of metricRecords) {
     const agentId = safeOwnerId(record.agentId);
@@ -227,7 +252,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const action = args[0] || 'export';
   if (action !== 'export') throw new Error('Usage: node tools/agent-training-dataset.mjs export --dir <project> --out <folder> [--project-id <id>]');
   const projectDir = getArg(args, '--dir', process.cwd());
-  buildTrainingPack({ projectDir, outputDir: getArg(args, '--out', path.join(projectDir, '.agents', 'ultra-v4', 'training-datasets', 'Mansoor-AI-Team-Manager')), projectId: getArg(args, '--project-id') || null })
+  const projectId = getArg(args, '--project-id') || null;
+  buildTrainingPack({ projectDir, outputDir: getArg(args, '--out', getTrainingDatasetDirectory({ projectDir, projectId })), projectId })
     .then((result) => console.log(JSON.stringify(result, null, 2)))
     .catch((error) => { console.error(`Training dataset export failed: ${error.message}`); process.exitCode = 1; });
 }

@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runCoreLoop } from './core-loop.mjs';
 import { recordTaskMetric } from './benchmark.mjs';
-import { buildTrainingPack } from '../agent-training-dataset.mjs';
+import { buildTrainingPack, getTrainingDatasetDirectory } from '../agent-training-dataset.mjs';
 import { createEffectKey, EffectLedger, claimEffect, completeEffect } from './effects.mjs';
 import { guardWritePath } from './stages/act.mjs';
 import { runChecks } from './stages/verify.mjs';
@@ -560,15 +560,15 @@ export async function runManagedTask(input = {}, deps = {}) {
     await finishTrace(trace, { status: final.status, details: JSON.stringify({ taskId, workspaceId: workspace.workspaceId, deliveryStatus: delivery.status, changedPaths: delivery.changedPaths || final.changes, blockers: final.blockers }) });
     if (trainingRecordSaved) {
       try {
-        const datasetDir = path.join(projectRoot, '.agents', 'ultra-v4', 'training-datasets', 'Mansoor-AI-Team-Manager');
-        const dataset = await buildTrainingPack({ projectDir: projectRoot, outputDir: datasetDir });
+        const datasetDir = getTrainingDatasetDirectory({ projectDir: projectRoot, projectId: input.task.projectId, root: deps.trainingDatasetRoot });
+        const dataset = await buildTrainingPack({ projectDir: projectRoot, projectId: input.task.projectId, outputDir: datasetDir });
         final = {
           ...final,
           trainingDataset: {
             status: 'refreshed',
             manager: 'Mansoor AI Team Manager',
             agentId: input.task.agentId || input.task.agent || 'mansoor-ai-team-manager',
-            path: '.agents/ultra-v4/training-datasets/Mansoor-AI-Team-Manager',
+            path: datasetDir,
             counts: dataset.counts,
           },
         };

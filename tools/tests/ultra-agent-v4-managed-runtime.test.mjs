@@ -104,6 +104,7 @@ test('managed runtime can auto-authorize bounded work through the manager approv
     const result = await runManagedTask(input, {
       approvalBroker: createApprovalBroker(),
       approvalAuthorityFactory: async (_manifest, ledger) => createFileBackedApprovalAuthority(ledger.directory),
+      trainingDatasetRoot: path.join(projectDir, '.agents', 'ultra-v4', 'test-training-datasets'),
     });
     assert.equal(result.status, 'complete', JSON.stringify(result));
     assert.equal(result.approval.source, 'manager-policy-auto-approval');
@@ -117,7 +118,7 @@ test('managed runtime can auto-authorize bounded work through the manager approv
     assert.equal(metrics[0].objective, task.objective);
     assert.equal(result.trainingDataset.status, 'refreshed');
     assert.equal(result.trainingDataset.manager, 'Mansoor AI Team Manager');
-    assert.ok(fs.existsSync(path.join(projectDir, '.agents', 'ultra-v4', 'training-datasets', 'Mansoor-AI-Team-Manager', 'agents', 'qa-release-specialist', 'evaluation.jsonl')));
+    assert.ok(fs.existsSync(path.join(projectDir, '.agents', 'ultra-v4', 'test-training-datasets', 'project-a', 'Mansoor AI Team Manager', 'agents', 'qa-release-specialist', 'evaluation.jsonl')));
   } finally {
     fs.rmSync(projectDir, { recursive: true, force: true });
   }

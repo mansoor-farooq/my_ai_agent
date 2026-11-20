@@ -289,7 +289,7 @@ const premiumPackageReadme = [
   '',
   '## Ready-to-use local-LLM datasets',
   '',
-  'Managed runs capture sanitized task metrics with agent identity. Run `node tools/agent-training-dataset.mjs export --dir <project>` to create the Mansoor AI Team Manager aggregate and separate `agents/<agent-id>/` packs. Approve only passing, checked tasks with `node tools/ultra-agent-v4/benchmark.mjs review --dir <project> --task <task-id> --status approved --approved-by <owner>`. Credentials, absolute local paths, raw chats and hidden reasoning are excluded. Export prepares local data; it never uploads or trains a model.',
+  'Managed runs capture sanitized task metrics with agent identity. Dataset packs default to `D:\\Mansoor AI Team Manager\\Agent Knowledge Datasets\\<project-id>\\Mansoor AI Team Manager` on Windows, with separate `agents/<agent-id>/` packs; set `MANSOOR_AGENT_DATASET_ROOT` to override the location. Approve only passing, checked tasks with `node tools/ultra-agent-v4/benchmark.mjs review --dir <project> --task <task-id> --status approved --approved-by <owner>`. Credentials, absolute local paths, raw chats and hidden reasoning are excluded. This creates local data only and never uploads or trains a model.',
   '',
   '## Private ownership',
   '',

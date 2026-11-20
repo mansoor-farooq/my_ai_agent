@@ -113,13 +113,12 @@ Install `adb` and `scrcpy` separately on the target Windows machine. The lane de
 
 ## Export a local-LLM dataset pack
 
-Managed task runs automatically append a sanitized task metric and refresh the pack with the manager and assigned agent IDs. For direct benchmark records, pass `--agent-id <specialist-id>` to attribute the work. The export creates `.agents/ultra-v4/training-datasets/Mansoor-AI-Team-Manager` plus a separate folder for each tagged agent:
+Managed task runs automatically append a sanitized task metric and refresh the pack with the manager and assigned agent IDs. On Windows, datasets default to `D:\Mansoor AI Team Manager\Agent Knowledge Datasets\<project-id>\Mansoor AI Team Manager`; agent-specific packs are in that folder's `agents\<agent-id>` subfolders. Set `MANSOOR_AGENT_DATASET_ROOT` to override the data root on any platform. For direct benchmark records, pass `--agent-id <specialist-id>` to attribute the work. To export manually, run:
 
 ```powershell
 node tools/agent-training-dataset.mjs export `
   --dir D:\Work\Youngs_bazar `
-  --project-id youngs-bazar `
-  --out D:\Work\Youngs_bazar\.agents\ultra-v4\training-datasets\Mansoor-AI-Team-Manager
+  --project-id youngs-bazar
 ```
 
 Each agent's files are under `agents/<agent-id>/`. Review a passing task before including it in SFT: `node tools/ultra-agent-v4/benchmark.mjs review --dir <project> --task <task-id> --status approved --approved-by <owner>`. Approval is stored as an append-only review event; unreviewed or failed work remains evaluation/hard-case data. Keep those held-out files separate from training. The manifests include provenance hashes. The exporter prepares local data only; it does not train or upload a model.

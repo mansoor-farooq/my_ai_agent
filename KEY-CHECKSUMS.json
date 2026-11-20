@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "C024517B16FC97F3A66A4060452F8240BAEBB0857D2E235A6695A74418FD2E8E",
-    "Bytes": 27951
+    "SHA256": "69505E2034372F3D3EF8BDFCA45FC26A771FB22509E3898EB72A24CBC7A5EFE1",
+    "Bytes": 27968
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "91DC2BF05EA74BC33306C6E8DEB6D9657652FD3F83D6591674E1F48167ADC5B6",
-    "Bytes": 62862
+    "SHA256": "29044B2646679FE30E5482696870997BE842EA1B3030690DAF9134E2567C6D2F",
+    "Bytes": 62941
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2441,8 +2441,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/managed-runtime.mjs",
-    "SHA256": "12C4A7D078663BDA2DEE232930C475F47BA931BEB6B768D9055F5B8959924992",
-    "Bytes": 40050
+    "SHA256": "B0B7CC6C409917E6BF655D72D8E26D574CBE9B859EF4ED740485E3F3AECD7BC4",
+    "Bytes": 40090
   },
   {
     "Path": "Agents/tools/content-hash.mjs",
@@ -2516,8 +2516,8 @@
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v4-managed-runtime.test.mjs",
-    "SHA256": "BDAAE3407A63BEC38CC96907804EE1F26AD5DF365ED71E1396B8FE6F69666958",
-    "Bytes": 18315
+    "SHA256": "0DB7B3E6A4198148F9DDC54E5871187F977BEA7CEDC0EC65D157DB39F78C42C1",
+    "Bytes": 18432
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/mcp-server.mjs",
@@ -2536,8 +2536,8 @@
   },
   {
     "Path": "Agents/tools/agent-training-dataset.mjs",
-    "SHA256": "D90B7FA6F55B335B8DE612B50F2DDB7084E27DED8ACF25ABF016D642A563A35E",
-    "Bytes": 12825
+    "SHA256": "8E627031DB4EF935158E4187DADC5204E19BF83E01656D8CBB7ECFEE500CDA20",
+    "Bytes": 14101
   },
   {
     "Path": "Agents/tools/ultra-agent-v5/approval-broker.mjs",
@@ -2596,8 +2596,8 @@
   },
   {
     "Path": "Agents/tools/tests/agent-training-dataset.test.mjs",
-    "SHA256": "A97137A0412E54D1420616F8BDBA0B40707ACA24AC5A47E617679D69A3DCC6CC",
-    "Bytes": 9132
+    "SHA256": "F05C6E05F3E358BCBB23ED2EF9912D12D881F82182CC50DBDCDF953DE9B3734D",
+    "Bytes": 9906
   },
   {
     "Path": "Agents/.github/workflows/upstream-skill-refresh.yml",

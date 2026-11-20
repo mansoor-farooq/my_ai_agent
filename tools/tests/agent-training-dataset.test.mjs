@@ -3,13 +3,26 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { buildTrainingPack, redactTrainingText } from '../agent-training-dataset.mjs';
+import { buildTrainingPack, getTrainingDatasetRoot, getTrainingDatasetDirectory, redactTrainingText } from '../agent-training-dataset.mjs';
 import { recordTaskMetric, recordTaskReview } from '../ultra-agent-v4/benchmark.mjs';
 
 test('training export redacts credentials and local absolute paths', () => {
   const value = redactTrainingText(['to', 'ken=abc12345678901234567890 at C:\\Users\\Mansoor\\secret.txt'].join(''));
   assert.match(value, /REDACTED_SECRET/);
   assert.doesNotMatch(value, /C:\\Users\\Mansoor/);
+});
+
+test('dataset root uses the requested D drive folder and separates projects by meaningful names', () => {
+  const root = getTrainingDatasetRoot({ platform: 'win32', dDriveAvailable: true, env: {} });
+  assert.equal(root, 'D:\\Mansoor AI Team Manager\\Agent Knowledge Datasets');
+  assert.equal(
+    getTrainingDatasetDirectory({ projectDir: 'D:\\Work\\Order Booker', projectId: 'Order Booker', root }),
+    'D:\\Mansoor AI Team Manager\\Agent Knowledge Datasets\\order-booker\\Mansoor AI Team Manager',
+  );
+  assert.equal(
+    getTrainingDatasetDirectory({ projectDir: 'D:\\Work\\Unsafe', projectId: '..', root }),
+    'D:\\Mansoor AI Team Manager\\Agent Knowledge Datasets\\project\\Mansoor AI Team Manager',
+  );
 });
 
 test('training pack keeps approved successes for SFT and hard failures for evaluation', async () => {

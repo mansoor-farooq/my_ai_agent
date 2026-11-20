@@ -119,7 +119,7 @@ For Flutter/Android projects, the mobile lane detects `adb` and optional `scrcpy
 
 ### Ready-to-use agent datasets
 
-Managed task runs automatically record sanitized outcomes with manager and agent identities. Export with `node tools/agent-training-dataset.mjs export --dir <project>` to create `.agents/ultra-v4/training-datasets/Mansoor-AI-Team-Manager` and its separate `agents/<agent-id>/` datasets. Owner approval is required before passing outcomes enter `sft.jsonl`; unreviewed and failed cases stay in evaluation/hard-case files. Credentials, absolute local paths, raw chats and hidden reasoning are excluded. This prepares local data only; model training remains an explicit separate step.
+Managed task runs automatically record sanitized outcomes with manager and agent identities. On Windows, datasets default to `D:\Mansoor AI Team Manager\Agent Knowledge Datasets\<project-id>\Mansoor AI Team Manager`, with `agents/<agent-id>/` subfolders. Set `MANSOOR_AGENT_DATASET_ROOT` to override this on any platform. Owner approval is required before passing outcomes enter `sft.jsonl`; unreviewed and failed cases stay in evaluation/hard-case files. Credentials, absolute local paths, raw chats and hidden reasoning are excluded. This creates local data only; model training is not performed.
 
 ### Speed without unsafe parallelism
 
