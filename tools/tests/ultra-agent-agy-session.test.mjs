@@ -12,6 +12,27 @@ test('buildAgyArgs selects Mansoor manager and keeps project/session options exp
   ]);
 });
 
+test('buildAgyArgs follows the Antigravity host model and effort handoff', () => {
+  const args = buildAgyArgs({
+    projectDir: 'E:\\Work\\Inventory',
+    mode: 'fast',
+    hostModel: 'Gemini 3.8 Flash',
+    hostEffort: 'high',
+    env: { MANSOOR_ANTIGRAVITY_MODEL: 'Gemini 4 Neon', MANSOOR_ANTIGRAVITY_EFFORT: 'xhigh' },
+  });
+  assert.deepEqual(args.slice(-4), ['--model', 'Gemini 3.8 Flash', '--effort', 'high']);
+});
+
+test('buildAgyArgs uses the saved Antigravity CLI selection before the fast default', () => {
+  const args = buildAgyArgs({
+    projectDir: 'E:\\Work\\Inventory',
+    mode: 'fast',
+    env: {},
+    settings: { model: 'Gemini 4 Neon', effort: 'xhigh' },
+  });
+  assert.deepEqual(args.slice(-4), ['--model', 'Gemini 4 Neon', '--effort', 'xhigh']);
+});
+
 test('parseAgyStreamLine redacts host secrets and preserves progress metadata', () => {
   const result = parseAgyStreamLine('{"type":"progress","message":"token=hidden","status":"running"}');
   assert.equal(result.type, 'progress');

@@ -1,13 +1,25 @@
 import { spawn } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
 
 const secretPattern = /(?:AIza[0-9A-Za-z_-]{20,}|(?:sk|ghp|github_pat)_[A-Za-z0-9_-]{8,}|Bearer\s+[A-Za-z0-9._~+/=-]+|(?:password|passwd|pwd|secret|apiKey|api_key|token|authorization)\s*[:=]\s*["']?[^\s"';,}]+)/gi;
 
 function redact(value) { return String(value ?? '').replace(secretPattern, '[REDACTED_SECRET]').slice(0, 4000); }
 
-export function buildAgyArgs({ agent = 'Mansoor AI Team Manager', projectDir, mode = 'fast' } = {}) {
+function readAntigravityCliSettings() {
+  try {
+    return JSON.parse(readFileSync(join(homedir(), '.gemini', 'antigravity-cli', 'settings.json'), 'utf8'));
+  } catch {
+    return {};
+  }
+}
+
+export function buildAgyArgs({ agent = 'Mansoor AI Team Manager', projectDir, mode = 'fast', hostModel, hostEffort, env = process.env, settings = readAntigravityCliSettings() } = {}) {
   if (!projectDir) throw new Error('projectDir is required');
-  const effort = mode === 'premium' ? 'high' : 'low';
-  return ['--print', '--input-format', 'stream-json', '--output-format', 'stream-json', '--agent', agent, '--project', projectDir, '--model', 'Gemini 3.8 Flash', '--effort', effort];
+  const model = hostModel || env.MANSOOR_ANTIGRAVITY_MODEL || settings.model || 'Gemini 3.8 Flash';
+  const effort = hostEffort || env.MANSOOR_ANTIGRAVITY_EFFORT || settings.effort || settings.thinkingLevel || (mode === 'premium' ? 'high' : 'low');
+  return ['--print', '--input-format', 'stream-json', '--output-format', 'stream-json', '--agent', agent, '--project', projectDir, '--model', model, '--effort', effort];
 }
 
 export function parseAgyStreamLine(line) {
@@ -26,8 +38,8 @@ export function resolveAgy({ command = 'agy', env = process.env } = {}) {
   return { executable: env.AGY_PATH || command, version: null };
 }
 
-export function startAgySession({ agent, projectDir, mode, command = 'agy', spawnProcess = spawn } = {}) {
-  const child = spawnProcess(resolveAgy({ command }).executable, buildAgyArgs({ agent, projectDir, mode }), { stdio: ['pipe', 'pipe', 'pipe'] });
+export function startAgySession({ agent, projectDir, mode, hostModel, hostEffort, command = 'agy', spawnProcess = spawn } = {}) {
+  const child = spawnProcess(resolveAgy({ command }).executable, buildAgyArgs({ agent, projectDir, mode, hostModel, hostEffort }), { stdio: ['pipe', 'pipe', 'pipe'] });
   const events = [];
   let output = '';
   child.stdout?.setEncoding?.('utf8');
