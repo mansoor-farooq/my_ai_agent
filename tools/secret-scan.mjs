@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -44,6 +45,11 @@ export function scanText(text, filePath = '<memory>') {
   return findings;
 }
 
+export function fingerprintLine(filePath, line) {
+  const normalizedPath = filePath.replace(/\\/g, '/');
+  return createHash('sha256').update(`${normalizedPath}\0${line}`, 'utf8').digest('hex');
+}
+
 function filesUnder(root) {
   const ignored = new Set(['.git', '.dart_tool', 'build', 'dist', 'node_modules', '.gradle', 'native-profile']);
   const results = [];
@@ -60,8 +66,31 @@ function filesUnder(root) {
 }
 
 export function scanDirectory(root) {
-  return filesUnder(path.resolve(root)).flatMap((file) => {
-    try { return scanText(fs.readFileSync(file, 'utf8'), path.relative(root, file)); } catch { return []; }
+  const resolvedRoot = path.resolve(root);
+  const allowlistPath = path.join(resolvedRoot, 'tools', 'secret-scan-allowlist.json');
+  let allowlisted = new Set();
+  try {
+    const document = JSON.parse(fs.readFileSync(allowlistPath, 'utf8'));
+    if (document.schema === 'mansoor.secret-scan-allowlist/v1' && Array.isArray(document.findings)) {
+      allowlisted = new Set(document.findings
+        .filter((entry) => typeof entry.file === 'string'
+          && /^[a-f0-9]{64}$/i.test(entry.lineSha256)
+          && typeof entry.reason === 'string' && entry.reason.trim())
+        .map((entry) => `${entry.file.replace(/\\/g, '/')}\0${entry.lineSha256.toLowerCase()}`));
+    }
+  } catch { /* No allowlist is the default. */ }
+
+  return filesUnder(resolvedRoot).flatMap((file) => {
+    try {
+      const relativePath = path.relative(resolvedRoot, file).replace(/\\/g, '/');
+      const text = fs.readFileSync(file, 'utf8');
+      return scanText(text, relativePath).filter((finding) => {
+        if (!finding.type.endsWith('-assignment')) return true;
+        const line = text.split(/\r?\n/)[finding.line - 1];
+        const fingerprint = fingerprintLine(relativePath, line);
+        return !allowlisted.has(`${relativePath}\0${fingerprint}`);
+      });
+    } catch { return []; }
   });
 }
 
