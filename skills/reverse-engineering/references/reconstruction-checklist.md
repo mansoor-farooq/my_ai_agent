@@ -29,6 +29,16 @@ Use only the sections relevant to the current request. Keep the final report sho
 | Security | Auth, authorization, secret handling, logging/redaction |
 | Reliability | Timeout, retry, duplicate submission, unknown result, rollback |
 
+## Static-analysis evidence graphs
+
+Use REA, decompiler, and call-graph exports to find likely code paths; they are navigation evidence, not proof that a path is complete or executes at runtime.
+
+- Record the target artifact's product/build, format, size, and SHA-256, plus the analyzer version and relevant options. Normalize local paths in any tracked notes. If the target artifact is unavailable or its digest differs, label freshness **Unverified**.
+- Read the report's coverage, truncation, omitted-count, parser-warning, and unsupported-feature fields before relying on its graph. A `partial` or unknown coverage result limits every conclusion drawn from that graph.
+- Trace only the graph path relevant to the user's behavior: entry point/input → validation and state → process/network/database effect → output. Check each important node and edge against the exact source location or bundle entry; then corroborate the path with a caller/callee, test, log, request, or runtime observation.
+- Label graph-only claims **Strong inference** until independently corroborated. Report unavailable or contradictory evidence as **Unverified**; node and edge counts describe report size, not correctness.
+- Keep the raw report and analyzed binary outside the skill package and Git by default. They may contain machine-specific paths or source-derived material, and are tied to one build. Add only a small sanitized, reproducible fixture when it is needed for a test and its contents are approved for redistribution.
+
 ## Findings template
 
 ```text

@@ -92,6 +92,7 @@ A finding is stronger when it is supported by at least two independent signals (
 This skill is for systems the user owns or is authorized to inspect. It supports interoperability, debugging, migration, security review, and maintenance. Stop and ask before probing a third-party service, extracting credentials or private data, modifying production state, defeating a protection mechanism, or performing irreversible cleanup. Keep any generated notes outside the source tree unless the user requests a tracked artifact.
 
 For a focused checklist, read [references/reconstruction-checklist.md](references/reconstruction-checklist.md).
+When REA, a decompiler, or another analyzer supplies a static graph, follow the [static-analysis evidence checklist](references/reconstruction-checklist.md#static-analysis-evidence-graphs) before treating its relationships as findings.
 
 
 
