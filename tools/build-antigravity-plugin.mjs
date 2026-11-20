@@ -502,7 +502,7 @@ const signedInstaller = [
   'if ($LASTEXITCODE -ne 0) { throw "Gemini CLI version check failed." }',
   '$geminiTeamInstaller = Join-Path $pluginRoot "tools\\install-gemini-cli-team.mjs"',
   'if (-not (Test-Path -LiteralPath $geminiTeamInstaller -PathType Leaf)) { throw "Signed package is missing the Gemini CLI team installer." }',
-  '& $node.Source $geminiTeamInstaller',
+  '& $node.Source $geminiTeamInstaller --verified-sync',
   'if ($LASTEXITCODE -ne 0) { throw "Gemini CLI team/skills/policy synchronization failed." }',
   `Write-Host '      TEAM SYNC / 15 agents, ${skillCount} skills and ${ruleCount} governed policies installed in user scope' -ForegroundColor Green`,
   '$permissionSync = Join-Path $pluginRoot "tools\\ultra-agent-v5\\sync-antigravity-permissions.mjs"',

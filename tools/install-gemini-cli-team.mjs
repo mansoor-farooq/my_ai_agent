@@ -12,7 +12,7 @@ const geminiRoot = process.env.GEMINI_CLI_HOME || (home && path.join(home, '.gem
 const marker = '<!-- managed-by: mansoor-agent-hub-gemini-cli -->';
 const stateName = '.mansoor-agent-hub-managed.json';
 if (!geminiRoot) throw new Error('Cannot determine user home; set USERPROFILE or GEMINI_CLI_HOME.');
-if (args.some((arg) => !['--check'].includes(arg))) throw new Error('Usage: node tools/install-gemini-cli-team.mjs [--check]');
+if (args.some((arg) => !['--check', '--verified-sync'].includes(arg)) || (checkOnly && args.includes('--verified-sync'))) throw new Error('Usage: node tools/install-gemini-cli-team.mjs [--check | --verified-sync]');
 
 function hasProfiles(directory) {
   if (!fs.existsSync(directory)) return false;
@@ -317,9 +317,34 @@ export function syncGeminiTeam({ baseRoot = root, source, skills, rules, target 
   return `Installed Mansoor AI Team Manager, ${outputs.length - 1} specialists, ${teamSkillCount} full skills and ${policyCount} governed policies in ${target}.`;
 }
 
+export function runVerifiedSync({ sync, verify, onRetry = () => {} }) {
+  if (typeof sync !== 'function' || typeof verify !== 'function') throw new TypeError('Verified sync requires sync and verify functions.');
+  const failures = [];
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    try {
+      const installed = sync();
+      const verified = verify();
+      return { installed, verified, attempts: attempt };
+    } catch (error) {
+      failures.push(error instanceof Error ? error.message : String(error));
+      if (attempt === 1) onRetry(failures[0]);
+    }
+  }
+  throw new Error(`Gemini CLI team verification failed after 2 attempts. First attempt: ${failures[0]}. Final attempt: ${failures[1]}.`);
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   try {
-    console.log(syncGeminiTeam({ check: checkOnly }));
+    if (checkOnly) console.log(syncGeminiTeam({ check: true }));
+    else {
+      const result = runVerifiedSync({
+        sync: () => syncGeminiTeam(),
+        verify: () => syncGeminiTeam({ check: true }),
+        onRetry: (reason) => console.warn(`Gemini CLI team did not verify on the first pass. Repairing automatically once. First check: ${reason}`),
+      });
+      console.log(result.installed);
+      console.log(`Verified after ${result.attempts} attempt(s): ${result.verified}`);
+    }
   } catch (error) {
     console.error(error.message);
     process.exitCode = 1;

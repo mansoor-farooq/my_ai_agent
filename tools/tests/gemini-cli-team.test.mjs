@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { convertAgentProfile, convertRuleProfile, convertSkillProfile, discoverTeamSources, managerInstructions, syncGeminiTeam } from '../install-gemini-cli-team.mjs';
+import { convertAgentProfile, convertRuleProfile, convertSkillProfile, discoverTeamSources, managerInstructions, runVerifiedSync, syncGeminiTeam } from '../install-gemini-cli-team.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -94,6 +94,38 @@ test('syncs a complete team idempotently and prunes only unchanged stale managed
   }
 });
 
+test('automatically retries one failed install verification and reports the final attempt', () => {
+  const events = [];
+  let installAttempts = 0;
+  let verificationAttempts = 0;
+  const result = runVerifiedSync({
+    sync: () => { installAttempts += 1; events.push(`install-${installAttempts}`); return `installed-${installAttempts}`; },
+    verify: () => {
+      verificationAttempts += 1;
+      events.push(`verify-${verificationAttempts}`);
+      if (verificationAttempts === 1) throw new Error('first verification mismatch');
+      return 'verified-current';
+    },
+    onRetry: () => events.push('automatic-repair'),
+  });
+
+  assert.equal(installAttempts, 2);
+  assert.equal(verificationAttempts, 2);
+  assert.deepEqual(events, ['install-1', 'verify-1', 'automatic-repair', 'install-2', 'verify-2']);
+  assert.deepEqual(result, { installed: 'installed-2', verified: 'verified-current', attempts: 2 });
+});
+
+test('stops after one automatic repair and reports both failed verification attempts', () => {
+  let installAttempts = 0;
+  let verificationAttempts = 0;
+  assert.throws(() => runVerifiedSync({
+    sync: () => { installAttempts += 1; return 'installed'; },
+    verify: () => { verificationAttempts += 1; throw new Error(`mismatch-${verificationAttempts}`); },
+  }), /Gemini CLI team verification failed after 2 attempts[\s\S]*mismatch-1[\s\S]*mismatch-2/);
+  assert.equal(installAttempts, 2);
+  assert.equal(verificationAttempts, 2);
+});
+
 test('converts Antigravity agent frontmatter to a Gemini CLI local subagent with the MAM slug', () => {
   const source = `---\nname: Mansoor AI Team Manager\ndescription: Primary manager\nmodel: inherit\nmainAgent: true\nsubagent: true\nskills:\n  - skills/reverse-engineering\n---\n# Mansoor AI Team Manager\nInternal routing id: production-orchestrator.\nUse Antigravity invoke_subagent.`;
   const converted = convertAgentProfile(source, { slug: 'mansoor-ai-team-manager', isManager: true });
@@ -120,7 +152,7 @@ test('default owner builds sync Gemini CLI while package-only builds stay side-e
   const build = fs.readFileSync(path.join(root, 'build-agent-hub.ps1'), 'utf8');
   const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
   assert.match(build, /if \(-not \$SkipAutoInstall\)[\s\S]*?install-gemini-cli-team\.mjs/);
-  assert.equal(pkg.scripts['agents:install:gemini'], 'node tools/install-gemini-cli-team.mjs');
+  assert.equal(pkg.scripts['agents:install:gemini'], 'node tools/install-gemini-cli-team.mjs --verified-sync');
   assert.equal(pkg.scripts['agents:check:gemini'], 'node tools/install-gemini-cli-team.mjs --check');
   assert.match(pkg.scripts['build:package'], /-SkipAutoInstall/);
 });

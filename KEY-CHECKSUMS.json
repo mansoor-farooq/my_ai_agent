@@ -101,8 +101,8 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "7269688537AE16418C5A33B288ACAAD0CD444E55D59F9D2DA036336F9414CF33",
-    "Bytes": 14593
+    "SHA256": "8DE29D71A18AA116F2A59435C8AE962B190F8878F650957FB3EA4140417E133C",
+    "Bytes": 14609
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
@@ -151,8 +151,8 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "69F7F473566AD729802BB94C48CE79781FBF823F7423FAFE0CDC5354DB6F5B00",
-    "Bytes": 1455
+    "SHA256": "0BEB91865DA125A2DAAE554FCEA2F47AE90F03F5E1511B998399C5C318FFE508",
+    "Bytes": 1471
   },
   {
     "Path": "Agents/Push-All-Branches.cmd",
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "29044B2646679FE30E5482696870997BE842EA1B3030690DAF9134E2567C6D2F",
-    "Bytes": 62941
+    "SHA256": "61240740A49BFDDE791C614196C62806A596035842439AAFC3B7BC8715B69F29",
+    "Bytes": 62957
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "7667AB86BA66FDEFDA15AF439970ED42F6443421D08ACFD847ED910DBEC328ED",
-    "Bytes": 21079
+    "SHA256": "7539DA5BA15CD9F2E8278F5BF83F3B3BA22591E55ACA860F256D7D80E2F8FC0A",
+    "Bytes": 21184
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
@@ -2551,13 +2551,13 @@
   },
   {
     "Path": "Agents/tools/install-gemini-cli-team.mjs",
-    "SHA256": "291831C228C31664C5B7F8281240DB17548B860B23B1038A55DA0007FBF78F59",
-    "Bytes": 19761
+    "SHA256": "80C0C293CA280A1C35EFDADE305779591CB23BB3136B122FF6F6FEF024765433",
+    "Bytes": 21009
   },
   {
     "Path": "Agents/tools/tests/gemini-cli-team.test.mjs",
-    "SHA256": "118ECF05AD4A0277FFC6594FD2436F72E94CC02FEAEEC7A0321B9704354ED215",
-    "Bytes": 8475
+    "SHA256": "1796DBD8E723BAF97AB365DFD72E0535E93F55D34E97B0FC53C3452A8CA2A9CF",
+    "Bytes": 9961
   },
   {
     "Path": "Agents/tools/update-skill-references.mjs",

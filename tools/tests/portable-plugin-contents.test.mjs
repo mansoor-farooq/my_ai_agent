@@ -274,6 +274,7 @@ test('built versioned ZIP retains the support files after archive creation', { s
     assert.match(installer, /@google\/gemini-cli@latest/);
     assert.match(installer, /install-gemini-cli-team\.mjs/);
     assert.match(installer, /Gemini CLI team\/skills\/policy synchronization failed/);
+    assert.match(installer, /--verified-sync/, `verified-sync installer must be present in ${archive}`);
     assert.match(installer, /'plugin\.json', 'mcp_config\.json', 'hooks\.json'/);
     assert.match(installer, /Already installed; leaving the active package untouched/);
     assert.match(installer, /WindowsBuiltInRole.*Administrator/);

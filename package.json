@@ -6,7 +6,7 @@
   "scripts": {
     "build": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1",
     "build:package": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1 -SkipAutoInstall",
-    "agents:install:gemini": "node tools/install-gemini-cli-team.mjs",
+    "agents:install:gemini": "node tools/install-gemini-cli-team.mjs --verified-sync",
     "agents:install:codex": "node tools/install-codex-mobile-specialist.mjs",
     "agents:check:gemini": "node tools/install-gemini-cli-team.mjs --check",
     "agents:refresh": "node tools/refresh-agent-skills.mjs",

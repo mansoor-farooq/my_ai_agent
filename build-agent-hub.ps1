@@ -158,7 +158,7 @@ try {
   if (-not $SkipAutoInstall) {
     Write-Host ''
     Write-Host 'GEMINI CLI / synchronizing Mansoor AI Team Manager, specialists, skills and policies...' -ForegroundColor Cyan
-    & $node.Source (Join-Path $PSScriptRoot 'tools\install-gemini-cli-team.mjs')
+    & $node.Source (Join-Path $PSScriptRoot 'tools\install-gemini-cli-team.mjs') --verified-sync
     if ($LASTEXITCODE -ne 0) { throw "Gemini CLI team synchronization failed (exit $LASTEXITCODE)." }
   }
 
