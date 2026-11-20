@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateReference, planSkillUpdate, planSkillReference, decorateSkillSource, bumpPatchVersion, packageNeedsRebuild } from '../update-skill-references.mjs';
-import { shouldSyncInstalledAgents } from '../auto-refresh-agent-skills.mjs';
+import { readInstalledVersion, readLastSyncedVersion, shouldSyncInstalledAgents, writeSyncState } from '../auto-refresh-agent-skills.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -87,12 +88,42 @@ test('all-agent refresh command syncs the existing provider installers after val
   ]) assert.ok(script.includes(marker), `missing sync step: ${marker}`);
   assert.doesNotMatch(script, /sync-antigravity-permissions/);
   assert.match(script, /process\.env\.npm_execpath/);
+  assert.match(script, /MANSOOR_AGENT_REFRESH_SKIP_UPSTREAM/);
+  assert.doesNotMatch(script, /process\.argv\.slice\(2\)/);
   assert.doesNotMatch(script, /shell:\s*command === npm/);
 });
 
 test('local auto-refresh only reinstalls agents when the bundled skill version changed', () => {
-  assert.equal(shouldSyncInstalledAgents('1.23.4', '1.23.4'), false);
-  assert.equal(shouldSyncInstalledAgents('1.23.4', '1.23.5'), true);
+  assert.equal(shouldSyncInstalledAgents('1.23.4', '1.23.4', '1.23.4', '1.23.4'), false);
+  assert.equal(shouldSyncInstalledAgents('1.23.4', '1.23.5', '1.23.4', '1.23.4'), true);
+  assert.equal(shouldSyncInstalledAgents('1.23.4', '1.23.4', '1.23.2', '1.23.4'), true);
+  assert.equal(shouldSyncInstalledAgents('1.23.4', '1.23.4', '1.23.4', ''), true);
+});
+
+test('local auto-refresh records completion only after every provider sync succeeds', async () => {
+  const directory = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'mansoor-skill-refresh-test-'));
+  const stateFile = path.join(directory, 'state.json');
+  try {
+    writeSyncState(stateFile, '1.23.5', new Date('2026-11-20T04:00:00.000Z'));
+    const state = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
+    assert.equal(state.schema, 'mansoor.agent-skill-auto-update-state/v1');
+    assert.equal(state.lastSyncedVersion, '1.23.5');
+    assert.equal(shouldSyncInstalledAgents('1.23.5', '1.23.5', '1.23.5', state.lastSyncedVersion), false);
+    writeSyncState(stateFile, '1.23.6', new Date('2026-11-21T04:00:00.000Z'));
+    assert.equal(JSON.parse(fs.readFileSync(stateFile, 'utf8')).lastSyncedVersion, '1.23.6');
+    fs.writeFileSync(stateFile, '{incomplete-json');
+    assert.equal(readLastSyncedVersion(stateFile), '');
+  } finally { await fs.promises.rm(directory, { recursive: true, force: true }); }
+});
+
+test('local auto-refresh repairs an absent or malformed bundle manifest', async () => {
+  const directory = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'mansoor-skill-bundle-test-'));
+  const manifestPath = path.join(directory, 'plugin.json');
+  try {
+    assert.equal(readInstalledVersion(manifestPath), '');
+    fs.writeFileSync(manifestPath, '{incomplete-json');
+    assert.equal(readInstalledVersion(manifestPath), '');
+  } finally { await fs.promises.rm(directory, { recursive: true, force: true }); }
 });
 
 test('local auto-update installs a daily missed-run scheduled task without elevation', () => {
@@ -115,7 +146,16 @@ test('local auto-update is available as an explicit installable provider sync', 
   const script = fs.readFileSync(path.join(root, 'tools/auto-refresh-agent-skills.mjs'), 'utf8');
   assert.match(script, /tools\/update-skill-references\.mjs/);
   assert.match(script, /agents:refresh/);
-  assert.match(script, /--skip-upstream/);
+  assert.match(script, /MANSOOR_AGENT_REFRESH_SKIP_UPSTREAM/);
+  assert.match(script, /dist.*mansoor-agent-hub.*plugin\.json/);
+  const testsGate = "runNpm(['test'], 'Validate agent behavior, policies, and contracts')";
+  const fixturesGate = "run(process.execPath, ['tools/run-agent-security-fixtures.mjs']";
+  const secretsGate = "runNpm(['run', 'secret-scan'], 'Validate skill and source secret hygiene')";
+  const syncStep = "runNpm(['run', 'agents:refresh']";
+  for (const gate of [testsGate, fixturesGate, secretsGate]) assert.ok(script.includes(gate), `missing mandatory update gate: ${gate}`);
+  assert.ok(script.indexOf(testsGate) < script.indexOf(syncStep), 'full agent behavior tests must run before provider sync');
+  assert.ok(script.indexOf(fixturesGate) < script.indexOf(syncStep), 'security fixtures must run before provider sync');
+  assert.ok(script.indexOf(secretsGate) < script.indexOf(syncStep), 'secret scan must run before provider sync');
 });
 
 test('portable bundle version is sourced from package.json', () => {

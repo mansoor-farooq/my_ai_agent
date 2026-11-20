@@ -8,9 +8,7 @@ import { packageNeedsRebuild } from './update-skill-references.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const npmCli = process.env.npm_execpath;
 if (!npmCli) throw new Error('Run this command through npm: npm run agents:refresh.');
-const refreshArgs = process.argv.slice(2);
-const skipUpstream = refreshArgs.includes('--skip-upstream');
-if (refreshArgs.some((arg) => arg !== '--skip-upstream')) throw new Error('Usage: npm run agents:refresh [-- --skip-upstream]');
+const skipUpstream = process.env.MANSOOR_AGENT_REFRESH_SKIP_UPSTREAM === '1';
 
 function run(command, args, label) {
   console.log(`\n=== ${label} ===`);
