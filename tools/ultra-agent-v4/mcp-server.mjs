@@ -86,7 +86,7 @@ const tools = [
     inputSchema: {
       type: 'object',
       properties: {
-        task: { type: 'object', properties: { projectDir: { type: 'string' }, projectId: { type: 'string' }, taskId: { type: 'string' }, objective: { type: 'string' }, scope: { type: 'array', items: { type: 'string' } }, acceptance: { type: 'array', items: { type: 'string' } }, forbiddenPaths: { type: 'array', items: { type: 'string' } }, requiredEvidence: { type: 'array', items: { type: 'string' } }, projectType: { type: 'string' }, taskType: { type: 'string' }, agent: { type: 'string' } }, required: ['projectDir', 'projectId', 'taskId', 'objective', 'scope', 'acceptance'], additionalProperties: true },
+        task: { type: 'object', properties: { projectDir: { type: 'string' }, projectId: { type: 'string' }, taskId: { type: 'string' }, objective: { type: 'string' }, scope: { type: 'array', items: { type: 'string' } }, acceptance: { type: 'array', items: { type: 'string' } }, forbiddenPaths: { type: 'array', items: { type: 'string' } }, requiredEvidence: { type: 'array', items: { type: 'string' } }, projectType: { type: 'string' }, taskType: { type: 'string' }, agent: { type: 'string' }, agentId: { type: 'string' }, managerId: { type: 'string' } }, required: ['projectDir', 'projectId', 'taskId', 'objective', 'scope', 'acceptance'], additionalProperties: true },
         plan: { type: 'object', properties: { steps: { type: 'array', items: { type: 'string' } }, assumptions: { type: 'array' }, affectedPaths: { type: 'array', items: { type: 'string' } }, checks: { type: 'array', items: { type: 'object' } }, rollback: { type: ['string', 'null'] }, allowedNetwork: { type: 'array', items: { type: 'string' } } }, required: ['steps', 'affectedPaths', 'checks'], additionalProperties: true },
         actions: { type: 'array', items: { type: 'object', properties: { type: { type: 'string' }, path: { type: 'string' }, content: { type: 'string' } }, required: ['type', 'path', 'content'], additionalProperties: false } },
         repairActions: { type: 'object', additionalProperties: { type: 'array', items: { type: 'object', properties: { type: { type: 'string' }, path: { type: 'string' }, content: { type: 'string' } }, required: ['type', 'path', 'content'], additionalProperties: false } } },
@@ -108,7 +108,7 @@ const tools = [
             projectDir: { type: 'string' }, projectId: { type: 'string' }, taskId: { type: 'string' }, objective: { type: 'string' },
             scope: { type: 'array', items: { type: 'string' } }, acceptance: { type: 'array', items: { type: 'string' } },
             forbiddenPaths: { type: 'array', items: { type: 'string' } }, requiredEvidence: { type: 'array', items: { type: 'string' } },
-            projectType: { type: 'string' }, taskType: { type: 'string' }, agent: { type: 'string' },
+            projectType: { type: 'string' }, taskType: { type: 'string' }, agent: { type: 'string' }, agentId: { type: 'string' }, managerId: { type: 'string' },
           },
           required: ['projectDir', 'projectId', 'taskId', 'objective', 'scope', 'acceptance'],
           additionalProperties: true,

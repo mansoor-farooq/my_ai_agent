@@ -23,6 +23,8 @@ export function redactTrainingText(value, limit = 2000) {
   return text.replace(localPathPattern, '[LOCAL_PATH]').slice(0, limit);
 }
 
+const safeOwnerId = (value) => /^[A-Za-z0-9][A-Za-z0-9._-]{0,95}$/.test(String(value || '')) ? String(value) : null;
+
 function parseJsonl(text) {
   return String(text ?? '').split(/\r?\n/).filter(Boolean).flatMap((line) => {
     try { return [JSON.parse(line)]; } catch { return []; }
@@ -44,7 +46,7 @@ function safeRelative(projectDir, file) {
 function isAccepted(record) {
   const outcome = passing.has(String(record.outcome ?? '').toLowerCase());
   const checks = Array.isArray(record.acceptanceChecks) ? record.acceptanceChecks : [];
-  const checksPass = checks.length === 0 || checks.every((value) => passing.has(String(value).toLowerCase()));
+  const checksPass = checks.length > 0 && checks.every((value) => passing.has(String(value).toLowerCase()));
   return outcome && checksPass && record.reviewStatus === 'approved' && String(record.approvedBy ?? '').trim().length > 0;
 }
 
@@ -58,7 +60,8 @@ function taskPrompt(record) {
 function assistantTarget(record) {
   const checks = Array.isArray(record.acceptanceChecks) ? record.acceptanceChecks.map((item) => redactTrainingText(item, 120)).join(', ') : 'recorded';
   const evidence = record.failureReason ? `Blocker observed: ${redactTrainingText(record.failureReason, 300)}.` : 'Evidence-backed verification was recorded.';
-  return `Outcome: ${redactTrainingText(record.outcome || 'complete', 60)}.\nChecks: ${checks}.\n${evidence}\nKeep changes inside the approved scope and report changed paths, tests and remaining uncertainty.`;
+  const observedSummary = redactTrainingText(record.responseSummary || '', 1500);
+  return `${observedSummary ? `${observedSummary}\n` : ''}Outcome: ${redactTrainingText(record.outcome || 'complete', 60)}.\nChecks: ${checks}.\n${evidence}\nKeep changes inside the approved scope and report changed paths, tests and remaining uncertainty.`;
 }
 
 function toEvaluationRecord(record, source) {
@@ -66,9 +69,12 @@ function toEvaluationRecord(record, source) {
   return {
     schema: 'mansoor.agent-evaluation-example/v1',
     taskId: redactTrainingText(record.taskId, 120),
+    agentId: safeOwnerId(record.agentId),
+    managerId: safeOwnerId(record.managerId),
     projectId: redactTrainingText(record.projectId, 120),
     domain: redactTrainingText(record.domain || 'unknown', 80),
     objective: redactTrainingText(record.objective || '', 1000),
+    responseSummary: redactTrainingText(record.responseSummary || '', 1500),
     acceptance: (Array.isArray(record.acceptance) ? record.acceptance : []).map((item) => redactTrainingText(item, 300)),
     outcome: redactTrainingText(record.outcome || 'unknown', 60),
     accepted,
@@ -90,6 +96,8 @@ function toSftRecord(record, source) {
     ],
     metadata: {
       taskId: redactTrainingText(record.taskId, 120),
+      agentId: safeOwnerId(record.agentId),
+      managerId: safeOwnerId(record.managerId),
       projectId: redactTrainingText(record.projectId, 120),
       domain: redactTrainingText(record.domain || 'unknown', 80),
       challengeType: record.challengeType ? redactTrainingText(record.challengeType, 120) : null,
@@ -105,6 +113,8 @@ function toEvidenceRecord(record, source, kind) {
     kind,
     projectId: redactTrainingText(record.projectId, 120),
     taskId: redactTrainingText(record.taskId || record.id || '', 120),
+    agentId: safeOwnerId(record.agentId),
+    managerId: safeOwnerId(record.managerId),
     status: redactTrainingText(record.status || record.outcome || 'observed', 60),
     subject: redactTrainingText(record.subject || record.event || '', 200),
     claim: redactTrainingText(record.claim || record.details || record.result || '', 1200),
@@ -122,10 +132,19 @@ export async function buildTrainingPack({ projectDir = process.cwd(), outputDir,
   const output = path.resolve(outputDir || path.join(root, '.agents', 'training-pack'));
   await fs.mkdir(output, { recursive: true });
   const metricFile = path.join(root, '.agents', 'ultra-v4', 'metrics', 'tasks.jsonl');
+  const reviewFile = path.join(root, '.agents', 'ultra-v4', 'metrics', 'reviews.jsonl');
   const traceDir = path.join(root, '.agents', 'ultra-v3', 'traces');
   const researchFile = path.join(root, '.agents', 'memory', 'research-ledger.jsonl');
   const verificationFile = path.join(root, '.agents', 'memory', 'verification-ledger.jsonl');
-  const metricRecords = (await readJsonl(metricFile)).filter((record) => !projectId || record.projectId === projectId);
+  const managerId = 'mansoor-ai-team-manager';
+  const reviews = await readJsonl(reviewFile);
+  const latestReviews = new Map();
+  for (const review of reviews) latestReviews.set(review.metricId || `task:${review.taskId}`, review);
+  const allMetrics = (await readJsonl(metricFile)).map((record) => {
+    const review = latestReviews.get(record.metricId || `task:${record.taskId}`);
+    return review ? { ...record, reviewStatus: review.status, approvedBy: review.approvedBy } : record;
+  }).filter((record) => !projectId || record.projectId === projectId);
+  const metricRecords = allMetrics.filter((record) => !record.managerId || record.managerId === managerId);
   const traceFiles = await fs.readdir(traceDir, { withFileTypes: true }).catch(() => []);
   const evidenceSources = [
     { file: researchFile, kind: 'research' },
@@ -133,13 +152,10 @@ export async function buildTrainingPack({ projectDir = process.cwd(), outputDir,
     ...traceFiles.filter((entry) => entry.isFile() && entry.name.endsWith('.jsonl')).map((entry) => ({ file: path.join(traceDir, entry.name), kind: 'trace' })),
   ];
   const existingSources = [];
-  for (const file of [metricFile, ...evidenceSources.map((item) => item.file)]) {
+  for (const file of [metricFile, reviewFile, ...evidenceSources.map((item) => item.file)]) {
     try { existingSources.push({ path: safeRelative(root, file), sha256: await sha256(file), records: (await readJsonl(file)).length }); } catch { /* optional source */ }
   }
   const source = { projectDir: root, file: metricFile };
-  const evaluation = metricRecords.map((record) => toEvaluationRecord(record, source));
-  const sft = metricRecords.filter(isAccepted).map((record) => toSftRecord(record, source));
-  const hardCases = evaluation.filter((record) => !record.accepted || record.failureCode || record.challengeType);
   const research = [];
   for (const item of evidenceSources) {
     for (const record of await readJsonl(item.file)) {
@@ -147,34 +163,58 @@ export async function buildTrainingPack({ projectDir = process.cwd(), outputDir,
       research.push(toEvidenceRecord(record, { projectDir: root, file: item.file }, item.kind));
     }
   }
-  await writeJsonl(path.join(output, 'sft.jsonl'), sft);
-  await writeJsonl(path.join(output, 'evaluation.jsonl'), evaluation);
-  await writeJsonl(path.join(output, 'hard-cases.jsonl'), hardCases);
-  await writeJsonl(path.join(output, 'evidence.jsonl'), research);
-  const manifest = {
-    schema: 'mansoor.agent-training-pack/v1',
-    generatedAt: new Date().toISOString(),
-    projectId: projectId || null,
-    projectRoot: '[PROJECT_ROOT]',
-    redacted: true,
-    hiddenReasoningIncluded: false,
-    credentialsIncluded: false,
-    policy: {
-      sft: 'owner-approved successful outcomes only',
-      evaluation: 'all sanitized observations',
-      hardCases: 'failures, blockers and explicitly marked challenge cases',
-      evidence: 'sanitized research/verification/trace metadata only',
-    },
-    files: {
-      sft: { path: 'sft.jsonl', records: sft.length, sha256: await sha256(path.join(output, 'sft.jsonl')) },
-      evaluation: { path: 'evaluation.jsonl', records: evaluation.length, sha256: await sha256(path.join(output, 'evaluation.jsonl')) },
-      hardCases: { path: 'hard-cases.jsonl', records: hardCases.length, sha256: await sha256(path.join(output, 'hard-cases.jsonl')) },
-      evidence: { path: 'evidence.jsonl', records: research.length, sha256: await sha256(path.join(output, 'evidence.jsonl')) },
-    },
-    sourceFiles: existingSources,
+  const writePack = async (targetDir, records, owner, ownerId, evidenceRecords = research) => {
+    await fs.mkdir(targetDir, { recursive: true });
+    const evaluation = records.map((record) => toEvaluationRecord(record, source));
+    const sft = records.filter(isAccepted).map((record) => toSftRecord(record, source));
+    const hardCases = evaluation.filter((record) => !record.accepted || record.failureCode || record.challengeType);
+    await writeJsonl(path.join(targetDir, 'sft.jsonl'), sft);
+    await writeJsonl(path.join(targetDir, 'evaluation.jsonl'), evaluation);
+    await writeJsonl(path.join(targetDir, 'hard-cases.jsonl'), hardCases);
+    await writeJsonl(path.join(targetDir, 'evidence.jsonl'), evidenceRecords);
+    const counts = { sft: sft.length, evaluation: evaluation.length, hardCases: hardCases.length, evidence: evidenceRecords.length };
+    const manifest = {
+      schema: 'mansoor.agent-training-pack/v1',
+      generatedAt: new Date().toISOString(),
+      datasetOwner: owner,
+      ownerId,
+      managerId,
+      projectId: projectId || null,
+      projectRoot: '[PROJECT_ROOT]',
+      redacted: true,
+      hiddenReasoningIncluded: false,
+      credentialsIncluded: false,
+      policy: {
+        sft: 'owner-approved successful outcomes only',
+        evaluation: 'all sanitized observations for this dataset owner',
+        hardCases: 'failures, blockers and explicitly marked challenge cases',
+        evidence: 'sanitized research/verification/trace metadata only',
+      },
+      files: {
+        sft: { path: 'sft.jsonl', records: sft.length, sha256: await sha256(path.join(targetDir, 'sft.jsonl')) },
+        evaluation: { path: 'evaluation.jsonl', records: evaluation.length, sha256: await sha256(path.join(targetDir, 'evaluation.jsonl')) },
+        hardCases: { path: 'hard-cases.jsonl', records: hardCases.length, sha256: await sha256(path.join(targetDir, 'hard-cases.jsonl')) },
+        evidence: { path: 'evidence.jsonl', records: evidenceRecords.length, sha256: await sha256(path.join(targetDir, 'evidence.jsonl')) },
+      },
+      sourceFiles: existingSources,
+    };
+    await fs.writeFile(path.join(targetDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+    return { manifest, counts };
   };
-  await fs.writeFile(path.join(output, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
-  return { outputDir: output, manifest, counts: { sft: sft.length, evaluation: evaluation.length, hardCases: hardCases.length, evidence: research.length } };
+  const managerPack = await writePack(output, metricRecords, 'Mansoor AI Team Manager', managerId);
+  const agentGroups = new Map();
+  for (const record of metricRecords) {
+    const agentId = safeOwnerId(record.agentId);
+    if (agentId) agentGroups.set(agentId, [...(agentGroups.get(agentId) || []), record]);
+  }
+  const agentDatasets = {};
+  for (const [agentId, records] of agentGroups) {
+    const pack = await writePack(path.join(output, 'agents', agentId), records, agentId, agentId, research.filter((item) => item.agentId === agentId));
+    agentDatasets[agentId] = { path: `agents/${agentId}`, records: records.length, counts: pack.counts };
+  }
+  managerPack.manifest.agentDatasets = agentDatasets;
+  await fs.writeFile(path.join(output, 'manifest.json'), `${JSON.stringify(managerPack.manifest, null, 2)}\n`, 'utf8');
+  return { outputDir: output, manifest: managerPack.manifest, counts: managerPack.counts };
 }
 
 function getArg(args, name, fallback = '') {
@@ -186,7 +226,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const args = process.argv.slice(2);
   const action = args[0] || 'export';
   if (action !== 'export') throw new Error('Usage: node tools/agent-training-dataset.mjs export --dir <project> --out <folder> [--project-id <id>]');
-  buildTrainingPack({ projectDir: getArg(args, '--dir', process.cwd()), outputDir: getArg(args, '--out'), projectId: getArg(args, '--project-id') || null })
+  const projectDir = getArg(args, '--dir', process.cwd());
+  buildTrainingPack({ projectDir, outputDir: getArg(args, '--out', path.join(projectDir, '.agents', 'ultra-v4', 'training-datasets', 'Mansoor-AI-Team-Manager')), projectId: getArg(args, '--project-id') || null })
     .then((result) => console.log(JSON.stringify(result, null, 2)))
     .catch((error) => { console.error(`Training dataset export failed: ${error.message}`); process.exitCode = 1; });
 }

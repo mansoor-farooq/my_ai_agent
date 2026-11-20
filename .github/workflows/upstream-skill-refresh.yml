@@ -20,10 +20,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout default branch
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node.js 24)
 
       - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0 (Node.js 24)
         with:
           node-version: 24.21.0
 
@@ -47,13 +47,12 @@ jobs:
           $changed = git status --porcelain -- skills-lock.json SKILL-PROVENANCE.json KEY-CHECKSUMS.json skills package.json
           if ($changed) { "changed=true" >> $env:GITHUB_OUTPUT } else { "changed=false" >> $env:GITHUB_OUTPUT }
 
-      - name: Open or refresh the upstream update review PR
+      - name: Publish validated update branch and review link
         if: steps.changes.outputs.changed == 'true'
         shell: pwsh
         env:
-          GH_TOKEN: ${{ github.token }}
-          REPOSITORY_OWNER: ${{ github.repository_owner }}
           DEFAULT_BRANCH: ${{ github.ref_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           $branch = 'automation/upstream-skill-refresh'
           git config user.name 'github-actions[bot]'
@@ -64,10 +63,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Could not commit validated skill updates.' }
           git push --force origin "HEAD:refs/heads/$branch"
           if ($LASTEXITCODE -ne 0) { throw 'Could not publish the updater branch.' }
-          $head = "$env:REPOSITORY_OWNER`:$branch"
-          $number = gh pr list --state open --head $head --json number --jq '.[0].number'
-          if ($number) {
-            gh pr edit $number --title 'chore: refresh approved upstream skills' --body 'Automated weekly check of the explicitly registered GitHub skill references. Tests, provenance generation, and secret scan passed. Review the skill diff before merging.'
-          } else {
-            gh pr create --base $env:DEFAULT_BRANCH --head $branch --title 'chore: refresh approved upstream skills' --body 'Automated weekly check of the explicitly registered GitHub skill references. Tests, provenance generation, and secret scan passed. Review the skill diff before merging.'
-          }
+          $compareUrl = "https://github.com/$env:GITHUB_REPOSITORY/compare/$env:DEFAULT_BRANCH...$branch?expand=1"
+          @"
+          ### Upstream skill update is ready for review
+
+          The validated update branch was pushed: ``$branch``.
+
+          The repository's Actions token cannot create pull requests, so this workflow leaves review and merge to a person. Open the comparison page to inspect the changes and create the PR:
+
+          $compareUrl
+          "@ | Add-Content -Path $env:GITHUB_STEP_SUMMARY

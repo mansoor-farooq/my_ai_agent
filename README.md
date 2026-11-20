@@ -119,7 +119,7 @@ For Flutter/Android projects, the mobile lane detects `adb` and optional `scrcpy
 
 ### Ready-to-use agent datasets
 
-After approved or difficult work, export a sanitized training/evaluation pack with `node tools/agent-training-dataset.mjs export --dir <project> --out <folder>`. The pack contains owner-approved successful `sft.jsonl` examples, all-observation `evaluation.jsonl`, `hard-cases.jsonl` for hurdles and failures, sanitized research/verification evidence, and a hash manifest. Credentials, absolute local paths, raw chats and hidden reasoning are excluded. The SFT file is suitable for local instruction-tuning pipelines; the evaluation and hard-case files must remain held out for honest testing.
+Managed task runs automatically record sanitized outcomes with manager and agent identities. Export with `node tools/agent-training-dataset.mjs export --dir <project>` to create `.agents/ultra-v4/training-datasets/Mansoor-AI-Team-Manager` and its separate `agents/<agent-id>/` datasets. Owner approval is required before passing outcomes enter `sft.jsonl`; unreviewed and failed cases stay in evaluation/hard-case files. Credentials, absolute local paths, raw chats and hidden reasoning are excluded. This prepares local data only; model training remains an explicit separate step.
 
 ### Speed without unsafe parallelism
 

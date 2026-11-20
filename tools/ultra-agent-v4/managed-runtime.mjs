@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runCoreLoop } from './core-loop.mjs';
+import { recordTaskMetric } from './benchmark.mjs';
+import { buildTrainingPack } from '../agent-training-dataset.mjs';
 import { createEffectKey, EffectLedger, claimEffect, completeEffect } from './effects.mjs';
 import { guardWritePath } from './stages/act.mjs';
 import { runChecks } from './stages/verify.mjs';
@@ -295,6 +297,7 @@ function executeManagedWrites(policy, actions, effectLedger, actionLedger, manif
 }
 
 export async function runManagedTask(input = {}, deps = {}) {
+  const taskStartedAt = new Date().toISOString();
   let releaseLock;
   let trace;
   let checkpointFile;
@@ -522,7 +525,57 @@ export async function runManagedTask(input = {}, deps = {}) {
       delivery,
     };
     if (result.status === 'complete' && missingEvidence.length) final = { ...final, status: 'unverified', blockers: [...(final.blockers || []), ...missingEvidence.map((item) => `required-evidence-missing:${item}`)], nextAction: 'collect-required-evidence' };
+    let trainingRecordSaved = false;
+    try {
+      recordTaskMetric({
+        dir: projectRoot,
+        taskId,
+        projectId: input.task.projectId,
+        managerId: input.task.managerId || 'mansoor-ai-team-manager',
+        agentId: input.task.agentId || input.task.agent || 'mansoor-ai-team-manager',
+        mode: input.mode || input.task.mode || 'fast',
+        startedAt: taskStartedAt,
+        completedAt: new Date().toISOString(),
+        outcome: final.status,
+        failureCode: final.blockers?.[0] || '',
+        failureReason: final.blockers?.join('; ') || '',
+        acceptanceChecks: (result.verification?.checks || []).map((check) => check.status),
+        objective: input.task.objective,
+        responseSummary: [
+          `Final status: ${final.status}`,
+          ...(final.changes?.length ? [`Changed paths: ${final.changes.join(', ')}`] : []),
+          ...(final.evidence?.length ? [`Evidence: ${final.evidence.join(', ')}`] : []),
+          ...((result.verification?.checks || []).length ? [`Checks: ${result.verification.checks.map((check) => `${check.id}=${check.status}`).join(', ')}`] : []),
+          ...(final.blockers?.length ? [`Blockers: ${final.blockers.join('; ')}`] : []),
+        ].join('\n'),
+        acceptance: input.task.acceptance,
+        domain: input.task.domain,
+        reviewStatus: 'pending',
+      });
+      trainingRecordSaved = true;
+      final = { ...final, trainingRecordSaved: true };
+    } catch (error) {
+      final = { ...final, trainingRecordSaved: false, trainingRecordError: redactTrace(error.message) };
+    }
     await finishTrace(trace, { status: final.status, details: JSON.stringify({ taskId, workspaceId: workspace.workspaceId, deliveryStatus: delivery.status, changedPaths: delivery.changedPaths || final.changes, blockers: final.blockers }) });
+    if (trainingRecordSaved) {
+      try {
+        const datasetDir = path.join(projectRoot, '.agents', 'ultra-v4', 'training-datasets', 'Mansoor-AI-Team-Manager');
+        const dataset = await buildTrainingPack({ projectDir: projectRoot, outputDir: datasetDir });
+        final = {
+          ...final,
+          trainingDataset: {
+            status: 'refreshed',
+            manager: 'Mansoor AI Team Manager',
+            agentId: input.task.agentId || input.task.agent || 'mansoor-ai-team-manager',
+            path: '.agents/ultra-v4/training-datasets/Mansoor-AI-Team-Manager',
+            counts: dataset.counts,
+          },
+        };
+      } catch (error) {
+        final = { ...final, trainingDataset: { status: 'refresh-failed', reason: redactTrace(error.message) } };
+      }
+    }
     return final;
   } catch (error) {
     if (trace) {

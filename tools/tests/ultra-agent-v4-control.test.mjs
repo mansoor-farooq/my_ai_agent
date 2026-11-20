@@ -19,7 +19,7 @@ function run(script, args) {
 test('benchmark reports observed acceptance accuracy, latency and classified failures', async () => {
   const fixture = await mkdtemp(path.join(os.tmpdir(), 'ultra-agent-v4-benchmark-'));
   try {
-    run('benchmark.mjs', ['record', '--dir', fixture, '--project-id', 'project-a', '--task', 'task-1', '--mode', 'fast', '--started-at', '2026-01-01T00:00:00.000Z', '--completed-at', '2026-01-01T00:00:00.100Z', '--outcome', 'pass', '--checks', 'pass,pass']);
+    run('benchmark.mjs', ['record', '--dir', fixture, '--project-id', 'project-a', '--task', 'task-1', '--agent-id', 'flutter-mobile-specialist', '--objective', 'Fix mobile layout', '--acceptance', 'no clipping|keyboard safe', '--mode', 'fast', '--started-at', '2026-01-01T00:00:00.000Z', '--completed-at', '2026-01-01T00:00:00.100Z', '--outcome', 'pass', '--checks', 'pass,pass']);
     run('benchmark.mjs', ['record', '--dir', fixture, '--project-id', 'project-a', '--task', 'task-2', '--mode', 'premium', '--started-at', '2026-01-01T00:00:01.000Z', '--completed-at', '2026-01-01T00:00:01.300Z', '--outcome', 'fail', '--failure-code', 'verification-failed', '--failure-reason', 'token=secret-value', '--checks', 'pass,fail']);
     const summary = run('benchmark.mjs', ['summary', '--dir', fixture, '--project-id', 'project-a']);
     assert.equal(summary.tasks, 2);
@@ -31,6 +31,11 @@ test('benchmark reports observed acceptance accuracy, latency and classified fai
     const raw = await readFile(path.join(fixture, '.agents', 'ultra-v4', 'metrics', 'tasks.jsonl'), 'utf8');
     assert.match(raw, /REDACTED_SECRET/);
     assert.doesNotMatch(raw, /secret-value/);
+    const firstMetric = JSON.parse(raw.split(/\r?\n/)[0]);
+    assert.equal(firstMetric.agentId, 'flutter-mobile-specialist');
+    assert.equal(firstMetric.managerId, 'mansoor-ai-team-manager');
+    assert.equal(firstMetric.objective, 'Fix mobile layout');
+    assert.equal(firstMetric.reviewStatus, 'pending');
   } finally {
     await rm(fixture, { recursive: true, force: true });
   }

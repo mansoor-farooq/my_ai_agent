@@ -98,6 +98,7 @@ test('managed runtime refuses to execute without a host approval callback', asyn
 
 test('managed runtime can auto-authorize bounded work through the manager approval broker', async () => {
   const { projectDir, task, plan } = fixture();
+  task.agent = 'QA Release Specialist';
   try {
     const input = withActionManifest({ task, plan, actions: [{ type: 'write', path: 'src/hello.txt', content: 'hello' }] });
     const result = await runManagedTask(input, {
@@ -108,6 +109,15 @@ test('managed runtime can auto-authorize bounded work through the manager approv
     assert.equal(result.approval.source, 'manager-policy-auto-approval');
     assert.equal(result.riskTier, 0);
     assert.equal(result.approvalMode, 'auto_approve');
+    const metrics = fs.readFileSync(path.join(projectDir, '.agents', 'ultra-v4', 'metrics', 'tasks.jsonl'), 'utf8').trim().split('\n').map(JSON.parse);
+    assert.equal(metrics.length, 1);
+    assert.equal(metrics[0].managerId, 'mansoor-ai-team-manager');
+    assert.equal(metrics[0].agentId, 'qa-release-specialist');
+    assert.equal(metrics[0].reviewStatus, 'pending');
+    assert.equal(metrics[0].objective, task.objective);
+    assert.equal(result.trainingDataset.status, 'refreshed');
+    assert.equal(result.trainingDataset.manager, 'Mansoor AI Team Manager');
+    assert.ok(fs.existsSync(path.join(projectDir, '.agents', 'ultra-v4', 'training-datasets', 'Mansoor-AI-Team-Manager', 'agents', 'qa-release-specialist', 'evaluation.jsonl')));
   } finally {
     fs.rmSync(projectDir, { recursive: true, force: true });
   }

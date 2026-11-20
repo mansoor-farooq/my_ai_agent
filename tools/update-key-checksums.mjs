@@ -21,6 +21,7 @@ records = records.filter((record) => !retiredPaths.has(String(record?.Path || ''
 
 const requiredPaths = [
   'tools/agent-training-dataset.mjs',
+  'tools/tests/agent-training-dataset.test.mjs',
   'tools/ultra-agent-v2/preflight.mjs',
   'tools/ultra-agent-v2/memory.mjs',
   'tools/ultra-agent-v2/evidence.mjs',
@@ -75,6 +76,7 @@ const requiredPaths = [
   'shared/control-plane/rule-registry.json',
   'benchmarks/README.md',
   '.github/workflows/quality.yml',
+  '.github/workflows/upstream-skill-refresh.yml',
   'tools/tests/ultra-agent-v3-delegation.test.mjs',
   'tools/tests/gemini-cli-team.test.mjs',
   'tools/tests/skill-reference-updater.test.mjs',

@@ -113,16 +113,16 @@ Install `adb` and `scrcpy` separately on the target Windows machine. The lane de
 
 ## Export a local-LLM dataset pack
 
-After a run has produced benchmark metrics, traces or research evidence, create a redacted pack:
+Managed task runs automatically append a sanitized task metric and refresh the pack with the manager and assigned agent IDs. For direct benchmark records, pass `--agent-id <specialist-id>` to attribute the work. The export creates `.agents/ultra-v4/training-datasets/Mansoor-AI-Team-Manager` plus a separate folder for each tagged agent:
 
 ```powershell
 node tools/agent-training-dataset.mjs export `
   --dir D:\Work\Youngs_bazar `
   --project-id youngs-bazar `
-  --out D:\Work\Youngs_bazar\.agents\training-pack
+  --out D:\Work\Youngs_bazar\.agents\ultra-v4\training-datasets\Mansoor-AI-Team-Manager
 ```
 
-Use `sft.jsonl` only for owner-approved successful outcomes. Keep `evaluation.jsonl` and `hard-cases.jsonl` separate as held-out evaluation data; they capture blockers such as scope drift, failed checks and difficult UI/runtime work. `manifest.json` records source hashes and the redaction policy. This exporter prepares data; it does not silently train or upload a local model.
+Each agent's files are under `agents/<agent-id>/`. Review a passing task before including it in SFT: `node tools/ultra-agent-v4/benchmark.mjs review --dir <project> --task <task-id> --status approved --approved-by <owner>`. Approval is stored as an append-only review event; unreviewed or failed work remains evaluation/hard-case data. Keep those held-out files separate from training. The manifests include provenance hashes. The exporter prepares local data only; it does not train or upload a model.
 
 ## Fast vs Premium
 

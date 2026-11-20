@@ -63,13 +63,16 @@ test('bumps only stable package patch versions when upstream skill content chang
   assert.equal(packageNeedsRebuild('1.23.3', '1.23.3'), false);
 });
 
-test('scheduled upstream refresh opens a review PR and validates changes before publication', () => {
+test('scheduled upstream refresh validates changes and publishes a review link without requiring PR permissions', () => {
   const workflow = fs.readFileSync(path.join(root, '.github/workflows/upstream-skill-refresh.yml'), 'utf8');
   assert.match(workflow, /schedule:/);
   assert.match(workflow, /node tools\/update-skill-references\.mjs --apply/);
   assert.match(workflow, /npm test/);
   assert.match(workflow, /npm run secret-scan/);
-  assert.match(workflow, /gh pr create/);
+  assert.match(workflow, /Publish validated update branch and review link/);
+  assert.match(workflow, /GITHUB_STEP_SUMMARY/);
+  assert.match(workflow, /compareUrl/);
+  assert.doesNotMatch(workflow, /gh pr create/);
   assert.doesNotMatch(workflow, /git push origin HEAD:refs\/heads\/(main|mansoor-development)/);
 });
 

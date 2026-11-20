@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "64B901A2A09806BEB302CE7B9272235E907FC1DCFAE6D64F889C0DBEF4B47BA8",
-    "Bytes": 27962
+    "SHA256": "C024517B16FC97F3A66A4060452F8240BAEBB0857D2E235A6695A74418FD2E8E",
+    "Bytes": 27951
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "51BC26796FCCFC64240B693A7D452710CEAD7900315374F68787277752A3AB8A",
-    "Bytes": 62749
+    "SHA256": "91DC2BF05EA74BC33306C6E8DEB6D9657652FD3F83D6591674E1F48167ADC5B6",
+    "Bytes": 62862
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2366,8 +2366,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/benchmark.mjs",
-    "SHA256": "0C757887ED0FD262342AF0C5D7C30FF17D86DC0B5F565DB42AF627266B3603C1",
-    "Bytes": 5277
+    "SHA256": "FF4C8D86311E685A8AAAF9D860147EA5B6968E1F3362B1DD9A8E153BE0956113",
+    "Bytes": 8309
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/recovery.mjs",
@@ -2386,8 +2386,8 @@
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v4-control.test.mjs",
-    "SHA256": "840832FEC457D200072BCEC62516815D89A4ED1FF31A9EF671215C4B0D22F1B9",
-    "Bytes": 4928
+    "SHA256": "6D0577225B7493455F7D573B5DFBA7170ABE6C6C6E4BC1D66CE80B6DF7F60D04",
+    "Bytes": 5364
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/core-loop.mjs",
@@ -2441,8 +2441,8 @@
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/managed-runtime.mjs",
-    "SHA256": "4496F327EA032231E205E9E2FA33EE8DFD695C71F841A6DBC4F61823CE547A76",
-    "Bytes": 37500
+    "SHA256": "12C4A7D078663BDA2DEE232930C475F47BA931BEB6B768D9055F5B8959924992",
+    "Bytes": 40050
   },
   {
     "Path": "Agents/tools/content-hash.mjs",
@@ -2501,8 +2501,8 @@
   },
   {
     "Path": "Agents/.github/workflows/quality.yml",
-    "SHA256": "10B9B90A02F252C96A7AAE1C3937C18CC065526B727D4CEDD0742D4F6A4084FF",
-    "Bytes": 2105
+    "SHA256": "E67CB9B29A2EADD3F322640158F05A1F1E5A6BB854315FF4F0652311FDDC208D",
+    "Bytes": 2193
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/task-workspaces.mjs",
@@ -2516,13 +2516,13 @@
   },
   {
     "Path": "Agents/tools/tests/ultra-agent-v4-managed-runtime.test.mjs",
-    "SHA256": "D4E546DB8F049D59546B2DBC4C6898A54FC205A4CC64059C81BBDE77189844FC",
-    "Bytes": 17528
+    "SHA256": "BDAAE3407A63BEC38CC96907804EE1F26AD5DF365ED71E1396B8FE6F69666958",
+    "Bytes": 18315
   },
   {
     "Path": "Agents/tools/ultra-agent-v4/mcp-server.mjs",
-    "SHA256": "9CF6F20A8277BD890C6AA56219DA3F7044C73D96BEE9F7D392607324CDDFD9D9",
-    "Bytes": 16834
+    "SHA256": "5E08F5D81604BED51A295F8E5243FFC4032165AD4D63056BB6A6CC36D239CF02",
+    "Bytes": 16954
   },
   {
     "Path": "Agents/tools/start-managed-mcp.ps1",
@@ -2536,8 +2536,8 @@
   },
   {
     "Path": "Agents/tools/agent-training-dataset.mjs",
-    "SHA256": "0787DF57DE0D2CCF1BFA12A7FF723FEE2B01F32B71DE6EEA601FC7D96B491699",
-    "Bytes": 10217
+    "SHA256": "D90B7FA6F55B335B8DE612B50F2DDB7084E27DED8ACF25ABF016D642A563A35E",
+    "Bytes": 12825
   },
   {
     "Path": "Agents/tools/ultra-agent-v5/approval-broker.mjs",
@@ -2571,8 +2571,8 @@
   },
   {
     "Path": "Agents/tools/tests/skill-reference-updater.test.mjs",
-    "SHA256": "6EC06E389BA27306DFAAB40B2E340065328944702CD9A562DB73DF8617FE5AAD",
-    "Bytes": 10404
+    "SHA256": "3E6DB71620945EF01E83F365DD55CBC20C1D17390E01BDEB1FB1A06C38E120DD",
+    "Bytes": 10597
   },
   {
     "Path": "Agents/tools/auto-refresh-agent-skills.mjs",
@@ -2593,5 +2593,15 @@
     "Path": "Agents/tools/run-agent-skill-auto-update.ps1",
     "SHA256": "BE1C35219F850DF6B934E30DD1E62D4558AB00A3C5276E4D3685C34E729E618C",
     "Bytes": 1137
+  },
+  {
+    "Path": "Agents/tools/tests/agent-training-dataset.test.mjs",
+    "SHA256": "A97137A0412E54D1420616F8BDBA0B40707ACA24AC5A47E617679D69A3DCC6CC",
+    "Bytes": 9132
+  },
+  {
+    "Path": "Agents/.github/workflows/upstream-skill-refresh.yml",
+    "SHA256": "885519A3EF785C18A474DB63F7A1E3005CDCE282C18D8C0E11EBAC47920385F8",
+    "Bytes": 2806
   }
 ]
