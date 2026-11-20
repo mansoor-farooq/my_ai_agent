@@ -151,8 +151,8 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "A7E8F63CE5942CDE2E74748B09196BC762FACB0D1CCF528A8702DE1C90409CB4",
-    "Bytes": 1085
+    "SHA256": "69F7F473566AD729802BB94C48CE79781FBF823F7423FAFE0CDC5354DB6F5B00",
+    "Bytes": 1455
   },
   {
     "Path": "Agents/Push-All-Branches.cmd",
@@ -2571,7 +2571,27 @@
   },
   {
     "Path": "Agents/tools/tests/skill-reference-updater.test.mjs",
-    "SHA256": "09DB65BF4F5CC9B3EFBB65FEBDB581D760B9AE4A330C5FD8651EFA3C583F6474",
-    "Bytes": 5774
+    "SHA256": "1BBFEBAE6C617627D25D6B850CDDB7BAB18799E717ED86DBB423B80BE93B7E9B",
+    "Bytes": 7528
+  },
+  {
+    "Path": "Agents/tools/auto-refresh-agent-skills.mjs",
+    "SHA256": "49C2FFA7FA11193BFB7F42258D616A52773AF67E732F560A387E0BEF5EDCDF14",
+    "Bytes": 2452
+  },
+  {
+    "Path": "Agents/tools/refresh-agent-skills.mjs",
+    "SHA256": "9CC9D176BF01C3D63EF547ED489D86609452997165F69144BA404111E9662D6A",
+    "Bytes": 2798
+  },
+  {
+    "Path": "Agents/tools/install-agent-skill-auto-update.ps1",
+    "SHA256": "9905102CDB7204E0D271F50D81BF109233EB50DEE096BA8658A31FD22B9FD135",
+    "Bytes": 1820
+  },
+  {
+    "Path": "Agents/tools/run-agent-skill-auto-update.ps1",
+    "SHA256": "BE1C35219F850DF6B934E30DD1E62D4558AB00A3C5276E4D3685C34E729E618C",
+    "Bytes": 1137
   }
 ]

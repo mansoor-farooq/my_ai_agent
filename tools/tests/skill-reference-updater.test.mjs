@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateReference, planSkillUpdate, planSkillReference, decorateSkillSource, bumpPatchVersion, packageNeedsRebuild } from '../update-skill-references.mjs';
+import { shouldSyncInstalledAgents } from '../auto-refresh-agent-skills.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -87,6 +88,34 @@ test('all-agent refresh command syncs the existing provider installers after val
   assert.doesNotMatch(script, /sync-antigravity-permissions/);
   assert.match(script, /process\.env\.npm_execpath/);
   assert.doesNotMatch(script, /shell:\s*command === npm/);
+});
+
+test('local auto-refresh only reinstalls agents when the bundled skill version changed', () => {
+  assert.equal(shouldSyncInstalledAgents('1.23.4', '1.23.4'), false);
+  assert.equal(shouldSyncInstalledAgents('1.23.4', '1.23.5'), true);
+});
+
+test('local auto-update installs a daily missed-run scheduled task without elevation', () => {
+  const installer = fs.readFileSync(path.join(root, 'tools/install-agent-skill-auto-update.ps1'), 'utf8');
+  const runner = fs.readFileSync(path.join(root, 'tools/run-agent-skill-auto-update.ps1'), 'utf8');
+  assert.match(installer, /New-ScheduledTaskTrigger -Daily -At \$DailyAt/);
+  assert.match(installer, /-StartWhenAvailable/);
+  assert.match(installer, /-RunLevel Limited/);
+  assert.match(installer, /Register-ScheduledTask/);
+  assert.match(installer, /Start-ScheduledTask/);
+  assert.match(runner, /npm\.cmd run agents:auto-update:run/);
+  assert.match(runner, /skill-auto-update\.log/);
+  assert.doesNotMatch(installer, /-RunLevel Highest|Credential|Password/);
+});
+
+test('local auto-update is available as an explicit installable provider sync', () => {
+  const packageJson = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+  assert.match(packageJson.scripts['agents:auto-update:install'], /install-agent-skill-auto-update\.ps1 -RunNow/);
+  assert.match(packageJson.scripts['agents:auto-update:remove'], /install-agent-skill-auto-update\.ps1 -Uninstall/);
+  const script = fs.readFileSync(path.join(root, 'tools/auto-refresh-agent-skills.mjs'), 'utf8');
+  assert.match(script, /tools\/update-skill-references\.mjs/);
+  assert.match(script, /agents:refresh/);
+  assert.match(script, /--skip-upstream/);
 });
 
 test('portable bundle version is sourced from package.json', () => {

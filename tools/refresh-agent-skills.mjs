@@ -8,6 +8,9 @@ import { packageNeedsRebuild } from './update-skill-references.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const npmCli = process.env.npm_execpath;
 if (!npmCli) throw new Error('Run this command through npm: npm run agents:refresh.');
+const refreshArgs = process.argv.slice(2);
+const skipUpstream = refreshArgs.includes('--skip-upstream');
+if (refreshArgs.some((arg) => arg !== '--skip-upstream')) throw new Error('Usage: npm run agents:refresh [-- --skip-upstream]');
 
 function run(command, args, label) {
   console.log(`\n=== ${label} ===`);
@@ -24,7 +27,7 @@ const agy = spawnSync('agy', ['plugin', 'list'], { cwd: root, stdio: 'ignore' })
 if (agy.error) throw new Error('Antigravity CLI (agy) is not available; install the host CLI before running the all-agent refresh.');
 if (agy.status !== 0) throw new Error(`Antigravity CLI preflight failed with exit code ${agy.status}.`);
 
-run(process.execPath, ['tools/update-skill-references.mjs', '--apply'], 'Fetch and validate declared upstream skill references');
+if (!skipUpstream) run(process.execPath, ['tools/update-skill-references.mjs', '--apply'], 'Fetch and validate declared upstream skill references');
 run(process.execPath, ['tools/generate-skill-provenance.mjs'], 'Refresh skill provenance');
 run(process.execPath, ['tools/update-key-checksums.mjs'], 'Refresh release source checksums');
 const sourceVersion = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8')).version;
