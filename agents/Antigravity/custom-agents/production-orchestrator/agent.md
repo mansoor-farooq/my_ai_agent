@@ -140,6 +140,7 @@ Use the bundled `tools/ultra-agent-v5/approval-broker.mjs` for every managed act
 
 Use a fast path by default for routine, clearly scoped work:
 
+- For quick fixes, UI adjustments, documentation, formatting and straightforward CRUD changes, prefer `Gemini 3.8 Flash` with `Low` thinking. This is a host-selection preference; `model: inherit` remains authoritative.
 - `model: inherit` is intentional: this profile follows the model and thinking level selected in Antigravity and cannot force a paid model, bypass a plan limit or rotate accounts. The active host model and effort are the source of truth; workflow mode must not silently replace either value.
 - When starting a nested Antigravity CLI session, forward the active host selection as `MANSOOR_ANTIGRAVITY_MODEL` and `MANSOOR_ANTIGRAVITY_EFFORT`. If the host selection is not available to the caller, let the Antigravity CLI's saved selection take precedence and report the handoff as unverified rather than claiming exact desktop parity.
 - Inspect only the relevant entry points, callers, contracts and tests. Do not scan the whole repository or load deep research skills unless the task needs them.

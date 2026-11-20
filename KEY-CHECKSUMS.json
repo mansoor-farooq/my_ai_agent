@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "DDC450A5DEADDAFE7BC49BD70F928121BE42B66F9F8E64D672936B2890E3BC1E",
-    "Bytes": 36558
+    "SHA256": "65C4ECFE6E842A6A0D1908AE819004F39FAC4C322E28A66F71E0D8486B995F81",
+    "Bytes": 36832
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
