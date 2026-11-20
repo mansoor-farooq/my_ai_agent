@@ -11,7 +11,7 @@
     {
       "name": "accessibility-as-code",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/accessibility-as-code/SKILL.md",
@@ -22,7 +22,7 @@
     {
       "name": "accidental-data-loss-prevention",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -33,7 +33,7 @@
     {
       "name": "adaptive-layout",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/adaptive-layout/SKILL.md",
@@ -55,7 +55,7 @@
     {
       "name": "agent-hub-operations",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -66,8 +66,7 @@
     {
       "name": "android-design",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": "hashgraph-online/awesome-codex-plugins",
@@ -100,7 +99,7 @@
     {
       "name": "autonomous-deep-researcher",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -111,7 +110,7 @@
     {
       "name": "backend-ml-integration",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -122,7 +121,7 @@
     {
       "name": "backend-ml-skill-router",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -133,7 +132,7 @@
     {
       "name": "bigquery-ai-ml",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -144,7 +143,7 @@
     {
       "name": "bigquery-bigframes",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -155,7 +154,7 @@
     {
       "name": "bigquery-data-transfer-service",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -166,7 +165,7 @@
     {
       "name": "bigquery-graph-author",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -177,7 +176,7 @@
     {
       "name": "bigquery-graph-query",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -188,7 +187,7 @@
     {
       "name": "bigquery-observability",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": "Antigravity global skill catalog",
@@ -199,7 +198,7 @@
     {
       "name": "bigquery-optimization",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": "Antigravity global skill catalog",
@@ -221,7 +220,7 @@
     {
       "name": "bigquery-troubleshooting",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": "Antigravity global skill catalog",
@@ -243,7 +242,7 @@
     {
       "name": "building-data-apps",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -276,7 +275,7 @@
     {
       "name": "cinematic-ui",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -298,7 +297,7 @@
     {
       "name": "cloud-databases-onboarding",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": "Antigravity global skill catalog",
@@ -320,8 +319,7 @@
     {
       "name": "create-plan",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0 (see bundled LICENSE.txt)",
       "declaredSource": "Antigravity global skill catalog",
@@ -343,7 +341,7 @@
     {
       "name": "dart-add-unit-test",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "BSD-3-Clause",
       "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-add-unit-test/SKILL.md",
@@ -387,7 +385,7 @@
     {
       "name": "dart-generate-test-mocks",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "BSD-3-Clause",
       "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-generate-test-mocks/SKILL.md",
@@ -420,7 +418,7 @@
     {
       "name": "dart-run-static-analysis",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "BSD-3-Clause",
       "declaredSource": "https://github.com/dart-lang/skills/blob/f84b16872b5d186f4e877511b49b93c204a1c4ef/skills/dart-run-static-analysis/SKILL.md",
@@ -530,7 +528,7 @@
     {
       "name": "data-autocleaning",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -552,7 +550,7 @@
     {
       "name": "dataform-bigquery",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -563,7 +561,7 @@
     {
       "name": "dbt-bigquery",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -574,8 +572,7 @@
     {
       "name": "dc-premium-template",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -586,7 +583,7 @@
     {
       "name": "deep-code-review",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/ducafecat/skills/blob/5443218aceca77782c79b77e135ae075fd3a9b68/skills/deep-code-review/SKILL.md",
@@ -619,7 +616,7 @@
     {
       "name": "design-reference-research",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -641,7 +638,7 @@
     {
       "name": "design-system-structure",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/design-system-structure/SKILL.md",
@@ -652,7 +649,7 @@
     {
       "name": "discovering-gcp-data-assets",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -663,7 +660,7 @@
     {
       "name": "dotnet-architecture-review",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -674,7 +671,7 @@
     {
       "name": "dotnet-aspnetcore-api",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -685,7 +682,7 @@
     {
       "name": "dotnet-authentication-authorization",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -696,7 +693,7 @@
     {
       "name": "dotnet-background-workers",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -707,7 +704,7 @@
     {
       "name": "dotnet-caching",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -718,7 +715,7 @@
     {
       "name": "dotnet-cicd-quality-gates",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -729,7 +726,7 @@
     {
       "name": "dotnet-clean-architecture",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -740,7 +737,7 @@
     {
       "name": "dotnet-containerization-deployment",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -751,7 +748,7 @@
     {
       "name": "dotnet-database-migrations",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -762,7 +759,7 @@
     {
       "name": "dotnet-dependency-injection",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -773,7 +770,7 @@
     {
       "name": "dotnet-domain-driven-design",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -784,7 +781,7 @@
     {
       "name": "dotnet-domain-events-cqrs",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -795,7 +792,7 @@
     {
       "name": "dotnet-efcore-data",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -806,7 +803,7 @@
     {
       "name": "dotnet-frontend-blazor-mvc",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -817,7 +814,7 @@
     {
       "name": "dotnet-integration-testing",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -828,7 +825,7 @@
     {
       "name": "dotnet-legacy-modernization",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -839,7 +836,7 @@
     {
       "name": "dotnet-messaging-integration",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -850,7 +847,7 @@
     {
       "name": "dotnet-modular-monolith",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -861,7 +858,7 @@
     {
       "name": "dotnet-multitenancy-data-isolation",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -872,7 +869,7 @@
     {
       "name": "dotnet-openapi-contracts",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -883,7 +880,7 @@
     {
       "name": "dotnet-performance-profiling",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -894,7 +891,7 @@
     {
       "name": "dotnet-release-readiness",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -905,7 +902,7 @@
     {
       "name": "dotnet-resilience-observability",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -916,7 +913,7 @@
     {
       "name": "dotnet-secrets-configuration",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -927,7 +924,7 @@
     {
       "name": "dotnet-secure-coding",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -938,7 +935,7 @@
     {
       "name": "dotnet-solution-architect",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -949,7 +946,7 @@
     {
       "name": "dotnet-testing-strategy",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -960,7 +957,7 @@
     {
       "name": "dotnet-three-tier-architecture",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -971,7 +968,7 @@
     {
       "name": "dotnet-upgrades-dependency-health",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -982,7 +979,7 @@
     {
       "name": "dotnet-xunit-testing",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -993,7 +990,7 @@
     {
       "name": "efficient-context",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1004,7 +1001,7 @@
     {
       "name": "enforcing-resource-attribution",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1015,7 +1012,7 @@
     {
       "name": "enterprise-erp-reverse-engineering",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1048,7 +1045,7 @@
     {
       "name": "federate-lakehouse-catalog",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1059,7 +1056,7 @@
     {
       "name": "flutter-add-integration-test",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "BSD-3-Clause",
       "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-add-integration-test/SKILL.md",
@@ -1070,7 +1067,7 @@
     {
       "name": "flutter-add-widget-preview",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "BSD-3-Clause",
       "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-add-widget-preview/SKILL.md",
@@ -1081,7 +1078,7 @@
     {
       "name": "flutter-add-widget-test",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "BSD-3-Clause",
       "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-add-widget-test/SKILL.md",
@@ -1092,7 +1089,7 @@
     {
       "name": "flutter-app-icon",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/ducafecat/skills/blob/5443218aceca77782c79b77e135ae075fd3a9b68/skills/flutter-app-icon/SKILL.md",
@@ -1103,7 +1100,7 @@
     {
       "name": "flutter-apply-architecture-best-practices",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "BSD-3-Clause",
       "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-apply-architecture-best-practices/SKILL.md",
@@ -1136,7 +1133,7 @@
     {
       "name": "flutter-build-responsive-layout",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "BSD-3-Clause",
       "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-build-responsive-layout/SKILL.md",
@@ -1158,7 +1155,7 @@
     {
       "name": "flutter-fix-layout-issues",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "BSD-3-Clause",
       "declaredSource": "https://github.com/flutter/agent-plugins/blob/ff6d472ee66dbed566c4500edee460c94fde0a02/skills/flutter-fix-layout-issues/SKILL.md",
@@ -1191,7 +1188,6 @@
     {
       "name": "flutter-mobile-master-engineer",
       "sourceRoots": [
-        "cross-runtime-agents",
         "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
@@ -1269,8 +1265,7 @@
     {
       "name": "flutter-ui-ux",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Proprietary - private distribution only",
       "declaredSource": "Mansoor Agent Hub private skill library",
@@ -1281,8 +1276,7 @@
     {
       "name": "flutter-ui-ux-engineer",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Proprietary - private distribution only",
       "declaredSource": "Mansoor Agent Hub private skill library",
@@ -1304,7 +1298,7 @@
     {
       "name": "forms-and-input",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/forms-and-input/SKILL.md",
@@ -1315,9 +1309,7 @@
     {
       "name": "frontend-design",
       "sourceRoots": [
-        "antigravity-global",
-        "cross-runtime-agents",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Complete terms in LICENSE.txt",
       "declaredSource": null,
@@ -1328,7 +1320,7 @@
     {
       "name": "gcp-data-pipelines",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1339,7 +1331,7 @@
     {
       "name": "gcp-dataflow",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1350,7 +1342,7 @@
     {
       "name": "gcp-pipeline-orchestration",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1361,7 +1353,7 @@
     {
       "name": "gcp-pipeline-resource-provisioning",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1372,7 +1364,7 @@
     {
       "name": "gcp-spark",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1383,7 +1375,7 @@
     {
       "name": "gcp-spark-observability",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": "Antigravity global skill catalog",
@@ -1394,7 +1386,7 @@
     {
       "name": "gcp-spark-troubleshooting",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1405,8 +1397,7 @@
     {
       "name": "gh-address-comments",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0 (see bundled LICENSE.txt)",
       "declaredSource": "Antigravity global skill catalog",
@@ -1417,8 +1408,7 @@
     {
       "name": "gh-fix-ci",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0 (see bundled LICENSE.txt)",
       "declaredSource": "Antigravity global skill catalog",
@@ -1440,7 +1430,7 @@
     {
       "name": "gravitas-verification",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1462,9 +1452,7 @@
     {
       "name": "impeccable",
       "sourceRoots": [
-        "antigravity-global",
-        "cross-runtime-agents",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache 2.0",
       "declaredSource": null,
@@ -1475,7 +1463,7 @@
     {
       "name": "interactive-grill-consultant",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1486,8 +1474,7 @@
     {
       "name": "learn-deeply",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1509,8 +1496,7 @@
     {
       "name": "live-web-quality-auditor",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1532,7 +1518,7 @@
     {
       "name": "managing-python-dependencies",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1543,8 +1529,7 @@
     {
       "name": "mansoor-ui-specialist",
       "sourceRoots": [
-        "antigravity-global",
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Proprietary - private distribution only",
       "declaredSource": "Mansoor Agent Hub private global skill library",
@@ -1555,7 +1540,7 @@
     {
       "name": "memory",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1566,7 +1551,7 @@
     {
       "name": "ml-best-practices",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1577,7 +1562,7 @@
     {
       "name": "ml-data-quality",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1588,7 +1573,7 @@
     {
       "name": "ml-evaluation-validation",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1599,7 +1584,7 @@
     {
       "name": "ml-experiment-reproducibility",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1610,7 +1595,7 @@
     {
       "name": "ml-feature-engineering",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1621,7 +1606,7 @@
     {
       "name": "ml-gpu-performance",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1632,7 +1617,7 @@
     {
       "name": "ml-hyperparameter-optimization",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1643,7 +1628,7 @@
     {
       "name": "ml-inference-optimization",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1654,7 +1639,7 @@
     {
       "name": "ml-model-serving",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1665,7 +1650,7 @@
     {
       "name": "ml-monitoring-drift",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1676,7 +1661,7 @@
     {
       "name": "ml-privacy-supply-chain",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1687,7 +1672,7 @@
     {
       "name": "ml-problem-framing",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1698,7 +1683,7 @@
     {
       "name": "ml-pytorch-model-design",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1709,7 +1694,7 @@
     {
       "name": "ml-transformers-finetuning",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1720,7 +1705,7 @@
     {
       "name": "mlops-pipelines-registry",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1731,8 +1716,7 @@
     {
       "name": "mobile-ui-ux-designer",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Proprietary - private distribution only",
       "declaredSource": "Mansoor Agent Hub private skill library",
@@ -1743,7 +1727,7 @@
     {
       "name": "modern-ui-art-direction",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1765,7 +1749,7 @@
     {
       "name": "multi-agent-consensus",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1787,7 +1771,7 @@
     {
       "name": "navigation-and-routing",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/navigation-and-routing/SKILL.md",
@@ -1798,7 +1782,7 @@
     {
       "name": "node-api-design",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1809,7 +1793,7 @@
     {
       "name": "node-auth-security",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1820,7 +1804,7 @@
     {
       "name": "node-backend-architecture",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1831,7 +1815,7 @@
     {
       "name": "node-data-access",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1842,7 +1826,7 @@
     {
       "name": "node-deployment-delivery",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1853,7 +1837,7 @@
     {
       "name": "node-framework-express-fastify",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1864,7 +1848,7 @@
     {
       "name": "node-framework-nestjs",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1875,7 +1859,7 @@
     {
       "name": "node-observability-resilience",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1886,7 +1870,7 @@
     {
       "name": "node-performance-runtime",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1897,7 +1881,7 @@
     {
       "name": "node-postgres-data",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1908,7 +1892,7 @@
     {
       "name": "node-queues-workers",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1919,7 +1903,7 @@
     {
       "name": "node-testing-quality",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1930,7 +1914,7 @@
     {
       "name": "node-typescript-services",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -1941,7 +1925,7 @@
     {
       "name": "notebook-guidance",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -1952,7 +1936,7 @@
     {
       "name": "omniroute-gateway",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Proprietary - private distribution only",
       "declaredSource": "Mansoor Agent Hub private global skill library",
@@ -2019,7 +2003,7 @@
     {
       "name": "premium-web-workflow",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2030,7 +2014,7 @@
     {
       "name": "production-code-quality",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2041,7 +2025,7 @@
     {
       "name": "production-image-generation",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2052,8 +2036,7 @@
     {
       "name": "project-context-orchestrator",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2064,7 +2047,7 @@
     {
       "name": "project-knowledge-sync",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2086,7 +2069,7 @@
     {
       "name": "python-async-concurrency",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2097,7 +2080,7 @@
     {
       "name": "python-backend-architecture",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2108,7 +2091,7 @@
     {
       "name": "python-data-persistence",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2119,7 +2102,7 @@
     {
       "name": "python-django-api",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2130,7 +2113,7 @@
     {
       "name": "python-fastapi-services",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2141,7 +2124,7 @@
     {
       "name": "python-packaging-deployment",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2152,7 +2135,7 @@
     {
       "name": "python-security",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2163,7 +2146,7 @@
     {
       "name": "python-testing-quality",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2174,7 +2157,7 @@
     {
       "name": "python-typing-contracts",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2185,7 +2168,7 @@
     {
       "name": "pytorch-distributed-training",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2196,7 +2179,7 @@
     {
       "name": "pytorch-training-systems",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2229,8 +2212,7 @@
     {
       "name": "reverse-engineering",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2274,8 +2256,7 @@
     {
       "name": "saas-architecture-engineer",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2297,7 +2278,7 @@
     {
       "name": "schema-mapping",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -2308,7 +2289,7 @@
     {
       "name": "secure-design-threat-modeling",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2352,7 +2333,7 @@
     {
       "name": "skill-repair",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Apache-2.0",
       "declaredSource": null,
@@ -2363,8 +2344,7 @@
     {
       "name": "software-architect",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2375,7 +2355,7 @@
     {
       "name": "spec-driven-engineering",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2397,8 +2377,7 @@
     {
       "name": "stop-slop",
       "sourceRoots": [
-        "antigravity-global",
-        "codex-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT (see bundled LICENSE)",
       "declaredSource": "Antigravity global skill catalog",
@@ -2409,7 +2388,7 @@
     {
       "name": "testing-strategy",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/testing-strategy/SKILL.md",
@@ -2420,7 +2399,7 @@
     {
       "name": "two-step-ui-blueprint",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2431,7 +2410,7 @@
     {
       "name": "ui-states-and-feedback",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/ui-states-and-feedback/SKILL.md",
@@ -2442,8 +2421,7 @@
     {
       "name": "ui-ux-pro-max",
       "sourceRoots": [
-        "antigravity-global",
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2454,7 +2432,7 @@
     {
       "name": "understand-anything",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2520,7 +2498,7 @@
     {
       "name": "webapp-testing",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "Complete terms in LICENSE.txt",
       "declaredSource": null,
@@ -2531,7 +2509,7 @@
     {
       "name": "widget-composition",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/widget-composition/SKILL.md",
@@ -2542,7 +2520,7 @@
     {
       "name": "widget-golden-and-a11y-testing",
       "sourceRoots": [
-        "cross-runtime-agents"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": "MIT",
       "declaredSource": "https://github.com/zakariaf/Flutter-Skills/blob/e073e5ea10c963d2c52ab1e423bd314c28a56154/skills/widget-golden-and-a11y-testing/SKILL.md",
@@ -2553,7 +2531,7 @@
     {
       "name": "workflow-agent-handoffs",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2564,7 +2542,7 @@
     {
       "name": "workflow-cost-quota-controls",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2575,7 +2553,7 @@
     {
       "name": "workflow-credential-lifecycle",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2586,7 +2564,7 @@
     {
       "name": "workflow-dag-orchestration",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2597,7 +2575,7 @@
     {
       "name": "workflow-data-contracts",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2608,7 +2586,7 @@
     {
       "name": "workflow-data-provenance",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2619,7 +2597,7 @@
     {
       "name": "workflow-database-change-control",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2630,7 +2608,7 @@
     {
       "name": "workflow-durable-execution",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2641,7 +2619,7 @@
     {
       "name": "workflow-human-approval-gates",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2652,7 +2630,7 @@
     {
       "name": "workflow-idempotency",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2663,7 +2641,7 @@
     {
       "name": "workflow-intake-and-scope",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2674,7 +2652,7 @@
     {
       "name": "workflow-observability",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2685,7 +2663,7 @@
     {
       "name": "workflow-operator-console-ui",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2696,7 +2674,7 @@
     {
       "name": "workflow-queues-backpressure",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2707,7 +2685,7 @@
     {
       "name": "workflow-recovery-runbooks",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2718,7 +2696,7 @@
     {
       "name": "workflow-release-rollouts",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2729,7 +2707,7 @@
     {
       "name": "workflow-requirements-to-contract",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2740,7 +2718,7 @@
     {
       "name": "workflow-retries-compensation",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2751,7 +2729,7 @@
     {
       "name": "workflow-scheduled-jobs",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2762,7 +2740,7 @@
     {
       "name": "workflow-source-research",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2773,7 +2751,7 @@
     {
       "name": "workflow-state-machines",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2784,7 +2762,7 @@
     {
       "name": "workflow-system-connectors",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2795,7 +2773,7 @@
     {
       "name": "workflow-testing-simulation",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
@@ -2806,7 +2784,7 @@
     {
       "name": "workflow-webhook-contracts",
       "sourceRoots": [
-        "antigravity-global"
+        "mansoor-agent-hub-owned"
       ],
       "declaredLicense": null,
       "declaredSource": null,
