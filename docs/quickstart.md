@@ -57,15 +57,17 @@ For a package-only build that must not touch the local Antigravity or Gemini CLI
 
 ### Refresh referenced skills
 
-The owner can check the upstream GitHub references in `skills-lock.json` without changing installed files:
+The owner can check the explicitly registered GitHub skill references in `skills-lock.json` without changing installed files:
 
 ```powershell
 npm run skills:update
 ```
 
-The updater only reads the explicitly listed `SKILL.md` references, validates the fetched frontmatter and credential patterns, and reports local edits instead of overwriting them. To apply validated upstream changes, run `npm run skills:update -- --apply`, then `npm run agents:install:gemini` to sync/reload the team library. Review the diff and run tests before building a signed release. References follow their configured branch (currently `main`); the resolved upstream commit and content hash are recorded in `skills-lock.json` when applied. This refreshes the declared skills only; it never discovers or installs arbitrary skills from a repository.
+The updater only reads the explicitly listed `SKILL.md` references, validates frontmatter and credential patterns, preserves local edits, pins each source URL to its resolved commit, and bumps the package patch version when skill content changes. To update all supported local installs in one go, run `npm run agents:refresh`. It applies declared references, regenerates provenance/checksums, builds and verifies the bundle, syncs Gemini CLI and the Codex Flutter specialist, then installs the Antigravity plugin. It does not sync or change host permission settings.
 
-Share only `E:\Agents\dist\mansoor-agent-hub.zip`. Keep `.env` files, the private signing key and the full source folder private.
+A weekly GitHub Actions job checks the same allowlisted references, runs tests and the secret scan, then opens or refreshes a review PR. It never pushes skill content directly to the default branch. The scheduled job becomes active after this workflow is merged into the repository's default branch. The PR must be reviewed and merged before it becomes the published source used by later installs. This updater never discovers or installs arbitrary skills from a repository.
+
+Share only the versioned ZIP path printed by the build, for example `E:\Agents\dist\mansoor-agent-hub-1.23.4-a1b2c3d4.zip`. For an approved GitHub release, publish it under the documented release asset name `mansoor-agent-hub.zip`. Keep `.env` files, the private signing key and the full source folder private.
 
 ## Local project runtime
 

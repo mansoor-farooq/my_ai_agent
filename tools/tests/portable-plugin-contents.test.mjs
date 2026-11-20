@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { access, mkdtemp, readFile, rm } from 'node:fs/promises';
+import { access, mkdtemp, readFile, rm, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -147,8 +147,18 @@ test('portable bundle retains important non-Antigravity skill support files', as
   }
 });
 
-test('built ZIP retains the support files after archive creation', { skip: !existsSync(path.join(root, 'dist', 'mansoor-agent-hub.zip')) }, async () => {
-  const archive = path.join(root, 'dist', 'mansoor-agent-hub.zip');
+async function latestVersionedArchive() {
+  const dist = path.join(root, 'dist');
+  if (!existsSync(dist)) return null;
+  const candidates = (await readdir(dist)).filter((name) => /^mansoor-agent-hub-\d+\.\d+\.\d+-[a-f0-9]{8}\.zip$/i.test(name));
+  const withTimes = await Promise.all(candidates.map(async (name) => ({ name, time: (await stat(path.join(dist, name))).mtimeMs })));
+  withTimes.sort((left, right) => right.time - left.time);
+  return withTimes[0] ? path.join(dist, withTimes[0].name) : null;
+}
+
+const archiveUnderTest = await latestVersionedArchive();
+test('built versioned ZIP retains the support files after archive creation', { skip: !archiveUnderTest }, async () => {
+  const archive = archiveUnderTest;
   await assert.doesNotReject(access(archive), 'build the ZIP before running archive assertions');
   const output = await mkdtemp(path.join(os.tmpdir(), 'mansoor-agent-hub-archive-'));
   try {
@@ -367,7 +377,8 @@ test('owner build refreshes the extracted distribution folder from the signed ZI
   assert.match(buildScript, /EXTRACTED PACKAGE REFRESH DEFERRED/);
   assert.match(buildScript, /mansoor-agent-hub-refresh-/);
   assert.match(buildScript, /Expand-Archive/);
-  assert.match(buildScript, /dist\\mansoor-agent-hub/);
+  assert.match(buildScript, /\$extractedPackage = Join-Path \$dist 'mansoor-agent-hub'/);
+  assert.match(buildScript, /mansoor-agent-hub-\$packageVersion-\$\(\$buildId\.Substring\(0, 8\)\)\.zip/);
   assert.match(buildScript, /STALE SIGNED BUILD REMOVED/);
   assert.match(buildScript, /verify-package-signature\.mjs/);
   assert.match(buildScript, /Refusing to remove a path outside dist/);

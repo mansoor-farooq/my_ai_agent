@@ -228,7 +228,7 @@ The V4.4 release gate currently verifies:
 - benchmark envelopes for acceptance, latency, p95 timing and bounded failure reasons;
 - checkpoint drift reporting, memory health diagnostics, activity summaries, capability probes, manifest drift, runtime smoke and expanded secret redaction.
 
-The generated artifact is `dist/mansoor-agent-hub.zip`. Every build prints the exact SHA256 for the package that was produced.
+Each build creates a unique versioned archive such as `dist/mansoor-agent-hub-1.23.4-a1b2c3d4.zip`, so a running app or scanner cannot block replacement of an older ZIP. Every build prints the exact package path and SHA256.
 
 ## V5 trust and recovery hardening
 

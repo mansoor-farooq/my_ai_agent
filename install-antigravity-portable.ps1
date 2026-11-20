@@ -57,7 +57,8 @@ foreach ($relative in $requiredSupportFiles) {
 }
 
 if ([string]::IsNullOrWhiteSpace($ArchivePath)) {
-  $ArchivePath = Join-Path $dist 'mansoor-agent-hub.zip'
+  $packageVersion = [string](Get-Content -LiteralPath (Join-Path $output 'plugin.json') -Raw | ConvertFrom-Json).version
+  $ArchivePath = Join-Path $dist ("mansoor-agent-hub-$packageVersion-$($buildId.Substring(0, 8)).zip")
 }
 $archive = [IO.Path]::GetFullPath($ArchivePath)
 if (-not $archive.StartsWith($hubPrefix, [StringComparison]::OrdinalIgnoreCase)) {
@@ -87,7 +88,13 @@ try {
   if (-not (Test-Path -LiteralPath $archiveTemp -PathType Leaf) -or (Get-Item -LiteralPath $archiveTemp).Length -le 0) {
     throw 'ZIP creation produced an empty archive.'
   }
-  Move-Item -LiteralPath $archiveTemp -Destination $archive -Force
+  if (Test-Path -LiteralPath $archive -PathType Leaf) {
+    $archiveBackup = "$archive.$buildId.bak"
+    [IO.File]::Replace($archiveTemp, $archive, $archiveBackup)
+    Remove-Item -LiteralPath $archiveBackup -Force
+  } else {
+    [IO.File]::Move($archiveTemp, $archive)
+  }
   Write-Output "Self-contained Mansoor Agent Hub ZIP: $archive"
 } finally {
   $resolvedOutput = [IO.Path]::GetFullPath($output)

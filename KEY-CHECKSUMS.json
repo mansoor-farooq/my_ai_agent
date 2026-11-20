@@ -101,8 +101,8 @@
   },
   {
     "Path": "Agents/build-agent-hub.ps1",
-    "SHA256": "DBE552783E8F7A45513DF7AB3ADC0F0C0E9A5523F832EF09F1A446A101A02808",
-    "Bytes": 14414
+    "SHA256": "7269688537AE16418C5A33B288ACAAD0CD444E55D59F9D2DA036336F9414CF33",
+    "Bytes": 14593
   },
   {
     "Path": "Agents/docs/superpowers/plans/2026-11-02-agent-quality-visual-capabilities.md",
@@ -141,8 +141,8 @@
   },
   {
     "Path": "Agents/install-antigravity-portable.ps1",
-    "SHA256": "510C00795594F108E73816A2640922D3CA5FD54B92CA730704ADFD1B0B357F23",
-    "Bytes": 5035
+    "SHA256": "9F983631540E1AD65206BF9666D5B026D392E22986B3081A9DF9355AA6BCEDE2",
+    "Bytes": 5409
   },
   {
     "Path": "Agents/install.ps1",
@@ -151,8 +151,8 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "C6AA097F2405CB612A8DDC755F871B2E1633696E171F3C0DB6CA33E39072A84B",
-    "Bytes": 1024
+    "SHA256": "A7E8F63CE5942CDE2E74748B09196BC762FACB0D1CCF528A8702DE1C90409CB4",
+    "Bytes": 1085
   },
   {
     "Path": "Agents/Push-All-Branches.cmd",
@@ -161,8 +161,8 @@
   },
   {
     "Path": "Agents/README.md",
-    "SHA256": "F17CA8632481CF89E6144065F83E712552CC7F78FC314727FF402B3D110F23DD",
-    "Bytes": 27865
+    "SHA256": "64B901A2A09806BEB302CE7B9272235E907FC1DCFAE6D64F889C0DBEF4B47BA8",
+    "Bytes": 27962
   },
   {
     "Path": "Agents/restore-native-history.ps1",
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "9CBCE0800474AD0C700043E6343C8CDAF98BDF303DBC8B169066E5A6E0D449A3",
-    "Bytes": 62646
+    "SHA256": "51BC26796FCCFC64240B693A7D452710CEAD7900315374F68787277752A3AB8A",
+    "Bytes": 62749
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "6652AE5FEBF926482FAB1EA313437A081599EAA7ACA0231B755C36DF019C9D8E",
-    "Bytes": 20422
+    "SHA256": "7667AB86BA66FDEFDA15AF439970ED42F6443421D08ACFD847ED910DBEC328ED",
+    "Bytes": 21079
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",
@@ -2561,8 +2561,8 @@
   },
   {
     "Path": "Agents/tools/update-skill-references.mjs",
-    "SHA256": "D3D5E77D52633FFD0CF8B8645B856D8F7134048A7C963944004B9DCB2F32844C",
-    "Bytes": 6656
+    "SHA256": "0BF992D59EC85B86A0BF442EF69F3A51289D76CDFFB144BE9EB3AE5F442375A4",
+    "Bytes": 9214
   },
   {
     "Path": "Agents/skills-lock.json",
@@ -2571,7 +2571,7 @@
   },
   {
     "Path": "Agents/tools/tests/skill-reference-updater.test.mjs",
-    "SHA256": "265ABF803D64C3F141DCF28F5B1C941B82C1E8FF247E46EAF43E497F3BDFAB49",
-    "Bytes": 1838
+    "SHA256": "09DB65BF4F5CC9B3EFBB65FEBDB581D760B9AE4A330C5FD8651EFA3C583F6474",
+    "Bytes": 5774
   }
 ]

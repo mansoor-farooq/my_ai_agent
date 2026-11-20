@@ -5,7 +5,8 @@ param(
 $ErrorActionPreference = 'Stop'
 $hub = Split-Path -Parent $MyInvocation.MyCommand.Path
 $dist = Join-Path $hub 'dist'
-$buildOutput = Join-Path $dist ('build-staging-' + [guid]::NewGuid().ToString('N'))
+$buildId = [guid]::NewGuid().ToString('N')
+$buildOutput = Join-Path $dist ('build-staging-' + $buildId)
 $previousLocation = Get-Location
 
 try {
@@ -36,7 +37,10 @@ try {
 
   Write-Host ''
   Write-Host 'Step 1/3: Building and signing the portable ZIP...'
-  & (Join-Path $hub 'install-antigravity-portable.ps1') -OutputDirectory $buildOutput -KeepOutput
+  $packageVersion = [string](Get-Content -LiteralPath (Join-Path $hub 'package.json') -Raw | ConvertFrom-Json).version
+  if ([string]::IsNullOrWhiteSpace($packageVersion)) { throw 'Build output has no package version.' }
+  $archive = Join-Path $dist ("mansoor-agent-hub-$packageVersion-$($buildId.Substring(0, 8)).zip")
+  & (Join-Path $hub 'install-antigravity-portable.ps1') -OutputDirectory $buildOutput -ArchivePath $archive -KeepOutput
 
   Write-Host ''
   Write-Host 'Step 2/3: Running the agent-hub doctor...'
@@ -81,7 +85,6 @@ try {
     (Join-Path $hub 'tools\tests\ci-workflow.test.mjs')
   if ($LASTEXITCODE -ne 0) { throw 'Focused tests failed.' }
 
-  $archive = Join-Path $hub 'dist\mansoor-agent-hub.zip'
   if (-not (Test-Path -LiteralPath $archive -PathType Leaf)) { throw 'Build completed without the expected ZIP.' }
   $sha256 = [Security.Cryptography.SHA256]::Create()
   try {
@@ -91,7 +94,6 @@ try {
     $sha256.Dispose()
   }
 
-  $packageVersion = [string](Get-Content -LiteralPath (Join-Path $buildOutput 'plugin.json') -Raw | ConvertFrom-Json).version
   $versionedPackage = Join-Path $dist ("mansoor-agent-hub-" + $packageVersion)
   if (Test-Path -LiteralPath $versionedPackage -PathType Container) { Remove-Item -LiteralPath $versionedPackage -Recurse -Force }
   Expand-Archive -LiteralPath $archive -DestinationPath $versionedPackage -Force

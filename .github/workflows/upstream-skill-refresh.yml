@@ -1,0 +1,73 @@
+name: Refresh declared upstream skills
+
+on:
+  push:
+    branches: [mansoor-development]
+  schedule:
+    - cron: '23 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: upstream-skill-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.21.0
+
+      - name: Fetch and validate explicitly registered upstream skills
+        run: node tools/update-skill-references.mjs --apply
+
+      - name: Refresh provenance and signed-source checksums
+        run: |
+          node tools/generate-skill-provenance.mjs
+          node tools/update-key-checksums.mjs
+
+      - name: Verify tests, policies, and secret scan
+        run: |
+          npm test
+          npm run secret-scan
+
+      - name: Detect updater changes
+        id: changes
+        shell: pwsh
+        run: |
+          $changed = git status --porcelain -- skills-lock.json SKILL-PROVENANCE.json KEY-CHECKSUMS.json skills package.json
+          if ($changed) { "changed=true" >> $env:GITHUB_OUTPUT } else { "changed=false" >> $env:GITHUB_OUTPUT }
+
+      - name: Open or refresh the upstream update review PR
+        if: steps.changes.outputs.changed == 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          DEFAULT_BRANCH: ${{ github.ref_name }}
+        run: |
+          $branch = 'automation/upstream-skill-refresh'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c $branch
+          git add -- skills-lock.json SKILL-PROVENANCE.json KEY-CHECKSUMS.json skills package.json
+          git commit -m 'chore: refresh approved upstream skills'
+          if ($LASTEXITCODE -ne 0) { throw 'Could not commit validated skill updates.' }
+          git push --force origin "HEAD:refs/heads/$branch"
+          if ($LASTEXITCODE -ne 0) { throw 'Could not publish the updater branch.' }
+          $head = "$env:REPOSITORY_OWNER`:$branch"
+          $number = gh pr list --state open --head $head --json number --jq '.[0].number'
+          if ($number) {
+            gh pr edit $number --title 'chore: refresh approved upstream skills' --body 'Automated weekly check of the explicitly registered GitHub skill references. Tests, provenance generation, and secret scan passed. Review the skill diff before merging.'
+          } else {
+            gh pr create --base $env:DEFAULT_BRANCH --head $branch --title 'chore: refresh approved upstream skills' --body 'Automated weekly check of the explicitly registered GitHub skill references. Tests, provenance generation, and secret scan passed. Review the skill diff before merging.'
+          }
