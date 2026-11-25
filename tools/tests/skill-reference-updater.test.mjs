@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateReference, planSkillUpdate, planSkillReference, decorateSkillSource, bumpPatchVersion, packageNeedsRebuild } from '../update-skill-references.mjs';
-import { inspectHostPlugin, readInstalledVersion, readLastSyncedVersion, shouldSyncInstalledAgents, writeSyncState } from '../auto-refresh-agent-skills.mjs';
+import { inspectHostPlugin, isAntigravityHostBusy, readInstalledVersion, readLastSyncedVersion, shouldSyncInstalledAgents, writeSyncState } from '../auto-refresh-agent-skills.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -110,6 +110,14 @@ test('local auto-refresh repairs missing host components even when the version i
   const missing = [{ ...complete[0], agents: [] }];
   assert.deepEqual(inspectHostPlugin(missing, '1.23.44', required).missing, ['agent:Manager']);
   assert.equal(inspectHostPlugin([], '1.23.44', required).reason, 'plugin-missing');
+});
+
+test('local auto-refresh defers before expensive gates while Antigravity is running on Windows', () => {
+  const source = fs.readFileSync(path.join(root, 'tools/auto-refresh-agent-skills.mjs'), 'utf8');
+  assert.match(source, /isAntigravityHostBusy/);
+  assert.match(source, /deferring plugin sync before expensive validation gates/);
+  assert.equal(typeof isAntigravityHostBusy, 'function');
+  assert.equal(isAntigravityHostBusy('linux'), false);
 });
 
 test('local auto-refresh records completion only after every provider sync succeeds', async () => {

@@ -100,6 +100,16 @@ export function readHostPluginStatus(targetVersion) {
   catch (error) { return { ok: false, reason: 'deferred-cli-unverified', detail: error.message }; }
 }
 
+export function isAntigravityHostBusy(platform = process.platform) {
+  if (platform !== 'win32') return false;
+  const result = spawnSync('tasklist', ['/FI', 'IMAGENAME eq Antigravity.exe', '/FO', 'CSV', '/NH'], {
+    encoding: 'utf8',
+    windowsHide: true,
+  });
+  if (result.error || result.status !== 0) return false;
+  return /Antigravity\.exe/i.test(result.stdout || '');
+}
+
 function run(command, args, label, env) {
   console.log(`\n=== ${label} ===`);
   const result = spawnSync(command, args, { cwd: root, stdio: 'inherit', env: env ? { ...process.env, ...env } : process.env });
@@ -121,6 +131,10 @@ function main() {
   const hostPlugin = readHostPluginStatus(currentVersion);
   if (!hostPlugin.ok) {
     console.warn(`Antigravity inventory unavailable; ${hostPlugin.reason}: ${hostPlugin.detail}`);
+    return;
+  }
+  if (hostPlugin.needsSync && isAntigravityHostBusy()) {
+    console.warn('Antigravity is running; deferring plugin sync before expensive validation gates. The next logon, daily, or manual run will retry safely.');
     return;
   }
   const lastSyncedVersion = readLastSyncedVersion(statePath);
