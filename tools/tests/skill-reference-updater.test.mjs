@@ -140,8 +140,8 @@ test('local auto-update installs a daily missed-run scheduled task without eleva
   assert.match(installer, /Start-ScheduledTask/);
   assert.match(runner, /npm\.cmd run agents:auto-update:run/);
   assert.match(runner, /skill-auto-update\.log/);
-  assert.match(runner, /git fetch --quiet origin/);
-  assert.match(runner, /git merge --ff-only \$upstream/);
+  assert.match(runner, /-C \$root fetch --quiet origin/);
+  assert.match(runner, /-C \$root merge --ff-only \$upstream/);
   assert.match(runner, /ProgramFiles.*Git/);
   assert.match(runner, /uncommitted changes/);
   assert.match(runner, /diverged from/);

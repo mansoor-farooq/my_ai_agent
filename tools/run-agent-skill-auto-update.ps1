@@ -15,23 +15,22 @@ Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)]
 Push-Location $root
 try {
     $gitCommand = Get-Command git.exe -ErrorAction SilentlyContinue | Select-Object -First 1
-    $gitPath = if ($gitCommand) { $gitCommand.Source } else {
-        @(
-            (Join-Path ${env:ProgramFiles} 'Git\cmd\git.exe'),
-            (Join-Path ${env:LOCALAPPDATA} 'Programs\Git\cmd\git.exe')
-        ) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-    }
+    $gitCandidates = @(
+        (Join-Path ${env:ProgramFiles} 'Git\cmd\git.exe'),
+        (Join-Path ${env:LOCALAPPDATA} 'Programs\Git\cmd\git.exe')
+    )
+    if ($gitCommand -and (Test-Path -LiteralPath $gitCommand.Source)) { $gitCandidates += $gitCommand.Source }
+    $gitPath = $gitCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
     if ([string]::IsNullOrWhiteSpace($gitPath)) {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: Git executable was not found in the scheduled-task environment."
         exit 0
     }
-    $env:Path = "$(Split-Path -Parent $gitPath);$env:Path"
-    $gitRoot = (& git rev-parse --show-toplevel 2>$null | Select-Object -First 1)
+    $gitRoot = (& $gitPath -C $root rev-parse --show-toplevel 2>$null | Select-Object -First 1)
     if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($gitRoot)) {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: local agent hub checkout is not a Git repository."
         exit 0
     }
-    $dirty = & git status --porcelain --untracked-files=all 2>$null
+    $dirty = & $gitPath -C $root status --porcelain --untracked-files=all 2>$null
     if ($LASTEXITCODE -ne 0) {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: Git status could not be read."
         exit 0
@@ -40,18 +39,18 @@ try {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: local checkout has uncommitted changes; no automatic pull or install was attempted."
         exit 0
     }
-    $branch = (& git branch --show-current 2>$null | Select-Object -First 1).Trim()
-    $upstream = (& git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null | Select-Object -First 1).Trim()
+    $branch = (& $gitPath -C $root branch --show-current 2>$null | Select-Object -First 1).Trim()
+    $upstream = (& $gitPath -C $root rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null | Select-Object -First 1).Trim()
     if ([string]::IsNullOrWhiteSpace($branch) -or [string]::IsNullOrWhiteSpace($upstream) -or -not $upstream.StartsWith('origin/')) {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: branch '$branch' has no origin upstream; no automatic pull was attempted."
         exit 0
     }
-    & git fetch --quiet origin 2>&1 | ForEach-Object { Add-Content -LiteralPath $logPath -Encoding utf8 -Value ([string]$_) }
+    & $gitPath -C $root fetch --quiet origin 2>&1 | ForEach-Object { Add-Content -LiteralPath $logPath -Encoding utf8 -Value ([string]$_) }
     if ($LASTEXITCODE -ne 0) {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: origin fetch failed; local installations were not changed."
         exit 0
     }
-    $counts = (& git rev-list --left-right --count "$branch...$upstream" 2>$null | Select-Object -First 1).Trim() -split '\s+'
+    $counts = (& $gitPath -C $root rev-list --left-right --count "$branch...$upstream" 2>$null | Select-Object -First 1).Trim() -split '\s+'
     if ($counts.Count -ne 2) {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: could not compare local branch '$branch' with '$upstream'."
         exit 0
@@ -64,7 +63,7 @@ try {
     }
     if ($behind -gt 0) {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] Fast-forwarding '$branch' from '$upstream'."
-        & git merge --ff-only $upstream 2>&1 | ForEach-Object { Add-Content -LiteralPath $logPath -Encoding utf8 -Value ([string]$_) }
+        & $gitPath -C $root merge --ff-only $upstream 2>&1 | ForEach-Object { Add-Content -LiteralPath $logPath -Encoding utf8 -Value ([string]$_) }
         if ($LASTEXITCODE -ne 0) {
             Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: fast-forward failed; local installations were not changed."
             exit 0
