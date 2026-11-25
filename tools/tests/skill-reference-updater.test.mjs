@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateReference, planSkillUpdate, planSkillReference, decorateSkillSource, bumpPatchVersion, packageNeedsRebuild } from '../update-skill-references.mjs';
-import { readInstalledVersion, readLastSyncedVersion, shouldSyncInstalledAgents, writeSyncState } from '../auto-refresh-agent-skills.mjs';
+import { inspectHostPlugin, readInstalledVersion, readLastSyncedVersion, shouldSyncInstalledAgents, writeSyncState } from '../auto-refresh-agent-skills.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -103,6 +103,15 @@ test('local auto-refresh only reinstalls agents when the bundled skill version c
   assert.equal(shouldSyncInstalledAgents('1.23.4', '1.23.4', '1.23.4', ''), true);
 });
 
+test('local auto-refresh repairs missing host components even when the version is unchanged', () => {
+  const required = { skill: 'sync-skill', agent: 'Manager', rule: 'policy.md', hook: 'guard', mcpServer: 'runtime' };
+  const complete = [{ name: 'mansoor-agent-hub', version: '1.23.44', path: process.cwd(), skills: ['sync-skill'], agents: ['Manager'], rules: ['policy.md'], hooks: ['guard'], mcpServers: ['runtime'] }];
+  assert.equal(inspectHostPlugin(complete, '1.23.44', required).needsSync, false);
+  const missing = [{ ...complete[0], agents: [] }];
+  assert.deepEqual(inspectHostPlugin(missing, '1.23.44', required).missing, ['agent:Manager']);
+  assert.equal(inspectHostPlugin([], '1.23.44', required).reason, 'plugin-missing');
+});
+
 test('local auto-refresh records completion only after every provider sync succeeds', async () => {
   const directory = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'mansoor-skill-refresh-test-'));
   const stateFile = path.join(directory, 'state.json');
@@ -157,6 +166,8 @@ test('local auto-update is available as an explicit installable provider sync', 
   assert.match(script, /agents:refresh/);
   assert.match(script, /MANSOOR_AGENT_REFRESH_SKIP_UPSTREAM/);
   assert.match(script, /packageNeedsRebuild/);
+  assert.match(script, /agy.*plugin.*list.*--json/);
+  assert.match(script, /inspectHostPlugin/);
   assert.match(script, /dist.*mansoor-agent-hub.*plugin\.json/);
   const testsGate = "runNpm(['test'], 'Validate agent behavior, policies, and contracts')";
   const fixturesGate = "run(process.execPath, ['tools/run-agent-security-fixtures.mjs']";

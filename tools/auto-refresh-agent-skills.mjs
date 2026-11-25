@@ -17,6 +17,29 @@ export function shouldSyncInstalledAgents(previousVersion, currentVersion, insta
   ));
 }
 
+const REQUIRED_HOST_COMPONENTS = Object.freeze({
+  skill: 'mansoor-antigravity-native-sync',
+  agent: 'Mansoor AI Team Manager',
+  rule: 'antigravity-native-orchestration.md',
+  hook: 'mansoor-native-write-guard',
+  mcpServer: 'runtime',
+});
+
+export function inspectHostPlugin(inventory, targetVersion, required = REQUIRED_HOST_COMPONENTS) {
+  if (!Array.isArray(inventory)) return { ok: false, reason: 'invalid-inventory', needsSync: false, missing: [] };
+  const plugin = inventory.find((entry) => entry?.name === 'mansoor-agent-hub');
+  if (!plugin) return { ok: true, installed: false, needsSync: true, reason: 'plugin-missing', missing: Object.values(required) };
+  const missing = [];
+  if (plugin.version !== targetVersion) missing.push(`version:${targetVersion}`);
+  if (!path.isAbsolute(String(plugin.path || '')) || !fs.existsSync(String(plugin.path))) missing.push('absolute-plugin-path');
+  if (!Array.isArray(plugin.skills) || !plugin.skills.includes(required.skill)) missing.push(`skill:${required.skill}`);
+  if (!Array.isArray(plugin.agents) || !plugin.agents.includes(required.agent)) missing.push(`agent:${required.agent}`);
+  if (!Array.isArray(plugin.rules) || !plugin.rules.includes(required.rule)) missing.push(`rule:${required.rule}`);
+  if (!Array.isArray(plugin.hooks) || !plugin.hooks.includes(required.hook)) missing.push(`hook:${required.hook}`);
+  if (!Array.isArray(plugin.mcpServers) || !plugin.mcpServers.includes(required.mcpServer)) missing.push(`mcp:${required.mcpServer}`);
+  return { ok: true, installed: true, needsSync: missing.length > 0, reason: missing.length ? 'component-drift' : 'current', missing, version: plugin.version, path: plugin.path };
+}
+
 export function writeSyncState(statePath, version, completedAt = new Date()) {
   const directory = path.dirname(statePath);
   fs.mkdirSync(directory, { recursive: true });
@@ -70,6 +93,13 @@ export function readInstalledVersion(manifestPath = installedPluginPath) {
   return document.version;
 }
 
+export function readHostPluginStatus(targetVersion) {
+  const result = spawnSync('agy', ['plugin', 'list', '--json'], { cwd: root, encoding: 'utf8' });
+  if (result.error || result.status !== 0) return { ok: false, reason: 'deferred-cli-unverified', detail: result.error?.message || `agy exited ${result.status ?? 'unknown'}` };
+  try { return inspectHostPlugin(JSON.parse(result.stdout), targetVersion); }
+  catch (error) { return { ok: false, reason: 'deferred-cli-unverified', detail: error.message }; }
+}
+
 function run(command, args, label, env) {
   console.log(`\n=== ${label} ===`);
   const result = spawnSync(command, args, { cwd: root, stdio: 'inherit', env: env ? { ...process.env, ...env } : process.env });
@@ -88,10 +118,16 @@ function main() {
   run(process.execPath, ['tools/update-skill-references.mjs', '--apply'], 'Check and update approved skill references');
   const currentVersion = readVersion();
   const installedVersion = readInstalledVersion();
+  const hostPlugin = readHostPluginStatus(currentVersion);
+  if (!hostPlugin.ok) {
+    console.warn(`Antigravity inventory unavailable; ${hostPlugin.reason}: ${hostPlugin.detail}`);
+    return;
+  }
   const lastSyncedVersion = readLastSyncedVersion(statePath);
   const lockChanged = previousLockHash !== hashFile(lockPath);
 
-  if (shouldSyncInstalledAgents(previousVersion, currentVersion, installedVersion, lastSyncedVersion)) {
+  if (shouldSyncInstalledAgents(previousVersion, currentVersion, installedVersion, lastSyncedVersion)
+    || hostPlugin.needsSync) {
     run(process.execPath, ['tools/generate-skill-provenance.mjs'], 'Prepare updated skill provenance');
     run(process.execPath, ['tools/update-key-checksums.mjs'], 'Prepare updated release checksums');
     if (packageNeedsRebuild(currentVersion, installedVersion)) {
