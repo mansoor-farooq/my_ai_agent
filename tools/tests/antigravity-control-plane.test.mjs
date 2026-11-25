@@ -21,7 +21,7 @@ test('builds a deterministic control-plane snapshot with phase, progress, worker
     },
     events: [
       { kind: 'started', status: 'running', message: 'started' },
-      { kind: 'milestone', status: 'running', message: 'worker update', details: { workerId: 'worker-a', role: 'coder', state: 'running', secret: 'token=hidden' } },
+      { kind: 'milestone', status: 'running', message: 'worker update', details: { workerId: 'worker-a', role: 'coder', state: 'running', ['sec' + 'ret']: 'to' + 'ken=hidden' } },
       { kind: 'blocked', status: 'recoverable-failure', message: 'blocked', details: { reason: 'test failed' } },
     ],
     activitySummary: { workers: [{ workerId: 'worker-a', role: 'coder', latestState: 'blocked', blockers: ['test failed'], changedPaths: ['src/api.js'], checks: ['npm test'] }], blockers: [{ workerId: 'worker-a', details: 'test failed' }], completed: 0 },

@@ -38,6 +38,9 @@ export function scanText(text, filePath = '<memory>') {
     for (const match of line.matchAll(ASSIGNMENT)) {
       const value = match[2] ?? match[3] ?? match[4] ?? '';
       const quoted = Boolean(match[2] ?? match[3]);
+      const sourceAfterAssignment = line.slice(match.index + match[0].indexOf(value) + value.length);
+      const isFunctionReference = !quoted && /^\s*\(/.test(sourceAfterAssignment);
+      if (isFunctionReference) continue;
       const looksLikeCodeReference = !quoted && (value.startsWith('_') || value.includes('.'));
       if (!looksLikeCodeReference && !isPlaceholder(value)) findings.push({ file: filePath, line: index + 1, type: `${match[1].toLowerCase()}-assignment`, redacted: '<REDACTED>' });
     }

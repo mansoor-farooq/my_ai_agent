@@ -69,3 +69,7 @@ test('secret scanner does not flag a dynamically assembled local editor nonce UR
   const findings = scanText("const url = 'http://localhost:' + PORT + '/source?token=' + TOKEN;", 'skills/local-editor.js');
   assert.deepEqual(findings, []);
 });
+
+test('secret scanner does not flag a password parser function reference', () => {
+  assert.deepEqual(scanText("const password = decodeURIComponent(parsed.password || '');", 'tools/rag-setup.mjs'), []);
+});

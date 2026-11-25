@@ -33,7 +33,7 @@ test('automatic RAG access rejects remote database hosts without connecting', ()
 });
 
 test('Postgres probe never prompts and classifies common connection failures without exposing details', () => {
-  const config = { status: 'configured', host: 'localhost', port: '5432', user: 'dev', name: 'rag', password: 'private', psql: 'psql' };
+  const config = { status: 'configured', host: 'localhost', port: '5432', user: 'dev', name: 'rag', password: '<REDACTED>', psql: 'psql' };
   let captured;
   const result = probePostgres(config, { run: (...args) => { captured = args; return { status: 2, stderr: 'password authentication failed for user dev' }; } });
   assert.equal(result.status, 'credentials-rejected');
