@@ -21,8 +21,11 @@ $root = Split-Path -Parent $PSScriptRoot
 $runner = Join-Path $PSScriptRoot 'run-agent-skill-auto-update.ps1'
 $arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$runner`""
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $arguments -WorkingDirectory $root
-$trigger = New-ScheduledTaskTrigger -Daily -At $DailyAt
-$principal = New-ScheduledTaskPrincipal -UserId ([Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive -RunLevel Limited
+$userId = [Security.Principal.WindowsIdentity]::GetCurrent().Name
+$dailyTrigger = New-ScheduledTaskTrigger -Daily -At $DailyAt
+$logonTrigger = New-ScheduledTaskTrigger -AtLogOn -User $userId
+$trigger = @($dailyTrigger, $logonTrigger)
+$principal = New-ScheduledTaskPrincipal -UserId $userId -LogonType Interactive -RunLevel Limited
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Hours 2) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 $task = New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Description 'Checks approved skill references and refreshes local Antigravity, Gemini CLI, and Codex skill installs.'
 Register-ScheduledTask -TaskName $taskName -InputObject $task -Force | Out-Null

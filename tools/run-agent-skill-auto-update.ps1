@@ -14,6 +14,50 @@ if (Test-Path -LiteralPath $logPath) {
 Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] Starting local agent skill refresh."
 Push-Location $root
 try {
+    $gitRoot = (& git rev-parse --show-toplevel 2>$null | Select-Object -First 1)
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($gitRoot)) {
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: local agent hub checkout is not a Git repository."
+        exit 0
+    }
+    $dirty = & git status --porcelain --untracked-files=all 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: Git status could not be read."
+        exit 0
+    }
+    if ($dirty) {
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: local checkout has uncommitted changes; no automatic pull or install was attempted."
+        exit 0
+    }
+    $branch = (& git branch --show-current 2>$null | Select-Object -First 1).Trim()
+    $upstream = (& git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null | Select-Object -First 1).Trim()
+    if ([string]::IsNullOrWhiteSpace($branch) -or [string]::IsNullOrWhiteSpace($upstream) -or -not $upstream.StartsWith('origin/')) {
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: branch '$branch' has no origin upstream; no automatic pull was attempted."
+        exit 0
+    }
+    & git fetch --quiet origin 2>&1 | ForEach-Object { Add-Content -LiteralPath $logPath -Encoding utf8 -Value ([string]$_) }
+    if ($LASTEXITCODE -ne 0) {
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: origin fetch failed; local installations were not changed."
+        exit 0
+    }
+    $counts = (& git rev-list --left-right --count "$branch...$upstream" 2>$null | Select-Object -First 1).Trim() -split '\s+'
+    if ($counts.Count -ne 2) {
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: could not compare local branch '$branch' with '$upstream'."
+        exit 0
+    }
+    $ahead = [int]$counts[0]
+    $behind = [int]$counts[1]
+    if ($ahead -gt 0 -and $behind -gt 0) {
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: local branch '$branch' diverged from '$upstream'; manual reconciliation is required."
+        exit 0
+    }
+    if ($behind -gt 0) {
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] Fast-forwarding '$branch' from '$upstream'."
+        & git merge --ff-only $upstream 2>&1 | ForEach-Object { Add-Content -LiteralPath $logPath -Encoding utf8 -Value ([string]$_) }
+        if ($LASTEXITCODE -ne 0) {
+            Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: fast-forward failed; local installations were not changed."
+            exit 0
+        }
+    }
     $output = & npm.cmd run agents:auto-update:run 2>&1
     $exitCode = $LASTEXITCODE
     $output | ForEach-Object { Add-Content -LiteralPath $logPath -Encoding utf8 -Value ([string]$_) }

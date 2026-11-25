@@ -133,12 +133,17 @@ test('local auto-update installs a daily missed-run scheduled task without eleva
   const installer = fs.readFileSync(path.join(root, 'tools/install-agent-skill-auto-update.ps1'), 'utf8');
   const runner = fs.readFileSync(path.join(root, 'tools/run-agent-skill-auto-update.ps1'), 'utf8');
   assert.match(installer, /New-ScheduledTaskTrigger -Daily -At \$DailyAt/);
+  assert.match(installer, /New-ScheduledTaskTrigger -AtLogOn -User \$userId/);
   assert.match(installer, /-StartWhenAvailable/);
   assert.match(installer, /-RunLevel Limited/);
   assert.match(installer, /Register-ScheduledTask/);
   assert.match(installer, /Start-ScheduledTask/);
   assert.match(runner, /npm\.cmd run agents:auto-update:run/);
   assert.match(runner, /skill-auto-update\.log/);
+  assert.match(runner, /git fetch --quiet origin/);
+  assert.match(runner, /git merge --ff-only \$upstream/);
+  assert.match(runner, /uncommitted changes/);
+  assert.match(runner, /diverged from/);
   assert.doesNotMatch(installer, /-RunLevel Highest|Credential|Password/);
 });
 
