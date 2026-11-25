@@ -155,12 +155,15 @@ test('local auto-update is available as an explicit installable provider sync', 
   assert.match(script, /tools\/update-skill-references\.mjs/);
   assert.match(script, /agents:refresh/);
   assert.match(script, /MANSOOR_AGENT_REFRESH_SKIP_UPSTREAM/);
+  assert.match(script, /packageNeedsRebuild/);
   assert.match(script, /dist.*mansoor-agent-hub.*plugin\.json/);
   const testsGate = "runNpm(['test'], 'Validate agent behavior, policies, and contracts')";
   const fixturesGate = "run(process.execPath, ['tools/run-agent-security-fixtures.mjs']";
   const secretsGate = "runNpm(['run', 'secret-scan'], 'Validate skill and source secret hygiene')";
   const syncStep = "runNpm(['run', 'agents:refresh']";
+  const buildStep = "runNpm(['run', 'build:package']";
   for (const gate of [testsGate, fixturesGate, secretsGate]) assert.ok(script.includes(gate), `missing mandatory update gate: ${gate}`);
+  assert.ok(script.indexOf(buildStep) < script.indexOf(testsGate), 'target bundle must be rebuilt before tests when package version changed');
   assert.ok(script.indexOf(testsGate) < script.indexOf(syncStep), 'full agent behavior tests must run before provider sync');
   assert.ok(script.indexOf(fixturesGate) < script.indexOf(syncStep), 'security fixtures must run before provider sync');
   assert.ok(script.indexOf(secretsGate) < script.indexOf(syncStep), 'secret scan must run before provider sync');

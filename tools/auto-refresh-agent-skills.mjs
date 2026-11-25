@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { packageNeedsRebuild } from './update-skill-references.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const npmCli = process.env.npm_execpath;
@@ -93,6 +94,9 @@ function main() {
   if (shouldSyncInstalledAgents(previousVersion, currentVersion, installedVersion, lastSyncedVersion)) {
     run(process.execPath, ['tools/generate-skill-provenance.mjs'], 'Prepare updated skill provenance');
     run(process.execPath, ['tools/update-key-checksums.mjs'], 'Prepare updated release checksums');
+    if (packageNeedsRebuild(currentVersion, installedVersion)) {
+      runNpm(['run', 'build:package'], 'Build the target Antigravity bundle before update gates');
+    }
     runNpm(['test'], 'Validate agent behavior, policies, and contracts');
     run(process.execPath, ['tools/run-agent-security-fixtures.mjs'], 'Run agent security behavior fixtures');
     runNpm(['run', 'secret-scan'], 'Validate skill and source secret hygiene');

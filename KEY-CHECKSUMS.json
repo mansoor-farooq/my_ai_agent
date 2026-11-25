@@ -2571,13 +2571,13 @@
   },
   {
     "Path": "Agents/tools/tests/skill-reference-updater.test.mjs",
-    "SHA256": "063B2D3F169F46C589E56A89A399D065F7023A1E46B7BAE77DDEF2A6EA5FF672",
-    "Bytes": 10874
+    "SHA256": "9CB87DC17D0788677B42C7A9C8E0718CD24713FBD2EDA20AAE4A7F48814A48D1",
+    "Bytes": 11119
   },
   {
     "Path": "Agents/tools/auto-refresh-agent-skills.mjs",
-    "SHA256": "5DE7085BD46787F7E20444D7349A7CED43264E8DFBB116DC6368810DDC7D5A54",
-    "Bytes": 5425
+    "SHA256": "0ED97EE6D121E871695CBE0C8FAC2C1F9771E5C08811E2AD02999F7D3F51E047",
+    "Bytes": 5664
   },
   {
     "Path": "Agents/tools/refresh-agent-skills.mjs",
