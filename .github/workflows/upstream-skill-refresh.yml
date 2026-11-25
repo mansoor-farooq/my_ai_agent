@@ -1,0 +1,75 @@
+name: Refresh declared upstream skills
+
+on:
+  push:
+    branches: [mansoor-development]
+  schedule:
+    - cron: '23 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: upstream-skill-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node.js 24)
+
+      - name: Set up Node.js
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0 (Node.js 24)
+        with:
+          node-version: 24.21.0
+
+      - name: Fetch and validate explicitly registered upstream skills
+        run: node tools/update-skill-references.mjs --apply
+
+      - name: Refresh provenance and signed-source checksums
+        run: |
+          node tools/generate-skill-provenance.mjs
+          node tools/update-key-checksums.mjs
+
+      - name: Verify tests, policies, and secret scan
+        run: |
+          npm test
+          npm run secret-scan
+
+      - name: Detect updater changes
+        id: changes
+        shell: pwsh
+        run: |
+          $changed = git status --porcelain -- skills-lock.json SKILL-PROVENANCE.json KEY-CHECKSUMS.json skills package.json
+          if ($changed) { "changed=true" >> $env:GITHUB_OUTPUT } else { "changed=false" >> $env:GITHUB_OUTPUT }
+
+      - name: Publish validated update branch and review link
+        if: steps.changes.outputs.changed == 'true'
+        shell: pwsh
+        env:
+          DEFAULT_BRANCH: ${{ github.ref_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          $branch = 'automation/upstream-skill-refresh'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c $branch
+          git add -- skills-lock.json SKILL-PROVENANCE.json KEY-CHECKSUMS.json skills package.json
+          git commit -m 'chore: refresh approved upstream skills'
+          if ($LASTEXITCODE -ne 0) { throw 'Could not commit validated skill updates.' }
+          git push --force origin "HEAD:refs/heads/$branch"
+          if ($LASTEXITCODE -ne 0) { throw 'Could not publish the updater branch.' }
+          $compareUrl = "https://github.com/$env:GITHUB_REPOSITORY/compare/$env:DEFAULT_BRANCH...$branch?expand=1"
+          @"
+          ### Upstream skill update is ready for review
+
+          The validated update branch was pushed: ``$branch``.
+
+          The repository's Actions token cannot create pull requests, so this workflow leaves review and merge to a person. Open the comparison page to inspect the changes and create the PR:
+
+          $compareUrl
+          "@ | Add-Content -Path $env:GITHUB_STEP_SUMMARY

@@ -1,0 +1,31 @@
+{
+  "schema": "mansoor.antigravity-control-plane/v1",
+  "runId": "gate-run",
+  "projectId": "gate-project",
+  "taskId": "gate-task",
+  "status": "completed",
+  "phase": "completed",
+  "progress": 100,
+  "objective": "phase-0-gate",
+  "updatedAt": "2026-01-01T00:00:00.000Z",
+  "workers": [],
+  "blockers": [],
+  "evidence": [],
+  "artifacts": [],
+  "model": {
+    "backend": "host-managed",
+    "identity": "not-exposed-by-host",
+    "switching": "visible-and-checkpoint-bound"
+  },
+  "approvals": {
+    "autonomyProfile": "managed",
+    "retryCount": 0,
+    "ownerReviewRequired": false
+  },
+  "recentEvents": [],
+  "nextActions": [
+    "review-handoff",
+    "promote-or-close"
+  ],
+  "eventCount": 0
+}

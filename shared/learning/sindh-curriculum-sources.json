@@ -1,0 +1,4 @@
+[
+  {"id":"sindh-dcar-curriculum-index","sourceClass":"official-curriculum","board":"Sindh","title":"Directorate of Curriculum Assessment and Research curriculum index","url":"https://dcar.gos.pk/Sindh%20Curriculum.html","licence":"official-link-only","subjects":["Computer Science","Mathematics","English","Physics","Chemistry"],"mediums":["English","Sindhi","Urdu"]},
+  {"id":"sindh-stbb-ebooks","sourceClass":"official-textbook-link","board":"Sindh","title":"Sindh Textbook Board eBooks","url":"https://ebooks.stbb.edu.pk/","licence":"all-rights-reserved-link-only","grades":["ECCE","Katchi","I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"],"mediums":["English","Sindhi","Urdu"]}
+]

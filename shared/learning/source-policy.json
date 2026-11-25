@@ -1,0 +1,12 @@
+{
+  "schema": "mansoor.learning-source-policy/v1",
+  "redistribution": {
+    "official-curriculum": "link-and-metadata-only",
+    "official-textbook-link": "link-or-minimal-quote-only",
+    "open-skill": "follow-declared-license",
+    "user-provided": "use-with-owner-authority",
+    "optional-api": "credential-and-policy-bound"
+  },
+  "denyWithoutLicence": true,
+  "neverStoreRawTextbookCorpus": true
+}

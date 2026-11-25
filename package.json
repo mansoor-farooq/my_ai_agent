@@ -1,0 +1,29 @@
+{
+  "name": "mansoor-agent-hub",
+  "version": "1.23.42",
+  "private": true,
+  "description": "Owner build entrypoint for the Mansoor Farooq private Antigravity agent team.",
+  "scripts": {
+    "build": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1",
+    "build:auto": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1",
+    "build:package": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\build-agent-hub.ps1 -SkipAutoInstall",
+    "agents:install:gemini": "node tools/install-gemini-cli-team.mjs --verified-sync",
+    "agents:install:codex": "node tools/install-codex-mobile-specialist.mjs",
+    "agents:install:codex:custom": "node tools/install-codex-custom-skills.mjs",
+    "agents:check:gemini": "node tools/install-gemini-cli-team.mjs --check",
+    "agents:refresh": "node tools/refresh-agent-skills.mjs",
+    "agents:auto-update:run": "node tools/auto-refresh-agent-skills.mjs",
+    "agents:auto-update:install": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\tools\\install-agent-skill-auto-update.ps1 -RunNow",
+    "agents:auto-update:remove": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\tools\\install-agent-skill-auto-update.ps1 -Uninstall",
+    "skills:update": "node tools/update-skill-references.mjs",
+    "skills:refresh:rea": "node tools/refresh-rea-skill.mjs",
+    "test": "node --test \"tools/tests/*.test.mjs\"",
+    "test:rag": "node tools/rag-ci-gate.mjs",
+    "rag:doctor": "node tools/rag-setup.mjs doctor --json",
+    "rag:setup": "node tools/rag-setup.mjs setup --json",
+    "antigravity:doctor": "node tools/antigravity-system-doctor.mjs --json",
+    "secret-scan": "node tools/secret-scan.mjs .",
+    "benchmark": "node tools/agent-benchmark.mjs",
+    "dataset": "node tools/agent-training-dataset.mjs export"
+  }
+}

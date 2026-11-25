@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Context Orchestrator"
+  short_description: "Memory-first architecture and focused delivery"
+  default_prompt: "Use $project-context-orchestrator to map this existing project, ask only high-value questions, and deliver a verified change with minimal rereading."
+policy:
+  allow_implicit_invocation: true

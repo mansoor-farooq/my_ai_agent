@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "policies": [
+    {
+      "id": "INV-CONTRACT-001",
+      "version": 1,
+      "category": "domain-scope",
+      "appliesTo": ["inventory-management", "commerce", "erp"],
+      "agents": ["production-orchestrator", "enterprise-schema-architect", "saas-architect", "flutter-mobile-specialist"],
+      "invariants": ["inventory terminology remains canonical", "stock movement and availability are explicit", "storefront/seller features require owner approval"],
+      "requiredEvidence": ["domain-glossary", "affected-paths", "acceptance-tests"]
+    },
+    {
+      "id": "AUTH-SESSION-001",
+      "version": 1,
+      "category": "security",
+      "appliesTo": ["jwt", "session", "oauth"],
+      "agents": ["production-orchestrator", "application-security-reviewer", "dotnet-backend-specialist", "node-backend-specialist", "python-backend-specialist"],
+      "invariants": ["authenticate before protected handler", "subject and tenant match request scope", "expired/revoked session denies protected work", "client identifiers never authorize access"],
+      "requiredEvidence": ["auth-negative-tests", "tenant-scope", "401-403-observed"]
+    },
+    {
+      "id": "UI-SCOPE-001",
+      "version": 1,
+      "category": "ui-quality",
+      "appliesTo": ["flutter", "android", "web"],
+      "agents": ["production-orchestrator", "mansoor-ui-specialist", "flutter-mobile-specialist"],
+      "invariants": ["no unrequested screens", "loading/empty/error/offline states are explicit", "text is not clipped at supported widths"],
+      "requiredEvidence": ["layout-evidence", "responsive-check", "focused-ui-tests"]
+    },
+    {
+      "id": "API-CONTRACT-001",
+      "version": 1,
+      "category": "backend-quality",
+      "appliesTo": ["api", "service", "commerce", "erp"],
+      "agents": ["production-orchestrator", "dotnet-backend-specialist", "node-backend-specialist", "python-backend-specialist"],
+      "invariants": ["existing routes and response contracts are preserved", "server owns authorization and totals", "auth failure prevents protected business logic"],
+      "requiredEvidence": ["contract-tests", "negative-auth-tests", "changed-paths"]
+    }
+  ]
+}

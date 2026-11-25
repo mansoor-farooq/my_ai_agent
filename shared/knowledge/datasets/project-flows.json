@@ -1,0 +1,34 @@
+{
+  "snapshotDate": "2026-11-02",
+  "status": "historical-context-verify-current-code",
+  "projects": [
+    {
+      "name": "Cartivo",
+      "aliases": ["my_cafa"],
+      "entryFiles": ["lib/state/cart_manager.dart", "lib/screens/checkout_screen.dart", "lib/services/order_checkout_service.dart", "lib/services/order_sync_engine.dart", "lib/core/network/order_api_client.dart"],
+      "flow": ["catalog", "active cart", "editable checkout", "shipping and payment", "confirmation", "online API or offline queue", "sync"],
+      "invariants": ["Reorder preloads the active cart and reuses checkout", "Keep cart IDs, variants and effective prices", "Do not claim live distributor verification from static tests"]
+    },
+    {
+      "name": "HRMS mobile app",
+      "aliases": ["hrms_mobileapp"],
+      "entryFiles": ["lib/auth_repository.dart", "lib/dashboard_page.dart", "lib/attendance_page.dart", "lib/location_service.dart"],
+      "flow": ["login", "secure token storage", "dashboard without GPS", "Mark Punch", "location and geofence verification"],
+      "invariants": ["Unconfigured office geofence blocks attendance", "Biometric attendance excluded in historical work", "Demo-backed pages need endpoint verification"]
+    },
+    {
+      "name": "Mansoortech",
+      "aliases": ["mansoortech"],
+      "entryFiles": ["GEMINI_PROJECT_HANDOFF.md", "GEMINI_PRODUCT_DOSSIER.md", "prisma/schema.prisma", "lib/auth.ts", "lib/tenant.ts"],
+      "flow": ["authenticate", "resolve tenant membership", "authorize", "scope data", "audit"],
+      "invariants": ["Preserve tenant isolation and RBAC", "Verify branch model and product decisions in current code", "Keep credentials outside repo"]
+    },
+    {
+      "name": "InfoTech Solutions",
+      "aliases": ["infotech-next"],
+      "entryFiles": ["lib/data.json", "scripts/build_premium_profile.py", "AGENTS.md"],
+      "flow": ["verify company content", "design PDF", "render all pages", "inspect output"],
+      "invariants": ["Use real business claims", "Use real logo", "No pink palette or Custom ERP wording in the recorded profile"]
+    }
+  ]
+}

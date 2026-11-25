@@ -1,0 +1,4 @@
+interface:
+  display_name: "Live Web Quality Auditor"
+  short_description: "Run evidence-first browser QA and report UI, API, auth, and responsive failures."
+  default_prompt: "Use $live-web-quality-auditor to audit an authorized web app, collect browser evidence, and return a severity-ranked report."

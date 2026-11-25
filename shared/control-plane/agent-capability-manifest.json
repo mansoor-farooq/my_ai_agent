@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "agentId": "mansoor-agent-os",
+  "profile": "private-project-control-plane",
+  "capabilities": {
+    "allow": [
+      "project.metadata.read",
+      "project.memory.export",
+      "project.tests.run",
+      "git.metadata.read",
+      "knowledge.branch.write",
+      "research.evidence.write",
+      "audit.events.write"
+    ],
+    "deny": [
+      "system.admin",
+      "credentials.read",
+      "unrelated-files.read",
+      "browser-data.read",
+      "covert-monitoring",
+      "raw-hidden-reasoning.export"
+    ]
+  },
+  "exportPolicy": {
+    "consentRequired": true,
+    "projectScopeRequired": true,
+    "secrets": false,
+    "customerData": false,
+    "rawHiddenReasoning": false,
+    "fullSource": false,
+    "fullConversation": false,
+    "allowedModes": ["summary", "evidence", "prompt-ledger"]
+  },
+  "runtimeContextPolicy": {
+    "automaticProjectMemory": true,
+    "projectIdentityRequired": true,
+    "revisionBoundFacts": true,
+    "crossProjectRetrieval": false,
+    "unverifiedFactsAuthorizeWrites": false,
+    "scopeDriftBlocksCompletion": true
+  },
+  "defaultSecurityInvariants": {
+    "authenticateBeforeProtectedWork": true,
+    "matchSessionSubject": true,
+    "matchTenantScopeWhenPresent": true,
+    "rejectExpiredOrRevokedSessions": true,
+    "trustClientIdentifiersForAuthorization": false,
+    "jwtIsUniversalRequirement": false
+  },
+  "github": {
+    "transport": "github-app-installation",
+    "repositorySelection": "selected",
+    "permissions": {"metadata": "read", "contents": "write", "pullRequests": "read", "actions": "read"},
+    "administration": "none",
+    "webhooks": "disabled-until-explicitly-configured"
+  },
+  "branchPolicy": {"knowledgePattern": "knowledge/**", "mainProtected": true, "forcePush": false, "deleteKnowledgeBranches": "owner-only"},
+  "tokenPolicy": {"type": "installation-token", "maxLifetimeSeconds": 3600, "personalAccessToken": false, "privateKeyInRepository": false},
+  "audit": {"required": true, "events": ["install", "policy-denied", "sync-start", "sync-result", "revoke"], "payload": "metadata-only"}
+}

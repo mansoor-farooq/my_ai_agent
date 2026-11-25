@@ -1,0 +1,146 @@
+#!/usr/bin/env node
+import crypto from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { canonicalContentBytes } from './content-hash.mjs';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const manifestPath = path.join(root, 'KEY-CHECKSUMS.json');
+let records = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+if (!Array.isArray(records)) throw new Error('KEY-CHECKSUMS.json must contain an array.');
+
+const retiredPaths = new Set([
+  'Agents/tools/ultra-agent-v4-control-panel/server.mjs',
+  'Agents/tools/ultra-agent-v4-control-panel/public/index.html',
+  'Agents/tools/ultra-agent-v4-control-panel/public/styles.css',
+  'Agents/tools/ultra-agent-v4-control-panel/public/app.js',
+  'Agents/Open-Ultra-Agent-Control-Panel.cmd',
+  'Agents/skills/ui-component-alignment/SKILL.md',
+]);
+records = records.filter((record) => !retiredPaths.has(String(record?.Path || '').replaceAll('\\', '/')));
+
+const requiredPaths = [
+  'agents/Antigravity/custom-agents/production-orchestrator/agent.md',
+  'skills/agent-hub-operations/SKILL.md',
+  'skills/project-context-orchestrator/SKILL.md',
+  'skills/workflow-system-connectors/SKILL.md',
+  'tools/generate-skill-provenance.mjs',
+  'tools/tests/portable-plugin-contents.test.mjs',
+  'tools/tests/learning-mentor-skill-contract.test.mjs',
+  'tools/tests/web-audit-agent-contract.test.mjs',
+  'tools/agent-training-dataset.mjs',
+  'tools/tests/agent-training-dataset.test.mjs',
+  'tools/ultra-agent-v2/preflight.mjs',
+  'tools/ultra-agent-v2/memory.mjs',
+  'tools/ultra-agent-v2/project-memory.mjs',
+  'tools/ultra-agent-v2/evidence.mjs',
+  'tools/ultra-agent-v2/project-identity.mjs',
+  'tools/ultra-agent-v2/rag.mjs',
+  'tools/rag-setup.mjs',
+  'tools/tests/rag-setup.test.mjs',
+  'tools/antigravity-local-context.mjs',
+  'tools/antigravity-system-doctor.mjs',
+  'tools/tests/antigravity-local-context.test.mjs',
+  'tools/tests/antigravity-system-doctor.test.mjs',
+  'tools/tests/prompt-contract.test.mjs',
+  'docs/antigravity-fast-context.md',
+  'agents/Antigravity/custom-agents/ui-pro-max-specialist/agent.md',
+  'skills/mansoor-ui-component-alignment/SKILL.md',
+  'docs/local-rag-setup.md',
+  'tools/tests/ultra-agent-v2.test.mjs',
+  'shared/ULTRA_AGENT_V2_PROTOCOL.md',
+  'tools/ultra-agent-v3/state.mjs',
+  'tools/ultra-agent-v3/mode.mjs',
+  'tools/ultra-agent-v3/plan.mjs',
+  'tools/ultra-agent-v3/context.mjs',
+  'tools/repository-map.mjs',
+  'tools/project-context-bootstrap.mjs',
+  'tools/sync-antigravity-agent-profiles.mjs',
+  'tools/build-antigravity-plugin.mjs',
+  'tools/ultra-agent-v3/evaluate.mjs',
+  'tools/ultra-agent-v3/trace.mjs',
+  'tools/ultra-agent-v3/delegation.mjs',
+  'tools/ultra-agent-v3/concurrency.mjs',
+  'tools/ultra-agent-v3/policy.mjs',
+  'tools/ultra-agent-v3/activity.mjs',
+  'tools/ultra-agent-v4/benchmark.mjs',
+  'tools/ultra-agent-v4/recovery.mjs',
+  'tools/ultra-agent-v4/core-loop.mjs',
+  'tools/ultra-agent-v4/stages/context.mjs',
+  'tools/ultra-agent-v4/stages/plan.mjs',
+  'tools/ultra-agent-v4/stages/reference.mjs',
+  'tools/ultra-agent-v4/stages/act.mjs',
+  'tools/ultra-agent-v4/stages/verify.mjs',
+  'tools/ultra-agent-v4/stages/repair.mjs',
+  'tools/ultra-agent-v4/stages/answer.mjs',
+  'tools/ultra-agent-v4/stages/remember.mjs',
+  'tools/ultra-agent-v4/task-workspaces.mjs',
+  'tools/ultra-agent-v4/mcp-server.mjs',
+  'tools/ultra-agent-v4/managed-runtime.mjs',
+  'tools/ultra-agent-v5/approval-broker.mjs',
+  'tools/ultra-agent-v5/readiness-gate.mjs',
+  'tools/start-managed-mcp.ps1',
+  'tools/content-hash.mjs',
+  'tools/install-gemini-cli-team.mjs',
+  'tools/install-codex-custom-skills.mjs',
+  'tools/custom-skill-wave.mjs',
+  'tools/tests/custom-skill-wave.test.mjs',
+  'tools/update-skill-references.mjs',
+  'tools/auto-refresh-agent-skills.mjs',
+  'tools/refresh-agent-skills.mjs',
+  'tools/install-agent-skill-auto-update.ps1',
+  'tools/run-agent-skill-auto-update.ps1',
+  'tools/tests/skill-reference-updater.test.mjs',
+  'skills-lock.json',
+  'SKILL-PROVENANCE.json',
+  'tools/rule-governance.mjs',
+  'tools/antigravity-pretool-guard.mjs',
+  'tools/antigravity-pretool-guard.ps1',
+  'tools/antigravity-runtime-preflight.mjs',
+  'tools/sync-global-rules.ps1',
+  'tools/benchmark-schema.json',
+  'tools/run-agent-security-fixtures.mjs',
+  'tools/security-agent-fixtures.json',
+  'shared/control-plane/rule-registry.json',
+  'benchmarks/README.md',
+  '.github/workflows/quality.yml',
+  '.github/workflows/upstream-skill-refresh.yml',
+  'tools/tests/ultra-agent-v3-delegation.test.mjs',
+  'tools/tests/gemini-cli-team.test.mjs',
+  'tools/tests/skill-reference-updater.test.mjs',
+  'tools/tests/ultra-agent-v3-policy-activity.test.mjs',
+  'tools/tests/repository-map.test.mjs',
+  'tools/tests/antigravity-local-context.test.mjs',
+  'tools/tests/sync-antigravity-agent-profiles.test.mjs',
+  'tools/tests/ultra-agent-v3-context.test.mjs',
+  'tools/tests/ultra-agent-v4-control.test.mjs',
+  'tools/tests/ultra-agent-v4-core-loop.test.mjs',
+  'tools/tests/ultra-agent-v4-task-workspaces.test.mjs',
+  'tools/tests/ultra-agent-v4-managed-mcp.test.mjs',
+  'tools/tests/ultra-agent-v4-managed-runtime.test.mjs',
+];
+const knownPaths = new Set(records.map((record) => String(record?.Path || '').replaceAll('\\', '/')));
+for (const relative of requiredPaths) {
+  const manifestPathValue = `Agents/${relative}`;
+  if (!knownPaths.has(manifestPathValue)) {
+    records.push({ Path: manifestPathValue, SHA256: '', Bytes: 0 });
+    knownPaths.add(manifestPathValue);
+  }
+}
+
+let refreshed = 0;
+for (const record of records) {
+  if (typeof record?.Path !== 'string') throw new Error('Checksum record is missing its Path.');
+  const relative = record.Path.replaceAll('\\', '/').replace(/^Agents\//, '');
+  const file = path.resolve(root, relative);
+  if (!file.startsWith(`${root}${path.sep}`)) throw new Error(`Checksum path escapes the repository: ${record.Path}`);
+  if (/(?:^|\/)(?:shared\/native-profile|shared\/private-backup|shared\/knowledge\/readable-chat-context)(?:\/|$)|\.(?:db|sqlite|zip)$/i.test(relative)) continue;
+  const bytes = canonicalContentBytes(fs.readFileSync(file), relative);
+  record.SHA256 = crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase();
+  record.Bytes = bytes.length;
+  refreshed += 1;
+}
+
+fs.writeFileSync(manifestPath, `${JSON.stringify(records, null, 2)}\n`);
+console.log(`Refreshed ${refreshed} owner source checksums.`);

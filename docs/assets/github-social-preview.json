@@ -1,0 +1,14 @@
+{
+  "schema": "mansoor.image-brief/v1",
+  "id": "github-social-preview",
+  "title": "Ultra Agent GitHub social preview",
+  "description": "Search-friendly repository preview for Mansoor Farooq's Gemini Antigravity agent team",
+  "canvas": { "width": 1280, "height": 640, "background": "#0B1220" },
+  "elements": [
+    { "id": "accent", "type": "rect", "role": "brand accent", "x": 0, "y": 0, "width": 20, "height": 640, "fill": "#14B8A6" },
+    { "id": "eyebrow", "type": "text", "role": "product label", "lines": ["MANSOOR FAROOQ  /  ULTRA AGENT v4.4"], "x": 88, "y": 86, "maxWidth": 900, "fontSize": 28, "lineHeight": 34, "weight": 700, "color": "#5EEAD4" },
+    { "id": "title", "type": "text", "role": "product title", "lines": ["Gemini Antigravity", "Multi-Agent Engineering"], "x": 84, "y": 156, "maxWidth": 960, "fontSize": 66, "lineHeight": 78, "weight": 700, "color": "#F8FAFC" },
+    { "id": "summary", "type": "text", "role": "search summary", "lines": ["Architecture  ·  Flutter  ·  Android  ·  Backend", "RAG  ·  Security  ·  QA"], "x": 88, "y": 370, "maxWidth": 1060, "fontSize": 26, "lineHeight": 34, "weight": 500, "color": "#CBD5E1" },
+    { "id": "proof", "type": "text", "role": "trust line", "lines": ["Plan clearly. Delegate safely.", "Verify everything."], "x": 88, "y": 520, "maxWidth": 900, "fontSize": 30, "lineHeight": 38, "weight": 600, "color": "#FBBF24" }
+  ]
+}
