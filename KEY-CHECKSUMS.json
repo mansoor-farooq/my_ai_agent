@@ -2671,8 +2671,8 @@
   },
   {
     "Path": "Agents/tools/tests/rag-setup.test.mjs",
-    "SHA256": "D650A3A9E2813ED8D6DF8FA2AE0AD00D34C9063DA5C0AD147D4537210DD4E42C",
-    "Bytes": 3679
+    "SHA256": "21C6A643DC3045EA400FC48963AD785CEC0F743B7AE312F8884909ABB1155DA6",
+    "Bytes": 3682
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/ui-pro-max-specialist/agent.md",
@@ -2696,8 +2696,8 @@
   },
   {
     "Path": "Agents/tools/tests/antigravity-local-context.test.mjs",
-    "SHA256": "35680425D1F3AD5E1058C57F9A3D072B5A76A0EBD1E2D4BCC75CB869EB451AD0",
-    "Bytes": 4369
+    "SHA256": "4658FF61C497DA3925C5EAE63083C043ADA7BBE3C84CA979153610F21666ECED",
+    "Bytes": 4389
   },
   {
     "Path": "Agents/docs/antigravity-fast-context.md",
