@@ -142,6 +142,7 @@ test('local auto-update installs a daily missed-run scheduled task without eleva
   assert.match(runner, /skill-auto-update\.log/);
   assert.match(runner, /git fetch --quiet origin/);
   assert.match(runner, /git merge --ff-only \$upstream/);
+  assert.match(runner, /ProgramFiles.*Git/);
   assert.match(runner, /uncommitted changes/);
   assert.match(runner, /diverged from/);
   assert.doesNotMatch(installer, /-RunLevel Highest|Credential|Password/);

@@ -14,6 +14,18 @@ if (Test-Path -LiteralPath $logPath) {
 Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] Starting local agent skill refresh."
 Push-Location $root
 try {
+    $gitCommand = Get-Command git.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+    $gitPath = if ($gitCommand) { $gitCommand.Source } else {
+        @(
+            (Join-Path ${env:ProgramFiles} 'Git\cmd\git.exe'),
+            (Join-Path ${env:LOCALAPPDATA} 'Programs\Git\cmd\git.exe')
+        ) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    }
+    if ([string]::IsNullOrWhiteSpace($gitPath)) {
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: Git executable was not found in the scheduled-task environment."
+        exit 0
+    }
+    $env:Path = "$(Split-Path -Parent $gitPath);$env:Path"
     $gitRoot = (& git rev-parse --show-toplevel 2>$null | Select-Object -First 1)
     if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($gitRoot)) {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: local agent hub checkout is not a Git repository."
