@@ -22,7 +22,7 @@ Google's Gemini CLI extension contract is separate from the native Antigravity p
 
 ## Hook contract applied here
 
-Google documents that hooks run synchronously, use JSON over standard input/output, and treat timeout values as milliseconds. The packaged hook therefore uses `${extensionPath}` for the command path and working directory, has a bounded 10-second timeout, writes only one JSON decision to stdout, returns exit code `0` for an intentional JSON deny, and reserves exit code `2` for malformed or failed hook execution. The hook remains a policy guard, not an operating-system sandbox.
+Google documents that hooks run synchronously, use JSON over standard input/output, and treat timeout values as milliseconds. The packaged hook therefore uses a package-relative `./tools/antigravity-pretool-guard.ps1` command from the plugin root (avoiding host-specific `${extensionPath}` expansion), has a bounded 10-second timeout, writes only one JSON decision to stdout, returns exit code `0` for an intentional JSON deny, and reserves exit code `2` for malformed or failed hook execution. The hook remains a policy guard, not an operating-system sandbox.
 
 Google also documents configuration precedence: system settings override user and project settings. The System Doctor reports a detected `GEMINI_CLI_SYSTEM_SETTINGS_PATH` or the platform system settings file without editing it, so permission or hook overrides are visible instead of being misdiagnosed as profile drift.
 

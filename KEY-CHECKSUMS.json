@@ -66,8 +66,8 @@
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/production-orchestrator/agent.md",
-    "SHA256": "1BBD150275671666D91D0DD443428F448457513CB85080D01E09F6ECA998BF23",
-    "Bytes": 58374
+    "SHA256": "3299E65117992F044046ABD967CF96D0A849CE2AA4189CB163A01577E9BA0004",
+    "Bytes": 58454
   },
   {
     "Path": "Agents/agents/Antigravity/custom-agents/python-backend-specialist/agent.md",
@@ -151,7 +151,7 @@
   },
   {
     "Path": "Agents/package.json",
-    "SHA256": "6408E62FCA2CCE412B985DC98558B0ACF70B4EDC6EE23176211F081A68443978",
+    "SHA256": "FC0F057963F3AE1696160E1AA287EB5383E9EDE9DAC1450EB575A54B0AF89B4D",
     "Bytes": 1848
   },
   {
@@ -2201,8 +2201,8 @@
   },
   {
     "Path": "Agents/tools/build-antigravity-plugin.mjs",
-    "SHA256": "CAC0E7C25D958F395E6BC5BEB7D7EA03E0802F77B42A07FECAAAAA9701E81404",
-    "Bytes": 79696
+    "SHA256": "1473E025226A5BB1A6CE4D8987C7BA2020182C6CCF792C5B20E53F8894DF03AC",
+    "Bytes": 79664
   },
   {
     "Path": "Agents/tools/create-owner-signing-key.mjs",
@@ -2266,8 +2266,8 @@
   },
   {
     "Path": "Agents/tools/tests/portable-plugin-contents.test.mjs",
-    "SHA256": "37C24C2B363075890F35C53BCC28346976FB025001FEE94BE06A144A6F860E6F",
-    "Bytes": 29851
+    "SHA256": "99F44CE4920925371F1C0DBB68BD5302D620B1A5F0E2BA14CB44871150ADF792",
+    "Bytes": 29827
   },
   {
     "Path": "Agents/tools/validate-capability-manifest.mjs",

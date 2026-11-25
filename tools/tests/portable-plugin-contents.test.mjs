@@ -337,8 +337,8 @@ test('built versioned ZIP retains the support files after archive creation', { s
     assert.ok(nativeHook, 'the native guard hook must be present');
     assert.match(nativeHookEntry.matcher, /run_command/);
     assert.doesNotMatch(nativeHookEntry.matcher, /^\*$/);
-    assert.match(nativeHook.command, /\$\{extensionPath\}\/tools\/antigravity-pretool-guard\.ps1/);
-    assert.equal(nativeHook.cwd, '${extensionPath}');
+    assert.match(nativeHook.command, /-File "\.\/tools\/antigravity-pretool-guard\.ps1"/);
+    assert.equal(nativeHook.cwd, '.');
     assert.equal(nativeHook.timeout, 10000, 'hook timeout is milliseconds; 10ms caused intermittent host hook failures');
     await assert.doesNotReject(access(path.join(output, 'tools', 'antigravity-pretool-guard.ps1')));
     const hookWrapper = await readFile(path.join(output, 'tools', 'antigravity-pretool-guard.ps1'), 'utf8');

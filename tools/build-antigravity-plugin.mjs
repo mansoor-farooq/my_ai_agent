@@ -247,7 +247,7 @@ await writeFile(join(target, 'hooks.json'), `${JSON.stringify({
     // Google recommends narrow tool matchers because hooks run synchronously.
     // Keep the native guard on commands, mutations and managed MCP calls, not
     // every read/search event that would add a PowerShell+Node process.
-    PreToolUse: [{ matcher: '^(?:run_command|run_shell_command|call_mcp_tool|mcp_.*mansoor-agent-hub.*|(?:write|edit|replace|patch|delete|remove|move|rename|mkdir|create|apply_diff)[A-Za-z0-9_:-]*)$', hooks: [{ type: 'command', name: 'mansoor-native-write-guard', description: 'Bounded project-scope and permission guard', command: 'powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "\${extensionPath}/tools/antigravity-pretool-guard.ps1"', cwd: '\${extensionPath}', timeout: 10000 }] }],
+    PreToolUse: [{ matcher: '^(?:run_command|run_shell_command|call_mcp_tool|mcp_.*mansoor-agent-hub.*|(?:write|edit|replace|patch|delete|remove|move|rename|mkdir|create|apply_diff)[A-Za-z0-9_:-]*)$', hooks: [{ type: 'command', name: 'mansoor-native-write-guard', description: 'Bounded project-scope and permission guard', command: 'powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "./tools/antigravity-pretool-guard.ps1"', cwd: '.', timeout: 10000 }] }],
   },
 }, null, 2)}\n`);
 await mkdir(join(target, 'assets'), { recursive: true });
