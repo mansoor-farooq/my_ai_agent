@@ -25,9 +25,12 @@ try {
         Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: Git executable was not found in the scheduled-task environment."
         exit 0
     }
-    $gitRoot = (& $gitPath -C $root rev-parse --show-toplevel 2>$null | Select-Object -First 1)
-    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($gitRoot)) {
-        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: local agent hub checkout is not a Git repository."
+    $gitRootOutput = @(& $gitPath -C $root rev-parse --show-toplevel 2>&1)
+    $gitExitCode = $LASTEXITCODE
+    $gitRoot = ($gitRootOutput | Where-Object { $_ -is [string] -and $_ -notmatch '^fatal:' } | Select-Object -First 1)
+    if ($gitExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($gitRoot)) {
+        $detail = (($gitRootOutput | ForEach-Object { [string]$_ }) -join ' ').Trim()
+        Add-Content -LiteralPath $logPath -Encoding utf8 -Value "[$(Get-Date -Format o)] DEFERRED: local agent hub checkout is not a Git repository (git=$gitPath exit=$gitExitCode detail=$detail)."
         exit 0
     }
     $dirty = & $gitPath -C $root status --porcelain --untracked-files=all 2>$null

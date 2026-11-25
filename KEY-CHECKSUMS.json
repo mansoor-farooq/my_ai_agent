@@ -2591,8 +2591,8 @@
   },
   {
     "Path": "Agents/tools/run-agent-skill-auto-update.ps1",
-    "SHA256": "9380C751421F1DB77E0F194F4A3B605FDED4AD27994016A670C763CC2068CE85",
-    "Bytes": 4768
+    "SHA256": "1E57E995125F13E03E5DAB54FB1ECBD0B37D3D21F57F73C5C9DEB96B84DDCC2A",
+    "Bytes": 5033
   },
   {
     "Path": "Agents/tools/tests/agent-training-dataset.test.mjs",
