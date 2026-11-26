@@ -68,7 +68,7 @@ test('manager fast lane has explicit latency budgets and source-reuse image fall
   assert.match(managerProfile, /^model: inherit$/m);
   assert.match(managerProfile, /active host model and effort are the source of truth/i);
   assert.match(managerProfile, /cannot force a paid model.*rotate accounts/is);
-  assert.match(managerProfile, /12 relevant context files.*6 full skill bodies.*12 tool calls/is);
+  assert.match(managerProfile, /6 relevant context files.*2 full skill bodies.*6 tool calls/is);
   assert.match(managerProfile, /zero web queries.*one verification command.*zero idle polling/is);
   assert.match(managerProfile, /source-reuse/i);
   assert.match(managerProfile, /fetch the page once/i);
