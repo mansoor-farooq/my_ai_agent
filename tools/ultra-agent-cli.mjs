@@ -2,6 +2,8 @@
 import { runtimePaths } from './ultra-agent-v4/daemon/paths.mjs';
 import { startDaemon, connectRuntimeClient } from './ultra-agent-v4/daemon/daemon.mjs';
 import { createTurboSession, getTurboSession, revokeTurboSession } from './ultra-agent-v5/turbo-session.mjs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const args = process.argv.slice(2);
 const command = args[0] || 'status';
@@ -52,4 +54,6 @@ async function main() {
   } finally { client.close(); }
 }
 
-if (import.meta.url === `file://${process.argv[1]?.replaceAll('\\', '/')}`) main().catch((error) => { console.error(`mansoor-agent: ${error.message}`); process.exitCode = 1; });
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((error) => { console.error(`mansoor-agent: ${error.message}`); process.exitCode = 1; });
+}
